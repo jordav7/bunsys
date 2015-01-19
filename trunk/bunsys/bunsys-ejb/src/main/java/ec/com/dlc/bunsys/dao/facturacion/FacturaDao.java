@@ -5,6 +5,6 @@ package ec.com.dlc.bunsys.dao.facturacion;
  * @author DAVID
  *
  */
-public class FacturaDao extends FacturacionDao {
+public class FacturaDao extends GeneralDao {
 
 }
