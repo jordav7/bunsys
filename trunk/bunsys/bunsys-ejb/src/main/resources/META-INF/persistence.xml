@@ -25,9 +25,6 @@
       <!-- The datasource is deployed as <EAR>/META-INF/bunsys-ds.xml, you
          can find it in the source at ear/src/main/application/META-INF/bunsys-ds.xml -->
       <jta-data-source>java:jboss/datasources/bunsysDS</jta-data-source>
-      <class>ec.com.dlc.bunsys.entity.administracion.Tadmrolusuario</class>
-      <class>ec.com.dlc.bunsys.entity.inventario.Tinvproducto</class>
-      <class>ec.com.dlc.bunsys.entity.inventario.pk.TinvproductoPK</class>
       <properties>
          <!-- Properties for Hibernate -->
          <!-- <property name="hibernate.hbm2ddl.auto" value="create-drop" /> -->
