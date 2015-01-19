@@ -1,0 +1,8 @@
+<jboss-deployment-structure xmlns="urn:jboss:deployment-structure:1.2">
+	<ear-subdeployments-isolated>true</ear-subdeployments-isolated>
+    <deployment>
+        <dependencies>
+            <module name="ec.com.dlc.dao" meta-inf="import" export="true"/>
+        </dependencies>
+    </deployment>
+</jboss-deployment-structure>
