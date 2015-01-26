@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+	
+	 <h:head>
+		<title>SISTEMA DE FACTURACI\u00d3 N</title>
+	</h:head>
+	
+	<h:body style="margin: 0px; padding: 0px; font-family: 'Trebuchet MS',verdana;">
+		<h:form id="#{idForm}">
+			<table width="100%" style="height: 100%;" cellpadding="10" cellspacing="0" border="0">
+			<!-- ============ HEADER SECTION ============== -->
+				<tr>
+					<td colspan="3"  bgcolor="#F5F6CE">
+						<ui:include src="/templates/header.xhtml" />
+					</td>
+				</tr>
+			
+			<!-- ============ 	MENU SECTION ============== -->
+				<tr>
+					<td width="20%" valign="top" bgcolor="#fff"></td>
+					<td  valign="middle" width="55%" height="30" bgcolor="#E6E6E6">
+						<ui:insert name="contentMenu"></ui:insert>
+					</td>
+					
+				</tr>
+			
+				<tr>
+					<!-- ============ LEFT COLUMN (MENU) ============== -->
+					<td width="20%" valign="top" bgcolor="#fff">
+					
+					</td>
+					
+					<!-- ============ MIDDLE COLUMN (CONTENT) ============== -->
+					<td width="55%" valign="top" bgcolor="#E6E6E6" id="contentBody">
+						<ui:insert name="contentBody"></ui:insert>
+					</td>
+					
+					<td width="25%" valign="top" bgcolor="#fff">
+						
+					</td>
+				
+				</tr>
+			
+			    <!-- ============ FOOTER SECTION ============== -->
+				<tr>
+					<td colspan="3"  align="center" height="20" bgcolor="#777d6a">
+						<ui:include src="/templates/footer.xhtml" />
+					</td>
+				</tr>
+			</table>
+		</h:form>
+	</h:body>
+
+</html>
