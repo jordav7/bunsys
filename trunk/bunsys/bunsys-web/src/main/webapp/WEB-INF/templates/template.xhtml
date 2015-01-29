@@ -12,7 +12,7 @@
 		</h:head>
 		<h:body style="margin: 0px; padding: 0px; font-family: 'Trebuchet MS',verdana;">
 			<h:panelGroup id="layoutPrincipal" layout="block">
-				<h:outputText value="#{controller.form}" />
+				<h:outputText value="#{controller.htmlForm}" />
 				<h:form id="#{idForm}">
 					<div class="ui-layout-north">
 						<ui:include src="/WEB-INF/templates/header.xhtml" />
@@ -28,6 +28,9 @@
 					</div>
 				</h:form>
 			</h:panelGroup>
+			<p:outputPanel>
+				<ui:insert name="dialogArea" />
+			</p:outputPanel>
 		</h:body>
 	</f:view>
 </html>
