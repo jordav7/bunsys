@@ -1,0 +1,38 @@
+<ui:composition xmlns:p="http://primefaces.org/ui" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+	<p:growl id="messages"/>
+    <p:menubar id="menu">
+        <p:submenu label="#{msg.lbl_usuario}" icon="ui-icon-pencil" id="usuario">
+            <p:menuitem value="#{msg.lbl_usuario}"  icon="ui-icon-arrowreturnthick-1-w" action="#{menu.redireccionar('usuario')}" process="@this" update=":frm" />
+        </p:submenu>
+        
+        <p:submenu label="#{msg.lbl_administracion}" icon="ui-icon-document">
+            <p:menuitem value="#{msg.lbl_empresa}"  action="#{menu.redireccionar('empresa')}" process="@this" update=":frm"/>
+            <p:separator />
+            <p:menuitem value="#{msg.lbl_directorio_doc}" action="#{menu.redireccionar('documento')}" process="@this" update=":frm"/>
+            <p:separator />
+            <p:menuitem value="#{msg.lbl_catalogo}"  action="#{menu.redireccionar('catalogo')}" process="@this" update=":frm"/>
+        </p:submenu>
+ 
+        <p:submenu label="#{msg.lbl_param_fact_elect}" icon="ui-icon-document">
+            <p:menuitem value="#{msg.lbl_secuencia}" action="#{menu.redireccionar('secuencia')}" process="@this" update=":frm"/>
+            <p:separator />
+            <p:menuitem value="#{msg.lbl_clientes}" action="#{menu.redireccionar('clientes')}" process="@this" update=":frm"/>
+            <p:separator />
+            <p:menuitem value="#{msg.lbl_articulos}" action="#{menu.redireccionar('articulos')}" process="@this" update=":frm"/>
+            <p:separator />
+        </p:submenu>
+ 
+ 		<p:submenu label="Factura" icon="ui-icon-document">
+            <p:menuitem value="#{msg.lbl_factura}" action="#{menu.redireccionar('factura')}" process="@this" update=":frm"/>
+            <p:separator />
+            <p:menuitem value="#{msg.lbl_notas_credito}" action="#{menu.redireccionar('notacredito')}" process="@this" update=":frm"/>
+        </p:submenu>
+        
+        <f:facet name="options">
+            <p:commandButton  value="#{msg.lbl_salir}" icon="ui-icon-extlink" action="#{menu.salir()}" process="@this" update=":frm"/>
+        </f:facet>
+    </p:menubar>
+</ui:composition>
