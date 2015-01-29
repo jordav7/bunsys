@@ -1,5 +1,6 @@
 package ec.com.dlc.web.controller.base;
 
+import javax.annotation.PostConstruct;
 import javax.faces.component.html.HtmlForm;
 import javax.faces.context.FacesContext;
 
@@ -11,6 +12,18 @@ import ec.com.dlc.web.datamanager.base.BaseDatamanager;
  *
  */
 public abstract class BaseController {
+	
+	@PostConstruct
+	public void init(){
+		try{
+			if(!getDatamanager().getInicializado()){
+				this.inicializar();
+				getDatamanager().setInicializado(Boolean.TRUE);
+			}
+		}catch (Throwable e){
+//			FacesUtil.getInstancia().messageError(e.getMessage());
+		}
+	}
 	
 	/**
 	 * Forma de la pantalla a ser manejada
@@ -29,10 +42,6 @@ public abstract class BaseController {
 	public abstract void inicializar();
 
 	public HtmlForm getHtmlForm() {
-		if(!getDatamanager().getInicializado()){
-			this.inicializar();
-			getDatamanager().setInicializado(Boolean.TRUE);
-		}
 		return htmlForm;
 	}
 	
