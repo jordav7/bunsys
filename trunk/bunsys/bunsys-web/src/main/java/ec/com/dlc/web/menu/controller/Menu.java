@@ -66,7 +66,7 @@ public class Menu extends BaseController implements Serializable {
 
 	public String salir(){
 		System.out.println("salir");
-		return "menu?faces-redirect=true";
+		return "/home?faces-redirect=true";
 	}
 
 	public String getPagina() {
