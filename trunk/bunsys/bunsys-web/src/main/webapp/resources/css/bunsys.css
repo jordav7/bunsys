@@ -1,0 +1,25 @@
+@CHARSET "ISO-8859-1";
+
+#layoutPrincipal {
+	background-color: #FFFFFF;
+	height: 100%;
+	margin: 0 auto;
+	width: 100%;
+	max-width: 1000px;
+	min-width: 900px;
+}
+
+.ui-widget {
+	font-family: Trebuchet MS, Tahoma, Verdana, Arial, sans-serif;
+	font-size: 0.8em;
+}
+
+.ui-widget .ui-widget {
+	font-size: 0.7em;
+}
+
+.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button
+	{
+	font-family: Trebuchet MS, Tahoma, Verdana, Arial, sans-serif;
+	font-size: 0.7em;
+}
