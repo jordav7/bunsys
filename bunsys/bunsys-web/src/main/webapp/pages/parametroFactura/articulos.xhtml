@@ -1,8 +1,76 @@
-<ui:composition xmlns:p="http://primefaces.org/ui" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
-	<p:panel header="Art\u00edculos">
-	
-	</p:panel>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions" 
+      template="/WEB-INF/templates/template.xhtml">
+      <ui:param name="idForm" value="frmArticulos" />
+      <ui:param name="controller" value="#{articuloController}" />
+      <ui:define name="contentBody">
+		  <p:panel header="#{msg['lbl_articulos']}">
+		  	<p:fieldset legend="#{msg['lbl_busqueda']}">
+		  		<h:panelGroup layout="block">
+		  			<h:panelGrid columns="3">
+		  				<p:outputLabel value="#{msg['lbl_codigo_principal']}:" for="txtCodigoPrincipal"/>
+		  				<p:inputText id="txtCodigoPrincipal" value="#{articuloDatamanager.articuloSearch.codigoprincipal}"/>
+		  				<p:message for="txtCodigoPrincipal"/>
+		  				
+		  				<p:outputLabel value="#{msg['lbl_codigo_auxiliar']}:" for="txtCodigoAuxiliar"/>
+		  				<p:inputText id="txtCodigoAuxiliar" value="#{articuloDatamanager.articuloSearch.codigoauxiliar}"/>
+		  				<p:message for="txtCodigoAuxiliar"/>
+		  				
+		  				<p:outputLabel value="#{msg['lbl_nombre_producto']}:" for="txtNombreProducto"/>
+		  				<p:inputText id="txtNombreProducto" value="#{articuloDatamanager.articuloSearch.nombre}"/>
+		  				<p:message for="txtNombreProducto"/>
+		  				
+		  				<p:outputLabel value="#{msg['lbl_color']}:" for="selColor"/>
+		  				<p:selectOneMenu id="selColor" value="#{articuloDatamanager.articuloSearch.color}">
+		  					<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+		  				</p:selectOneMenu>
+		  				<p:message for="selColor"/>
+		  				
+		  				<p:outputLabel value="#{msg['lbl_estado']}:" for="selEstado"/>
+		  				<p:selectOneMenu id="selEstado" value="#{articuloDatamanager.articuloSearch.estado}">
+		  					<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+		  				</p:selectOneMenu>
+		  				<p:message for="selEstado"/>
+		  			</h:panelGrid>
+		  		</h:panelGroup>
+		  		<h:panelGroup layout="block" style="float:left">
+		  			<p:commandButton icon="ui-icon-search" value="#{msg['btn_buscar']}"/>
+		  			<p:commandButton icon="ui-icon-plusthick" value="#{msg['btn_crear']}"/>
+		  		</h:panelGroup>
+		  	</p:fieldset>
+		  	<p:fieldset legend="#{msg['lbl_listado_articulos']}">
+		  		<h:panelGroup layout="block">
+		  			<p:dataTable value="#{articuloDatamanager.productoColl}" var="articulo">
+		  				<p:column headerText="#{msg['lbl_codigo_principal']}">
+		  					<h:outputText value="#{articulo.codigoprincipal}" />
+		  				</p:column>
+		  				<p:column headerText="#{msg['lbl_codigo_auxiliar']}">
+		  					<h:outputText value="#{articulo.codigoauxiliar}" />
+		  				</p:column>
+		  				<p:column headerText="#{msg['lbl_nombre_producto']}">
+		  					<h:outputText value="#{articulo.nombre}" />
+		  				</p:column>
+		  				<p:column headerText="#{msg['lbl_tipo_producto']}">
+		  					<h:outputText value="#{articulo.tadmtipoproducto.descripcion}" />
+		  				</p:column>
+		  				<p:column styleClass="bun-action">
+		  					<p:commandButton icon="ui-icon-pencil" title="#{msg['btn_actualizar']}" oncomplete="PF('dlgArticulo').show();"/>
+		  				</p:column>
+		  				<p:column styleClass="bun-action">
+		  					<p:commandButton icon="ui-icon-trash" title="#{msg['btn_eliminar']}"/>
+		  				</p:column>
+		  			</p:dataTable>
+		  		</h:panelGroup>
+		  	</p:fieldset>
+		  </p:panel>
+	  </ui:define>
+	  <ui:define name="modalArea">
+	  	<p:dialog id="dlgArticulo" widgetVar="dlgArticulo" appendTo="@body" modal="true">
+	  		
+	  	</p:dialog>
+	  </ui:define>
 </ui:composition>
