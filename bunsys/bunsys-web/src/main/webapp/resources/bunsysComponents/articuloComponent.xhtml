@@ -1,0 +1,120 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:comp="http://xmlns.jcp.org/jsf/composite"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+	<comp:interface>
+		<comp:attribute name="controller"/>
+		<comp:attribute name="oncompleteSave" default=""/>
+		<comp:attribute name="processSave"/>
+		<comp:attribute name="updateSave"/>
+		<comp:attribute name="oncompleteCancel" default=""/>
+		<comp:attribute name="updateCancel"/>
+	</comp:interface>
+	<comp:implementation>
+		<div id="#{cc.clientId}">
+			<h:panelGroup layout="block">
+				<h:panelGrid columns="6">
+					<p:outputLabel value="#{msg['lbl_codigo_principal']}:" for="txtCodigoPrincipal"/>
+					<p:inputText id="txtCodigoPrincipal" value="#{cc.attrs.controller.articulo.codigoprincipal}" required="true"/>
+					<p:message for="txtCodigoPrincipal"/>
+					
+					<p:outputLabel value="#{msg['lbl_codigo_auxiliar']}:" for="txtCodigoAuxiliar"/>
+					<p:inputText id="txtCodigoAuxiliar" value="#{cc.attrs.controller.articulo.codigoauxiliar}"/>
+					<p:message for="txtCodigoAuxiliar"/>
+					
+					<p:outputLabel value="#{msg['lbl_nombre_producto']}:" for="txtNombreArticulo"/>
+					<p:inputText id="txtNombreArticulo" value="#{cc.attrs.controller.articulo.nombre}" required="true"/>
+					<p:message for="txtNombreArticulo"/>
+					
+					<p:outputLabel value="#{msg['lbl_fecha_caducidad']}:" for="txtFechaCaducidad"/>
+					<p:calendar id="txtFechaCaducidad" value="#{cc.attrs.controller.articulo.fechacaducidad}" required="true"/>
+					<p:message for="txtFechaCaducidad"/>
+					
+					<p:outputLabel value="#{msg['lbl_precio']}:" for="txtPrecioUnitario"/>
+					<pe:inputNumber id="txtPrecioUnitario" value="#{cc.attrs.controller.articulo.preciounitario}" decimalPlaces="3" decimalSeparator="." thousandSeparator="," />
+					<p:message for="txtPrecioUnitario"/>
+					
+					<p:outputLabel value="#{msg['lbl_peso']}:" for="txtPeso"/>
+					<pe:inputNumber id="txtPeso" value="#{cc.attrs.controller.articulo.peso}" decimalPlaces="3" decimalSeparator="." thousandSeparator="," />
+					<p:message for="txtPeso"/>
+					
+					<p:outputLabel value="#{msg['lbl_nandina']}:" for="txtNandina"/>
+					<p:inputText id="txtNandina" value="#{cc.attrs.controller.articulo.nandina}"/>
+					<p:message for="txtNandina"/>
+					
+					<p:outputLabel value="#{msg['lbl_color']}" for="selColor"/>
+					<p:selectOneMenu id="selColor" value="#{cc.attrs.controller.articulo.color}">
+						<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+					</p:selectOneMenu>
+					<p:message for="selColor"/>
+					
+					<p:outputLabel value="#{msg['lbl_estado']}" for="selEstado"/>
+					<p:selectOneMenu id="selEstado" value="#{cc.attrs.controller.articulo.estado}">
+						<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+					</p:selectOneMenu>
+					<p:message for="selEstado"/>
+					
+					<p:outputLabel value="#{msg['lbl_unidad_venta']}:" for="selUnidadVenta"/>
+					<p:selectOneMenu id="selUnidadVenta" value="#{cc.attrs.controller.articulo.unidadventa}">
+						<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+					</p:selectOneMenu>
+					<p:message for="selUnidadVenta"/>
+					
+					<p:outputLabel value="#{msg['lbl_atpa']}:" for="selAtpa"/>
+					<p:selectOneMenu id="selAtpa" value="#{cc.attrs.controller.articulo.atpa}">
+						<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+					</p:selectOneMenu>
+					<p:message for="selAtpa"/>
+					
+					<p:outputLabel value="#{msg['lbl_tipo_producto']}:" for="selTipoProducto"/>
+					<p:selectOneMenu id="selTipoProducto" value="#{cc.attrs.controller.articulo.tipoproducto}">
+						<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+					</p:selectOneMenu>
+					<p:message for="selTipoProducto"/>
+					
+				</h:panelGrid>
+				<p:panelGrid columns="1" styleClass="bun-data-grid">
+					<f:facet name="header">
+						<h:outputText value="#{msg['lbl_impuestos']}" />
+					</f:facet>
+					<h:panelGroup layout="block">
+						<h:panelGrid columns="6">
+							<p:outputLabel value="#{msg['lbl_iva']}:" for="selIVA"/>
+							<p:selectOneMenu id="selIVA" value="#{cc.attrs.controller.articulo.iva}">
+								<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+							</p:selectOneMenu>
+							<p:message for="selIVA"/>
+							
+							<p:outputLabel value="#{msg['lbl_ice']}:" for="selICE"/>
+							<p:selectOneMenu id="selICE" value="#{cc.attrs.controller.articulo.ice}">
+								<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+							</p:selectOneMenu>
+							<p:message for="selICE"/>
+							
+							<p:outputLabel value="#{msg['lbl_irbpnr']}:" for="selIRBPNR"/>
+							<p:selectOneMenu id="selIRBPNR" value="#{cc.attrs.controller.articulo.irbpnr}">
+								<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+							</p:selectOneMenu>
+							<p:message for="selIRBPNR"/>
+						</h:panelGrid>
+					</h:panelGroup>
+				</p:panelGrid>
+				<h:panelGroup layout="block">
+					<p:commandButton value="#{msg['btn_guardar']}" 
+						action="#{cc.attrs.controller.guardarCambios}"
+						oncomplete="#{cc.attrs.oncompleteSave}" 
+						update="@this #{cc.attrs.updateSave}" 
+						process="@this #{cc.attrs.processSave}"/>
+					<p:commandButton value="#{msg['btn_cancelar']}" 
+						action="#{cc.attrs.controller.cancelar}" 
+						oncomplete="#{cc.attrs.oncompleteCancel}"
+						update="@this #{cc.attrs.updateCancel}" 
+						immediate="true"/>
+				</h:panelGroup>
+			</h:panelGroup>
+		</div>
+	</comp:implementation>
+</ui:composition>
