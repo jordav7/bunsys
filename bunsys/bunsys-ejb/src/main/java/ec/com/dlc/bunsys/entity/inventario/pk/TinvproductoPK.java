@@ -2,6 +2,9 @@ package ec.com.dlc.bunsys.entity.inventario.pk;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.SequenceGenerator;
 
 import ec.com.dlc.bunsys.entity.base.BasePK;
 
@@ -14,6 +17,8 @@ public class TinvproductoPK extends BasePK {
 	//default serial version id, required for serializable classes.
 	private static final long serialVersionUID = 1L;
 
+	@SequenceGenerator(name="seqCodigoArticulo", sequenceName="tinvproducto_codigoproductos_seq")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE)
 	@Column
 	private Integer codigoproductos;
 

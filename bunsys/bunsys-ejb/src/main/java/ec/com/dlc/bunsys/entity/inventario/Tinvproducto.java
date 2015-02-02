@@ -99,6 +99,9 @@ public class Tinvproducto  extends BaseEntity<TinvproductoPK>{
 	@Column
 	private Integer unidadventacodigo;
 	
+	@Column
+	private String nandina;
+	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumns({
 		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania", insertable=false, updatable=false),
@@ -172,6 +175,7 @@ public class Tinvproducto  extends BaseEntity<TinvproductoPK>{
 	private Tadmcatalogo tadmatpa;
 	
 	public Tinvproducto() {
+		this.pk = new TinvproductoPK();
 	}
 
 	public String getAtpa() {
@@ -436,6 +440,14 @@ public class Tinvproducto  extends BaseEntity<TinvproductoPK>{
 
 	public void setCodigoprincipal(String codigoprincipal) {
 		this.codigoprincipal = codigoprincipal;
+	}
+
+	public String getNandina() {
+		return nandina;
+	}
+
+	public void setNandina(String nandina) {
+		this.nandina = nandina;
 	}
 
 }
