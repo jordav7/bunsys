@@ -1,5 +1,6 @@
 package ec.com.dlc.bunsys.entity.administracion;
 
+import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -28,7 +29,7 @@ public class Tadmtipoparamsri extends BaseEntity<TadmtipoparamsriPK>  {
 
 	//bi-directional many-to-one association to Tadmparamsri
 	@OneToMany(mappedBy="tadmtipoparamsri")
-	private List<Tadmparamsri> tadmparamsris;
+	private Collection<Tadmparamsri> tadmparamsris;
 
 	public Tadmtipoparamsri() {
 	}
@@ -41,11 +42,11 @@ public class Tadmtipoparamsri extends BaseEntity<TadmtipoparamsriPK>  {
 		this.descripcion = descripcion;
 	}
 
-	public List<Tadmparamsri> getTadmparamsris() {
+	public Collection<Tadmparamsri> getTadmparamsris() {
 		return this.tadmparamsris;
 	}
 
-	public void setTadmparamsris(List<Tadmparamsri> tadmparamsris) {
+	public void setTadmparamsris(Collection<Tadmparamsri> tadmparamsris) {
 		this.tadmparamsris = tadmparamsris;
 	}
 
