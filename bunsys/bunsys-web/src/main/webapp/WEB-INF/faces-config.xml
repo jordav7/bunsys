@@ -14,21 +14,20 @@
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
--->
-<!-- This file is not required if you don't need any extra configuration. -->
-<faces-config xmlns="http://xmlns.jcp.org/xml/ns/javaee"
-              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd"
-              version="2.2">
 
-   <!-- This descriptor activates the JSF 2.0 Servlet -->
-
-   <!-- Write your navigation rules here. You are encouraged to use CDI for 
+ This file is not required if you don't need any extra configuration. -->
+<faces-config version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
+ <!-- This descriptor activates the JSF 2.0 Servlet 
+ Write your navigation rules here. You are encouraged to use CDI for 
       creating @Named managed beans. -->
-	<application>
-		 <resource-bundle>
-		   <base-name>ec.com.dlc.web.commons.resource.contenido</base-name>
-		   <var>msg</var>
-		 </resource-bundle>
-	</application>
+ <application>
+  <action-listener>org.primefaces.application.DialogActionListener</action-listener>
+  <navigation-handler>org.primefaces.application.DialogNavigationHandler</navigation-handler>
+  <view-handler>org.primefaces.application.DialogViewHandler</view-handler>
+  <resource-bundle>
+   <base-name>ec.com.dlc.web.commons.resource.contenido</base-name>
+   <var>msg</var>
+  </resource-bundle>
+ </application>
 </faces-config>
