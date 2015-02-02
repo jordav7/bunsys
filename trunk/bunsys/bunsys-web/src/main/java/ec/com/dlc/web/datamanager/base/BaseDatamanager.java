@@ -6,7 +6,7 @@ package ec.com.dlc.web.datamanager.base;
  */
 public abstract class BaseDatamanager {
 
-	private Boolean inicializado;
+	private Boolean inicializado = Boolean.FALSE;
 	
 	/**
 	 * Retorna el nombre del datamanager 
