@@ -1,0 +1,33 @@
+/**
+*Estilos del login
+*/
+.btn.ligthness   
+{
+  border: 1px solid #ccc;
+  color: #1c94c4;  
+  text-shadow: none;	
+  background-color: #f6f6f6;
+}
+.btn.ligthness:hover, 
+.btn.ligthness:focus, 
+.btn.ligthness:active,
+.btn.ligthness.active,
+.btn.ligthness[disabled],
+.btn.ligthness.disabled {  
+  border: 1px solid #fbcb09;
+  background-color: #fdf5ce !important;
+  color: #c77405 !important;
+}
+
+.btn-group .btn.ligthness.dropdown-toggle {
+  background-color: #f6f6f6;
+}
+.btn-group .btn.ligthness:hover, 
+.btn-group .btn.ligthness:focus, 
+.btn-group .btn.ligthness:active, 
+.btn-group .btn.ligthness.active, 
+.btn-group .btn.ligthness.disabled,
+.btn-group .btn.ligthness[disabled] { 
+  background-color: #fdf5ce !important;
+  color: #c77405 !important;
+}
