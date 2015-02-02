@@ -3,6 +3,7 @@ package ec.com.dlc.bunsys.entity.administracion;
 import java.util.Collection;
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -25,12 +26,24 @@ import ec.com.dlc.bunsys.entity.seguridad.Tsyspersona;
 public class Tadmusuario extends BaseEntity<TadmusuarioPK> {
 	private static final long serialVersionUID = 1L;
 
+	@Column
 	@Temporal(TemporalType.DATE)
 	private Date fecharegistro;
 
+	@Column
 	private String password;
 
+	@Column
 	private String usuario;
+	
+	@Column
+	private Integer estadocodigo;
+	
+	@Column
+	private String estado;
+	
+	@Column
+	private Integer codigopersona;
 
 	//bi-directional many-to-many association to Tadmrole
 	@OneToMany(mappedBy="tadmusuario")
@@ -41,7 +54,7 @@ public class Tadmusuario extends BaseEntity<TadmusuarioPK> {
 	@JoinColumns({
 		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania", insertable=false, updatable=false),
 		@JoinColumn(name="estado", referencedColumnName="codigocatalogo", insertable=false, updatable=false),
-		@JoinColumn(name="estadotipo", referencedColumnName="codigotipocatalogo", insertable=false, updatable=false)
+		@JoinColumn(name="estadocodigo", referencedColumnName="codigotipocatalogo", insertable=false, updatable=false)
 		})
 	private Tadmcatalogo tadmcatalogo;
 
@@ -115,6 +128,30 @@ public class Tadmusuario extends BaseEntity<TadmusuarioPK> {
 
 	public void setTadmrolusuarios(Collection<Tadmrolusuario> tadmrolusuarios) {
 		this.tadmrolusuarios = tadmrolusuarios;
+	}
+
+	public Integer getEstadocodigo() {
+		return estadocodigo;
+	}
+
+	public void setEstadocodigo(Integer estadocodigo) {
+		this.estadocodigo = estadocodigo;
+	}
+
+	public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+
+	public Integer getCodigopersona() {
+		return codigopersona;
+	}
+
+	public void setCodigopersona(Integer codigopersona) {
+		this.codigopersona = codigopersona;
 	}
 
 }
