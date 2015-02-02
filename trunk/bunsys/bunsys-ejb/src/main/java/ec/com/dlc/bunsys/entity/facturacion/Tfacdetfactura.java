@@ -61,7 +61,7 @@ public class Tfacdetfactura extends BaseEntity<TfacdetfacturaPK> {
 
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumns({
-		@JoinColumn(name="codigocabfactura", referencedColumnName="codigocabfactura", insertable=false, updatable=false),
+		@JoinColumn(name="codigocabfactura", referencedColumnName="numerofactura", insertable=false, updatable=false),
 		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania", insertable=false, updatable=false)
 		})
 	private Tfaccabfactura tfaccabfactura;
