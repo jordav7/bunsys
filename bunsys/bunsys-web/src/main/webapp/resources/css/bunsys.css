@@ -9,21 +9,12 @@
 	min-width: 900px;
 }
 
-.ui-widget {
-	font-family: Trebuchet MS, Tahoma, Verdana, Arial, sans-serif;
-	font-size: 1em;
-}
-
-.ui-widget .ui-widget {
-	font-size: 0.9em;
-}
-
-.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button
-	{
-	font-family: Trebuchet MS, Tahoma, Verdana, Arial, sans-serif;
-	font-size: 0.9em;
-}
-
 .bun-action{
 	width: 20px;
+}
+
+.bun-data-grid{
+	width: 100%;
+	padding: 0px;
+	margin: 0px;
 }
