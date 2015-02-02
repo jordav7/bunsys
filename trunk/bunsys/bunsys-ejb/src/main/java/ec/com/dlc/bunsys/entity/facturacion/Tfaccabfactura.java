@@ -1,6 +1,7 @@
 package ec.com.dlc.bunsys.entity.facturacion;
 
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -60,6 +62,10 @@ public class Tfaccabfactura extends BaseEntity<TfaccabfacturaPK> {
 		})
 	private Tfaccliente tfaccliente;
 
+	//bi-directional many-to-one association to Tfaccliente
+	@OneToMany(mappedBy="tfaccabfactura")
+	private Set<Tfacdetfactura> tfacdetfacturas;
+		
 	public Tfaccabfactura() {
 	}
 
@@ -101,6 +107,38 @@ public class Tfaccabfactura extends BaseEntity<TfaccabfacturaPK> {
 
 	public void setTfaccliente(Tfaccliente tfaccliente) {
 		this.tfaccliente = tfaccliente;
+	}
+
+	public Set<Tfacdetfactura> getTfacdetfacturas() {
+		return tfacdetfacturas;
+	}
+
+	public void setTfacdetfacturas(Set<Tfacdetfactura> tfacdetfacturas) {
+		this.tfacdetfacturas = tfacdetfacturas;
+	}
+
+	public String getAerolinea() {
+		return aerolinea;
+	}
+
+	public void setAerolinea(String aerolinea) {
+		this.aerolinea = aerolinea;
+	}
+
+	public Integer getAerolineacodigo() {
+		return aerolineacodigo;
+	}
+
+	public void setAerolineacodigo(Integer aerolineacodigo) {
+		this.aerolineacodigo = aerolineacodigo;
+	}
+
+	public Integer getCodigocliente() {
+		return codigocliente;
+	}
+
+	public void setCodigocliente(Integer codigocliente) {
+		this.codigocliente = codigocliente;
 	}
 
 }
