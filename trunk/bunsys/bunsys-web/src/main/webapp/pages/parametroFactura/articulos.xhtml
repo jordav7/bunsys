@@ -4,6 +4,7 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:pe="http://primefaces.org/ui/extensions" 
+      xmlns:b="http://xmlns.jcp.org/jsf/composite/bunsysComponents"
       template="/WEB-INF/templates/template.xhtml">
       <ui:param name="idForm" value="frmArticulos" />
       <ui:param name="controller" value="#{articuloController}" />
@@ -38,12 +39,15 @@
 		  			</h:panelGrid>
 		  		</h:panelGroup>
 		  		<h:panelGroup layout="block" style="float:left">
-		  			<p:commandButton icon="ui-icon-search" value="#{msg['btn_buscar']}"/>
-		  			<p:commandButton icon="ui-icon-plusthick" value="#{msg['btn_crear']}"/>
+		  			<p:commandButton icon="ui-icon-search" value="#{msg['btn_buscar']}" />
+		  			<p:commandButton icon="ui-icon-plusthick" 
+		  				value="#{msg['btn_crear']}"
+		  				oncomplete="PF('dlgArticulo').show()" 
+		  				action="#{articuloController.crearArticulo()}" />
 		  		</h:panelGroup>
 		  	</p:fieldset>
 		  	<p:fieldset legend="#{msg['lbl_listado_articulos']}">
-		  		<h:panelGroup layout="block">
+		  		<h:panelGroup layout="block" id="pnlDataArticulos">
 		  			<p:dataTable value="#{articuloDatamanager.productoColl}" var="articulo">
 		  				<p:column headerText="#{msg['lbl_codigo_principal']}">
 		  					<h:outputText value="#{articulo.codigoprincipal}" />
@@ -58,7 +62,9 @@
 		  					<h:outputText value="#{articulo.tadmtipoproducto.descripcion}" />
 		  				</p:column>
 		  				<p:column styleClass="bun-action">
-		  					<p:commandButton icon="ui-icon-pencil" title="#{msg['btn_actualizar']}" oncomplete="PF('dlgArticulo').show();"/>
+		  					<p:commandButton icon="ui-icon-pencil" title="#{msg['btn_actualizar']}" oncomplete="PF('dlgArticulo').show();">
+		  						<f:setPropertyActionListener target="#{articuloDatamanager.articuloComponente.articulo}" value="#{articulo}"/>
+		  					</p:commandButton>
 		  				</p:column>
 		  				<p:column styleClass="bun-action">
 		  					<p:commandButton icon="ui-icon-trash" title="#{msg['btn_eliminar']}"/>
@@ -68,9 +74,14 @@
 		  	</p:fieldset>
 		  </p:panel>
 	  </ui:define>
-	  <ui:define name="modalArea">
-	  	<p:dialog id="dlgArticulo" widgetVar="dlgArticulo" appendTo="@body" modal="true">
-	  		
+	  <ui:define name="dialogArea">
+	  	<p:dialog widgetVar="dlgArticulo" appendTo="@(body)" modal="true" resizable="false" closeOnEscape="true">
+	  		<f:facet name="header">
+	  			<h:outputText value="#{msg['lbl_articulos']}" />
+	  		</f:facet>
+			<h:form id="frmCreacionArticulos">
+				<b:articuloComponent id="pnlArticulo" controller="#{articuloDatamanager.articuloComponente}" processSave="@this" updateSave=":frmArticulos:pnlDataArticulos"/>
+			</h:form>	  		
 	  	</p:dialog>
 	  </ui:define>
 </ui:composition>
