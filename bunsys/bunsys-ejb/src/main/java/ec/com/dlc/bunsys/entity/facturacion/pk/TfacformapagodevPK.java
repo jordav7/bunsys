@@ -1,14 +1,16 @@
 package ec.com.dlc.bunsys.entity.facturacion.pk;
 
-import java.io.Serializable;
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+
+import ec.com.dlc.bunsys.entity.base.BasePK;
 
 /**
  * The primary key class for the tfacformapagodev database table.
  * 
  */
 @Embeddable
-public class TfacformapagodevPK implements Serializable {
+public class TfacformapagodevPK extends BasePK {
 	//default serial version id, required for serializable classes.
 	private static final long serialVersionUID = 1L;
 

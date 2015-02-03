@@ -114,6 +114,36 @@ public class Tfaccabdevolucione extends BaseEntity<TfaccabdevolucionePK>  {
 	})
 	private Tadmcatalogo tadmformapago;
 	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumns({
+		@JoinColumn(name="estadosri", referencedColumnName="codigocatalogo", insertable=false, updatable=false),
+		@JoinColumn(name="estadosricodigo", referencedColumnName="codigotipocatalogo", insertable=false, updatable=false),
+		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania", insertable=false, updatable=false)
+	})
+	private Tadmcatalogo tadmestadosri;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumns({
+		@JoinColumn(name="estado", referencedColumnName="codigocatalogo", insertable=false, updatable=false),
+		@JoinColumn(name="estadocodigo", referencedColumnName="codigotipocatalogo", insertable=false, updatable=false),
+		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania", insertable=false, updatable=false)
+	})
+	private Tadmcatalogo tadmestado;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumns({
+		@JoinColumn(name="numerofactura", referencedColumnName="numerofactura", insertable=false, updatable=false),
+		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania", insertable=false, updatable=false)
+	})
+	private Tfaccabfactura tfaccabfactura;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumns({
+		@JoinColumn(name="codigocliente", referencedColumnName="codigocliente", insertable=false, updatable=false),
+		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania", insertable=false, updatable=false)
+	})
+	private Tfaccliente tfaccliente;
+	
 	//bi-directional many-to-one association to Tfacdetdevolucione
 	@OneToMany(mappedBy="tfaccabdevolucione")
 	private Collection<Tfacdetdevolucione> tfacdetdevoluciones;
@@ -367,6 +397,46 @@ public class Tfaccabdevolucione extends BaseEntity<TfaccabdevolucionePK>  {
 		tfacformapagodev.setTfaccabdevolucione(null);
 
 		return tfacformapagodev;
+	}
+
+	public Tadmcatalogo getTadmformapago() {
+		return tadmformapago;
+	}
+
+	public void setTadmformapago(Tadmcatalogo tadmformapago) {
+		this.tadmformapago = tadmformapago;
+	}
+
+	public Tadmcatalogo getTadmestadosri() {
+		return tadmestadosri;
+	}
+
+	public void setTadmestadosri(Tadmcatalogo tadmestadosri) {
+		this.tadmestadosri = tadmestadosri;
+	}
+
+	public Tadmcatalogo getTadmestado() {
+		return tadmestado;
+	}
+
+	public void setTadmestado(Tadmcatalogo tadmestado) {
+		this.tadmestado = tadmestado;
+	}
+
+	public Tfaccabfactura getTfaccabfactura() {
+		return tfaccabfactura;
+	}
+
+	public void setTfaccabfactura(Tfaccabfactura tfaccabfactura) {
+		this.tfaccabfactura = tfaccabfactura;
+	}
+
+	public Tfaccliente getTfaccliente() {
+		return tfaccliente;
+	}
+
+	public void setTfaccliente(Tfaccliente tfaccliente) {
+		this.tfaccliente = tfaccliente;
 	}
 
 }
