@@ -1,12 +1,20 @@
 package ec.com.dlc.bunsys.entity.facturacion;
 
-import java.io.Serializable;
-
-import javax.persistence.*;
-
-import ec.com.dlc.bunsys.entity.facturacion.pk.TfacdetdevolucionePK;
-
 import java.math.BigDecimal;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+
+import ec.com.dlc.bunsys.entity.administracion.Tadmcatalogo;
+import ec.com.dlc.bunsys.entity.base.BaseEntity;
+import ec.com.dlc.bunsys.entity.facturacion.pk.TfacdetdevolucionePK;
+import ec.com.dlc.bunsys.entity.inventario.Tinvproducto;
 
 
 /**
@@ -16,40 +24,52 @@ import java.math.BigDecimal;
 @Entity
 @Table(name="tfacdetdevoluciones")
 @NamedQuery(name="Tfacdetdevolucione.findAll", query="SELECT t FROM Tfacdetdevolucione t")
-public class Tfacdetdevolucione extends ec.com.dlc.bunsys.entity.base.BaseEntity<T>  {
+public class Tfacdetdevolucione extends BaseEntity<TfacdetdevolucionePK>  {
 	private static final long serialVersionUID = 1L;
 
-	@EmbeddedId
-	private TfacdetdevolucionePK id;
-
+	@Column
 	private String apta;
 
+	@Column
 	private Integer aptacodigo;
 
+	@Column
 	private BigDecimal cantidad;
 
+	@Column
 	private String codigoproductos;
 
+	@Column
 	private BigDecimal descuento;
 
+	@Column
 	private String ice;
 
+	@Column
 	private Integer icecodigo;
 
+	@Column
 	private String irbpnr;
 
+	@Column
 	private Integer irbpnrcodigo;
 
+	@Column
 	private String iva;
 
+	@Column
 	private Integer ivacodigo;
 
+	@Column
 	private String nandina;
 
+	@Column
 	private BigDecimal preciounitario;
 
+	@Column
 	private String unidadventa;
 
+	@Column
 	private Integer unidadventacodigo;
 
 	//bi-directional many-to-one association to Tfaccabdevolucione
@@ -59,16 +79,55 @@ public class Tfacdetdevolucione extends ec.com.dlc.bunsys.entity.base.BaseEntity
 		@JoinColumn(name="numerodevoluciones", referencedColumnName="numerodevoluciones")
 		})
 	private Tfaccabdevolucione tfaccabdevolucione;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumns({
+		@JoinColumn(name="apta", referencedColumnName="codigocatalogo"),
+		@JoinColumn(name="aptacodigo", referencedColumnName="codigotipocatalogo"),
+		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania")
+		})
+	private Tadmcatalogo tadmatpa;
 
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumns({
+		@JoinColumn(name="unidadventa", referencedColumnName="codigocatalogo"),
+		@JoinColumn(name="unidadventacodigo", referencedColumnName="codigotipocatalogo"),
+		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania")
+		})
+	private Tadmcatalogo tadmunidadventa;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumns({
+		@JoinColumn(name="iva", referencedColumnName="codigocatalogo"),
+		@JoinColumn(name="ivacodigo", referencedColumnName="codigotipocatalogo"),
+		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania")
+		})
+	private Tadmcatalogo tadmiva;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumns({
+		@JoinColumn(name="ice", referencedColumnName="codigocatalogo"),
+		@JoinColumn(name="icecodigo", referencedColumnName="codigotipocatalogo"),
+		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania")
+		})
+	private Tadmcatalogo tadmice;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumns({
+		@JoinColumn(name="irbpnr", referencedColumnName="codigocatalogo"),
+		@JoinColumn(name="irbpnrcodigo", referencedColumnName="codigotipocatalogo"),
+		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania")
+		})
+	private Tadmcatalogo tadmirbpnr;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumns({
+		@JoinColumn(name="codigoproductos", referencedColumnName="codigoproductos"),
+		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania")
+		})
+	private Tinvproducto tinvproducto;
+	
 	public Tfacdetdevolucione() {
-	}
-
-	public TfacdetdevolucionePK getId() {
-		return this.id;
-	}
-
-	public void setId(TfacdetdevolucionePK id) {
-		this.id = id;
 	}
 
 	public String getApta() {
@@ -197,6 +256,54 @@ public class Tfacdetdevolucione extends ec.com.dlc.bunsys.entity.base.BaseEntity
 
 	public void setTfaccabdevolucione(Tfaccabdevolucione tfaccabdevolucione) {
 		this.tfaccabdevolucione = tfaccabdevolucione;
+	}
+
+	public Tadmcatalogo getTadmatpa() {
+		return tadmatpa;
+	}
+
+	public void setTadmatpa(Tadmcatalogo tadmatpa) {
+		this.tadmatpa = tadmatpa;
+	}
+
+	public Tadmcatalogo getTadmunidadventa() {
+		return tadmunidadventa;
+	}
+
+	public void setTadmunidadventa(Tadmcatalogo tadmunidadventa) {
+		this.tadmunidadventa = tadmunidadventa;
+	}
+
+	public Tadmcatalogo getTadmiva() {
+		return tadmiva;
+	}
+
+	public void setTadmiva(Tadmcatalogo tadmiva) {
+		this.tadmiva = tadmiva;
+	}
+
+	public Tadmcatalogo getTadmice() {
+		return tadmice;
+	}
+
+	public void setTadmice(Tadmcatalogo tadmice) {
+		this.tadmice = tadmice;
+	}
+
+	public Tadmcatalogo getTadmirbpnr() {
+		return tadmirbpnr;
+	}
+
+	public void setTadmirbpnr(Tadmcatalogo tadmirbpnr) {
+		this.tadmirbpnr = tadmirbpnr;
+	}
+
+	public Tinvproducto getTinvproducto() {
+		return tinvproducto;
+	}
+
+	public void setTinvproducto(Tinvproducto tinvproducto) {
+		this.tinvproducto = tinvproducto;
 	}
 
 }

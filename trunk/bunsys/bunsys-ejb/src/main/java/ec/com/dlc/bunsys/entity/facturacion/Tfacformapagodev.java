@@ -1,13 +1,22 @@
 package ec.com.dlc.bunsys.entity.facturacion;
 
-import java.io.Serializable;
-
-import javax.persistence.*;
-
-import ec.com.dlc.bunsys.entity.facturacion.pk.TfacformapagodevPK;
-
 import java.math.BigDecimal;
 import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import ec.com.dlc.bunsys.entity.administracion.Tadmcatalogo;
+import ec.com.dlc.bunsys.entity.base.BaseEntity;
+import ec.com.dlc.bunsys.entity.facturacion.pk.TfacformapagodevPK;
 
 
 /**
@@ -16,28 +25,48 @@ import java.util.Date;
  */
 @Entity
 @NamedQuery(name="Tfacformapagodev.findAll", query="SELECT t FROM Tfacformapagodev t")
-public class Tfacformapagodev extends ec.com.dlc.bunsys.entity.base.BaseEntity<T>  {
+public class Tfacformapagodev extends BaseEntity<TfacformapagodevPK>  {
 	private static final long serialVersionUID = 1L;
 
-	@EmbeddedId
-	private TfacformapagodevPK id;
-
+	@Column
 	@Temporal(TemporalType.DATE)
 	private Date fechapago;
 
+	@Column
 	private String institucion;
 
+	@Column
 	private Integer institucioncodigo;
 
+	@Column
 	private String numerodocumento;
 
+	@Column
 	private String tipoformapago;
 
+	@Column
 	private Integer tipoformapagocodigo;
 
+	@Column
 	private BigDecimal valor;
 
 	//bi-directional many-to-one association to Tfaccabdevolucione
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumns({
+		@JoinColumn(name="tipoformapago", referencedColumnName="codigocatalogo"),
+		@JoinColumn(name="tipoformapagocodigo", referencedColumnName="codigotipocatalogo"),
+		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania")
+		})
+	private Tadmcatalogo tadmtipoformapago;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumns({
+		@JoinColumn(name="institucion", referencedColumnName="codigocatalogo"),
+		@JoinColumn(name="institucioncodigo", referencedColumnName="codigotipocatalogo"),
+		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania")
+		})
+	private Tadmcatalogo tadminstitucion;
+	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumns({
 		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania"),
@@ -46,14 +75,6 @@ public class Tfacformapagodev extends ec.com.dlc.bunsys.entity.base.BaseEntity<T
 	private Tfaccabdevolucione tfaccabdevolucione;
 
 	public Tfacformapagodev() {
-	}
-
-	public TfacformapagodevPK getId() {
-		return this.id;
-	}
-
-	public void setId(TfacformapagodevPK id) {
-		this.id = id;
 	}
 
 	public Date getFechapago() {
@@ -118,6 +139,22 @@ public class Tfacformapagodev extends ec.com.dlc.bunsys.entity.base.BaseEntity<T
 
 	public void setTfaccabdevolucione(Tfaccabdevolucione tfaccabdevolucione) {
 		this.tfaccabdevolucione = tfaccabdevolucione;
+	}
+
+	public Tadmcatalogo getTadmtipoformapago() {
+		return tadmtipoformapago;
+	}
+
+	public void setTadmtipoformapago(Tadmcatalogo tadmtipoformapago) {
+		this.tadmtipoformapago = tadmtipoformapago;
+	}
+
+	public Tadmcatalogo getTadminstitucion() {
+		return tadminstitucion;
+	}
+
+	public void setTadminstitucion(Tadmcatalogo tadminstitucion) {
+		this.tadminstitucion = tadminstitucion;
 	}
 
 }
