@@ -11,6 +11,8 @@ import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 
+import ec.com.dlc.bunsys.entity.administracion.Tadmcatalogo;
+import ec.com.dlc.bunsys.entity.administracion.Tadmparamsri;
 import ec.com.dlc.bunsys.entity.base.BaseEntity;
 import ec.com.dlc.bunsys.entity.cuentasxpagar.pk.TcxpdetcomprobanteretencionPK;
 
@@ -58,6 +60,28 @@ public class Tcxpdetcomprobanteretencion extends BaseEntity<Tcxpdetcomprobantere
 	private String codigocabcomprobanteretencion;
 
 	//bi-directional many-to-one association to Tcxpcabcomprobanteretencion
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumns({
+		@JoinColumn(name="retencion", referencedColumnName="codigocatalogo", insertable=false, updatable=false),
+		@JoinColumn(name="retencioncodigo", referencedColumnName="codigotipocatalogo", insertable=false, updatable=false),
+		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania", insertable=false, updatable=false)
+		})
+	private Tadmcatalogo tadmretencion;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumns({
+		@JoinColumn(name="tipodocumento", referencedColumnName="codigoparamsri", insertable=false, updatable=false),
+		@JoinColumn(name="tipodocumentocodigo", referencedColumnName="codigotipoparamsri", insertable=false, updatable=false)
+		})
+	private Tadmparamsri tadmtipodocumento;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumns({
+		@JoinColumn(name="impuestoaretener", referencedColumnName="codigoparamsri", insertable=false, updatable=false),
+		@JoinColumn(name="impuestoaretenercodigo", referencedColumnName="codigotipoparamsri", insertable=false, updatable=false)
+		})
+	private Tadmparamsri tadmimpuestoretener;
+	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumns({
 		@JoinColumn(name="codigocabcomprobanteretencion", referencedColumnName="codigocabcomprobanteretencion", insertable=false, updatable=false),
@@ -163,6 +187,30 @@ public class Tcxpdetcomprobanteretencion extends BaseEntity<Tcxpdetcomprobantere
 	public void setCodigocabcomprobanteretencion(
 			String codigocabcomprobanteretencion) {
 		this.codigocabcomprobanteretencion = codigocabcomprobanteretencion;
+	}
+
+	public Tadmcatalogo getTadmretencion() {
+		return tadmretencion;
+	}
+
+	public void setTadmretencion(Tadmcatalogo tadmretencion) {
+		this.tadmretencion = tadmretencion;
+	}
+
+	public Tadmparamsri getTadmtipodocumento() {
+		return tadmtipodocumento;
+	}
+
+	public void setTadmtipodocumento(Tadmparamsri tadmtipodocumento) {
+		this.tadmtipodocumento = tadmtipodocumento;
+	}
+
+	public Tadmparamsri getTadmimpuestoretener() {
+		return tadmimpuestoretener;
+	}
+
+	public void setTadmimpuestoretener(Tadmparamsri tadmimpuestoretener) {
+		this.tadmimpuestoretener = tadmimpuestoretener;
 	}
 
 }
