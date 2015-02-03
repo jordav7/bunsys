@@ -16,6 +16,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import ec.com.dlc.bunsys.entity.administracion.Tadmparametro;
 import ec.com.dlc.bunsys.entity.base.BaseEntity;
 import ec.com.dlc.bunsys.entity.cuentasxpagar.pk.TcxpcabcomprobanteretencionPK;
 
@@ -71,6 +72,13 @@ public class Tcxpcabcomprobanteretencion extends BaseEntity<Tcxpcabcomprobantere
 		@JoinColumn(name="codigoproveedor", referencedColumnName="codigoproveedor", insertable=false, updatable=false)
 		})
 	private Tcxpproveedor tcxpproveedor;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumns({
+		@JoinColumn(name="estadocomprobantecodigo", referencedColumnName="codigoparametros", insertable=false, updatable=false),
+		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania", insertable=false, updatable=false)
+		})
+	private Tadmparametro tadmparametros;
 
 	//bi-directional many-to-one association to Tcxpdetcomprobanteretencion
 	@OneToMany(mappedBy="tcxpcabcomprobanteretencion")
@@ -195,6 +203,14 @@ public class Tcxpcabcomprobanteretencion extends BaseEntity<Tcxpcabcomprobantere
 		tcxpdetcomprobanteretencion.setTcxpcabcomprobanteretencion(null);
 
 		return tcxpdetcomprobanteretencion;
+	}
+
+	public Tadmparametro getTadmparametros() {
+		return tadmparametros;
+	}
+
+	public void setTadmparametros(Tadmparametro tadmparametros) {
+		this.tadmparametros = tadmparametros;
 	}
 
 }
