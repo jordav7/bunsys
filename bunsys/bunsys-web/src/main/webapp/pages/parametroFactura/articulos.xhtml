@@ -14,7 +14,7 @@
 		  		<h:panelGroup layout="block">
 		  			<h:panelGrid columns="3">
 		  				<p:outputLabel value="#{msg['lbl_codigo_principal']}:" for="txtCodigoPrincipal"/>
-		  				<p:inputText id="txtCodigoPrincipal" value="#{articuloDatamanager.articuloSearch.codigoprincipal}"/>
+		  				<p:inputText id="txtCodigoPrincipal" value="#{articuloDatamanager.articuloSearch.pk.codigoproductos}"/>
 		  				<p:message for="txtCodigoPrincipal"/>
 		  				
 		  				<p:outputLabel value="#{msg['lbl_codigo_auxiliar']}:" for="txtCodigoAuxiliar"/>
@@ -50,7 +50,7 @@
 		  		<h:panelGroup layout="block" id="pnlDataArticulos">
 		  			<p:dataTable value="#{articuloDatamanager.productoColl}" var="articulo">
 		  				<p:column headerText="#{msg['lbl_codigo_principal']}">
-		  					<h:outputText value="#{articulo.codigoprincipal}" />
+		  					<h:outputText value="#{articulo.pk.codigoproductos}" />
 		  				</p:column>
 		  				<p:column headerText="#{msg['lbl_codigo_auxiliar']}">
 		  					<h:outputText value="#{articulo.codigoauxiliar}" />
