@@ -15,10 +15,10 @@
 	</comp:interface>
 	<comp:implementation>
 		<div id="#{cc.clientId}">
-			<h:panelGroup layout="block">
+			<h:panelGroup layout="block" id="pnlArticulo">
 				<h:panelGrid columns="6">
 					<p:outputLabel value="#{msg['lbl_codigo_principal']}:" for="txtCodigoPrincipal"/>
-					<p:inputText id="txtCodigoPrincipal" value="#{cc.attrs.controller.articulo.codigoprincipal}" required="true"/>
+					<p:inputText id="txtCodigoPrincipal" value="#{cc.attrs.controller.articulo.pk.codigoproductos}" required="true"/>
 					<p:message for="txtCodigoPrincipal"/>
 					
 					<p:outputLabel value="#{msg['lbl_codigo_auxiliar']}:" for="txtCodigoAuxiliar"/>
@@ -106,8 +106,8 @@
 					<p:commandButton value="#{msg['btn_guardar']}" 
 						action="#{cc.attrs.controller.guardarCambios}"
 						oncomplete="#{cc.attrs.oncompleteSave}" 
-						update="@this #{cc.attrs.updateSave}" 
-						process="@this #{cc.attrs.processSave}"/>
+						update="@this pnlArticulo #{cc.attrs.updateSave}" 
+						process="@this pnlArticulo #{cc.attrs.processSave}"/>
 					<p:commandButton value="#{msg['btn_cancelar']}" 
 						action="#{cc.attrs.controller.cancelar}" 
 						oncomplete="#{cc.attrs.oncompleteCancel}"
