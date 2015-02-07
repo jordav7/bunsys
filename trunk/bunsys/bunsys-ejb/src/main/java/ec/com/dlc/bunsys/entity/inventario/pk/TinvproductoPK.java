@@ -17,8 +17,6 @@ public class TinvproductoPK extends BasePK {
 	//default serial version id, required for serializable classes.
 	private static final long serialVersionUID = 1L;
 
-	@SequenceGenerator(name="seqCodigoArticulo", sequenceName="tinvproducto_codigoproductos_seq")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE)
 	@Column
 	private String codigoproductos;
 
