@@ -20,19 +20,22 @@ public class TinvproductoPK extends BasePK {
 	@SequenceGenerator(name="seqCodigoArticulo", sequenceName="tinvproducto_codigoproductos_seq")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE)
 	@Column
-	private Integer codigoproductos;
+	private String codigoproductos;
 
 	@Column
 	private Integer codigocompania;
 
 	public TinvproductoPK() {
 	}
-	public Integer getCodigoproductos() {
-		return this.codigoproductos;
+	
+	public String getCodigoproductos() {
+		return codigoproductos;
 	}
-	public void setCodigoproductos(Integer codigoproductos) {
+
+	public void setCodigoproductos(String codigoproductos) {
 		this.codigoproductos = codigoproductos;
 	}
+
 	public Integer getCodigocompania() {
 		return this.codigocompania;
 	}
