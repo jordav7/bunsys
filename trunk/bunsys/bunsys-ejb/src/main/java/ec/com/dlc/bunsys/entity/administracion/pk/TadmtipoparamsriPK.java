@@ -21,4 +21,32 @@ public class TadmtipoparamsriPK extends BasePK {
 	public void setCodigotipoparamsri(Integer codigotipoparamsri) {
 		this.codigotipoparamsri = codigotipoparamsri;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime
+				* result
+				+ ((codigotipoparamsri == null) ? 0 : codigotipoparamsri
+						.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TadmtipoparamsriPK other = (TadmtipoparamsriPK) obj;
+		if (codigotipoparamsri == null) {
+			if (other.codigotipoparamsri != null)
+				return false;
+		} else if (!codigotipoparamsri.equals(other.codigotipoparamsri))
+			return false;
+		return true;
+	}
 }
