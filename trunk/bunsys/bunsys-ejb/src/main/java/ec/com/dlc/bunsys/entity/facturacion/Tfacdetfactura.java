@@ -46,11 +46,9 @@ public class Tfacdetfactura extends BaseEntity<TfacdetfacturaPK> {
 	private Double totalprice;
 	
 	@Column
-	private Integer codigoproductos;
-	
+	private String codigoproductos;
 	@Column
-	private Integer codigocabfactura;
-	
+	private String numerofactura;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumns({
@@ -61,7 +59,7 @@ public class Tfacdetfactura extends BaseEntity<TfacdetfacturaPK> {
 
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumns({
-		@JoinColumn(name="codigocabfactura", referencedColumnName="numerofactura", insertable=false, updatable=false),
+		@JoinColumn(name="numerofactura", referencedColumnName="numerofactura", insertable=false, updatable=false),
 		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania", insertable=false, updatable=false)
 		})
 	private Tfaccabfactura tfaccabfactura;
@@ -133,20 +131,12 @@ public class Tfacdetfactura extends BaseEntity<TfacdetfacturaPK> {
 		this.totalprice = totalprice;
 	}
 
-	public Integer getCodigoproductos() {
+	public String getCodigoproductos() {
 		return codigoproductos;
 	}
 
-	public void setCodigoproductos(Integer codigoproductos) {
+	public void setCodigoproductos(String codigoproductos) {
 		this.codigoproductos = codigoproductos;
-	}
-
-	public Integer getCodigocabfactura() {
-		return codigocabfactura;
-	}
-
-	public void setCodigocabfactura(Integer codigocabfactura) {
-		this.codigocabfactura = codigocabfactura;
 	}
 
 	public Tinvproducto getTinvproducto() {
@@ -163,6 +153,14 @@ public class Tfacdetfactura extends BaseEntity<TfacdetfacturaPK> {
 
 	public void setTfaccabfactura(Tfaccabfactura tfaccabfactura) {
 		this.tfaccabfactura = tfaccabfactura;
+	}
+
+	public String getNumerofactura() {
+		return numerofactura;
+	}
+
+	public void setNumerofactura(String numerofactura) {
+		this.numerofactura = numerofactura;
 	}
 
 
