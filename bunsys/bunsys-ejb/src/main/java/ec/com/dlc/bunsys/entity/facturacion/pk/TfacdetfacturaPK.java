@@ -21,8 +21,8 @@ public class TfacdetfacturaPK extends BasePK{
 	private Integer codigocompania;
 
 	@Column
-	@SequenceGenerator(name="tfacdetfactura", sequenceName="secfacdet", allocationSize = 1)
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="tfacdetfactura")
+	@SequenceGenerator(name="tfacdetfactura_seq", sequenceName="secfacdet")
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="tfacdetfactura_seq")
 	private Integer codigodetfactura;
 
 	public TfacdetfacturaPK() {
