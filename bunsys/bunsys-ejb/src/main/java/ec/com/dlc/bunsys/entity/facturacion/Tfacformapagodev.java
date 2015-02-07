@@ -53,24 +53,24 @@ public class Tfacformapagodev extends BaseEntity<TfacformapagodevPK>  {
 	//bi-directional many-to-one association to Tfaccabdevolucione
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumns({
-		@JoinColumn(name="tipoformapago", referencedColumnName="codigocatalogo"),
-		@JoinColumn(name="tipoformapagocodigo", referencedColumnName="codigotipocatalogo"),
-		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania")
+		@JoinColumn(name="tipoformapago", referencedColumnName="codigocatalogo" , insertable=false, updatable=false),
+		@JoinColumn(name="tipoformapagocodigo", referencedColumnName="codigotipocatalogo" , insertable=false, updatable=false),
+		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania" , insertable=false, updatable=false)
 		})
 	private Tadmcatalogo tadmtipoformapago;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumns({
-		@JoinColumn(name="institucion", referencedColumnName="codigocatalogo"),
-		@JoinColumn(name="institucioncodigo", referencedColumnName="codigotipocatalogo"),
-		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania")
+		@JoinColumn(name="institucion", referencedColumnName="codigocatalogo", insertable=false, updatable=false),
+		@JoinColumn(name="institucioncodigo", referencedColumnName="codigotipocatalogo", insertable=false, updatable=false),
+		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania", insertable=false, updatable=false)
 		})
 	private Tadmcatalogo tadminstitucion;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumns({
-		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania"),
-		@JoinColumn(name="numerodevoluciones", referencedColumnName="numerodevoluciones")
+		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania" , insertable=false, updatable=false),
+		@JoinColumn(name="numerodevoluciones", referencedColumnName="numerodevoluciones" , insertable=false, updatable=false)
 		})
 	private Tfaccabdevolucione tfaccabdevolucione;
 
@@ -149,12 +149,12 @@ public class Tfacformapagodev extends BaseEntity<TfacformapagodevPK>  {
 		this.tadmtipoformapago = tadmtipoformapago;
 	}
 
-	public Tadmcatalogo getTadminstitucion() {
-		return tadminstitucion;
-	}
-
-	public void setTadminstitucion(Tadmcatalogo tadminstitucion) {
-		this.tadminstitucion = tadminstitucion;
-	}
+//	public Tadmcatalogo getTadminstitucion() {
+//		return tadminstitucion;
+//	}
+//
+//	public void setTadminstitucion(Tadmcatalogo tadminstitucion) {
+//		this.tadminstitucion = tadminstitucion;
+//	}
 
 }

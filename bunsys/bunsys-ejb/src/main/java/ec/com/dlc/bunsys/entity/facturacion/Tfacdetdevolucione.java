@@ -75,55 +75,55 @@ public class Tfacdetdevolucione extends BaseEntity<TfacdetdevolucionePK>  {
 	//bi-directional many-to-one association to Tfaccabdevolucione
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumns({
-		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania"),
-		@JoinColumn(name="numerodevoluciones", referencedColumnName="numerodevoluciones")
+		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania", insertable=false, updatable=false),
+		@JoinColumn(name="numerodevoluciones", referencedColumnName="numerodevoluciones", insertable=false, updatable=false)
 		})
 	private Tfaccabdevolucione tfaccabdevolucione;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumns({
-		@JoinColumn(name="apta", referencedColumnName="codigocatalogo"),
-		@JoinColumn(name="aptacodigo", referencedColumnName="codigotipocatalogo"),
-		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania")
+		@JoinColumn(name="apta", referencedColumnName="codigocatalogo", insertable=false, updatable=false),
+		@JoinColumn(name="aptacodigo", referencedColumnName="codigotipocatalogo",insertable=false, updatable=false),
+		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania",insertable=false, updatable=false)
 		})
 	private Tadmcatalogo tadmatpa;
 
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumns({
-		@JoinColumn(name="unidadventa", referencedColumnName="codigocatalogo"),
-		@JoinColumn(name="unidadventacodigo", referencedColumnName="codigotipocatalogo"),
-		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania")
+		@JoinColumn(name="unidadventa", referencedColumnName="codigocatalogo",insertable=false, updatable=false),
+		@JoinColumn(name="unidadventacodigo", referencedColumnName="codigotipocatalogo",insertable=false, updatable=false),
+		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania",insertable=false, updatable=false)
 		})
 	private Tadmcatalogo tadmunidadventa;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumns({
-		@JoinColumn(name="iva", referencedColumnName="codigocatalogo"),
-		@JoinColumn(name="ivacodigo", referencedColumnName="codigotipocatalogo"),
-		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania")
+		@JoinColumn(name="iva", referencedColumnName="codigocatalogo",insertable=false, updatable=false),
+		@JoinColumn(name="ivacodigo", referencedColumnName="codigotipocatalogo",insertable=false, updatable=false),
+		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania",insertable=false, updatable=false)
 		})
 	private Tadmcatalogo tadmiva;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumns({
-		@JoinColumn(name="ice", referencedColumnName="codigocatalogo"),
-		@JoinColumn(name="icecodigo", referencedColumnName="codigotipocatalogo"),
-		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania")
+		@JoinColumn(name="ice", referencedColumnName="codigocatalogo",insertable=false, updatable=false),
+		@JoinColumn(name="icecodigo", referencedColumnName="codigotipocatalogo",insertable=false, updatable=false),
+		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania",insertable=false, updatable=false)
 		})
 	private Tadmcatalogo tadmice;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumns({
-		@JoinColumn(name="irbpnr", referencedColumnName="codigocatalogo"),
-		@JoinColumn(name="irbpnrcodigo", referencedColumnName="codigotipocatalogo"),
-		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania")
+		@JoinColumn(name="irbpnr", referencedColumnName="codigocatalogo",insertable=false, updatable=false),
+		@JoinColumn(name="irbpnrcodigo", referencedColumnName="codigotipocatalogo",insertable=false, updatable=false),
+		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania",insertable=false, updatable=false)
 		})
 	private Tadmcatalogo tadmirbpnr;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumns({
-		@JoinColumn(name="codigoproductos", referencedColumnName="codigoproductos"),
-		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania")
+		@JoinColumn(name="codigoproductos", referencedColumnName="codigoproductos",insertable=false, updatable=false),
+		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania",insertable=false, updatable=false)
 		})
 	private Tinvproducto tinvproducto;
 	

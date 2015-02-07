@@ -30,9 +30,7 @@ public class Tfaccabfactura extends BaseEntity<TfaccabfacturaPK> {
 	@Temporal(TemporalType.DATE)
 	private Date fechafactura;
 
-	@Column
-	private String numerofactura;
-
+	
 	@Column
 	private String referendum;
 	
@@ -75,14 +73,6 @@ public class Tfaccabfactura extends BaseEntity<TfaccabfacturaPK> {
 
 	public void setFechafactura(Date fechafactura) {
 		this.fechafactura = fechafactura;
-	}
-
-	public String getNumerofactura() {
-		return this.numerofactura;
-	}
-
-	public void setNumerofactura(String numerofactura) {
-		this.numerofactura = numerofactura;
 	}
 
 	public String getReferendum() {
