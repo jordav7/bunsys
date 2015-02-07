@@ -18,7 +18,7 @@ public class TfaccabfacturaPK extends BasePK{
 	private Integer codigocompania;
 
 	@Column
-	private Integer codigocabfactura;
+	private String numerofactura;
 
 	public TfaccabfacturaPK() {
 	}
@@ -28,13 +28,14 @@ public class TfaccabfacturaPK extends BasePK{
 	public void setCodigocompania(Integer codigocompania) {
 		this.codigocompania = codigocompania;
 	}
-	public Integer getCodigocabfactura() {
-		return this.codigocabfactura;
-	}
-	public void setCodigocabfactura(Integer codigocabfactura) {
-		this.codigocabfactura = codigocabfactura;
-	}
 
+	
+	public String getNumerofactura() {
+		return numerofactura;
+	}
+	public void setNumerofactura(String numerofactura) {
+		this.numerofactura = numerofactura;
+	}
 	public boolean equals(Object other) {
 		if (this == other) {
 			return true;
@@ -45,14 +46,14 @@ public class TfaccabfacturaPK extends BasePK{
 		TfaccabfacturaPK castOther = (TfaccabfacturaPK)other;
 		return 
 			this.codigocompania.equals(castOther.codigocompania)
-			&& this.codigocabfactura.equals(castOther.codigocabfactura);
+			&& this.numerofactura.equals(castOther.numerofactura);
 	}
 
 	public int hashCode() {
 		final int prime = 31;
 		int hash = 17;
 		hash = hash * prime + this.codigocompania.hashCode();
-		hash = hash * prime + this.codigocabfactura.hashCode();
+		hash = hash * prime + this.numerofactura.hashCode();
 		
 		return hash;
 	}

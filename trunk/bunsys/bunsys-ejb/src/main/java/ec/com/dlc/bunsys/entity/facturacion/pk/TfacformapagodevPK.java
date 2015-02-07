@@ -11,7 +11,8 @@ import ec.com.dlc.bunsys.entity.base.BasePK;
  */
 @Embeddable
 public class TfacformapagodevPK extends BasePK {
-	//default serial version id, required for serializable classes.
+	//default serial version id, required for serializable classes.codigocompania
+	
 	private static final long serialVersionUID = 1L;
 
 	@Column
