@@ -137,6 +137,7 @@ public class Tfaccabdevolucione extends BaseEntity<TfaccabdevolucionePK>  {
 	})
 	private Tfaccabfactura tfaccabfactura;
 	
+
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumns({
 		@JoinColumn(name="codigocliente", referencedColumnName="codigocliente", insertable=false, updatable=false),
