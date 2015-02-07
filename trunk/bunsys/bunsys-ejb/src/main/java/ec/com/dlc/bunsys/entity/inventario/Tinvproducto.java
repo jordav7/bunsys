@@ -34,9 +34,6 @@ public class Tinvproducto  extends BaseEntity<TinvproductoPK>{
 	private String codigoauxiliar;
 	
 	@Column
-	private String codigoprincipal;
-
-	@Column
 	private String color;
 
 	@Column
@@ -430,14 +427,6 @@ public class Tinvproducto  extends BaseEntity<TinvproductoPK>{
 
 	public void setTadmatpa(Tadmcatalogo tadmatpa) {
 		this.tadmatpa = tadmatpa;
-	}
-
-	public String getCodigoprincipal() {
-		return codigoprincipal;
-	}
-
-	public void setCodigoprincipal(String codigoprincipal) {
-		this.codigoprincipal = codigoprincipal;
 	}
 
 	public String getNandina() {
