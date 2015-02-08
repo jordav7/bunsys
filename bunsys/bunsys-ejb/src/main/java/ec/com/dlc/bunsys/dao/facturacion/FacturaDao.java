@@ -21,23 +21,6 @@ import ec.com.dlc.bunsys.util.FacturacionException;
  */
 public class FacturaDao extends GeneralDao {
 
-	public Tadmusuario buscaUsuarioLogin(String username, String password) throws FacturacionException{
-		Tadmusuario usuario = null;
-		try {
-			Query query = this.entityManager.createQuery("SELECT o FROM Tadmusuario o WHERE o.usuario=:usuario AND o.password=:password");
-			query.setParameter("usuario", username);
-			query.setParameter("password", password);
-			usuario = (Tadmusuario) query.getSingleResult();
-		} catch (NoResultException e) {
-			usuario = null;
-		} catch (NonUniqueResultException e) {
-			usuario = null;
-		} catch (Throwable e) {
-			throw new FacturacionException(e);
-		}
-		return usuario;
-	}
-	
 	/**
 	 * Retorna una lista de cat&aacute;logos en base al c&oacute;digo de compan&iacute;a y c&oacute;digo tipo cat&aacute;logo
 	 * @param codCompania
