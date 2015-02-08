@@ -6,6 +6,7 @@ import java.util.Collection;
 import javax.persistence.EntityManager;
 
 import ec.com.dlc.bunsys.dao.exception.DaoExcepcion;
+import ec.com.dlc.bunsys.entity.base.BasePK;
 import ec.com.dlc.bunsys.entity.common.EntityCommonImpl;
 
 /**
@@ -52,6 +53,15 @@ public interface GenericDao<T extends EntityCommonImpl> extends Serializable {
 	 * @throws DaoExcepcion 
 	 */
 	T findObject(T templateEntity) throws DaoExcepcion;
+	
+	/**
+	 * Retorno un objeto por su clave primaria
+	 * @param clazz
+	 * @param pk
+	 * @return
+	 * @throws DaoExcepcion
+	 */
+	<V> V findById(Class<V> clazz, BasePK pk) throws DaoExcepcion;
 	
 	/**
 	 * Se coloca en {@link EntityManager} del datasource respectivo

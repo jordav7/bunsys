@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import ec.com.dlc.bunsys.dao.exception.DaoExcepcion;
 import ec.com.dlc.bunsys.dao.generic.common.GenericDao;
+import ec.com.dlc.bunsys.entity.base.BasePK;
 import ec.com.dlc.bunsys.entity.common.EntityCommonImpl;
 
 /**
@@ -44,6 +45,15 @@ public interface CommonDao {
 	 * @return Una entidad seg&uacute;n el criterio enviado
 	 */
 	<T extends EntityCommonImpl> T findObject(EntityCommonImpl templateEntity) throws DaoExcepcion;
+	
+	/**
+	 * Busca un objeto por su id
+	 * @param clazz
+	 * @param pk
+	 * @return
+	 * @throws DaoExcepcion
+	 */
+	<T> T findById(Class<T> clazz, BasePK pk) throws DaoExcepcion;
 	
 	/**
 	 * Retorna el DAO gen&eacute;rico

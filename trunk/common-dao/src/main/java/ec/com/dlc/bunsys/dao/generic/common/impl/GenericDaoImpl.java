@@ -17,6 +17,7 @@ import javax.persistence.TransactionRequiredException;
 import ec.com.dlc.bunsys.dao.exception.DaoExcepcion;
 import ec.com.dlc.bunsys.dao.generic.common.GenericDao;
 import ec.com.dlc.bunsys.dao.util.DaoMessages;
+import ec.com.dlc.bunsys.entity.base.BasePK;
 import ec.com.dlc.bunsys.entity.common.EntityCommonImpl;
 
 public class GenericDaoImpl<T extends EntityCommonImpl> implements GenericDao<T> {
@@ -77,6 +78,11 @@ public class GenericDaoImpl<T extends EntityCommonImpl> implements GenericDao<T>
 			throw convertToDaoException(e);
 		}
 	}
+	
+	@Override
+	public <V> V findById(Class<V> clazz, BasePK pk) throws DaoExcepcion {
+		return entityManager.find(clazz, pk);
+	}
 
 	@Override
 	public void setEntityManager(EntityManager entityManager) {
@@ -105,4 +111,5 @@ public class GenericDaoImpl<T extends EntityCommonImpl> implements GenericDao<T>
 		}
 		return new DaoExcepcion(e);
 	}
+
 }

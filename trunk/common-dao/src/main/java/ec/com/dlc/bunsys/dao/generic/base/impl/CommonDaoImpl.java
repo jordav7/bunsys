@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import ec.com.dlc.bunsys.dao.exception.DaoExcepcion;
 import ec.com.dlc.bunsys.dao.generic.base.CommonDao;
 import ec.com.dlc.bunsys.dao.generic.common.GenericDao;
+import ec.com.dlc.bunsys.entity.base.BasePK;
 import ec.com.dlc.bunsys.entity.common.EntityCommonImpl;
 
 public class CommonDaoImpl implements CommonDao {
@@ -44,6 +45,12 @@ public class CommonDaoImpl implements CommonDao {
 	@Override
 	public GenericDao<EntityCommonImpl> getGenericDao() {
 		return genericDao;
+	}
+
+	@Override
+	public <T> T findById(Class<T> clazz, BasePK pk)
+			throws DaoExcepcion {
+		return genericDao.findById(clazz, pk);
 	}
 
 }
