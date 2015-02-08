@@ -38,17 +38,37 @@ public class SeguridadDao extends GeneralDao {
 		return usuario;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public Collection<Tadmusuario> buscarPorFiltros(Integer codCompania, String nombreUsuario, String identificacion, String nombres, String apellidos) throws FacturacionException {
-		final StringBuilder usuarioSQL = new StringBuilder("SELECT o FROM Tadmusuario o  LEFT JOIN FETCH o.tsyspersona WHERE o.pk.codigocompania=:codigocompania");
+		final StringBuilder usuarioSQL = new StringBuilder("SELECT o FROM Tadmusuario o  LEFT JOIN FETCH o.tsyspersona p WHERE o.pk.codigocompania=:codigocompania");
 		try {
 			if(StringUtils.isNotBlank(nombreUsuario)){
 				usuarioSQL.append(" AND o.usuario=:usuario");
 			}
 			if(StringUtils.isNotBlank(identificacion)){
-				usuarioSQL.append(" AND o.identificacion=:identificacion");
-				usuarioSQL.append(" AND o.identificacion=:identificacion");
+				usuarioSQL.append(" AND p.identificacion=:identificacion");
 			}
-			return null;
+			if(StringUtils.isNotBlank(nombres)){
+				usuarioSQL.append(" AND UPPER(p.nombres) LIKE :nombres");
+			}
+			if(StringUtils.isNotBlank(apellidos)){
+				usuarioSQL.append(" AND UPPER(p.apellidos) LIKE :apellidos");
+			}
+			Query query = entityManager.createQuery(usuarioSQL.toString());
+			query.setParameter("codigocompania", codCompania);
+			if(StringUtils.isNotBlank(nombreUsuario)){
+				query.setParameter("usuario", nombreUsuario);
+			}
+			if(StringUtils.isNotBlank(identificacion)){
+				query.setParameter("identificacion", identificacion);
+			}
+			if(StringUtils.isNotBlank(nombres)){
+				query.setParameter("nombres", (new StringBuilder("%").append(nombres.toUpperCase()).append("%")).toString());
+			}
+			if(StringUtils.isNotBlank(apellidos)){
+				query.setParameter("apellidos", (new StringBuilder("%").append(apellidos.toUpperCase()).append("%").toString()));
+			}
+			return query.getResultList();
 		} catch (Throwable e) {
 			throw new FacturacionException(e);
 		}
