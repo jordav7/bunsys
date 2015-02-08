@@ -21,6 +21,12 @@ import java.util.Set;
 public class Tsyspersona extends BaseEntity<TsyspersonaPK>{
 	private static final long serialVersionUID = 1L;
 
+    @Column
+    private String nombres;
+    
+    @Column
+    private String apellidos;
+        
 	@Column
 	private String contacto;
 
@@ -252,5 +258,21 @@ public class Tsyspersona extends BaseEntity<TsyspersonaPK>{
 	public void setTipoidcodigo(Integer tipoidcodigo) {
 		this.tipoidcodigo = tipoidcodigo;
 	}
+
+        public String getNombres() {
+            return nombres;
+        }
+
+        public void setNombres(String nombres) {
+            this.nombres = nombres;
+        }
+
+    public String getApellidos() {
+        return apellidos;
+    }
+
+    public void setApellidos(String apellidos) {
+        this.apellidos = apellidos;
+    }
 
 }
