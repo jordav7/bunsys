@@ -8,6 +8,7 @@ import ec.com.dlc.bunsys.entity.administracion.Tadmcatalogo;
 import ec.com.dlc.bunsys.entity.administracion.Tadmcompania;
 import ec.com.dlc.bunsys.entity.administracion.Tadmusuario;
 import ec.com.dlc.bunsys.entity.inventario.Tinvproducto;
+import ec.com.dlc.bunsys.entity.inventario.pk.TinvproductoPK;
 import ec.com.dlc.bunsys.util.FacturacionException;
 
 /**
@@ -44,4 +45,18 @@ public interface BunsysService {
 	 * @throws FacturacionException
 	 */
 	void guardarArticulo(Tinvproducto articulo) throws FacturacionException;
+	
+	/**
+	 * Buscar art&iacute;culos con parametros
+	 * @param articulo
+	 * @throws FacturacionException
+	 */
+	Collection<Tinvproducto> buscarObtenerProductos(Integer codCompania, String codigoProducto, String codigoAuxiliar, String nombreProducto, String color, Integer colorCodigo, String estado, Integer estadoCodigo) throws FacturacionException;
+	
+	/**
+	 * Elimina art&iacute;culos
+	 * @param articulo
+	 * @throws FacturacionException
+	 */
+	void eliminarArticulo(TinvproductoPK articuloPk, Integer estadoCodigo);
 }
