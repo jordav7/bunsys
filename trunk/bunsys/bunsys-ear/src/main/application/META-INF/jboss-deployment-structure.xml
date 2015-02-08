@@ -3,6 +3,7 @@
     <deployment>
         <dependencies>
             <module name="ec.com.dlc.dao" meta-inf="import" export="true"/>
+            <module name="org.apache.commons.lang" export="true"/>
         </dependencies>
     </deployment>
 </jboss-deployment-structure>
