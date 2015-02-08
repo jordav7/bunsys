@@ -10,6 +10,7 @@ import javax.inject.Inject;
 import ec.com.dlc.bunsys.dao.facturacion.FacturaDao;
 import ec.com.dlc.bunsys.entity.administracion.Tadmcatalogo;
 import ec.com.dlc.bunsys.entity.inventario.Tinvproducto;
+import ec.com.dlc.bunsys.entity.inventario.pk.TinvproductoPK;
 import ec.com.dlc.bunsys.util.FacturacionException;
 
 /**
@@ -47,4 +48,21 @@ public class ParametrizacionService {
 			facturaDao.create(articulo);
 		}
 	}
+	
+	/**
+	 * Buscar art&iacute;culo
+	 * @param articulo
+	 * @throws FacturacionException
+	 */
+	public Collection<Tinvproducto> obtenerProductos(Integer codCompania, String codigoProducto, String codigoAuxiliar, String nombreProducto, String color, Integer colorCodigo, String estado, Integer estadoCodigo) {
+		return facturaDao.obtenerProductos(codCompania, codigoProducto, codigoAuxiliar, nombreProducto, color, colorCodigo, estado, estadoCodigo);
+	}
+	
+	public void eliminarArticulo(TinvproductoPK articuloPk, Integer estadoCodigo){
+		Tinvproducto articulo = facturaDao.findById(Tinvproducto.class, articuloPk);
+		articulo.setEstado("I");
+		articulo.setEstadocodigo(estadoCodigo);
+		facturaDao.update(articulo);
+	}
+		
 }
