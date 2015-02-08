@@ -6,7 +6,7 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.inject.Inject;
 
-import ec.com.dlc.bunsys.dao.facturacion.FacturaDao;
+import ec.com.dlc.bunsys.dao.facturacion.SeguridadDao;
 import ec.com.dlc.bunsys.entity.administracion.Tadmusuario;
 import ec.com.dlc.bunsys.util.FacturacionException;
 
@@ -19,10 +19,10 @@ import ec.com.dlc.bunsys.util.FacturacionException;
 public class LoginService {
 
 	@Inject
-	private FacturaDao facturaDao;
+	private SeguridadDao seguridadDao;
 	
 	public Tadmusuario loginUsuario(String username, String password) throws FacturacionException{
-		Tadmusuario usuario = facturaDao.buscaUsuarioLogin(username, password); 
+		Tadmusuario usuario = seguridadDao.buscaUsuarioLogin(username, password); 
 		return usuario;
 	}
 }
