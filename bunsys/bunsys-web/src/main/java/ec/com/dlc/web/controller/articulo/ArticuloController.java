@@ -6,6 +6,7 @@ import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 
 import ec.com.dlc.bunsys.entity.inventario.Tinvproducto;
+import ec.com.dlc.bunsys.entity.inventario.pk.TinvproductoPK;
 import ec.com.dlc.bunsys.facade.BunsysService;
 import ec.com.dlc.web.commons.resource.ContenidoMessages;
 import ec.com.dlc.web.componentes.ArticuloComponent;
@@ -33,14 +34,34 @@ public class ArticuloController extends BaseController {
 	public void inicializar() {
 		// TODO Auto-generated method stub
 		articuloDatamanager.setArticuloSearch(new Tinvproducto());
-//		articuloDatamanager.setColorCatalogoColl(bunsysService.buscarObtenerCatalogos(articuloDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania(), ContenidoMessages.getInteger("")));
-//		articuloDatamanager.setColorCatalogoColl(bunsysService.buscarObtenerCatalogos(articuloDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania(), ContenidoMessages.getInteger("")));
-		articuloDatamanager.setArticuloComponente(new ArticuloComponent());
+		articuloDatamanager.setColorCatalogoColl(bunsysService.buscarObtenerCatalogos(articuloDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania(), ContenidoMessages.getInteger("cod_catalogo_color_articulo")));
+		articuloDatamanager.setEstadoCatalogoColl(bunsysService.buscarObtenerCatalogos(articuloDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania(), ContenidoMessages.getInteger("cod_catalogo_estado_articulo")));
+		articuloDatamanager.setArticuloComponente(new ArticuloComponent(articuloDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania()));
 	}
 	
 	public void crearArticulo() {
 		articuloDatamanager.getArticuloComponente().crear();
 		articuloDatamanager.getArticuloComponente().getArticulo().getPk().setCodigocompania(articuloDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania());
+	}
+	
+	public void buscar(){
+		articuloDatamanager.setProductoColl(bunsysService.buscarObtenerProductos(articuloDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania(),
+				articuloDatamanager.getArticuloSearch().getPk().getCodigoproductos(),
+				articuloDatamanager.getArticuloSearch().getCodigoauxiliar(),
+				articuloDatamanager.getArticuloSearch().getNombre(),
+				articuloDatamanager.getArticuloSearch().getColor(),
+				ContenidoMessages.getInteger("cod_catalogo_color_articulo"),
+				articuloDatamanager.getArticuloSearch().getEstado(),
+				ContenidoMessages.getInteger("cod_catalogo_estado_articulo")));
+	}
+	
+	
+	public void eliminar(String codigoProducto){
+		TinvproductoPK articuloPk= new TinvproductoPK();
+		articuloPk.setCodigocompania(articuloDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania());
+		articuloPk.setCodigoproductos(codigoProducto);
+		bunsysService.eliminarArticulo(articuloPk, ContenidoMessages.getInteger("cod_catalogo_estado_articulo"));
+		buscar();
 	}
 	
 	public ArticuloDatamanager getArticuloDatamanager() {
