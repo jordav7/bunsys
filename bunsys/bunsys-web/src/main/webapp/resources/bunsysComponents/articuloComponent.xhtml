@@ -30,7 +30,7 @@
 					<p:message for="txtNombreArticulo"/>
 					
 					<p:outputLabel value="#{msg['lbl_fecha_caducidad']}:" for="txtFechaCaducidad"/>
-					<p:calendar id="txtFechaCaducidad" value="#{cc.attrs.controller.articulo.fechacaducidad}" required="true"/>
+					<p:calendar id="txtFechaCaducidad" value="#{cc.attrs.controller.articulo.fechacaducidad}"/>
 					<p:message for="txtFechaCaducidad"/>
 					
 					<p:outputLabel value="#{msg['lbl_precio']}:" for="txtPrecioUnitario"/>
@@ -48,30 +48,35 @@
 					<p:outputLabel value="#{msg['lbl_color']}" for="selColor"/>
 					<p:selectOneMenu id="selColor" value="#{cc.attrs.controller.articulo.color}">
 						<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+						<f:selectItems value="#{cc.attrs.controller.colorCatalogoColl}" var="color" itemLabel="#{color.descripcion}" itemValue="#{color.pk.codigocatalogo}" />
 					</p:selectOneMenu>
 					<p:message for="selColor"/>
 					
 					<p:outputLabel value="#{msg['lbl_estado']}" for="selEstado"/>
 					<p:selectOneMenu id="selEstado" value="#{cc.attrs.controller.articulo.estado}">
 						<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+						<f:selectItems value="#{cc.attrs.controller.estadoCatalogoColl}" var="estado" itemLabel="#{estado.descripcion}" itemValue="#{estado.pk.codigocatalogo}" />
 					</p:selectOneMenu>
 					<p:message for="selEstado"/>
 					
 					<p:outputLabel value="#{msg['lbl_unidad_venta']}:" for="selUnidadVenta"/>
 					<p:selectOneMenu id="selUnidadVenta" value="#{cc.attrs.controller.articulo.unidadventa}">
 						<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+						<f:selectItems value="#{cc.attrs.controller.unidadVentaColl}" var="unVenta" itemLabel="#{unVenta.descripcion}" itemValue="#{unVenta.pk.codigocatalogo}" />
 					</p:selectOneMenu>
 					<p:message for="selUnidadVenta"/>
 					
 					<p:outputLabel value="#{msg['lbl_atpa']}:" for="selAtpa"/>
 					<p:selectOneMenu id="selAtpa" value="#{cc.attrs.controller.articulo.atpa}">
 						<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+						<f:selectItems value="#{cc.attrs.controller.aptaCatalogoColl}" var="apta" itemLabel="#{apta.descripcion}" itemValue="#{apta.pk.codigocatalogo}" />
 					</p:selectOneMenu>
 					<p:message for="selAtpa"/>
 					
 					<p:outputLabel value="#{msg['lbl_tipo_producto']}:" for="selTipoProducto"/>
 					<p:selectOneMenu id="selTipoProducto" value="#{cc.attrs.controller.articulo.tipoproducto}">
 						<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+						<f:selectItems value="#{cc.attrs.controller.tipoProductoColl}" var="tipoProducto" itemLabel="#{tipoProducto.descripcion}" itemValue="#{tipoProducto.pk.codigocatalogo}" />
 					</p:selectOneMenu>
 					<p:message for="selTipoProducto"/>
 					
@@ -85,18 +90,21 @@
 							<p:outputLabel value="#{msg['lbl_iva']}:" for="selIVA"/>
 							<p:selectOneMenu id="selIVA" value="#{cc.attrs.controller.articulo.iva}">
 								<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+								<f:selectItems value="#{cc.attrs.controller.ivaCatalogoColl}" var="iva" itemLabel="#{iva.descripcion}" itemValue="#{iva.pk.codigocatalogo}" />
 							</p:selectOneMenu>
 							<p:message for="selIVA"/>
 							
 							<p:outputLabel value="#{msg['lbl_ice']}:" for="selICE"/>
 							<p:selectOneMenu id="selICE" value="#{cc.attrs.controller.articulo.ice}">
 								<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+								<f:selectItems value="#{cc.attrs.controller.iceCatalogoColl}" var="ice" itemLabel="#{ice.descripcion}" itemValue="#{ice.pk.codigocatalogo}" />
 							</p:selectOneMenu>
 							<p:message for="selICE"/>
 							
 							<p:outputLabel value="#{msg['lbl_irbpnr']}:" for="selIRBPNR"/>
 							<p:selectOneMenu id="selIRBPNR" value="#{cc.attrs.controller.articulo.irbpnr}">
 								<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+								<f:selectItems value="#{cc.attrs.controller.irbpnrCatalogoColl}" var="irbpnr" itemLabel="#{irbpnr.descripcion}" itemValue="#{irbpnr.pk.codigocatalogo}" />
 							</p:selectOneMenu>
 							<p:message for="selIRBPNR"/>
 						</h:panelGrid>
