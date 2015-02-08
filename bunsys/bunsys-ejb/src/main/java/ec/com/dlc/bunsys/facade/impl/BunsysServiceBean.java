@@ -15,7 +15,7 @@ import ec.com.dlc.bunsys.entity.inventario.Tinvproducto;
 import ec.com.dlc.bunsys.entity.inventario.pk.TinvproductoPK;
 import ec.com.dlc.bunsys.facade.BunsysService;
 import ec.com.dlc.bunsys.service.facturacion.FacturacionService;
-import ec.com.dlc.bunsys.service.login.LoginService;
+import ec.com.dlc.bunsys.service.login.SeguridadService;
 import ec.com.dlc.bunsys.service.parametrizacion.ParametrizacionService;
 import ec.com.dlc.bunsys.util.FacturacionException;
 
@@ -27,7 +27,7 @@ public class BunsysServiceBean implements BunsysService {
 	private FacturacionService facturacionService;
 	
 	@EJB
-	private LoginService loginService;
+	private SeguridadService seguridadService;
 	
 	@EJB
 	private ParametrizacionService parametrizacionService;
@@ -40,7 +40,7 @@ public class BunsysServiceBean implements BunsysService {
 	@Override
 	public Tadmusuario buscaLoginUsuario(String username, String password)
 			throws FacturacionException {
-		return loginService.loginUsuario(username, password);
+		return seguridadService.loginUsuario(username, password);
 	}
 
 	@Override
@@ -66,6 +66,11 @@ public class BunsysServiceBean implements BunsysService {
 	@Override
 	public void eliminarArticulo(TinvproductoPK articuloPk, Integer estadoCodigo) {
 		parametrizacionService.eliminarArticulo(articuloPk, estadoCodigo);
+	}
+
+	@Override
+	public Collection<Tadmusuario> buscarUsuarios(Integer codCompania, String nombreUsuario, String identificacion, String nombres, String apellidos) {
+		return null;
 	}
 
 }

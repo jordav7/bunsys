@@ -59,4 +59,15 @@ public interface BunsysService {
 	 * @throws FacturacionException
 	 */
 	void eliminarArticulo(TinvproductoPK articuloPk, Integer estadoCodigo);
+	
+	/**
+	 * Busca usuarios en base a los par&aacute;metros de consulta enviados
+	 * @param codCompania
+	 * @param nombreUsuario
+	 * @param identificacion
+	 * @param nombres
+	 * @param apellidos
+	 * @return
+	 */
+	Collection<Tadmusuario> buscarUsuarios(Integer codCompania, String nombreUsuario, String identificacion, String nombres, String apellidos);
 }
