@@ -28,22 +28,25 @@
 		  				<p:outputLabel value="#{msg['lbl_color']}:" for="selColor"/>
 		  				<p:selectOneMenu id="selColor" value="#{articuloDatamanager.articuloSearch.color}">
 		  					<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+		  					<f:selectItems value="#{articuloDatamanager.colorCatalogoColl}" var="color" itemLabel="#{color.descripcion}" itemValue="#{color.pk.codigocatalogo}"/>
 		  				</p:selectOneMenu>
 		  				<p:message for="selColor"/>
 		  				
 		  				<p:outputLabel value="#{msg['lbl_estado']}:" for="selEstado"/>
 		  				<p:selectOneMenu id="selEstado" value="#{articuloDatamanager.articuloSearch.estado}">
 		  					<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+		  					<f:selectItems value="#{articuloDatamanager.estadoCatalogoColl}" var="estado" itemLabel="#{estado.descripcion}" itemValue="#{estado.pk.codigocatalogo}" />
 		  				</p:selectOneMenu>
 		  				<p:message for="selEstado"/>
 		  			</h:panelGrid>
 		  		</h:panelGroup>
 		  		<h:panelGroup layout="block" style="float:left">
-		  			<p:commandButton icon="ui-icon-search" value="#{msg['btn_buscar']}" />
+		  			<p:commandButton icon="ui-icon-search" value="#{msg['btn_buscar']}" action="#{articuloController.buscar()}" update="pnlDataArticulos"/>
 		  			<p:commandButton icon="ui-icon-plusthick" 
 		  				value="#{msg['btn_crear']}"
 		  				oncomplete="PF('dlgArticulo').show()" 
-		  				action="#{articuloController.crearArticulo()}" />
+		  				action="#{articuloController.crearArticulo()}" 
+		  				update=":frmCreacionArticulos:pnlArticulo"/>
 		  		</h:panelGroup>
 		  	</p:fieldset>
 		  	<p:fieldset legend="#{msg['lbl_listado_articulos']}">
@@ -61,13 +64,19 @@
 		  				<p:column headerText="#{msg['lbl_tipo_producto']}">
 		  					<h:outputText value="#{articulo.tadmtipoproducto.descripcion}" />
 		  				</p:column>
+		  				<p:column headerText="#{msg['lbl_precio']}">
+		  					<h:outputText value="#{articulo.preciounitario}" />
+		  				</p:column>
+		  				<p:column headerText="#{msg['lbl_estado']}">
+		  					<h:outputText value="#{articulo.tadmestado.descripcion}" />
+		  				</p:column>
 		  				<p:column styleClass="bun-action">
-		  					<p:commandButton icon="ui-icon-pencil" title="#{msg['btn_actualizar']}" oncomplete="PF('dlgArticulo').show();">
+		  					<p:commandButton icon="ui-icon-pencil" title="#{msg['btn_actualizar']}" oncomplete="PF('dlgArticulo').show();" update=":frmCreacionArticulos:pnlArticulo">
 		  						<f:setPropertyActionListener target="#{articuloDatamanager.articuloComponente.articulo}" value="#{articulo}"/>
 		  					</p:commandButton>
 		  				</p:column>
 		  				<p:column styleClass="bun-action">
-		  					<p:commandButton icon="ui-icon-trash" title="#{msg['btn_eliminar']}"/>
+		  					<p:commandButton icon="ui-icon-trash" title="#{msg['btn_eliminar']}" action="#{articuloController.eliminar(articulo.pk.codigoproductos)}" update=":frmArticulos:pnlDataArticulos"/>
 		  				</p:column>
 		  			</p:dataTable>
 		  		</h:panelGroup>
@@ -80,7 +89,7 @@
 	  			<h:outputText value="#{msg['lbl_articulos']}" />
 	  		</f:facet>
 			<h:form id="frmCreacionArticulos">
-				<b:articuloComponent id="pnlArticulo" controller="#{articuloDatamanager.articuloComponente}" processSave="@this" updateSave=":frmArticulos:pnlDataArticulos"/>
+				<b:articuloComponent id="pnlArticulo" controller="#{articuloDatamanager.articuloComponente}" processSave="@this" updateSave=":frmArticulos:pnlDataArticulos" oncompleteSave="PF('dlgArticulo').hide();"/>
 			</h:form>	  		
 	  	</p:dialog>
 	  </ui:define>
