@@ -4,7 +4,7 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 	<p:growl id="messages"/>
     <p:menubar id="menu">
-        <p:submenu label="#{msg.lbl_usuario}" icon="ui-icon-pencil" id="usuario">
+        <p:submenu label="#{msg.lbl_seguridades}" icon="ui-icon-pencil" id="usuario">
             <p:menuitem value="#{msg.lbl_usuario}"  icon="ui-icon-arrowreturnthick-1-w" action="/pages/usuario/usuario?faces-redirect=true" ajax="false" />
         </p:submenu>
         
@@ -14,20 +14,28 @@
             <p:menuitem value="#{msg.lbl_directorio_doc}" action="/pages/administracion/directorioDocumento?faces-redirect=true" ajax="false"/>
             <p:separator />
             <p:menuitem value="#{msg.lbl_catalogo}"  action="/pages/catalogo/catalogo?faces-redirect=true" ajax="false"/>
+            <p:separator/>
+            <p:menuitem value="#{msg.lbl_secuencia}" action="/pages/parametroFactura/secuencia?faces-redirect=true" ajax="false"/>
         </p:submenu>
  
-        <p:submenu label="#{msg.lbl_param_fact_elect}" icon="ui-icon-document">
-            <p:menuitem value="#{msg.lbl_secuencia}" action="/pages/parametroFactura/secuencia?faces-redirect=true" ajax="false"/>
-            <p:separator />
+        <p:submenu label="#{msg.lbl_facturacion}" icon="ui-icon-document">
             <p:menuitem value="#{msg.lbl_clientes}" action="/pages/parametroFactura/clientes?faces-redirect=true" ajax="false"/>
             <p:separator />
             <p:menuitem value="#{msg.lbl_articulos}" action="/pages/parametroFactura/articulos?faces-redirect=true" ajax="false"/>
+            <p:separator />
+            <p:menuitem value="#{msg.lbl_proformas}" action="/pages/parametroFactura/articulos?faces-redirect=true" ajax="false"/>
+            <p:separator />
+           	<p:menuitem value="#{msg.lbl_factura}" action="/pages/factura/factura?faces-redirect=true" ajax="false"/>
+           	<p:separator />
+           	<p:menuitem value="#{msg.lbl_notas_credito}" action="/pages/factura/notaCredito?faces-redirect=true" ajax="false"/>
+            <p:separator />
+            <p:menuitem value="#{msg.lbl_cobros}" action="/pages/factura/notaCredito?faces-redirect=true" ajax="false"/>
         </p:submenu>
  
- 		<p:submenu label="Factura" icon="ui-icon-document">
-            <p:menuitem value="#{msg.lbl_factura}" action="/pages/factura/factura?faces-redirect=true" ajax="false"/>
-            <p:separator />
-            <p:menuitem value="#{msg.lbl_notas_credito}" action="/pages/factura/notaCredito?faces-redirect=true" ajax="false"/>
+ 		<p:submenu label="#{msg['lbl_compras']}" icon="ui-icon-document">
+			<p:menuitem value="#{msg.lbl_proveedores}" action="/pages/cuentasPorPagar/proveedores?faces-redirect=true" ajax="false"/>
+			<p:separator />
+			<p:menuitem value="#{msg.lbl_retencion}" action="/pages/factura/notaCredito?faces-redirect=true" ajax="false"/>
         </p:submenu>
         
         <f:facet name="options">
