@@ -112,11 +112,13 @@
 				</p:panelGrid>
 				<h:panelGroup layout="block">
 					<p:commandButton value="#{msg['btn_guardar']}" 
+						icon="ui-icon-disk"
 						action="#{cc.attrs.controller.guardarCambios}"
 						oncomplete="#{cc.attrs.oncompleteSave}" 
 						update="@this pnlArticulo #{cc.attrs.updateSave}" 
 						process="@this pnlArticulo #{cc.attrs.processSave}"/>
-					<p:commandButton value="#{msg['btn_cancelar']}" 
+					<p:commandButton value="#{msg['btn_cancelar']}"
+						icon="ui-icon-close" 
 						action="#{cc.attrs.controller.cancelar}" 
 						oncomplete="#{cc.attrs.oncompleteCancel}"
 						update="@this #{cc.attrs.updateCancel}" 
