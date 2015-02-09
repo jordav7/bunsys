@@ -40,7 +40,7 @@ public class SeguridadDao extends GeneralDao {
 	
 	@SuppressWarnings("unchecked")
 	public Collection<Tadmusuario> buscarPorFiltros(Integer codCompania, String nombreUsuario, String identificacion, String nombres, String apellidos) throws FacturacionException {
-		final StringBuilder usuarioSQL = new StringBuilder("SELECT o FROM Tadmusuario o  LEFT JOIN FETCH o.tsyspersona p WHERE o.pk.codigocompania=:codigocompania");
+		final StringBuilder usuarioSQL = new StringBuilder("SELECT o FROM Tadmusuario o  LEFT JOIN FETCH o.tsyspersona p LEFT JOIN FETCH p.tadmestado WHERE o.pk.codigocompania=:codigocompania");
 		try {
 			if(StringUtils.isNotBlank(nombreUsuario)){
 				usuarioSQL.append(" AND o.usuario=:usuario");
