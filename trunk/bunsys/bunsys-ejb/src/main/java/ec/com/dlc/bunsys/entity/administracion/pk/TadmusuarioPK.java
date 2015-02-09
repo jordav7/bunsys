@@ -3,6 +3,8 @@ package ec.com.dlc.bunsys.entity.administracion.pk;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
+import ec.com.dlc.bunsys.commons.annotations.SequenceDatabase;
+import ec.com.dlc.bunsys.commons.enumeration.TypeGenerator;
 import ec.com.dlc.bunsys.entity.base.BasePK;
 
 /**
@@ -14,6 +16,7 @@ public class TadmusuarioPK extends BasePK {
 	//default serial version id, required for serializable classes.
 	private static final long serialVersionUID = 1L;
 
+	@SequenceDatabase(sequenceName="tadmusuario_codigousuario_seq", typeGenerator=TypeGenerator.SEQUENCE)
 	@Column
 	private Integer codigousuario;
 
