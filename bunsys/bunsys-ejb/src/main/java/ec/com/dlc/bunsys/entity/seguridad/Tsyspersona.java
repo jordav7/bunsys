@@ -93,6 +93,7 @@ public class Tsyspersona extends BaseEntity<TsyspersonaPK>{
 	private Tadmcatalogo tadmtipopersona;
 
 	public Tsyspersona() {
+		this.pk = new TsyspersonaPK();
 	}
 
 	public String getContacto() {
