@@ -10,6 +10,7 @@ import javax.inject.Inject;
 
 import ec.com.dlc.bunsys.dao.facturacion.SeguridadDao;
 import ec.com.dlc.bunsys.entity.administracion.Tadmusuario;
+import ec.com.dlc.bunsys.entity.seguridad.Tsyspersona;
 import ec.com.dlc.bunsys.util.FacturacionException;
 
 @Stateless
@@ -41,6 +42,36 @@ public class SeguridadService {
 	 * @return
 	 */
 	public Collection<Tadmusuario> buscarUsuarios(Integer codCompania, String nombreUsuario, String identificacion, String nombres, String apellidos) throws FacturacionException{
-		return null;
+		return seguridadDao.buscarPorFiltros(codCompania, nombreUsuario, identificacion, nombres, apellidos);
+	}
+	
+	/**
+	 * Guarda los datos del usuarios
+	 * @param tadmusuario
+	 * @param tsyspersona
+	 * @throws FacturacionException
+	 */
+	public void guardarUsuario(Integer codigocompania, Tadmusuario tadmusuario, Tsyspersona tsyspersona) throws FacturacionException{
+		try {
+			
+			if(tsyspersona == null){
+				throw new FacturacionException("La persona no debe ser nula");
+			}
+			if(tsyspersona.getPk() != null && tsyspersona.getPk().getCodigopersona() != null){
+				seguridadDao.update(tsyspersona);
+			} else{
+				tsyspersona.getPk().setCodigocompania(codigocompania);
+				seguridadDao.create(tsyspersona);
+			}
+			
+			if(tadmusuario != null && tadmusuario.getPk().getCodigousuario() != null){
+				seguridadDao.update(tadmusuario);
+			} else{
+				tadmusuario.getPk().setCodigocompania(codigocompania);
+				seguridadDao.create(tadmusuario);
+			}
+		} catch (Throwable e) {
+			throw new FacturacionException(e);
+		}
 	}
 }
