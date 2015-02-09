@@ -13,7 +13,6 @@ import javax.persistence.PrePersist;
 import javax.sql.DataSource;
 
 import ec.com.dlc.bunsys.commons.annotations.SequenceDatabase;
-import ec.com.dlc.bunsys.commons.enumeration.TypeGenerator;
 import ec.com.dlc.bunsys.commons.util.ReflectionUtil;
 import ec.com.dlc.bunsys.entity.base.BaseEntity;
 
@@ -37,7 +36,7 @@ public class GenerateIdListener {
 			Context context = new InitialContext();
 			datasource = (DataSource) context.lookup("java:jboss/datasources/bunsysDS");
 			if(entity instanceof BaseEntity){
-				BaseEntity baseEntity = (BaseEntity)entity;
+				BaseEntity<?> baseEntity = (BaseEntity<?>)entity;
 				Field[] camposPk = baseEntity.getPk().getClass().getDeclaredFields();
 				for (Field campo : camposPk) {
 					if(campo.isAnnotationPresent(SequenceDatabase.class)){
