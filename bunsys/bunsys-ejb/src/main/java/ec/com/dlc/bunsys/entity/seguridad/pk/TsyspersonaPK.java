@@ -4,8 +4,12 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-import javax.persistence.SequenceGenerator;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
+import ec.com.dlc.bunsys.commons.annotations.SequenceDatabase;
+import ec.com.dlc.bunsys.commons.enumeration.TypeGenerator;
 import ec.com.dlc.bunsys.entity.base.BasePK;
 
 /**
@@ -17,8 +21,7 @@ public class TsyspersonaPK extends BasePK {
 	//default serial version id, required for serializable classes.
 	private static final long serialVersionUID = 1L;
 
-	@SequenceGenerator(name="seq_persona", sequenceName="tsyspersona_codigopersona_seq", initialValue=1, allocationSize=1)
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq_persona")
+	@SequenceDatabase(sequenceName="tsyspersona_codigopersona_seq", typeGenerator=TypeGenerator.SEQUENCE)
 	@Column
 	private Integer codigopersona;
 
