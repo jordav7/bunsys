@@ -3,6 +3,7 @@ package ec.com.dlc.bunsys.service.login;
 import static javax.ejb.TransactionAttributeType.MANDATORY;
 
 import java.util.Collection;
+import java.util.Date;
 
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -57,17 +58,25 @@ public class SeguridadService {
 			if(tsyspersona == null){
 				throw new FacturacionException("La persona no debe ser nula");
 			}
+			
 			if(tsyspersona.getPk() != null && tsyspersona.getPk().getCodigopersona() != null){
 				seguridadDao.update(tsyspersona);
 			} else{
 				tsyspersona.getPk().setCodigocompania(codigocompania);
+				tsyspersona.setEstado("A");
+				tsyspersona.setEstadocodigo(16);
+				tsyspersona.setTipoid("C");
+				tsyspersona.setTipoidcodigo(17);
 				seguridadDao.create(tsyspersona);
 			}
 			
-			if(tadmusuario != null && tadmusuario.getPk().getCodigousuario() != null){
+			if(tadmusuario.getPk().getCodigousuario() != null){
 				seguridadDao.update(tadmusuario);
 			} else{
 				tadmusuario.getPk().setCodigocompania(codigocompania);
+				tadmusuario.setPassword("1111");
+				tadmusuario.setCodigopersona(tsyspersona.getPk().getCodigopersona());
+				tadmusuario.setFecharegistro(new Date());
 				seguridadDao.create(tadmusuario);
 			}
 		} catch (Throwable e) {
