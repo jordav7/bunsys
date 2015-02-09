@@ -13,6 +13,7 @@ import ec.com.dlc.bunsys.entity.administracion.Tadmcompania;
 import ec.com.dlc.bunsys.entity.administracion.Tadmusuario;
 import ec.com.dlc.bunsys.entity.inventario.Tinvproducto;
 import ec.com.dlc.bunsys.entity.inventario.pk.TinvproductoPK;
+import ec.com.dlc.bunsys.entity.seguridad.Tsyspersona;
 import ec.com.dlc.bunsys.facade.BunsysService;
 import ec.com.dlc.bunsys.service.facturacion.FacturacionService;
 import ec.com.dlc.bunsys.service.login.SeguridadService;
@@ -70,7 +71,13 @@ public class BunsysServiceBean implements BunsysService {
 
 	@Override
 	public Collection<Tadmusuario> buscarUsuarios(Integer codCompania, String nombreUsuario, String identificacion, String nombres, String apellidos) {
-		return null;
+		return seguridadService.buscarUsuarios(codCompania, nombreUsuario, identificacion, nombres, apellidos);
+	}
+
+	@Override
+	public void guardarUsuario(Integer codigocompania,Tadmusuario tadmusuario, Tsyspersona tsyspersona)
+			throws FacturacionException {
+		seguridadService.guardarUsuario(codigocompania, tadmusuario, tsyspersona);
 	}
 
 }
