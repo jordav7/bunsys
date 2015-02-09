@@ -72,6 +72,7 @@ public class Tadmusuario extends BaseEntity<TadmusuarioPK> {
 	private Tsyspersona tsyspersona;
 
 	public Tadmusuario() {
+		this.pk = new TadmusuarioPK();
 	}
 
 	public Date getFecharegistro() {
