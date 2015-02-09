@@ -9,6 +9,7 @@ import ec.com.dlc.bunsys.entity.administracion.Tadmcompania;
 import ec.com.dlc.bunsys.entity.administracion.Tadmusuario;
 import ec.com.dlc.bunsys.entity.inventario.Tinvproducto;
 import ec.com.dlc.bunsys.entity.inventario.pk.TinvproductoPK;
+import ec.com.dlc.bunsys.entity.seguridad.Tsyspersona;
 import ec.com.dlc.bunsys.util.FacturacionException;
 
 /**
@@ -70,4 +71,13 @@ public interface BunsysService {
 	 * @return
 	 */
 	Collection<Tadmusuario> buscarUsuarios(Integer codCompania, String nombreUsuario, String identificacion, String nombres, String apellidos);
+	
+	/**
+	 * Guarda el usuario enviado y graba o actualiza informaci&oacute;n de la persona
+	 * @param codigocompania
+	 * @param tadmusuario
+	 * @param tsyspersona
+	 * @throws FacturacionException
+	 */
+	void guardarUsuario(Integer codigocompania, Tadmusuario tadmusuario, Tsyspersona tsyspersona) throws FacturacionException;
 }
