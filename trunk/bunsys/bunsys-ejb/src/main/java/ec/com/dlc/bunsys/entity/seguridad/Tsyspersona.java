@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import javax.persistence.*;
 
+import ec.com.dlc.bunsys.commons.listener.GenerateIdListener;
 import ec.com.dlc.bunsys.entity.administracion.Tadmcatalogo;
 import ec.com.dlc.bunsys.entity.administracion.Tadmusuario;
 import ec.com.dlc.bunsys.entity.base.BaseEntity;
@@ -18,6 +19,7 @@ import java.util.Set;
  * 
  */
 @Entity
+@EntityListeners(GenerateIdListener.class)
 public class Tsyspersona extends BaseEntity<TsyspersonaPK>{
 	private static final long serialVersionUID = 1L;
 
