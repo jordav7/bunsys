@@ -70,6 +70,6 @@ public class Validators {
 	}
 	
 	 public static void main(String args[]){
-		System.out.println("Valida cedula :: "+isTelefonoValido("0593982587532"));
+		System.out.println("Valida cedula :: "+isTelefonoValido("002-258-7583"));
 	}
 }
