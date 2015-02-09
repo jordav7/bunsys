@@ -5,6 +5,7 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
@@ -13,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import ec.com.dlc.bunsys.commons.listener.GenerateIdListener;
 import ec.com.dlc.bunsys.entity.administracion.pk.TadmusuarioPK;
 import ec.com.dlc.bunsys.entity.base.BaseEntity;
 import ec.com.dlc.bunsys.entity.seguridad.Tsyspersona;
@@ -23,6 +25,7 @@ import ec.com.dlc.bunsys.entity.seguridad.Tsyspersona;
  * 
  */
 @Entity
+@EntityListeners(GenerateIdListener.class)
 public class Tadmusuario extends BaseEntity<TadmusuarioPK> {
 	private static final long serialVersionUID = 1L;
 
