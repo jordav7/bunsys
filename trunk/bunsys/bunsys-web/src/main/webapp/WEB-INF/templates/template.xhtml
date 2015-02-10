@@ -27,6 +27,10 @@
 					<div class="ui-layout-south">
 						<ui:include src="/WEB-INF/templates/footer.xhtml" />
 					</div>
+					<p:confirmDialog global="true" >
+				        <p:commandButton value="#{msg['lbl_si']}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+				        <p:commandButton value="#{msg['lbl_no']}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				    </p:confirmDialog>
 				</h:form>
 				<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
  
