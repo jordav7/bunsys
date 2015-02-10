@@ -18,7 +18,7 @@
 			<h:panelGroup layout="block" id="pnlArticulo">
 				<h:panelGrid columns="6">
 					<p:outputLabel value="#{msg['lbl_codigo_principal']}:" for="txtCodigoPrincipal"/>
-					<p:inputText id="txtCodigoPrincipal" value="#{cc.attrs.controller.articulo.pk.codigoproductos}" required="true"/>
+					<p:inputText id="txtCodigoPrincipal" value="#{cc.attrs.controller.articulo.pk.codigoproductos}" required="true" disabled="#{cc.attrs.controller.edition}"/>
 					<p:message for="txtCodigoPrincipal"/>
 					
 					<p:outputLabel value="#{msg['lbl_codigo_auxiliar']}:" for="txtCodigoAuxiliar"/>
@@ -26,7 +26,10 @@
 					<p:message for="txtCodigoAuxiliar"/>
 					
 					<p:outputLabel value="#{msg['lbl_nombre_producto']}:" for="txtNombreArticulo"/>
-					<p:inputText id="txtNombreArticulo" value="#{cc.attrs.controller.articulo.nombre}" required="true"/>
+					<p:row>
+						<p:inputTextarea id="txtNombreArticulo" value="#{cc.attrs.controller.articulo.nombre}" required="true" rows="10" counter="display" maxlength="180" counterTemplate="{0} characters remaining."/>
+						<h:outputText id="display" />
+					</p:row>
 					<p:message for="txtNombreArticulo"/>
 					
 					<p:outputLabel value="#{msg['lbl_fecha_caducidad']}:" for="txtFechaCaducidad"/>

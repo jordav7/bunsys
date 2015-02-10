@@ -1,0 +1,123 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:comp="http://xmlns.jcp.org/jsf/composite"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+	<comp:interface>
+		<comp:attribute name="controller"/>
+		<comp:attribute name="oncompleteSave" default=""/>
+		<comp:attribute name="processSave"/>
+		<comp:attribute name="updateSave"/>
+		<comp:attribute name="oncompleteCancel" default=""/>
+		<comp:attribute name="updateCancel"/>
+	</comp:interface>
+	<comp:implementation>
+		<div id="#{cc.clientId}">
+			<h:panelGroup layout="block" id="pnlProveedor">
+				<p:fieldset legend="#{msg['lbl_caracteristicas_prov']}">
+					<h:panelGrid columns="6">
+						<p:outputLabel value="#{msg['lbl_codigo']}:" for="txtCodigo"/>
+						<p:inputText id="txtCodigo" value="#{cc.attrs.controller.proveedor.pk.codigoproveedor}" required="true"  disabled="#{cc.attrs.controller.edition}"/>
+						<p:message for="txtCodigo"/>
+						
+						<p:outputLabel value="#{msg['lbl_nombre']}:" for="txtNombres"/>
+						<p:inputText id="txtNombres" value="#{cc.attrs.controller.proveedor.tsyspersona.nombres}"/>
+						<p:message for="txtNombres"/>
+						
+						<p:outputLabel value="#{msg['lbl_apellidos']}:" for="txtApellidos"/>
+						<p:inputText id="txtApellidos" value="#{cc.attrs.controller.proveedor.tsyspersona.apellidos}"/>
+						<p:message for="txtApellidos"/>
+						
+						<p:outputLabel value="#{msg['lbl_tipo_id']}:" for="selTipoId"/>
+						<p:selectOneMenu id="selTipoId" value="#{cc.attrs.controller.proveedor.tsyspersona.tipoid}">
+							<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+							<f:selectItems value="#{cc.attrs.controller.tipoIdColl}" var="tipoId" itemLabel="#{tipoId.descripcion}" itemValue="#{tipoId.pk.codigocatalogo}" />
+						</p:selectOneMenu>
+						<p:message for="selTipoId"/>
+						
+						<p:outputLabel value="#{msg['lbl_identificacion']}:" for="txtId"/>
+						<p:inputText id="txtId" value="#{cc.attrs.controller.proveedor.tsyspersona.identificacion}"/>
+						<p:message for="txtId"/>
+						
+						<p:outputLabel value="#{msg['lbl_grupo_prov']}:" for="selGrupoProv"/>
+						<p:selectOneMenu id="selGrupoProv" value="#{cc.attrs.controller.proveedor.grupoproveedor}">
+								<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+								<f:selectItems value="#{cc.attrs.controller.grupoProvColl}" var="grupoProv" itemLabel="#{grupoProv.descripcion}" itemValue="#{grupoProv.pk.codigocatalogo}" />
+						</p:selectOneMenu>
+						<p:message for="selGrupoProv"/>
+						
+						<p:outputLabel value="#{msg['lbl_direccion']}:" for="txtDireccion"/>
+						<p:inputTextarea id="txtDireccion" value="#{cc.attrs.controller.proveedor.tsyspersona.direccion}"/>
+						<p:message for="txtDireccion"/>
+						
+						<p:outputLabel value="#{msg['lbl_telefono_trab']}:" for="txtTelefono"/>
+						<p:inputText id="txtTelefono" value="#{cc.attrs.controller.proveedor.tsyspersona.telefonotrabajo}"/>
+						<p:message for="txtTelefono"/>
+						
+						<p:outputLabel value="#{msg['lbl_extension']}:" for="txtExtension"/>
+						<p:inputText id="txtExtension" value="#{cc.attrs.controller.proveedor.tsyspersona.extension}"/>
+						<p:message for="txtExtension"/>
+						
+						<p:outputLabel value="#{msg['lbl_telefono_cel']}:" for="txtCelular"/>
+						<p:inputText id="txtCelular" value="#{cc.attrs.controller.proveedor.tsyspersona.telefonocelular}"/>
+						<p:message for="txtCelular"/>
+						
+						<p:outputLabel value="#{msg['lbl_correo']}:" for="txtCorreo"/>
+						<p:inputText id="txtCorreo" value="#{cc.attrs.controller.proveedor.tsyspersona.correo}"/>
+						<p:message for="txtCorreo"/>
+						
+						<p:outputLabel value="#{msg['lbl_contacto']}:" for="txtContacto"/>
+						<p:inputText id="txtContacto" value="#{cc.attrs.controller.proveedor.tsyspersona.contacto}"/>
+						<p:message for="txtContacto"/>
+					</h:panelGrid>
+				</p:fieldset>
+				<p:fieldset legend="#{msg['lbl_tipo_contribuyente']}">
+					<h:panelGrid columns="6">
+						<p:outputLabel value="#{msg['lbl_obs']}:" for="txtObs"/>
+						<p:inputTextarea id="txtObs" value="#{cc.attrs.controller.proveedor.tsyspersona.observacion}"/>
+						<p:message for="txtObs"/>
+
+						<p:outputLabel value="#{msg['lbl_direccion_est']}:" for="txtDirEst"/>
+						<p:inputTextarea id="txtDirEst" value="#{cc.attrs.controller.proveedor.direccionestablecimiento}"/>
+						<p:message for="txtDirEst"/>
+
+						<p:outputLabel value="#{msg['lbl_contribuyente_sri']}:" for="rbtnConrSri"/>
+						<p:selectOneRadio id="rbtnConrSri" value="#{cc.attrs.controller.proveedor.contribuyentesri}">
+							<f:selectItems value="#{cc.attrs.controller.contribuyenteColl}" var="contribuyenteSri" itemLabel="#{contribuyenteSri.descripcion}" itemValue="#{contribuyenteSri.pk.codigocatalogo}" />
+						</p:selectOneRadio>
+						<p:message for="rbtnConrSri"/>
+
+						<p:outputLabel value="#{msg['lbl_tipo_doc']}:" for="selTipoDoc"/>
+						<p:selectOneMenu id="selTipoDoc" value="#{cc.attrs.controller.proveedor.tipodocumento}">
+							<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+							<f:selectItems value="#{cc.attrs.controller.tipoDocColl}" var="tipoDoc" itemLabel="#{tipoDoc.descripcion}" itemValue="#{tipoDoc.pk.codigoparamsri}" />
+						</p:selectOneMenu>
+						<p:message for="selTipoDoc"/>
+					
+						<p:outputLabel value="#{msg['lbl_estado']}:" for="selEstadoProv"/>
+						<p:selectOneMenu id="selEstadoProv" value="#{cc.attrs.controller.proveedor.tsyspersona.estado}">
+							<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+							<f:selectItems value="#{cc.attrs.controller.estadoColl}" var="estado" itemLabel="#{estado.descripcion}" itemValue="#{estado.pk.codigocatalogo}" />
+						</p:selectOneMenu>
+						<p:message for="selEstadoProv"/>
+					</h:panelGrid>
+					
+				</p:fieldset>
+				<h:panelGroup layout="block">
+					<p:commandButton value="#{msg['btn_guardar']}" 
+						action="#{cc.attrs.controller.guardarCambios}"
+						oncomplete="#{cc.attrs.oncompleteSave}" 
+						update="@this pnlProveedor #{cc.attrs.updateSave}" 
+						process="@this pnlProveedor #{cc.attrs.processSave}"/>
+					<p:commandButton value="#{msg['btn_cancelar']}" 
+						action="#{cc.attrs.controller.cancelar}" 
+						oncomplete="#{cc.attrs.oncompleteCancel}"
+						update="@this #{cc.attrs.updateCancel}" 
+						immediate="true"/>
+				</h:panelGroup>
+			</h:panelGroup>
+		</div>
+	</comp:implementation>
+</ui:composition>
