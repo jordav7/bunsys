@@ -49,6 +49,8 @@ public class ArticuloComponent implements Serializable {
 	
 	private Collection<Tadmcatalogo> irbpnrCatalogoColl;
 	
+	private boolean edition;
+	
 	public ArticuloComponent(){
 		this(1);
 	}
@@ -63,6 +65,8 @@ public class ArticuloComponent implements Serializable {
 		ivaCatalogoColl =  bunsysService.buscarObtenerCatalogos(compania, ContenidoMessages.getInteger("cod_catalogo_iva_articulo"));
 		irbpnrCatalogoColl = bunsysService.buscarObtenerCatalogos(compania, ContenidoMessages.getInteger("cod_catalogo_irbpnr_articulo"));
 		iceCatalogoColl = bunsysService.buscarObtenerCatalogos(compania, ContenidoMessages.getInteger("cod_catalogo_ice_articulo"));
+		
+		this.edition = true;
 	}
 	
 	/**
@@ -204,7 +208,13 @@ public class ArticuloComponent implements Serializable {
 	public void setIrbpnrCatalogoColl(Collection<Tadmcatalogo> irbpnrCatalogoColl) {
 		this.irbpnrCatalogoColl = irbpnrCatalogoColl;
 	}
-	
-	
 
+	public boolean isEdition() {
+		return edition;
+	}
+
+	public void setEdition(boolean edition) {
+		this.edition = edition;
+	}
+	
 }
