@@ -46,7 +46,7 @@ public class FacturaDao extends GeneralDao {
 		Collection<Tinvproducto> productosColl = null;
 		
 		try{
-			final StringBuilder sql = new StringBuilder("SELECT o FROM Tinvproducto o LEFT JOIN FETCH o.tadmtipoproducto LEFT JOIN FETCH o.tadmestado  WHERE o.pk.codigocompania=:codcompania ");
+			final StringBuilder sql = new StringBuilder("SELECT o FROM Tinvproducto o LEFT JOIN FETCH o.tadmtipoproducto LEFT JOIN FETCH o.tadmestado  WHERE o.pk.codigocompania=:codCompania ");
 			
 			if(StringUtils.isNotBlank(codigoProducto)){
 				sql.append("and o.pk.codigoproductos = :codigoProducto ");
@@ -71,7 +71,7 @@ public class FacturaDao extends GeneralDao {
 			}
 			
 			Query query = this.entityManager.createQuery(sql.toString());
-			query.setParameter("codcompania", codCompania);
+			query.setParameter("codCompania", codCompania);
 			
 			if(StringUtils.isNotBlank(codigoProducto)){
 				query.setParameter("codigoProducto", codigoProducto);
