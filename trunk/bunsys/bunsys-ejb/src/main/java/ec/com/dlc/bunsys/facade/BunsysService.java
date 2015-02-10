@@ -3,10 +3,14 @@ package ec.com.dlc.bunsys.facade;
 import java.util.Collection;
 
 import javax.ejb.Local;
+import javax.persistence.criteria.CriteriaBuilder.In;
 
 import ec.com.dlc.bunsys.entity.administracion.Tadmcatalogo;
 import ec.com.dlc.bunsys.entity.administracion.Tadmcompania;
+import ec.com.dlc.bunsys.entity.administracion.Tadmparamsri;
 import ec.com.dlc.bunsys.entity.administracion.Tadmusuario;
+import ec.com.dlc.bunsys.entity.cuentasxpagar.Tcxpproveedor;
+import ec.com.dlc.bunsys.entity.cuentasxpagar.pk.TcxpproveedorPK;
 import ec.com.dlc.bunsys.entity.inventario.Tinvproducto;
 import ec.com.dlc.bunsys.entity.inventario.pk.TinvproductoPK;
 import ec.com.dlc.bunsys.entity.seguridad.Tsyspersona;
@@ -59,7 +63,26 @@ public interface BunsysService {
 	 * @param articulo
 	 * @throws FacturacionException
 	 */
-	void eliminarArticulo(TinvproductoPK articuloPk, Integer estadoCodigo);
+	void eliminarArticulo(TinvproductoPK articuloPk, Integer estadoCodigo) throws FacturacionException;
+	
+	/**
+	 * Busca Proveedores
+	 */
+	Collection<Tcxpproveedor> buscarObtenerProveedores(Integer codCompania, String codProv, String tipoId, Integer codTipoId, String id, String nombres, String apellidos, String grupoProv, Integer codGrupoProv,String estado, Integer estadoCodigo);
+	
+	/**
+	 * Busca cat&aacute;logos de par&aacute;metros SRI cxp
+	 * @param codCompania
+	 * @param codTipoCatalogo
+	 * @return
+	 * @throws FacturacionException
+	 */
+	Collection<Tadmparamsri> buscarTipoDocSriCxp(Integer codTipoParametro, String cxp) throws FacturacionException;
+	
+	void guardarProveedor(Tcxpproveedor proveedor) throws FacturacionException;
+	
+	void eliminarProveedor(TcxpproveedorPK proveedorPk, Integer estadoCodigo) throws FacturacionException;
+	
 	
 	/**
 	 * Busca usuarios en base a los par&aacute;metros de consulta enviados
