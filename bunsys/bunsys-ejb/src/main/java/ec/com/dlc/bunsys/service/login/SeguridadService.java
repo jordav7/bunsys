@@ -83,4 +83,14 @@ public class SeguridadService {
 			throw new FacturacionException(e);
 		}
 	}
+	
+	public void eliminarUsuario(Tadmusuario tadmusuario) throws FacturacionException{
+		try {
+			tadmusuario.setEstado("I");
+			tadmusuario.setEstadocodigo(3);
+			seguridadDao.update(tadmusuario);
+		} catch (Throwable e) {
+			throw new FacturacionException(e);
+		}
+	}
 }
