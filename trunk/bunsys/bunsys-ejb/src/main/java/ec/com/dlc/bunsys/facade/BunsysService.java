@@ -103,4 +103,11 @@ public interface BunsysService {
 	 * @throws FacturacionException
 	 */
 	void guardarUsuario(Integer codigocompania, Tadmusuario tadmusuario, Tsyspersona tsyspersona) throws FacturacionException;
+	
+	/**
+	 * Inactiva un usuario
+	 * @param tadmusuario
+	 * @throws FacturacionException
+	 */
+	void eliminarUsuario(Tadmusuario tadmusuario) throws FacturacionException;
 }

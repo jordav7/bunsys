@@ -110,4 +110,10 @@ public class BunsysServiceBean implements BunsysService {
 		seguridadService.guardarUsuario(codigocompania, tadmusuario, tsyspersona);
 	}
 
+	@Override
+	public void eliminarUsuario(Tadmusuario tadmusuario)
+			throws FacturacionException {
+		seguridadService.eliminarUsuario(tadmusuario);
+	}
+
 }
