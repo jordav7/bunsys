@@ -7,84 +7,101 @@
       xmlns:b="http://xmlns.jcp.org/jsf/composite/bunsysComponents"
       template="/WEB-INF/templates/template.xhtml">
 	  <ui:param name="idForm" value="frmProveedores" />
+	  <ui:param name="controller" value="#{proveedorController}" />
 	  <ui:define name="contentBody">
 	  	<p:panel header="#{msg['lbl_proveedores']}">
 		  	<p:fieldset legend="#{msg['lbl_busqueda']}">
 		  		<h:panelGroup layout="block">
 		  			<h:panelGrid columns="3">
 		  				<p:outputLabel value="#{msg['lbl_codigo']}:" for="txtCod"/>
-		  				<p:inputText id="txtCod"/>
+		  				<p:inputText id="txtCod" value="#{proveedorDatamanager.proveedorSearch.pk.codigoproveedor}"/>
 		  				<p:message for="txtCod"/>
 		  			
 				  		<p:outputLabel value="#{msg['lbl_tipo_id']}:" for="selTipoId"/>
-				  		<p:selectOneMenu id="selTipoId" >
+				  		<p:selectOneMenu id="selTipoId" value="#{proveedorDatamanager.proveedorSearch.tsyspersona.tipoid}" >
 		  					<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+		  					<f:selectItems value="#{proveedorDatamanager.tipoIdColl}" var="tipoId" itemLabel="#{tipoId.descripcion}" itemValue="#{tipoId.pk.codigocatalogo}"/>
 		  				</p:selectOneMenu>
 				  		<p:message for="selTipoId"/>
 				  		
 				  		<p:outputLabel value="#{msg['lbl_identificacion']}:" for="txtId"/>
-				  		<p:inputText id="txtId"/>
+				  		<p:inputText id="txtId" value="#{proveedorDatamanager.proveedorSearch.tsyspersona.identificacion}"/>
 				  		<p:message for="txtId"/>
 				  		
 				  		<p:outputLabel value="#{msg['lbl_nombre']}:" for="txtNombre"/>
-				  		<p:inputText id="txtNombre"/>
+				  		<p:inputText id="txtNombre" value="#{proveedorDatamanager.proveedorSearch.tsyspersona.nombres}"/>
 				  		<p:message for="txtNombre"/>
 				  		
 				  		<p:outputLabel value="#{msg['lbl_apellidos']}:" for="txtApellidos"/>
-				  		<p:inputText id="txtApellidos"/>
+				  		<p:inputText id="txtApellidos" value="#{proveedorDatamanager.proveedorSearch.tsyspersona.apellidos}"/>
 				  		<p:message for="txtApellidos"/>
 				  		
 				  		<p:outputLabel value="#{msg['lbl_grupo_prov']}:" for="selGrupoProv"/>
-				  		<p:selectOneMenu id="selGrupoProv" >
+				  		<p:selectOneMenu id="selGrupoProv" value="#{proveedorDatamanager.proveedorSearch.grupoproveedor}">
 		  					<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+		  					<f:selectItems value="#{proveedorDatamanager.grupoProvColl}" var="grupoProv" itemLabel="#{grupoProv.descripcion}" itemValue="#{grupoProv.pk.codigocatalogo}"/>
 		  				</p:selectOneMenu>
 		  				<p:message for="selGrupoProv"/>
+		  				
+		  				<p:outputLabel value="#{msg['lbl_estado']}:" for="selEstado"/>
+				  		<p:selectOneMenu id="selEstado" value="#{proveedorDatamanager.proveedorSearch.tsyspersona.estado}">
+		  					<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+		  					<f:selectItems value="#{proveedorDatamanager.estadoProvColl}" var="estado" itemLabel="#{estado.descripcion}" itemValue="#{estado.pk.codigocatalogo}"/>
+		  				</p:selectOneMenu>
+		  				<p:message for="selEstado"/>
 
 			  		</h:panelGrid>
 			  	</h:panelGroup>
 			  	<h:panelGroup layout="block" style="float:left">
-		  			<p:commandButton icon="ui-icon-search" value="#{msg['btn_buscar']}" />
+		  			<p:commandButton icon="ui-icon-search" value="#{msg['btn_buscar']}" action="#{proveedorController.buscar()}" update="pnlDataProveedores"/>
 		  			<p:commandButton icon="ui-icon-plusthick" 
-		  				value="#{msg['btn_crear']}"/>
+		  				value="#{msg['btn_crear']}"
+		  				oncomplete="PF('dlgProveedor').show()" 
+		  				action="#{proveedorController.crearProveedor()}" 
+		  				update=":frmCreacionProveedores:pnlProveedor">
+		  				<f:setPropertyActionListener target="#{proveedorDatamanager.proveedorComponente.edition}" value="false"/>
+		  			</p:commandButton>
 		  		</h:panelGroup>
 		  	</p:fieldset>
 		  	<p:fieldset legend="#{msg['lbl_listado_prov']}">
 		  		<h:panelGroup layout="block" id="pnlDataProveedores">
-		  			<p:dataTable  var="proveedores">
+		  			<p:dataTable value="#{proveedorDatamanager.proveedorColl}" var="proveedores">
 		  				<p:column headerText="#{msg['lbl_codigo']}">
-		  					<h:outputText value="" />
+		  					<h:outputText value="#{proveedores.pk.codigoproveedor}" />
 		  				</p:column>
 		  				
 		  				<p:column headerText="#{msg['lbl_identificacion']}">
-		  					<h:outputText value="" />
+		  					<h:outputText value="#{proveedores.tsyspersona.identificacion}" />
 		  				</p:column>
 		  				
 		  				<p:column headerText="#{msg['lbl_nombre']}">
-		  					<h:outputText value="" />
+		  					<h:outputText value="#{proveedores.tsyspersona.nombres}" />
 		  				</p:column>
 		  				
 		  				<p:column headerText="#{msg['lbl_apellidos']}">
-		  					<h:outputText value="" />
+		  					<h:outputText value="#{proveedores.tsyspersona.apellidos}" />
 		  				</p:column>
 		  				
 		  				<p:column headerText="#{msg['lbl_grupo_prov']}">
-		  					<h:outputText value="" />
+		  					<h:outputText value="#{proveedores.tadmgrupoproveedor.descripcion}" />
 		  				</p:column>
 		  				
 		  				<p:column headerText="#{msg['lbl_contribuyente_sri']}">
-		  					<h:outputText value="" />
+		  					<h:outputText value="#{proveedores.tadmcontribuyente.descripcion}" />
 		  				</p:column>
 		  				
 		  				<p:column headerText="#{msg['lbl_estado']}">
-		  					<h:outputText value="" />
+		  					<h:outputText value="#{proveedores.tsyspersona.tadmestado.descripcion}" />
 		  				</p:column>
 		  				
 		  				<p:column styleClass="bun-action">
-		  					<p:commandButton icon="ui-icon-pencil" title="#{msg['btn_actualizar']}">
+		  					<p:commandButton icon="ui-icon-pencil" title="#{msg['btn_actualizar']}" oncomplete="PF('dlgProveedor').show();" update=":frmCreacionProveedores:pnlProveedor">
+		  						<f:setPropertyActionListener target="#{proveedorDatamanager.proveedorComponente.proveedor}" value="#{proveedores}"/>
+		  						<f:setPropertyActionListener target="#{proveedorDatamanager.proveedorComponente.edition}" value="true"/>
 		  					</p:commandButton>
 		  				</p:column>
 		  				<p:column styleClass="bun-action">
-		  					<p:commandButton icon="ui-icon-trash" title="#{msg['btn_eliminar']}"/>
+		  					<p:commandButton icon="ui-icon-trash" title="#{msg['btn_eliminar']}" action="#{proveedorController.eliminar(proveedores.pk.codigoproveedor)}" update=":frmProveedores:pnlDataProveedores"/>
 		  				</p:column>
 		  			</p:dataTable>
 		  		</h:panelGroup>
@@ -96,9 +113,16 @@
 	  <ui:define name="dialogArea">
 	  	<p:dialog widgetVar="dlgProveedor" appendTo="@(body)" modal="true" resizable="false" closeOnEscape="true">
 	  		<f:facet name="header">
-	  			<h:outputText value="#{msg['lbl_articulos']}" />
+	  			<h:outputText value="#{msg['lbl_proveedores']}" />
 	  		</f:facet>
 			<h:form id="frmCreacionProveedores">
+				<b:proveedorComponent id="pnlProveedor" 
+					controller="#{proveedorDatamanager.proveedorComponente}" 
+					processSave="@this" 
+					updateSave=":frmProveedores:pnlDataProveedores" 
+					oncompleteSave="buscar();PF('dlgProveedor').hide();"
+					oncompleteCancel="PF('dlgProveedor').hide();"/>
+				<p:remoteCommand name="buscar" update=":frmProveedores:pnlDataProveedores" action="#{proveedorController.buscar}"/>
 			</h:form>	  		
 	  	</p:dialog>
 	  </ui:define>
