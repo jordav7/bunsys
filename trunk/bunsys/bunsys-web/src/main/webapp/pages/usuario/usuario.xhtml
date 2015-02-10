@@ -91,7 +91,7 @@
             			<p:commandButton icon="ui-icon-trash"
             				update=":frmUsuarios:pnlDataUsuarios" 
             				title="#{msg['btn_eliminar']}" 
-            				onclick="if(window.confirm('Est\u00e1 seguro de eliminar el registro')) return false;" 
+            				onclick="if(window.confirm('Est\u00e1 seguro de eliminar el registro')){ return false;}" 
             				action="#{usuariosController.eliminar}">
             				<f:setPropertyActionListener target="#{usuariosDatamanager.usuario}" value="#{usuario}"/>
             			</p:commandButton>
