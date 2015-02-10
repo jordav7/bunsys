@@ -46,7 +46,10 @@
 		  				value="#{msg['btn_crear']}"
 		  				oncomplete="PF('dlgArticulo').show()" 
 		  				action="#{articuloController.crearArticulo()}" 
-		  				update=":frmCreacionArticulos:pnlArticulo"/>
+		  				update=":frmCreacionArticulos:pnlArticulo">
+		  				
+		  				<f:setPropertyActionListener target="#{articuloDatamanager.articuloComponente.edition}" value="false"/>
+		  			</p:commandButton>
 		  		</h:panelGroup>
 		  	</p:fieldset>
 		  	<p:fieldset legend="#{msg['lbl_listado_articulos']}">
@@ -73,6 +76,7 @@
 		  				<p:column styleClass="bun-action">
 		  					<p:commandButton icon="ui-icon-pencil" title="#{msg['btn_actualizar']}" oncomplete="PF('dlgArticulo').show();" update=":frmCreacionArticulos:pnlArticulo">
 		  						<f:setPropertyActionListener target="#{articuloDatamanager.articuloComponente.articulo}" value="#{articulo}"/>
+		  						<f:setPropertyActionListener target="#{articuloDatamanager.articuloComponente.edition}" value="true"/>
 		  					</p:commandButton>
 		  				</p:column>
 		  				<p:column styleClass="bun-action">
@@ -89,7 +93,13 @@
 	  			<h:outputText value="#{msg['lbl_articulos']}" />
 	  		</f:facet>
 			<h:form id="frmCreacionArticulos">
-				<b:articuloComponent id="pnlArticulo" controller="#{articuloDatamanager.articuloComponente}" processSave="@this" updateSave=":frmArticulos:pnlDataArticulos" oncompleteSave="PF('dlgArticulo').hide();"/>
+				<b:articuloComponent id="pnlArticulo" 
+					controller="#{articuloDatamanager.articuloComponente}" 
+					processSave="@this" 
+					updateSave=":frmArticulos:pnlDataArticulos" 
+					oncompleteSave="buscar();PF('dlgArticulo').hide();"
+					oncompleteCancel="PF('dlgArticulo').hide();"/>
+				<p:remoteCommand name="buscar" update=":frmArticulos:pnlDataArticulos" action="#{articuloController.buscar}"/>
 			</h:form>	  		
 	  	</p:dialog>
 	  </ui:define>
