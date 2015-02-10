@@ -14,6 +14,7 @@ import ec.com.dlc.bunsys.entity.administracion.Tadmcatalogo;
 import ec.com.dlc.bunsys.entity.administracion.Tadmparamsri;
 import ec.com.dlc.bunsys.entity.base.BaseEntity;
 import ec.com.dlc.bunsys.entity.cuentasxpagar.pk.TcxpproveedorPK;
+import ec.com.dlc.bunsys.entity.inventario.pk.TinvproductoPK;
 import ec.com.dlc.bunsys.entity.seguridad.Tsyspersona;
 
 
@@ -72,12 +73,18 @@ public class Tcxpproveedor extends BaseEntity<TcxpproveedorPK>  {
 		})
 	private Tsyspersona tsyspersona;
 	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumns({
+		@JoinColumn(name="tipodocumento", referencedColumnName="codigoparamsri", insertable=false, updatable=false),
+		@JoinColumn(name="tipodocumentocodigo", referencedColumnName="codigotipoparamsri", insertable=false, updatable=false)
+		})
 	private Tadmparamsri tadmparamsri;
 	//bi-directional many-to-one association to Tcxpcabcomprobanteretencion
 	@OneToMany(mappedBy="tcxpproveedor")
 	private Collection<Tcxpcabcomprobanteretencion> tcxpcabcomprobanteretencions;
 
 	public Tcxpproveedor() {
+		this.pk = new TcxpproveedorPK();
 	}
 
 	public Integer getCodigopersona() {
@@ -126,14 +133,6 @@ public class Tcxpproveedor extends BaseEntity<TcxpproveedorPK>  {
 
 	public void setGrupoproveedorcodigo(Integer grupoproveedorcodigo) {
 		this.grupoproveedorcodigo = grupoproveedorcodigo;
-	}
-
-	public String getTipodocumento() {
-		return this.tipodocumento;
-	}
-
-	public void setTipodocumento(String tipodocumento) {
-		this.tipodocumento = tipodocumento;
 	}
 
 	public Integer getTipodocumentocodigo() {
@@ -196,6 +195,14 @@ public class Tcxpproveedor extends BaseEntity<TcxpproveedorPK>  {
 
 	public void setTadmparamsri(Tadmparamsri tadmparamsri) {
 		this.tadmparamsri = tadmparamsri;
+	}
+
+	public String getTipodocumento() {
+		return tipodocumento;
+	}
+
+	public void setTipodocumento(String tipodocumento) {
+		this.tipodocumento = tipodocumento;
 	}
 
 }
