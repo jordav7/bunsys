@@ -8,6 +8,7 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.inject.Inject;
 
+import ec.com.dlc.bunsys.dao.compras.ComprasDao;
 import ec.com.dlc.bunsys.dao.facturacion.FacturaDao;
 import ec.com.dlc.bunsys.entity.administracion.Tadmcompania;
 
@@ -25,4 +26,5 @@ public class FacturacionService {
 	public Collection<Tadmcompania> obtenerCompania() {
 		return facturaDao.findObjects(new Tadmcompania());
 	}
+	
 }
