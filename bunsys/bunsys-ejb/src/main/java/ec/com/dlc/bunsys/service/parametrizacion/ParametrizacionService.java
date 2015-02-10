@@ -7,10 +7,15 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 
+import ec.com.dlc.bunsys.dao.compras.ComprasDao;
 import ec.com.dlc.bunsys.dao.facturacion.FacturaDao;
 import ec.com.dlc.bunsys.entity.administracion.Tadmcatalogo;
+import ec.com.dlc.bunsys.entity.administracion.Tadmparamsri;
+import ec.com.dlc.bunsys.entity.cuentasxpagar.Tcxpproveedor;
+import ec.com.dlc.bunsys.entity.cuentasxpagar.pk.TcxpproveedorPK;
 import ec.com.dlc.bunsys.entity.inventario.Tinvproducto;
 import ec.com.dlc.bunsys.entity.inventario.pk.TinvproductoPK;
+import ec.com.dlc.bunsys.entity.seguridad.Tsyspersona;
 import ec.com.dlc.bunsys.util.FacturacionException;
 
 /**
@@ -25,6 +30,8 @@ public class ParametrizacionService {
 	@Inject
 	private FacturaDao facturaDao;
 	
+	@Inject
+	private ComprasDao comprasDao;
 	/**
 	 * Busca todos los c&aacute;talogos que coinciden con compan&iacute; y cat&aacute;logo
 	 * @param codigoCompania
@@ -58,11 +65,57 @@ public class ParametrizacionService {
 		return facturaDao.obtenerProductos(codCompania, codigoProducto, codigoAuxiliar, nombreProducto, color, colorCodigo, estado, estadoCodigo);
 	}
 	
-	public void eliminarArticulo(TinvproductoPK articuloPk, Integer estadoCodigo){
+	/**
+	 * Elimina art&iacute;culo
+	 * @param articulo
+	 * @throws FacturacionException
+	 */
+	public void eliminarArticulo(TinvproductoPK articuloPk, Integer estadoCodigo) throws FacturacionException{
 		Tinvproducto articulo = facturaDao.findById(Tinvproducto.class, articuloPk);
 		articulo.setEstado("I");
 		articulo.setEstadocodigo(estadoCodigo);
 		facturaDao.update(articulo);
 	}
 		
+	/**
+	 * Buscar art&iacute;culo
+	 * @param articulo
+	 * @throws FacturacionException
+	 */
+	public Collection<Tcxpproveedor> obtenerProveedores(Integer codCompania, String codProv, String tipoId, Integer codTipoId, String id, String nombres, String apellidos, String grupoProv, Integer codGrupoProv,String estado, Integer estadoCodigo) {
+		return comprasDao.obtenerProveedor(codCompania, codProv, tipoId, codTipoId, id, nombres, apellidos, grupoProv, codGrupoProv, estado, estadoCodigo);
+	}
+	
+	/**
+	 * Busca todos los c&aacute;talogos de tipo de documento SRI proveedores
+	 * @param codigoCompania
+	 * @param codigoCatalogo
+	 * @return
+	 * @throws FacturacionException
+	 */
+	public Collection<Tadmparamsri> obtenerTipoDocSriCxp(Integer codTipoParametro, String cxp) throws FacturacionException{
+		return  comprasDao.obtenerTipoDocProv(codTipoParametro, cxp);
+	}
+	
+	public void guardarProveedor( Tcxpproveedor proveedor) throws FacturacionException {
+		proveedor.getTsyspersona().getPk().setCodigocompania(proveedor.getPk().getCodigocompania());
+		Tsyspersona persona = proveedor.getTsyspersona();
+		if(persona.getPk().getCodigopersona() != null){
+			comprasDao.update(proveedor.getTsyspersona());
+			comprasDao.update(proveedor);
+		}else{
+			comprasDao.create(persona);
+			proveedor.setCodigopersona(persona.getPk().getCodigopersona());
+			comprasDao.create(proveedor);
+		}
+	}
+	
+	public void eliminarProveedor(TcxpproveedorPK proveedorPk, Integer estadoCodigo) throws FacturacionException{
+		Tcxpproveedor proveedor= comprasDao.findById(Tcxpproveedor.class, proveedorPk);
+		Tsyspersona persona = proveedor.getTsyspersona();
+		persona.setEstado("I");
+		persona.setEstadocodigo(estadoCodigo);
+		comprasDao.update(persona);
+		
+	}
 }
