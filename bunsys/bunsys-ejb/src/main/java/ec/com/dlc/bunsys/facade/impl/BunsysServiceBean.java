@@ -10,7 +10,10 @@ import javax.ejb.TransactionAttribute;
 
 import ec.com.dlc.bunsys.entity.administracion.Tadmcatalogo;
 import ec.com.dlc.bunsys.entity.administracion.Tadmcompania;
+import ec.com.dlc.bunsys.entity.administracion.Tadmparamsri;
 import ec.com.dlc.bunsys.entity.administracion.Tadmusuario;
+import ec.com.dlc.bunsys.entity.cuentasxpagar.Tcxpproveedor;
+import ec.com.dlc.bunsys.entity.cuentasxpagar.pk.TcxpproveedorPK;
 import ec.com.dlc.bunsys.entity.inventario.Tinvproducto;
 import ec.com.dlc.bunsys.entity.inventario.pk.TinvproductoPK;
 import ec.com.dlc.bunsys.entity.seguridad.Tsyspersona;
@@ -69,6 +72,33 @@ public class BunsysServiceBean implements BunsysService {
 		parametrizacionService.eliminarArticulo(articuloPk, estadoCodigo);
 	}
 
+	@Override
+	public Collection<Tcxpproveedor> buscarObtenerProveedores(
+			Integer codCompania, String codProv, String tipoId,
+			Integer codTipoId, String id, String nombres, String apellidos,
+			String grupoProv, Integer codGrupoProv, String estado,
+			Integer estadoCodigo) {
+		return parametrizacionService.obtenerProveedores(codCompania, codProv, tipoId, codTipoId, id, nombres, apellidos, grupoProv, codGrupoProv, estado, estadoCodigo);
+	}
+
+	@Override
+	public Collection<Tadmparamsri> buscarTipoDocSriCxp(Integer codTipoParametro, String cxp) throws FacturacionException {
+		return parametrizacionService.obtenerTipoDocSriCxp(codTipoParametro, cxp);
+	}
+
+	@Override
+	public void guardarProveedor(Tcxpproveedor proveedor)
+			throws FacturacionException {
+		// TODO Auto-generated method stub
+		parametrizacionService.guardarProveedor(proveedor);
+	}
+
+	@Override
+	public void eliminarProveedor(TcxpproveedorPK proveedorPk,
+			Integer estadoCodigo) throws FacturacionException {
+		parametrizacionService.eliminarProveedor(proveedorPk, estadoCodigo);
+	}
+	
 	@Override
 	public Collection<Tadmusuario> buscarUsuarios(Integer codCompania, String nombreUsuario, String identificacion, String nombres, String apellidos) {
 		return seguridadService.buscarUsuarios(codCompania, nombreUsuario, identificacion, nombres, apellidos);
