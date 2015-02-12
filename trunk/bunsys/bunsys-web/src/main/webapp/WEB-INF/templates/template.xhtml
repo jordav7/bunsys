@@ -6,6 +6,7 @@
 	<f:view>
 		<h:head>
 			<h:outputScript library="js" name="jquery.layout-latest.js" />
+			<h:outputStylesheet library="js" name="bunsys.js"/>
 			<h:outputStylesheet library="css" name="layout-default-latest.css" />
 			<h:outputStylesheet library="css" name="bunsys.css"/>
 			<title>#{msg['lbl_tituto_aplicacion']}</title>
@@ -20,7 +21,6 @@
 					<!-- ============ 	MENU SECTION ============== -->
 					<div class="ui-layout-center">
 						<ui:include src="/WEB-INF/templates/menu.xhtml"/>
-						<p:messages autoUpdate="true"/>
 						<ui:insert name="contentBody"/>
 					</div>
 					    <!-- ============ FOOTER SECTION ============== -->
@@ -32,8 +32,24 @@
 				        <p:commandButton value="#{msg['lbl_no']}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
 				    </p:confirmDialog>
 				</h:form>
-				<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
- 
+				<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide();" />
+ 				<p:notificationBar id="barMessages" position="bottom" widgetVar="barMessages">
+ 					<span class="ui-notificationbar-close">
+ 						<h:graphicImage library="image" name="closebar.png" onclick="PF('barMessages').hide();"/>
+ 					</span>
+			    	<p:messages globalOnly="true" autoUpdate="true" />
+			    </p:notificationBar>
+			    <p:outputPanel autoUpdate="true">
+					<script type="text/javascript">
+						jQuery(document).ready(function() {
+							if($("#barMessages > .ui-messages").find("li").length > 0){
+								PF('barMessages').show();
+							} else{
+								PF('barMessages').hide();
+							}
+						});
+					</script>
+				</p:outputPanel>
 				<p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
 				    <p:graphicImage library="image" name="ajax-loader.gif" />
 				</p:dialog>
