@@ -85,10 +85,20 @@ public class UsuariosController extends BaseController{
     	try{
     		bunsysService.guardarUsuario(usuariosDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania(), usuariosDatamanager.getUsuario(), usuariosDatamanager.getUsuario().getTsyspersona());
     		buscar();
+    		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Registro guardado correctamente", "Registro guardado correctamente"));
     	}catch(Throwable e){
     		FacesContext.getCurrentInstance().validationFailed();
     		RequestContext.getCurrentInstance().showMessageInDialog(new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
     	}
+	}
+    
+    public void cerrar() {
+		try {
+			RequestContext.getCurrentInstance().execute("PF('dialogUsuario').hide();");
+		} catch (Throwable e) {
+			FacesContext.getCurrentInstance().validationFailed();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
+		}
 	}
     
     public UsuariosDatamanager getUsuariosDatamanager() {
