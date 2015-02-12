@@ -106,9 +106,9 @@
                 <h:outputText value="#{msg['lbl_usuario']}" />
             </f:facet>
             <h:form id="frmGuardarUsuarios">
-            	<p:messages autoUpdate="true"/>
-                <h:panelGroup id="pnlUsuario" layout="block">
-                    <h:panelGrid columns="3">
+            	<p:messages autoUpdate="true" globalOnly="true"/>
+                <h:panelGroup layout="block">
+                    <h:panelGrid columns="3" id="pnlUsuario">
                         <p:outputLabel for="txtUsuario" value="#{msg['lbl_usuario']}:"/>
                         <p:inputText id="txtUsuario" value="#{usuariosDatamanager.usuario.usuario}" required="true"/>
                         <p:message for="txtUsuario"/>
@@ -160,7 +160,7 @@
                     	<p:commandButton value="#{msg['btn_cancelar']}"
                     		icon="ui-icon-close"
                     		immediate="true"
-                    		oncomplete="PF('dialogUsuario').hide();"/>
+                    		actionListener="#{usuariosController.cerrar}"/>
                     </h:panelGroup>
                 </h:panelGroup>
             </h:form>
