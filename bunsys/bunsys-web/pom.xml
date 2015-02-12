@@ -112,6 +112,12 @@
             <artifactId>primefaces-extensions</artifactId>
             <version>3.0.0</version>
         </dependency>
+        <dependency>
+			<groupId>org.omnifaces</groupId>
+			<artifactId>omnifaces</artifactId>
+			<version>1.1</version>
+		</dependency>
+		        
        <dependency>
 			<groupId>commons-fileupload</groupId>
 			<artifactId>commons-fileupload</artifactId>
