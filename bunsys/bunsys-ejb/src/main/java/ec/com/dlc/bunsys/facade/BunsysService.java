@@ -9,6 +9,7 @@ import ec.com.dlc.bunsys.entity.administracion.Tadmcatalogo;
 import ec.com.dlc.bunsys.entity.administracion.Tadmcompania;
 import ec.com.dlc.bunsys.entity.administracion.Tadmparamsri;
 import ec.com.dlc.bunsys.entity.administracion.Tadmusuario;
+import ec.com.dlc.bunsys.entity.administracion.pk.TadmcompaniaPK;
 import ec.com.dlc.bunsys.entity.cuentasxpagar.Tcxpproveedor;
 import ec.com.dlc.bunsys.entity.cuentasxpagar.pk.TcxpproveedorPK;
 import ec.com.dlc.bunsys.entity.inventario.Tinvproducto;
@@ -104,10 +105,21 @@ public interface BunsysService {
 	 */
 	void guardarUsuario(Integer codigocompania, Tadmusuario tadmusuario, Tsyspersona tsyspersona) throws FacturacionException;
 	
+	
 	/**
 	 * Inactiva un usuario
 	 * @param tadmusuario
 	 * @throws FacturacionException
 	 */
 	void eliminarUsuario(Tadmusuario tadmusuario) throws FacturacionException;
+	
+	
+	/**
+	 * Busca companias en base al PK
+	 * @param companiaPk
+	 * @return
+	 */
+	Tadmcompania buscarCompania(TadmcompaniaPK companiaPk) throws FacturacionException;
+	
+	void actualizarCompania(Tadmcompania compania) throws FacturacionException;
 }
