@@ -73,6 +73,7 @@ public class UsuariosController extends BaseController{
 		try {
 			bunsysService.eliminarUsuario(usuariosDatamanager.getUsuario());
 			buscar();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Registro eliminado correctamente", "Registro eliminado correctamente"));
 		} catch (Throwable e) {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
 		}
