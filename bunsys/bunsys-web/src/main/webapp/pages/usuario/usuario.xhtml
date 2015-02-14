@@ -13,7 +13,7 @@
                 <h:panelGroup layout="block">
                     <h:panelGrid columns="3">
                         <p:outputLabel for="txtNombreUsuario" value="#{msg.lbl_usuario}:"/>
-                        <p:inputText value="#{usuariosDatamanager.usuarioSearch.usuario}" id="txtNombreUsuario" />
+                        <p:inputText value="#{usuariosDatamanager.usuarioSearch.usuario}" id="txtNombreUsuario" onkeyup="bunsys.toUppercase(event, this);"/>
                         <p:message for="txtNombreUsuario" />
                         
                         <p:outputLabel for="txtIdentificacion" value="#{msg.lbl_identificacion}:"/>
