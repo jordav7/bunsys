@@ -7,10 +7,13 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 
+import ec.com.dlc.bunsys.dao.administracion.AdministracionDao;
 import ec.com.dlc.bunsys.dao.compras.ComprasDao;
 import ec.com.dlc.bunsys.dao.facturacion.FacturaDao;
 import ec.com.dlc.bunsys.entity.administracion.Tadmcatalogo;
+import ec.com.dlc.bunsys.entity.administracion.Tadmcompania;
 import ec.com.dlc.bunsys.entity.administracion.Tadmparamsri;
+import ec.com.dlc.bunsys.entity.administracion.pk.TadmcompaniaPK;
 import ec.com.dlc.bunsys.entity.cuentasxpagar.Tcxpproveedor;
 import ec.com.dlc.bunsys.entity.cuentasxpagar.pk.TcxpproveedorPK;
 import ec.com.dlc.bunsys.entity.inventario.Tinvproducto;
@@ -32,6 +35,9 @@ public class ParametrizacionService {
 	
 	@Inject
 	private ComprasDao comprasDao;
+	
+	@Inject
+	private AdministracionDao admDao;
 	/**
 	 * Busca todos los c&aacute;talogos que coinciden con compan&iacute; y cat&aacute;logo
 	 * @param codigoCompania
@@ -117,5 +123,31 @@ public class ParametrizacionService {
 		persona.setEstadocodigo(estadoCodigo);
 		comprasDao.update(persona);
 		
+	}
+	
+	public Tadmcompania buscarCompania(TadmcompaniaPK companiaPk) throws FacturacionException {
+		Tadmcompania compania = admDao.findById(Tadmcompania.class, companiaPk);
+		return compania;
+	}
+	
+	public void actualizarCompania(Tadmcompania compania) {
+		Tadmcompania compAct = admDao.findById(Tadmcompania.class, compania.getPk());
+		compAct.setCodigoestablecimiento(compania.getCodigoestablecimiento());
+		compAct.setCodigopuntoemision(compania.getCodigopuntoemision());
+		compAct.setCorreo(compania.getCorreo());
+		compAct.setDireccionestablecimiento(compania.getDireccionestablecimiento());
+		compAct.setDireccionmatriz(compania.getDireccionmatriz());
+		compAct.setIdcontador(compania.getIdcontador());
+		compAct.setLogocompania(compania.getLogocompania());
+		compAct.setNombrecomercial(compania.getNombrecomercial());
+		compAct.setNumeroresolucion(compania.getNumeroresolucion());
+		compAct.setObligacioncontabilidad(compania.getObligacioncontabilidad());
+		compAct.setRazonsocial(compania.getRazonsocial());
+		compAct.setRuc(compania.getRuc());
+		compAct.setTelefono(compania.getTelefono());
+		compAct.setTiemporespuesta(compania.getTiemporespuesta());
+		compAct.setTipoidcontador(compania.getTipoidcontador());
+		
+		admDao.update(compAct);
 	}
 }
