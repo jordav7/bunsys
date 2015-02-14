@@ -4,8 +4,11 @@ import java.util.Collection;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Type;
 
 import ec.com.dlc.bunsys.entity.administracion.pk.TadmcompaniaPK;
 import ec.com.dlc.bunsys.entity.base.BaseEntity;
@@ -39,7 +42,9 @@ public class Tadmcompania extends BaseEntity<TadmcompaniaPK>{
 	private String idcontador;
 
 	@Column
-	private String logo;
+	@Type(type="org.hibernate.type.BinaryType")
+//	@Lob
+	private  byte[] logocompania;
 
 	@Column
 	private String nombrecomercial;
@@ -128,14 +133,6 @@ public class Tadmcompania extends BaseEntity<TadmcompaniaPK>{
 		this.idcontador = idcontador;
 	}
 
-	public String getLogo() {
-		return this.logo;
-	}
-
-	public void setLogo(String logo) {
-		this.logo = logo;
-	}
-
 	public String getNombrecomercial() {
 		return this.nombrecomercial;
 	}
@@ -222,6 +219,14 @@ public class Tadmcompania extends BaseEntity<TadmcompaniaPK>{
 
 	public void setTadmusuarios(Collection<Tadmusuario> tadmusuarios) {
 		this.tadmusuarios = tadmusuarios;
+	}
+
+	public byte[] getLogocompania() {
+		return logocompania;
+	}
+
+	public void setLogocompania(byte[] logocompania) {
+		this.logocompania = logocompania;
 	}
 
 }
