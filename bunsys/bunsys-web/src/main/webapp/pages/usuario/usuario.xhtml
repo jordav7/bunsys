@@ -153,10 +153,10 @@
                     <h:panelGroup layout="block">
                     	<p:commandButton value="#{msg['btn_guardar']}"
                     		icon="ui-icon-disk" 
-                    		process=":frmGuardarUsuarios:pnlUsuario"
+                    		process="@this :frmGuardarUsuarios:pnlUsuario"
                     		update=":frmGuardarUsuarios:pnlUsuario :frmUsuarios:pnlDataUsuarios"
                     		oncomplete="if(args.validationFailed){return false;} PF('dialogUsuario').hide();"
-                    		action="#{usuariosController.guardar}"/>
+                    		action="#{usuariosController.guardar()}"/>
                     	<p:commandButton value="#{msg['btn_cancelar']}"
                     		icon="ui-icon-close"
                     		immediate="true"
