@@ -31,4 +31,7 @@
    <var>msg</var>
   </resource-bundle>
  </application>
+ <lifecycle>
+     <phase-listener>ec.com.dlc.web.commons.listener.LifeCycleListener</phase-listener>
+ </lifecycle>
 </faces-config>
