@@ -5474,3 +5474,7 @@ div.checker.disabled:hover,
 div.radio.disabled:hover {
     cursor: not-allowed;  
 }
+
+.bun-uppercase{
+	text-transform: uppercase;
+}
