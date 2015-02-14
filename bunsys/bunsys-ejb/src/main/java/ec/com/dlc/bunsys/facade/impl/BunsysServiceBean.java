@@ -12,6 +12,7 @@ import ec.com.dlc.bunsys.entity.administracion.Tadmcatalogo;
 import ec.com.dlc.bunsys.entity.administracion.Tadmcompania;
 import ec.com.dlc.bunsys.entity.administracion.Tadmparamsri;
 import ec.com.dlc.bunsys.entity.administracion.Tadmusuario;
+import ec.com.dlc.bunsys.entity.administracion.pk.TadmcompaniaPK;
 import ec.com.dlc.bunsys.entity.cuentasxpagar.Tcxpproveedor;
 import ec.com.dlc.bunsys.entity.cuentasxpagar.pk.TcxpproveedorPK;
 import ec.com.dlc.bunsys.entity.inventario.Tinvproducto;
@@ -116,4 +117,14 @@ public class BunsysServiceBean implements BunsysService {
 		seguridadService.eliminarUsuario(tadmusuario);
 	}
 
+	@Override
+	public Tadmcompania buscarCompania(TadmcompaniaPK companiaPk) throws FacturacionException {
+		return parametrizacionService.buscarCompania(companiaPk);
+	}
+
+	@Override
+	public void actualizarCompania(Tadmcompania compania)
+			throws FacturacionException {
+		parametrizacionService.actualizarCompania(compania);
+	}
 }
