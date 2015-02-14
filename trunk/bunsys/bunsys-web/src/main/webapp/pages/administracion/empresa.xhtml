@@ -2,9 +2,92 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui" 
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions" 
       template="/WEB-INF/templates/template.xhtml">
-	<p:panel header="Empresa">
-	
-	</p:panel>
+      <ui:param name="idForm" value="frmEmpresa" />
+	  <ui:param name="controller" value="#{companiaController}" />
+      <ui:define name="contentBody">
+		<p:panel header="Empresa">
+			<p:fieldset legend="#{msg['lbl_caracteristicas_comp']}">
+				<h:panelGroup layout="block">
+					<h:panelGrid columns="6">
+						<p:outputLabel value="#{msg['lbl_razon_comp']}:" for="txtRazon"/>
+						<p:inputText id="txtRazon" value="#{companiaDatamanager.compania.razonsocial}"/>
+						<p:message for="txtRazon"/>
+						
+						<p:outputLabel value="#{msg['lbl_nom_com_comp']}:" for="txtNombre"/>
+						<p:inputText id="txtNombre" value="#{companiaDatamanager.compania.nombrecomercial}"/>
+						<p:message for="txtNombre"/>
+						
+						<p:outputLabel value="#{msg['lbl_ruc_comp']}:" for="txtRuc"/>
+						<p:inputText id="txtRuc" value="#{companiaDatamanager.compania.ruc}"/>
+						<p:message for="txtRuc"/>
+						
+						<p:outputLabel value="#{msg['lbl_dir_comp']}:" for="txtDireccion"/>
+						<p:inputText id="txtDireccion" value="#{companiaDatamanager.compania.direccionmatriz}"/>
+						<p:message for="txtDireccion"/>
+						
+						<p:outputLabel value="#{msg['lbl_dir_est_comp']}:" for="txtDireccionEst"/>
+						<p:inputText id="txtDireccionEst" value="#{companiaDatamanager.compania.direccionestablecimiento}"/>
+						<p:message for="txtDireccionEst"/>
+						
+						<p:outputLabel value="#{msg['lbl_telefono_comp']}:" for="txtTelf"/>
+						<p:inputText id="txtTelf" value="#{companiaDatamanager.compania.telefono}"/>
+						<p:message for="txtTelf"/>
+						
+						<p:outputLabel value="#{msg['lbl_correo']}:" for="txtCorreo"/>
+						<p:inputText id="txtCorreo" value="#{companiaDatamanager.compania.correo}"/>
+						<p:message for="txtCorreo"/>
+					</h:panelGrid>
+					
+					<h:panelGrid columns="3">
+						<p:outputLabel value="#{msg['lbl_logo_comp']}:" for="file"/>
+					    <p:fileUpload id="file" 
+					    	sizeLimit="1048576" 
+					    	mode="advanced" 
+					    	uploadLabel="Subir"
+					    	cancelLabel="Cancelar"
+					    	allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+					    	fileUploadListener="#{companiaController.uploadLogo}" update="pnlLogo"/>
+					    <h:panelGroup layout="block" id="pnlLogo">
+					    	<p:graphicImage cache="false" value="#{companiaDatamanager.strContent}" height="100" width="75"/>
+					    </h:panelGroup>
+					</h:panelGrid>
+					
+					<h:panelGrid columns="3">	
+						<p:outputLabel value="#{msg['lbl_cod_est_comp']}:" for="txtCodEst"/>
+						<p:inputText id="txtCodEst" value="#{companiaDatamanager.compania.codigoestablecimiento}"/>
+						<p:message for="txtCodEst"/>
+						
+						<p:outputLabel value="#{msg['lbl_pto_emi_comp']}:" for="txtCodPtoEmi"/>
+						<p:inputText id="txtCodPtoEmi" value="#{companiaDatamanager.compania.codigopuntoemision}"/>
+						<p:message for="txtCodPtoEmi"/>
+						
+						<p:outputLabel value="#{msg['lbl_num_res_comp']}:" for="txtResolucion"/>
+						<p:inputText id="txtResolucion" value="#{companiaDatamanager.compania.numeroresolucion}"/>
+						<p:message for="txtResolucion"/>
+						
+						<p:outputLabel value="#{msg['lbl_obl_cont_comp']}:" for="rbtnContabilidad"/>
+						<p:selectOneRadio id="rbtnContabilidad" value="#{companiaDatamanager.compania.obligacioncontabilidad}" >
+							<f:selectItem itemLabel="SI" itemValue="S"/>
+							<f:selectItem itemLabel="NO" itemValue="N"/>
+						</p:selectOneRadio>
+						<p:message for="rbtnContabilidad"/>
+						
+						<p:outputLabel value="#{msg['lbl_tiempo_comp']}:" for="txtTiempo"/>
+						<p:inputText id="txtTiempo" value="#{companiaDatamanager.compania.tiemporespuesta}"/>
+						<p:message for="txtTiempo"/>
+						
+					</h:panelGrid>
+				</h:panelGroup>
+				<h:panelGroup layout="block" style="float:left">
+		  			<p:commandButton icon="ui-icon-plusthick" 
+		  				value="#{msg['btn_actualizar']}"
+		  				action="#{companiaController.actualizarCompania()}" >
+		  			</p:commandButton>
+		  		</h:panelGroup>
+			</p:fieldset>
+		</p:panel>
+	  </ui:define>
 </ui:composition>
