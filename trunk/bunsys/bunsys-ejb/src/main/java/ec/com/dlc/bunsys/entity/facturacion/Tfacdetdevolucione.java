@@ -128,6 +128,7 @@ public class Tfacdetdevolucione extends BaseEntity<TfacdetdevolucionePK>  {
 	private Tinvproducto tinvproducto;
 	
 	public Tfacdetdevolucione() {
+		this.pk = new TfacdetdevolucionePK();
 	}
 
 	public String getApta() {
