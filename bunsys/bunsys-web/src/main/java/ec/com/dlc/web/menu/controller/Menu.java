@@ -4,6 +4,9 @@ import java.io.Serializable;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 
 import ec.com.dlc.web.controller.base.BaseController;
 import ec.com.dlc.web.datamanager.base.BaseDatamanager;
@@ -65,8 +68,12 @@ public class Menu extends BaseController implements Serializable {
 	}
 
 	public String salir(){
-		System.out.println("salir");
-		return "/home?faces-redirect=true";
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		ExternalContext externalContext = facesContext.getExternalContext();
+		HttpSession session = (HttpSession) externalContext.getSession(Boolean.FALSE);
+		externalContext.getSessionMap().clear();
+		session.invalidate();
+		return "/login?faces-redirect=true";
 	}
 
 	public String getPagina() {
