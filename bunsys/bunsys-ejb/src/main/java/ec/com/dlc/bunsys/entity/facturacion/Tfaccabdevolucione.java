@@ -154,6 +154,7 @@ public class Tfaccabdevolucione extends BaseEntity<TfaccabdevolucionePK>  {
 	private Collection<Tfacformapagodev> tfacformapagodevs;
 
 	public Tfaccabdevolucione() {
+		this.pk = new TfaccabdevolucionePK();
 	}
 
 	public Integer getCodigocliente() {
