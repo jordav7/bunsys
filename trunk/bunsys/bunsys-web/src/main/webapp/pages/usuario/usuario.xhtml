@@ -23,11 +23,11 @@
                         <p:message for="txtIdentificacion" />
                         
                         <p:outputLabel for="txtNombrePersona" value="#{msg.lbl_nombre_persona}:"/>
-                        <p:inputText value="#{usuariosDatamanager.usuarioSearch.tsyspersona.nombres}" id="txtNombrePersona" />
+                        <p:inputText value="#{usuariosDatamanager.usuarioSearch.tsyspersona.nombres}" id="txtNombrePersona" onkeyup="bunsys.toUppercase(event, this);"/>
                         <p:message for="txtNombrePersona" />
                         
                         <p:outputLabel for="txtApellidoPersona" value="#{msg.lbl_apellido_persona}:"/>
-                        <p:inputText value="#{usuariosDatamanager.usuarioSearch.tsyspersona.apellidos}" id="txtApellidoPersona" />
+                        <p:inputText value="#{usuariosDatamanager.usuarioSearch.tsyspersona.apellidos}" id="txtApellidoPersona" onkeyup="bunsys.toUppercase(event, this);"/>
                         <p:message for="txtApellidoPersona" />
                     </h:panelGrid>
                 </h:panelGroup>
