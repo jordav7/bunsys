@@ -12,3 +12,12 @@
 	font-family: Trebuchet MS, Tahoma, Verdana, Arial, sans-serif;
 	font-size: 0.9em;
 }
+
+.ui-datatable, .ui-column-title{
+	font-family: Trebuchet MS, Tahoma, Verdana, Arial, sans-serif;
+	font-size: 0.9em;
+}
+
+.ui-datatable .ui-widget-content{
+	font-size: 0.9em;
+}
