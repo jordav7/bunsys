@@ -1,0 +1,69 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+       			xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                template="/WEB-INF/templates/template.xhtml">
+    <ui:param name="idForm" value="frmNotaCredito"/>
+    <ui:param name="controller" value="#{notaCreditoController}"/>
+    <ui:define name="contentBody">
+		<p:panel header="#{msg['lbl_notas_credito']}">
+			<p:fieldset legend="#{msg['lbl_datos_cabecera_nc']}">
+				<h:panelGroup layout="block" id="pnlDatosCabecera">
+					<h:panelGrid columns="3">
+						<p:outputLabel for="txtNumeroNotaCredito" value="#{msg['lbl_numero_nc']}:" style="width: 100px;"/>
+						<h:panelGrid columns="3" style="border: collapse;" cellpadding="0" cellspacing="0">
+							<p:inputText style="width: 50px;" disabled="true"/>
+							<p:inputText style="width: 50px;" disabled="true"/>
+							<p:inputText id="txtNumeroNotaCredito" value="#{notaCreditoDatamanager.cabdevoluciones.pk.numerodevoluciones}" required="true">
+								<pe:keyFilter mask="pint"/>
+							</p:inputText>
+						</h:panelGrid>
+						<p:message for="txtNumeroNotaCredito"/>
+						
+						<p:outputLabel for="txtFechaDevolucion" value="#{msg.lbl_fecha}:" style="width: 100px;"/>
+						<p:calendar id="txtFechaDevolucion" value="#{notaCreditoDatamanager.cabdevoluciones.fechadevolucion}" mask="true" pattern="#{msg.pattern_date}" required="true"/>
+						<p:message for="txtFechaDevolucion"/>
+					</h:panelGrid>
+					<h:panelGrid columns="6">
+						<p:outputLabel for="txtNumeroFactura" value="#{msg['lbl_factura']}:" style="width: 100px;"/>
+						<p:inputText id="txtNumeroFactura" value="#{notaCreditoDatamanager.cabdevoluciones.numerofactura}" required="true"/>
+						<p:message for="txtNumeroFactura"/>
+						
+						<p:outputLabel for="selEstado" value="#{msg['lbl_estado']}:"/>
+						<p:selectOneMenu id="selEstado" value="#{notaCreditoDatamanager.cabdevoluciones.estado}">
+							<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+							<f:selectItems value="#{notaCreditoDatamanager.catalogoEstadoColl}" var="estado" itemLabel="#{estado.descripcion}" itemValue="#{estado.pk.codigocatalogo}"/>
+						</p:selectOneMenu>
+						<p:message for="selEstado"/>
+					</h:panelGrid>
+					<p:separator/>
+					<h:panelGrid columns="3">
+						<p:outputLabel for="txtIdentificacion" value="#{msg['lbl_identificacion']}:"/>
+						<p:inputText id="txtIdentificacion" value="#{notaCreditoDatamanager.cabdevoluciones.tfaccliente.tsyspersona.identificacion}">
+							<pe:keyFilter mask="pint"/>
+						</p:inputText>
+						<p:message for="txtIdentificacion"/>
+						
+						<p:outputLabel for="txtNombrePersona" value="#{msg['lbl_nombres_razon_social']}:"/>
+						<p:inputText id="txtNombrePersona" value="#{notaCreditoDatamanager.cabdevoluciones.tfaccliente.tsyspersona.nombres}" onkeyup="bunsys.toUppercase(event, this)" style="width: 450px;" />
+						<p:message for="txtNombrePersona"/>
+						
+					</h:panelGrid>
+				</h:panelGroup>
+			</p:fieldset>
+			<p:fieldset legend="#{msg['lbl_datos_detalle_nc']}">
+				<p:dataTable value="#{notaCreditoDatamanager.detdevolucionesColl}" var="detDevolucion">
+				</p:dataTable>
+			</p:fieldset>
+			<h:panelGrid columns="3">
+				<p:commandButton
+					icon="ui-icon-disk" 
+					value="#{msg['btn_guardar_completo']}"/>
+				<p:commandButton value="#{msg['btn_guardar_nofirma']}"
+					icon="ui-icon-check"/>
+			</h:panelGrid>
+		</p:panel>
+	</ui:define>
+</ui:composition>
