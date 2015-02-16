@@ -1,10 +1,10 @@
 package ec.com.dlc.web.controller.base;
 
-import javax.annotation.PostConstruct;
 import javax.faces.component.html.HtmlForm;
 import javax.faces.context.FacesContext;
 
 import ec.com.dlc.web.datamanager.base.BaseDatamanager;
+import ec.com.dlc.web.util.jsf.MessagesUtil;
 
 /**
  * Controlador que tienen que heredarlo todos los controladores
@@ -36,7 +36,7 @@ public abstract class BaseController {
 				getDatamanager().setInicializado(Boolean.TRUE);
 			}
 		}catch (Throwable e){
-//			FacesUtil.getInstancia().messageError(e.getMessage());
+			MessagesUtil.showErrorMessage(e.getMessage());
 		}
 		return htmlForm;
 	}
