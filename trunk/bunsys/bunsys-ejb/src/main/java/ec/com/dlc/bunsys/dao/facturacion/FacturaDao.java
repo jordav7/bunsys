@@ -169,7 +169,7 @@ public class FacturaDao extends GeneralDao {
 			cliente = (Tfaccliente) query.getSingleResult();
 			return cliente;
 		} catch(NoResultException e){
-			throw new FacturacionException(e);
+			return null;
 		} catch (Throwable e) {
 			throw new FacturacionException(e);
 		}
