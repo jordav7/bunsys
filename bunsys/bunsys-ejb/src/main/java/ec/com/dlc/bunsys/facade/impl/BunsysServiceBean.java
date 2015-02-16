@@ -15,6 +15,8 @@ import ec.com.dlc.bunsys.entity.administracion.Tadmusuario;
 import ec.com.dlc.bunsys.entity.administracion.pk.TadmcompaniaPK;
 import ec.com.dlc.bunsys.entity.cuentasxpagar.Tcxpproveedor;
 import ec.com.dlc.bunsys.entity.cuentasxpagar.pk.TcxpproveedorPK;
+import ec.com.dlc.bunsys.entity.facturacion.Tfaccabdevolucione;
+import ec.com.dlc.bunsys.entity.facturacion.Tfaccliente;
 import ec.com.dlc.bunsys.entity.inventario.Tinvproducto;
 import ec.com.dlc.bunsys.entity.inventario.pk.TinvproductoPK;
 import ec.com.dlc.bunsys.entity.seguridad.Tsyspersona;
@@ -126,5 +128,18 @@ public class BunsysServiceBean implements BunsysService {
 	public void actualizarCompania(Tadmcompania compania)
 			throws FacturacionException {
 		parametrizacionService.actualizarCompania(compania);
+	}
+
+	@Override
+	public Collection<Tfaccabdevolucione> buscarNotasCredito(Integer codCompania,
+			Tfaccabdevolucione tfaccabdevolucione, Tsyspersona tsyspersona)
+			throws FacturacionException {
+		return facturacionService.buscarNotaCredito(codCompania, tfaccabdevolucione, tsyspersona);
+	}
+
+	@Override
+	public Tfaccliente buscarPorIdentificacion(String identificacion)
+			throws FacturacionException {
+		return parametrizacionService.busquedaClienteIdentificacion(identificacion);
 	}
 }

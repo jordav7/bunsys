@@ -3,7 +3,6 @@ package ec.com.dlc.bunsys.facade;
 import java.util.Collection;
 
 import javax.ejb.Local;
-import javax.persistence.criteria.CriteriaBuilder.In;
 
 import ec.com.dlc.bunsys.entity.administracion.Tadmcatalogo;
 import ec.com.dlc.bunsys.entity.administracion.Tadmcompania;
@@ -12,6 +11,8 @@ import ec.com.dlc.bunsys.entity.administracion.Tadmusuario;
 import ec.com.dlc.bunsys.entity.administracion.pk.TadmcompaniaPK;
 import ec.com.dlc.bunsys.entity.cuentasxpagar.Tcxpproveedor;
 import ec.com.dlc.bunsys.entity.cuentasxpagar.pk.TcxpproveedorPK;
+import ec.com.dlc.bunsys.entity.facturacion.Tfaccabdevolucione;
+import ec.com.dlc.bunsys.entity.facturacion.Tfaccliente;
 import ec.com.dlc.bunsys.entity.inventario.Tinvproducto;
 import ec.com.dlc.bunsys.entity.inventario.pk.TinvproductoPK;
 import ec.com.dlc.bunsys.entity.seguridad.Tsyspersona;
@@ -122,4 +123,22 @@ public interface BunsysService {
 	Tadmcompania buscarCompania(TadmcompaniaPK companiaPk) throws FacturacionException;
 	
 	void actualizarCompania(Tadmcompania compania) throws FacturacionException;
+	
+	/**
+	 * Realiza la b&uacute;squeda de las notas de cr&eacute;dito
+	 * @param codCompania
+	 * @param tfaccabdevolucione
+	 * @param tsyspersona
+	 * @return
+	 * @throws FacturacionException
+	 */
+	Collection<Tfaccabdevolucione> buscarNotasCredito(Integer codCompania, Tfaccabdevolucione tfaccabdevolucione, Tsyspersona tsyspersona) throws FacturacionException;
+	
+	/**
+	 * Busca un cliente por identificaci&oacute;n
+	 * @param identificacion
+	 * @return
+	 * @throws FacturacionException
+	 */
+	Tfaccliente buscarPorIdentificacion(String identificacion) throws FacturacionException;
 }
