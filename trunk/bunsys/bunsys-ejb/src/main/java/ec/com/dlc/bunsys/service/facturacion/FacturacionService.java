@@ -8,9 +8,11 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.inject.Inject;
 
-import ec.com.dlc.bunsys.dao.compras.ComprasDao;
 import ec.com.dlc.bunsys.dao.facturacion.FacturaDao;
 import ec.com.dlc.bunsys.entity.administracion.Tadmcompania;
+import ec.com.dlc.bunsys.entity.facturacion.Tfaccabdevolucione;
+import ec.com.dlc.bunsys.entity.seguridad.Tsyspersona;
+import ec.com.dlc.bunsys.util.FacturacionException;
 
 /**
  * Bean que contiene toda la l&oacute;gica del m&oacute;dulo de facturaci&oacute;n
@@ -25,6 +27,18 @@ public class FacturacionService {
 	
 	public Collection<Tadmcompania> obtenerCompania() {
 		return facturaDao.findObjects(new Tadmcompania());
+	}
+	
+	/**
+	 * Busca las notas de cr&eacute;dito en base a los filtros enviados desde la pantalla
+	 * @param codCompania
+	 * @param tfaccabdevolucione
+	 * @param tsyspersona
+	 * @return
+	 * @throws FacturacionException
+	 */
+	public Collection<Tfaccabdevolucione> buscarNotaCredito(Integer codCompania, Tfaccabdevolucione tfaccabdevolucione, Tsyspersona tsyspersona) throws FacturacionException{
+		return facturaDao.buscarNotaCreditoCompleto(codCompania, tfaccabdevolucione, tsyspersona);
 	}
 	
 }
