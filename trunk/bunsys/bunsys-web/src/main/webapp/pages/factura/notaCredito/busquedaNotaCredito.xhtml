@@ -1,0 +1,87 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      template="/WEB-INF/templates/template.xhtml">
+      <ui:param name="idForm" value="frmBusquedaNC" />
+      <ui:param name="controller" value="#{busquedaNotaCreditoController}" />
+      <ui:define name="contentBody">
+      	<p:panel header="#{msg['lbl_notas_credito']}">
+      		<p:fieldset legend="#{msg['lbl_busqueda']}">
+      			<h:panelGroup layout="block">
+	      			<h:panelGrid id="pnlBusquedaNC" columns="3">
+	      				<p:outputLabel for="txtNumNC" value="#{msg['lbl_numero_nc']}:"/>
+	      				<p:inputText id="txtNumNC" value="#{busquedaNotaCreditoDatamanager.cabNotaCreditoSeach.pk.numerodevoluciones}"/>
+	      				<p:message for="txtNumNC"/>
+	      				
+	      				<p:outputLabel for="txtNumFactura" value="#{msg['lbl_factura']}:"/>
+	      				<p:inputText id="txtNumFactura" value="#{busquedaNotaCreditoDatamanager.cabNotaCreditoSeach.numerofactura}"/>
+	      				<p:message for="txtNumFactura"/>
+	      				
+	      				<p:outputLabel for="txtFecha" value="#{msg['lbl_fecha']}:"/>
+	      				<p:calendar id="txtFecha" value="#{busquedaNotaCreditoDatamanager.cabNotaCreditoSeach.fechadevolucion}" pattern="#{msg['pattern_date']}" mask="true"/>
+	      				<p:message for="txtFecha"/>
+	      				
+	      				<p:outputLabel for="txtIdentificacion" value="#{msg['lbl_identificacion']}:"/>
+	      				<p:inputText id="txtIdentificacion" value="#{busquedaNotaCreditoDatamanager.cabNotaCreditoSeach.tfaccliente.tsyspersona.identificacion}">
+	      					<pe:keyFilter mask="pint"/>
+	      				</p:inputText>
+	      				<p:message for="txtIdentificacion"/>
+	      				
+	      				<p:outputLabel for="txtNombre" value="#{msg['lbl_nombre_persona']}:"/>
+	      				<p:inputText id="txtNombre" value="#{busquedaNotaCreditoDatamanager.cabNotaCreditoSeach.tfaccliente.tsyspersona.nombres}" onkeyup="bunsys.toUppercase(event, this);">
+	      					<pe:keyFilter mask="alpha"/>
+	      				</p:inputText>
+	      				<p:message for="txtNombre"/>
+	      				
+	      				<p:outputLabel for="txtApellidos" value="#{msg['lbl_apellido_persona']}:"/>
+	      				<p:inputText id="txtApellidos" value="#{busquedaNotaCreditoDatamanager.cabNotaCreditoSeach.tfaccliente.tsyspersona.apellidos}" onkeyup="bunsys.toUppercase(event, this);">
+	      					<pe:keyFilter mask="alpha"/>
+	      				</p:inputText>
+	      				<p:message for="txtApellidos"/>
+	      			</h:panelGrid>
+	      			
+	      			<h:panelGroup layout="block">
+	      				<p:commandButton value="#{msg['btn_buscar']}"
+	      					icon="ui-icon-search"
+	      					action="#{busquedaNotaCreditoController.buscar}"
+	      					process="@this pnlBusquedaNC"
+	      					update="dtNotasCredito"/>
+	      				<p:commandButton value="#{msg['btn_crear']}"
+	      					icon="ui-icon-plusthick" 
+	      					action="#{busquedaNotaCreditoController.crearNotaCredito}"
+	      					immediate="true"
+	      					process="@this"/>
+	      			</h:panelGroup>
+	      			
+	      			<p:fieldset legend="#{msg['lbl_notas_credito']}">
+	      				<p:dataTable id="dtNotasCredito" value="#{busquedaNotaCreditoDatamanager.notasCreditoColl}" var="notasCredito">
+	      					<p:column headerText="#{msg['lbl_numero_nc']}">
+	      						<p:commandLink value="#{notasCredito.pk.numerodevoluciones}">
+	      							<f:setPropertyActionListener target="#{notaCreditoDatamanager.cabdevoluciones}" value="#{notasCredito}"/>
+	      						</p:commandLink>
+	      					</p:column>
+	      					<p:column headerText="#{msg['lbl_factura']}">
+	      						<h:outputText value="#{notasCredito.numerofactura}" />
+	      					</p:column>
+	      					<p:column headerText="#{msg['lbl_fecha']}">
+	      						<h:outputText value="#{notasCredito.fechadevolucion}" />
+	      					</p:column>
+	      					<p:column headerText="#{msg['lbl_identificacion']}">
+	      						<h:outputText value="#{notasCredito.tfaccliente.tsyspersona.identificacion}" />
+	      					</p:column>
+	      					<p:column headerText="#{msg['lbl_nombre_persona']}">
+	      						<h:outputText value="#{notasCredito.tfaccliente.tsyspersona.nombres}" />
+	      					</p:column>
+	      					<p:column headerText="#{msg['lbl_apellido_persona']}">
+	      						<h:outputText value="#{notasCredito.tfaccliente.tsyspersona.apellidos}" />
+	      					</p:column>
+	      				</p:dataTable>
+	      			</p:fieldset>
+      			</h:panelGroup>
+      		</p:fieldset>
+      	</p:panel>
+      </ui:define>
+</ui:composition>
