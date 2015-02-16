@@ -55,6 +55,36 @@
 			</p:fieldset>
 			<p:fieldset legend="#{msg['lbl_datos_detalle_nc']}">
 				<p:dataTable value="#{notaCreditoDatamanager.detdevolucionesColl}" var="detDevolucion">
+					<p:column headerText="#{msg['lbl_codigo']}">
+						<h:outputText value="#{detDevolucion.tinvproducto.pk.codigoproductos}" />
+					</p:column>
+					<p:column headerText="#{msg['lbl_codigo_auxiliar']}">
+						<h:outputText value="#{detDevolucion.tinvproducto.codigoauxiliar}" />
+					</p:column>
+					<p:column headerText="#{msg['lbl_unidad_venta']}">
+						<h:outputText value="#{detDevolucion.tinvproducto.tadmunidadventa.descripcion}" />
+					</p:column>
+					<p:column headerText="#{msg['lbl_cantidad_item']}">
+						<h:outputText value="#{detDevolucion.cantidad}" />
+					</p:column>
+					<p:column headerText="#{msg['lbl_precio']}">
+						<h:outputText value="#{detDevolucion.tinvproducto.preciounitario}" />
+					</p:column>
+					<p:column headerText="#{msg['lbl_descripcion']}">
+						<h:outputText value="#{detDevolucion.tinvproducto.nombre}" />
+					</p:column>
+					<p:column headerText="#{msg['lbl_iva']}">
+						<h:outputText value="#{detDevolucion.tadmiva.descripcion}" />
+					</p:column>
+					<p:column headerText="#{msg['lbl_ice']}">
+						<h:outputText value="#{detDevolucion.tadmice.descripcion}" />
+					</p:column>
+					<p:column headerText="#{msg['lbl_irbpnr']}">
+						<h:outputText value="#{detDevolucion.tadmirbpnr.descripcion}" />
+					</p:column>
+					<p:column headerText="#{msg['lbl_total']}">
+						<h:outputText value="#{detDevolucion.aditionalProperty['total']}" />
+					</p:column>
 				</p:dataTable>
 			</p:fieldset>
 			<h:panelGrid columns="3">
