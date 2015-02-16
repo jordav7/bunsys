@@ -16,6 +16,7 @@ import ec.com.dlc.bunsys.entity.administracion.Tadmparamsri;
 import ec.com.dlc.bunsys.entity.administracion.pk.TadmcompaniaPK;
 import ec.com.dlc.bunsys.entity.cuentasxpagar.Tcxpproveedor;
 import ec.com.dlc.bunsys.entity.cuentasxpagar.pk.TcxpproveedorPK;
+import ec.com.dlc.bunsys.entity.facturacion.Tfaccliente;
 import ec.com.dlc.bunsys.entity.inventario.Tinvproducto;
 import ec.com.dlc.bunsys.entity.inventario.pk.TinvproductoPK;
 import ec.com.dlc.bunsys.entity.seguridad.Tsyspersona;
@@ -149,5 +150,15 @@ public class ParametrizacionService {
 		compAct.setTipoidcontador(compania.getTipoidcontador());
 		
 		admDao.update(compAct);
+	}
+	
+	/**
+	 * Busca un cliente po identificaci&ocute;n
+	 * @param identificacion
+	 * @return
+	 * @throws FacturacionException
+	 */
+	public Tfaccliente busquedaClienteIdentificacion(String identificacion) throws FacturacionException {
+		return facturaDao.buscarClientePorIdentificacion(identificacion);
 	}
 }
