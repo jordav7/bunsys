@@ -2,6 +2,8 @@ package ec.com.dlc.bunsys.dao.facturacion;
 
 import java.util.Collection;
 
+
+
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
@@ -9,6 +11,8 @@ import org.apache.commons.lang.StringUtils;
 
 import ec.com.dlc.bunsys.dao.general.GeneralDao;
 import ec.com.dlc.bunsys.entity.administracion.Tadmcatalogo;
+import ec.com.dlc.bunsys.entity.administracion.Tadmconversionunidad;
+import ec.com.dlc.bunsys.entity.facturacion.Tfaccliente;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccabdevolucione;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccliente;
 import ec.com.dlc.bunsys.entity.inventario.Tinvproducto;
@@ -175,4 +179,64 @@ public class FacturaDao extends GeneralDao {
 		}
 	}
 	
+	//--------
+	@SuppressWarnings("unchecked")
+	public Collection<Tfaccliente> buscarClientes(Integer codCompania,	String nombre, String apellido, String identificacion) {
+		Collection<Tfaccliente> clientesColl = null;
+		try{
+			final StringBuilder sql = new StringBuilder("SELECT o FROM Tfaccliente o "
+					                                 + " LEFT JOIN FETCH o.tadmformapago"
+					                                 + " LEFT JOIN FETCH o.tadmgrupocliente  "
+					                                 + " LEFT JOIN FETCH o.tsyspersona  p"
+					                                 + " LEFT JOIN FETCH p.tadmestado "
+					                                 + " LEFT JOIN FETCH p.tadmtipopersona "
+					                                 + "WHERE o.pk.codigocompania=:codcompania ");
+			
+			if(StringUtils.isNotBlank(nombre)){
+				sql.append("and upper(p.nombres) like= :nombres ");
+			}
+			
+			if(StringUtils.isNotBlank(apellido)){
+				sql.append("and upper(p.apellidos) like = :apellidos ");
+			}
+			
+			if(StringUtils.isNotBlank(identificacion)){
+				sql.append("and p.identificacion :identificacion ");
+			}
+			
+			Query query = this.entityManager.createQuery(sql.toString());
+			query.setParameter("codcompania", codCompania);
+			
+			if(StringUtils.isNotBlank(nombre)){
+				query.setParameter("nombres", "%"+ nombre.toUpperCase()+"%");
+			}
+			
+			if(StringUtils.isNotBlank(apellido)){
+				query.setParameter("codigoAuxiliar","%"+apellido.toUpperCase()+"%");
+			}
+			
+			if(StringUtils.isNotBlank(identificacion)){
+				query.setParameter("identificacion", identificacion);
+			}
+			
+			clientesColl = query.getResultList();
+			return clientesColl;
+		} catch(Throwable e){
+			throw new FacturacionException(e);
+		}
+	}
+	
+	
+	public Tadmconversionunidad conversionArticulo(Integer unidadVentaCodigo, String unidadVenta){
+		try{
+			System.out.println(unidadVentaCodigo+" ----- "+unidadVenta);
+			Query query = entityManager.createQuery("SELECT o FROM Tadmconversionunidad o "+
+					" where o.unidadventa=:unidadventa and o.unidadventacodigo=:unidadventacodigo");
+			query.setParameter("unidadventacodigo", unidadVentaCodigo);
+			query.setParameter("unidadventa", unidadVenta);
+			return (Tadmconversionunidad)query.getResultList().get(0);
+		} catch (Exception e){
+			throw new FacturacionException(e);
+		}
+	}
 }

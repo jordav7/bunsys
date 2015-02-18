@@ -10,8 +10,18 @@ import javax.ejb.TransactionAttribute;
 
 import ec.com.dlc.bunsys.entity.administracion.Tadmcatalogo;
 import ec.com.dlc.bunsys.entity.administracion.Tadmcompania;
+import ec.com.dlc.bunsys.entity.administracion.Tadmconversionunidad;
+import ec.com.dlc.bunsys.entity.administracion.Tadmparamsri;
+import ec.com.dlc.bunsys.entity.facturacion.Tfaccabfactura;
+import ec.com.dlc.bunsys.entity.facturacion.Tfaccabproforma;
+import ec.com.dlc.bunsys.entity.facturacion.Tfaccliente;
+import ec.com.dlc.bunsys.entity.facturacion.Tfacdetproforma;
+import ec.com.dlc.bunsys.entity.facturacion.pk.TfacclientePK;
+import ec.com.dlc.bunsys.entity.inventario.Tinvproducto;
 import ec.com.dlc.bunsys.entity.administracion.Tadmparamsri;
 import ec.com.dlc.bunsys.entity.administracion.Tadmusuario;
+import ec.com.dlc.bunsys.entity.cuentasxpagar.Tcxpproveedor;
+import ec.com.dlc.bunsys.entity.cuentasxpagar.pk.TcxpproveedorPK;
 import ec.com.dlc.bunsys.entity.administracion.pk.TadmcompaniaPK;
 import ec.com.dlc.bunsys.entity.cuentasxpagar.Tcxpproveedor;
 import ec.com.dlc.bunsys.entity.cuentasxpagar.pk.TcxpproveedorPK;
@@ -20,6 +30,7 @@ import ec.com.dlc.bunsys.entity.facturacion.Tfaccliente;
 import ec.com.dlc.bunsys.entity.inventario.Tinvproducto;
 import ec.com.dlc.bunsys.entity.inventario.pk.TinvproductoPK;
 import ec.com.dlc.bunsys.entity.seguridad.Tsyspersona;
+import ec.com.dlc.bunsys.entity.seguridad.pk.TsyspersonaPK;
 import ec.com.dlc.bunsys.facade.BunsysService;
 import ec.com.dlc.bunsys.service.facturacion.FacturacionService;
 import ec.com.dlc.bunsys.service.login.SeguridadService;
@@ -142,4 +153,48 @@ public class BunsysServiceBean implements BunsysService {
 			throws FacturacionException {
 		return parametrizacionService.busquedaClienteIdentificacion(identificacion);
 	}
+
+	
+	//------------------------------------------
+
+	@Override
+	public void grabarFactura(Tfaccabfactura tfaccabfactura) {
+		facturacionService.grabarFactura(tfaccabfactura);
+		
+	}
+
+	@Override
+	public void guardarCliente(Tfaccliente tfaccliente)
+			throws FacturacionException {
+		parametrizacionService.guardarCliente(tfaccliente);
+		
+	}
+
+	@Override
+	public Collection<Tfaccliente> buscarClientes(Integer codCompania,
+			String nombre, String apellido, String identificacion)
+			throws FacturacionException {
+		return parametrizacionService.buscarClientes(codCompania, nombre, apellido, identificacion);
+	}
+
+	
+	@Override
+	public void eliminarCliente(TsyspersonaPK personaPk, Integer estadoCodigo) {
+		parametrizacionService.eliminarCliente(personaPk,  estadoCodigo);
+	}
+
+	@Override
+	public Tadmconversionunidad conversionArticulo(Integer unidadVentaCodigo,
+			String unidadVenta) {
+		return facturacionService.conversionArticulo(unidadVentaCodigo, unidadVenta);
+	}
+	
+	@Override
+	public void guardarProforma(Tfaccabproforma tfaccabproform,String accion)
+			throws FacturacionException {
+		// TODO Auto-generated method stub
+		facturacionService.guardarProforma(tfaccabproform,accion);
+
+	}
+	
 }
