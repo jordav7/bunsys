@@ -2,37 +2,35 @@ package ec.com.dlc.bunsys.entity.facturacion.pk;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.SequenceGenerator;
 
 import ec.com.dlc.bunsys.entity.base.BasePK;
 
 /**
- * The primary key class for the tfacclientes database table.
+ * The primary key class for the Tfaccabproforma database table.
  * 
  */
 @Embeddable
-public class TfacclientePK extends BasePK{
+public class TfaccabproformaPK extends BasePK {
 	//default serial version id, required for serializable classes.
 	private static final long serialVersionUID = 1L;
 
 	@Column
-	@SequenceGenerator(name="tfacclientes_codigocliente_seq", sequenceName="seccliente")
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="tfacclientes_codigocliente_seq")
-	private Integer codigocliente;
+	private String numeroproforma;
 
 	@Column
 	private Integer codigocompania;
 
-	public TfacclientePK() {
+	public TfaccabproformaPK() {
 	}
-	public Integer getCodigocliente() {
-		return this.codigocliente;
+
+	public String getNumeroproforma() {
+		return numeroproforma;
 	}
-	public void setCodigocliente(Integer codigocliente) {
-		this.codigocliente = codigocliente;
+
+	public void setNumeroproforma(String numeroproforma) {
+		this.numeroproforma = numeroproforma;
 	}
+
 	public Integer getCodigocompania() {
 		return this.codigocompania;
 	}
@@ -44,19 +42,19 @@ public class TfacclientePK extends BasePK{
 		if (this == other) {
 			return true;
 		}
-		if (!(other instanceof TfacclientePK)) {
+		if (!(other instanceof TfaccabproformaPK)) {
 			return false;
 		}
-		TfacclientePK castOther = (TfacclientePK)other;
+		TfaccabproformaPK castOther = (TfaccabproformaPK)other;
 		return 
-			this.codigocliente.equals(castOther.codigocliente)
+			this.numeroproforma.equals(castOther.numeroproforma)
 			&& this.codigocompania.equals(castOther.codigocompania);
 	}
 
 	public int hashCode() {
 		final int prime = 31;
 		int hash = 17;
-		hash = hash * prime + this.codigocliente.hashCode();
+		hash = hash * prime + this.numeroproforma.hashCode();
 		hash = hash * prime + this.codigocompania.hashCode();
 		
 		return hash;
