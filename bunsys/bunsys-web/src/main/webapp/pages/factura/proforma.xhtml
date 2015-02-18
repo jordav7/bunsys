@@ -1,0 +1,329 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:b="http://xmlns.jcp.org/jsf/composite/bunsysComponents"
+      template="/WEB-INF/templates/template.xhtml" >
+      <ui:param name="idForm" value="frm" />
+      <ui:param name="controller" value="#{proformaController}" />
+	  <ui:define name="contentBody">
+	  	<p:panel id="pnlDatosProforma" header="#{msg['lbl_proforma']}">
+			<p:panel id="pnldatoscab" header="#{msg['lbl_cabecera']}">
+				<h:panelGrid columns="1" >
+					<h:panelGrid columns="6" >
+						<p:outputLabel value="#{msg.lbl_numero_proforma}:" for="numproforma" style="display:block;width:175px;"/>
+						<p:inputText id="numproforma" value="#{proformaDatamanager.tfaccabproforma.pk.numeroproforma}" style="display:block;width:180px;" required="true"/>
+						<p:message for="numproforma"/>
+						
+						<p:outputLabel value="#{msg.lbl_referendum}:" for="referendum" style="display:block;width:115px;"/>
+						<p:inputMask id="referendum" value="#{proformaDatamanager.tfaccabproforma.referendum}" style="display:block;width:430px;" required="true" mask="999-9999-99-9999999"/>
+						<p:message for="referendum"/>
+					</h:panelGrid>
+					<h:panelGrid columns="12" >
+					    <p:outputLabel value="#{msg.lbl_farm_code}:" for="farmcode" style="display:block;width:100px;"/>
+						<p:inputText id="farmcode" value="#{proformaDatamanager.tfaccabproforma.farmcode}" style="display:block;width:130px;" required="true"/>
+						<p:message for="farmcode"/>
+						
+					    <p:outputLabel value="#{msg.lbl_country_code}:" for="countrycode" style="display:block;width:120px;margin-left:15px"/>
+						<p:inputText id="countrycode" value="#{proformaDatamanager.tfaccabproforma.countrycode}" style="display:block;width:100px;" required="true"/>
+						<p:message for="countrycode"/>
+						
+						<p:outputLabel value="#{msg.lbl_area}:" for="area" style="display:block;width:60px;margin-left:15px"/>
+						<p:inputText id="area" value="#{proformaDatamanager.tfaccabproforma.area}" style="display:block;width:100px;" required="true"/>
+						<p:message for="area"/>
+						
+						<p:outputLabel for="fecha" value="#{msg.lbl_fecha}:" style="display:block;width:70px;margin-left:15px"/>
+					    <p:calendar id="fecha" value="#{proformaDatamanager.tfaccabproforma.fecha}"  style="display:block;width:180px;" required="true" />
+					    <p:message for="fecha"/>
+					</h:panelGrid>
+					<h:panelGrid columns="9" >
+						<p:outputLabel value="#{msg.lbl_master_awb}:" for="masterawb" style="display:block;width:140px;"/>
+						<p:inputText id="masterawb" value="#{proformaDatamanager.tfaccabproforma.masterawm}" style="display:block;width:180px;" required="true"/>
+						<p:message for="masterawb"/>
+						
+						<p:outputLabel value="#{msg.lbl_house_awb}:" for="houseawb" style="display:block;width:130px;"/>
+						<p:inputText id="houseawb" value="#{proformaDatamanager.tfaccabproforma.houseawb}" style="display:block;width:180px;" required="true"/>
+						<p:message for="houseawb"/>
+						
+						<p:outputLabel value="#{msg.lbl_aerolinea}:" for="txtaerolinea" style="display:block;width:100px;"/>
+						<p:selectOneMenu id="txtaerolinea" value="#{proformaDatamanager.tfaccabproforma.airline}"  var="p" style="width:160px" panelStyle="width:160px" >						
+							<f:selectItem itemLabel="Seleccione" itemValue="" />
+							<f:selectItems value="#{proformaDatamanager.aerolineasCatalogo}" var="item" itemValue="#{item.pk.codigocatalogo}" itemLabel="#{item.descripcion}"/>
+						</p:selectOneMenu>	
+						<p:message for="txtaerolinea"/>
+					</h:panelGrid>
+					<h:panelGrid columns="9" >
+						<p:outputLabel value="#{msg.lbl_dae}:" for="dae" style="display:block;width:140px;"/>
+						<p:inputText id="dae" value="#{proformaDatamanager.tfaccabproforma.dae}" style="display:block;width:180px;" required="true"/>
+						<p:message for="dae"/>
+						
+						<p:outputLabel value="#{msg.lbl_consignee}:" for="consigne" style="display:block;width:130px;"/>
+						<p:inputText id="consigne" value="#{proformaDatamanager.tfaccabproforma.consignee}" style="display:block;width:180px;" required="false"/>
+						<p:message for="consigne"/>
+						
+						<p:outputLabel value="#{msg.lbl_fixed_price}:" for="fixedprice" style="display:block;width:100px;"/>
+						<p:inputText id="fixedprice" value="#{proformaDatamanager.tfaccabproforma.fixedprice}" style="display:block;width:160px;" required="false"/>
+						<p:message for="fixedprice"/>	
+					</h:panelGrid>
+					
+					
+					<h:panelGrid columns="9" id="pnlcliente" >
+						<p:outputLabel value="#{msg.lbl_codigo_cliente}:" for="txtcodcliente" style="display:block;width:140px;"/>
+						<p:inputText id="txtcodcliente" value="#{proformaDatamanager.tfaccliente.tsyspersona.pk.codigopersona}" style="display:block;width:180px;" disabled="true"/>
+						<p:commandButton icon="ui-icon-extlink" oncomplete="PF('dlgClienteBusqueda').show();"/>
+					    <p:outputLabel value="#{msg.lbl_nombre_persona}:" for="consignename" style="display:block;width:100px;"/>
+						<p:inputText id="consignename" value="#{proformaDatamanager.tfaccliente.tsyspersona.nombres}" style="display:block;width:440px;" disabled="true"/>
+					</h:panelGrid>
+				</h:panelGrid>
+			</p:panel>
+			<p:panel id="pnlDetallefactura" header="#{msg['lbl_detalle']}">
+			    
+				<h:panelGrid id="pnldetalleproducto" columns="6" >
+					<p:outputLabel value="#{msg.lbl_nombre}:" for="nomproducto"  style="display:block;width:100px;"/>
+					<p:inputText id="nomproducto" value="#{proformaDatamanager.tinvproducto.nombre}"  style="display:block;width:200px;" disabled="true"/>
+					<p:commandButton icon="ui-icon-extlink" oncomplete="PF('dlgArticuloSel').show();"/>
+				    <p:outputLabel value="#{msg.lbl_precio}:" for="preproducto"  style="display:block;width:100px;"/>
+					<p:inputText id="preproducto" value="#{proformaDatamanager.tinvproducto.preciounitario}" style="display:block;width:180px;" disabled="true"/>
+				</h:panelGrid>
+				<h:panelGrid columns="6" id="pnldetalle" >
+					<p:outputLabel value="#{msg.lbl_cantidad}:" for="cantidad" style="display:block;width:100px;"/>
+					<pe:inputNumber id="cantidad" value="#{proformaDatamanager.tfacdetproforma.cantidad}" decimalPlaces="3" decimalSeparator="." thousandSeparator="," required="true"/>
+					<p:message for="cantidad"/>	
+					<p:commandButton id="btnagregar" value="#{msg.btn_agregar}"  process="@this pnldetalle" action="#{proformaController.agregarProducto()}"
+					update="pnldetalle, detalleFactura, pnldetalleproducto" />
+				</h:panelGrid>
+				
+				<p:dataTable id="detalleFactura" value="#{proformaDatamanager.tfaccabproforma.tfacdetproformas}" var="item"
+				 style="width:100%;font: bold 100% monospace; ">
+					<p:column headerText="#{msg.lbl_pices_type}">
+						<p:outputLabel value="#{item.unidadventa}"/>
+					</p:column>
+					<p:column headerText="#{msg.lbl_total_pice}">
+						<p:inputText value="#{item.cantidad}"/>
+					</p:column>
+					<p:column headerText="#{msg.lbl_eq_full_boxes}">
+						<p:inputText value="#{item.eqfullboxes}"/>
+					</p:column>
+					<p:column headerText="#{msg.lbl_product_description}">
+						<p:outputLabel value="#{item.tinvproducto.nombre}"/>
+					</p:column>
+					<p:column headerText="#{msg.lbl_atpa}">
+						<p:outputLabel value="#{item.atpa}"/>
+					</p:column>
+					<p:column headerText="#{msg.lbl_andina}">
+						<p:outputLabel value="#{item.nandina}"/>
+					</p:column>
+					<p:column headerText="#{msg.lbl_stems_bunch}">
+						<p:inputText value="#{item.stemsbunch}"/>
+					</p:column>
+					<p:column headerText="#{msg.lbl_total_bunch}">
+						<p:inputText value="#{item.totalbunch}"/>
+					</p:column>
+					<p:column headerText="#{msg.lbl_total_stems}">
+						<p:inputText value="#{item.totalstems}"/>
+					</p:column>
+					<p:column headerText="#{msg.lbl_unit_price}">
+						<p:inputText value="#{item.preciounitario}"/>
+					</p:column>
+					<p:column headerText="#{msg.lbl_total_price}">
+						<p:inputText value="#{item.total}"/>
+					</p:column>
+					<p:column>
+						<p:commandButton id="btneliminar" icon="ui-icon-close" action="#{proformaController.eliminarArticulo(item)}" process="@this detalleFactura" update="detalleFactura" />
+					</p:column>
+					
+					<p:columnGroup type="footer">
+		                <p:row>
+		                    <p:column footerText="Total: " style="text-align:right"/>
+		                    <p:column footerText="#{proformaDatamanager.tfaccabproforma.totalpices}" />
+		                    <p:column footerText="#{proformaDatamanager.tfaccabproforma.totaleqfullboxes}" />
+		                    <p:column colspan="5" footerText="#{proformaDatamanager.tfaccabproforma.totalbunch}" style="text-align:right"/>
+		                    <p:column  footerText="#{proformaDatamanager.tfaccabproforma.totalstems}" />
+		                    <p:column  footerText="" />
+		                    <p:column  footerText="#{proformaDatamanager.tfaccabproforma.total}" />
+		                    <p:column  footerText="" />
+		                </p:row>
+		            </p:columnGroup>
+				</p:dataTable>
+				<p:commandButton id="btngrabar" icon="ui-icon-disk" value="#{msg.btn_guardar}" action="#{proformaController.grabar()}" process="@this detalleFactura pnldatoscab" update="pnldetalle, detalleFactura" />
+				<p:commandButton id="btncancelar" icon="ui-icon-close" value="#{msg.btn_cancelar}" action="#{proformaController.cancelar()}" process="@this detalleFactura" update="pnldetalle, detalleFactura, pnldatoscab, pnlDetallefactura" />
+			</p:panel>
+		</p:panel>
+	</ui:define>
+	<ui:define name="dialogArea">
+		<p:dialog widgetVar="dlgClienteBusqueda" appendTo="@(body)" modal="true" resizable="false" closeOnEscape="true" >
+			<p:panel header="#{msg.lbl_clientes}" style="width:900px !important">
+				  	<p:fieldset legend="#{msg['lbl_busqueda']}">
+				  		<h:panelGroup layout="block" id="pnlBusquedacliente">
+				  			<h:panelGrid columns="3">
+				  				<p:outputLabel value="#{msg['lbl_codigo_principal']}:" for="codigoPrincipal"/>
+				  				<p:inputText id="codigoPrincipal" value="#{clienteDatamanager.clienteserch.pk.codigocliente}"/>
+				  				<p:message for="codigoPrincipal"/>
+				  				<p:outputLabel value="#{msg['lbl_nombre']}:" for="txtNombre"/>
+				  				<p:inputText id="txtNombre" value="#{clienteDatamanager.clienteserch.tsyspersona.nombres}"/>
+				  				<p:message for="txtNombre"/>
+				  				<p:outputLabel value="#{msg['lbl_apellidos']}:" for="txtApellidos"/>
+				  				<p:inputText id="txtApellidos" value="#{clienteDatamanager.clienteserch.tsyspersona.apellidos}"/>
+				  				<p:message for="txtApellidos"/>
+				  				<p:outputLabel value="#{msg['lbl_tipo_id']}:" for="selTipoIdentificacion"/>
+				  				<p:selectOneMenu id="selTipoIdentificacion" value="#{clienteDatamanager.clienteserch.tsyspersona.tipoid}">
+				  					<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+				  					<f:selectItems value="#{clienteDatamanager.tiposCatalogo}" var="item" itemLabel="#{item.descripcion}" itemValue="#{item.pk.codigocatalogo}"/>
+				  				</p:selectOneMenu>
+				  				<p:message for="selTipoIdentificacion"/>
+				  				<p:outputLabel value="#{msg['lbl_identificacion']}:" for="txtIdentificacion"/>
+				  				<p:inputText id="txtIdentificacion" value="#{clienteDatamanager.clienteserch.tsyspersona.identificacion}"/>
+				  				<p:message for="txtIdentificacion"/>
+				  				<p:outputLabel value="#{msg['lbl_estado']}:" for="estado"/>
+				  				<p:selectOneMenu id="estado" value="#{clienteDatamanager.clienteserch.tsyspersona.estado}">
+				  					<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+				  					<f:selectItems value="#{clienteDatamanager.estadosCatalogo}" var="estado" itemLabel="#{estado.descripcion}" itemValue="#{estado.pk.codigocatalogo}" />
+				  				</p:selectOneMenu>
+				  				<p:message for="estado"/>
+				  			</h:panelGrid>
+				  		</h:panelGroup>
+				  		<h:panelGroup layout="block" style="float:left">
+				  			<p:commandButton icon="ui-icon-search" value="#{msg['btn_buscar']}" action="#{clienteController.buscar()}" update="pnlDataArticulos" process="@this pnlBusquedacliente"/>
+				  			<p:commandButton icon="ui-icon-plusthick" value="#{msg['btn_crear']}" oncomplete="PF('dlgCliente').show()" 
+				  				action="#{clienteController.crearArticulo()}" update=":frmCreacionArticulos:pnlArticulo"/>
+				  		</h:panelGroup>
+				  	</p:fieldset>
+				  	<p:fieldset legend="#{msg['lbl_listado_clientes']}">
+				  		<h:panelGroup layout="block" id="pnlDataArticulos">
+				  			<p:dataTable value="#{clienteDatamanager.clientesCol}" var="item" id="tblaDatos">
+				  				<p:column headerText="#{msg['lbl_codigo_principal']}">
+				  					<h:outputText value="#{item.pk.codigocliente}" />
+				  				</p:column>
+				  				<p:column headerText="#{msg['lbl_nombre']}">
+				  					<h:outputText value="#{item.tsyspersona.nombres}" />
+				  				</p:column>
+				  				<p:column headerText="#{msg['lbl_apellidos']}">
+				  					<h:outputText value="#{item.tsyspersona.apellidos}" />
+				  				</p:column>
+				  				<p:column headerText="#{msg['lbl_tipo_id']}">
+				  					<h:outputText value="#{item.tsyspersona.tadmtipopersona.descripcion}" />
+				  				</p:column>
+				  				<p:column headerText="#{msg['lbl_identificacion']}">
+				  					<h:outputText value="#{item.tsyspersona.identificacion}" />
+				  				</p:column>
+				  				<p:column headerText="#{msg['lbl_estado']}">
+				  					<h:outputText value="#{item.tsyspersona.tadmestado.descripcion}" />
+				  				</p:column>
+				  				<p:column styleClass="bun-action" style="text-align:center">
+				  					<p:commandButton icon="ui-icon-pencil" title="#{msg['btn_actualizar']}" oncomplete="PF('dlgCliente').show();" update=":frmCreacionArticulos:pnlArticulo" process="@this" immediate="true">
+				  						<f:setPropertyActionListener target="#{clienteDatamanager.clienteComponente.tfaccliente}" value="#{item}"/>
+				  					</p:commandButton>
+				  				</p:column>
+				  				<p:column styleClass="bun-action" style="text-align:center">
+				  					<p:commandButton icon="ui-icon-trash" title="#{msg['btn_eliminar']}" action="#{clienteController.eliminar(item.tsyspersona.pk.codigopersona)}" update=":pnlDataArticulos" process="@this"/>
+				  				</p:column>
+				  				<p:column styleClass="bun-action" style="text-align:center">
+				  					<p:commandButton icon="ui-icon-circle-check" title="#{msg['btn_seleccionar']}" oncomplete="PF('dlgClienteBusqueda').hide();" update=":frm:pnlcliente" process="@this" immediate="true">
+				  						<f:setPropertyActionListener target="#{proformaDatamanager.tfaccliente}" value="#{item}"/>
+				  					</p:commandButton>
+				  				</p:column>
+				  			</p:dataTable>
+				  		</h:panelGroup>
+				  	</p:fieldset>
+		  </p:panel>	
+		</p:dialog>
+	  	<p:dialog widgetVar="dlgCliente" appendTo="@(body)" modal="true" resizable="false" closeOnEscape="true">
+	  		<f:facet name="header">
+	  			<h:outputText value="#{msg['lbl_clientes']}" />
+	  		</f:facet>
+			<h:form id="frmCreacionArticulos">
+				<b:clienteComponent id="pnlArticulo" controller="#{clienteDatamanager.clienteComponente}" processSave="@this" updateSave=":pnlDataArticulos" oncompleteSave="PF('dlgCliente').hide();" oncompleteCancel="PF('dlgCliente').hide();"/>
+			</h:form>	  		
+	  	</p:dialog>
+	  	
+	  	<!-- articulo -->
+	  	<p:dialog widgetVar="dlgArticuloSel" appendTo="@(body)" modal="true" resizable="false" closeOnEscape="true">
+			  	<p:panel header="#{msg['lbl_articulos']}" style="width:900px !important">
+				  	<p:fieldset legend="#{msg['lbl_busqueda']}">
+				  		<h:panelGroup layout="block">
+				  			<h:panelGrid columns="3" id="pnlBusqueda">
+				  				<p:outputLabel value="#{msg['lbl_codigo_principal']}:" for="txtCodigoPrincipal"/>
+				  				<p:inputText id="txtCodigoPrincipal" value="#{articuloDatamanager.articuloSearch.pk.codigoproductos}"/>
+				  				<p:message for="txtCodigoPrincipal"/>
+				  				
+				  				<p:outputLabel value="#{msg['lbl_codigo_auxiliar']}:" for="txtCodigoAuxiliar"/>
+				  				<p:inputText id="txtCodigoAuxiliar" value="#{articuloDatamanager.articuloSearch.codigoauxiliar}"/>
+				  				<p:message for="txtCodigoAuxiliar"/>
+				  				
+				  				<p:outputLabel value="#{msg['lbl_nombre_producto']}:" for="txtNombreProducto"/>
+				  				<p:inputText id="txtNombreProducto" value="#{articuloDatamanager.articuloSearch.nombre}"/>
+				  				<p:message for="txtNombreProducto"/>
+				  				
+				  				<p:outputLabel value="#{msg['lbl_color']}:" for="selColor"/>
+				  				<p:selectOneMenu id="selColor" value="#{articuloDatamanager.articuloSearch.color}">
+				  					<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+				  					<f:selectItems value="#{articuloDatamanager.colorCatalogoColl}" var="color" itemLabel="#{color.descripcion}" itemValue="#{color.pk.codigocatalogo}"/>
+				  				</p:selectOneMenu>
+				  				<p:message for="selColor"/>
+				  				
+				  				<p:outputLabel value="#{msg['lbl_estado']}:" for="selEstado"/>
+				  				<p:selectOneMenu id="selEstado" value="#{articuloDatamanager.articuloSearch.estado}">
+				  					<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+				  					<f:selectItems value="#{articuloDatamanager.estadoCatalogoColl}" var="estado" itemLabel="#{estado.descripcion}" itemValue="#{estado.pk.codigocatalogo}" />
+				  				</p:selectOneMenu>
+				  				<p:message for="selEstado"/>
+				  			</h:panelGrid>
+				  		</h:panelGroup>
+				  		<h:panelGroup layout="block" style="float:left">
+				  			<p:commandButton icon="ui-icon-search" value="#{msg['btn_buscar']}" action="#{articuloController.buscar()}" update="pnlDataArticulosSel" process="@this pnlBusqueda"/>
+				  			<p:commandButton icon="ui-icon-plusthick" 	value="#{msg['btn_crear']}"	oncomplete="PF('dlgArticulo').show()" 	action="#{articuloController.crearArticulo()}" 
+				  				update=":frmArticulos:pnlArticulo"/>
+				  		</h:panelGroup>
+				  	</p:fieldset>
+				  	<p:fieldset legend="#{msg['lbl_listado_articulos']}">
+				  		<h:panelGroup layout="block" id="pnlDataArticulosSel">
+				  			<p:dataTable value="#{articuloDatamanager.productoColl}" var="articulo">
+				  				<p:column headerText="#{msg['lbl_codigo_principal']}">
+				  					<h:outputText value="#{articulo.pk.codigoproductos}" />
+				  				</p:column>
+				  				<p:column headerText="#{msg['lbl_codigo_auxiliar']}">
+				  					<h:outputText value="#{articulo.codigoauxiliar}" />
+				  				</p:column>
+				  				<p:column headerText="#{msg['lbl_nombre_producto']}">
+				  					<h:outputText value="#{articulo.nombre}" />
+				  				</p:column>
+				  				<p:column headerText="#{msg['lbl_tipo_producto']}">
+				  					<h:outputText value="#{articulo.tadmtipoproducto.descripcion}" />
+				  				</p:column>
+				  				<p:column headerText="#{msg['lbl_precio']}">
+				  					<h:outputText value="#{articulo.preciounitario}" />
+				  				</p:column>
+				  				<p:column headerText="#{msg['lbl_estado']}">
+				  					<h:outputText value="#{articulo.tadmestado.descripcion}" />
+				  				</p:column>
+				  				<p:column styleClass="bun-action">
+				  					<p:commandButton icon="ui-icon-pencil" title="#{msg['btn_actualizar']}" oncomplete="PF('dlgArticulo').show();" update=":frmArticulos:pnlArticulo" process="@this">
+				  						<f:setPropertyActionListener target="#{articuloDatamanager.articuloComponente.articulo}" value="#{articulo}"/>
+				  					</p:commandButton>
+				  				</p:column>
+				  				<p:column styleClass="bun-action">
+				  					<p:commandButton icon="ui-icon-trash" title="#{msg['btn_eliminar']}" action="#{articuloController.eliminar(articulo.pk.codigoproductos)}" process="@this" update=":pnlDataArticulosSel"/>
+				  				</p:column>
+				  				<p:column styleClass="bun-action" style="text-align:center">
+				  					<p:commandButton icon="ui-icon-circle-check" title="#{msg['btn_seleccionar']}" oncomplete="PF('dlgArticuloSel').hide();"  process="@this" immediate="true" update=":frm:pnldetalleproducto">
+				  						<f:setPropertyActionListener target="#{proformaDatamanager.tinvproducto}" value="#{articulo}"/>
+				  					</p:commandButton>
+				  				</p:column>
+				  			</p:dataTable>
+				  		</h:panelGroup>
+				  	</p:fieldset>
+				  </p:panel>
+	  	</p:dialog>
+	    <p:dialog widgetVar="dlgArticulo" appendTo="@(body)" modal="true" resizable="false" closeOnEscape="true">
+	  		<f:facet name="header">
+	  			<h:outputText value="#{msg['lbl_articulos']}" />
+	  		</f:facet>
+			<h:form id="frmArticulos">
+				<b:articuloComponent id="pnlArticulo" controller="#{articuloDatamanager.articuloComponente}" oncompleteCancel="PF('dlgArticulo').hide();"
+					processSave="@this" updateSave=":pnlDataArticulosSel" oncompleteSave="PF('dlgArticulo').hide();"/>
+			</h:form>	  		
+	  	</p:dialog>
+	  </ui:define>
+</ui:composition>
