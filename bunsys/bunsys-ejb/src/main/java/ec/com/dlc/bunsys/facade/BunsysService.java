@@ -6,16 +6,20 @@ import javax.ejb.Local;
 
 import ec.com.dlc.bunsys.entity.administracion.Tadmcatalogo;
 import ec.com.dlc.bunsys.entity.administracion.Tadmcompania;
+import ec.com.dlc.bunsys.entity.administracion.Tadmconversionunidad;
 import ec.com.dlc.bunsys.entity.administracion.Tadmparamsri;
 import ec.com.dlc.bunsys.entity.administracion.Tadmusuario;
 import ec.com.dlc.bunsys.entity.administracion.pk.TadmcompaniaPK;
 import ec.com.dlc.bunsys.entity.cuentasxpagar.Tcxpproveedor;
 import ec.com.dlc.bunsys.entity.cuentasxpagar.pk.TcxpproveedorPK;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccabdevolucione;
+import ec.com.dlc.bunsys.entity.facturacion.Tfaccabfactura;
+import ec.com.dlc.bunsys.entity.facturacion.Tfaccabproforma;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccliente;
 import ec.com.dlc.bunsys.entity.inventario.Tinvproducto;
 import ec.com.dlc.bunsys.entity.inventario.pk.TinvproductoPK;
 import ec.com.dlc.bunsys.entity.seguridad.Tsyspersona;
+import ec.com.dlc.bunsys.entity.seguridad.pk.TsyspersonaPK;
 import ec.com.dlc.bunsys.util.FacturacionException;
 
 /**
@@ -141,4 +145,56 @@ public interface BunsysService {
 	 * @throws FacturacionException
 	 */
 	Tfaccliente buscarPorIdentificacion(String identificacion) throws FacturacionException;
+	
+	
+	
+	
+	
+	//-----------------------
+	
+	/**
+	 * Graba la factura
+	 * @param tfaccabfactura
+	 */
+	public void grabarFactura(Tfaccabfactura tfaccabfactura);
+	
+	/**
+	 * Crea o actualiza un nuevo cliente
+	 * @param cliente
+	 * @throws FacturacionException
+	 */
+	void guardarCliente(Tfaccliente tfaccliente) throws FacturacionException;
+	
+	/**
+	 * Busca los clientes
+	 * @param codCompania
+	 * @param nombre
+	 * @param apellido
+	 * @param identificacion
+	 * @return Collection<Tfaccliente>
+	 * @throws FacturacionException
+	 */
+	Collection<Tfaccliente> buscarClientes(Integer codCompania, String nombre, String apellido, String identificacion) throws FacturacionException;
+	
+	/**
+	 * Elimina el cliente
+	 * @param tfacclientePK
+	 * @param estadoCodigo
+	 */
+	void eliminarCliente(TsyspersonaPK personaPk, Integer estadoCodigo);
+	
+	/**
+	 * Tabla de conversion segun la unidad de venta del articulo
+	 * @param unidadVentaCodigo
+	 * @param unidadVenta
+	 * @return
+	 */
+	public Tadmconversionunidad conversionArticulo(Integer unidadVentaCodigo, String unidadVenta);
+	
+	/**
+	 * Guarda la proforma
+	 * @param tfaccabproforma
+	 * @throws FacturacionException
+	 */
+	void guardarProforma(Tfaccabproforma tfaccabproforma, String accion) throws FacturacionException;
 }

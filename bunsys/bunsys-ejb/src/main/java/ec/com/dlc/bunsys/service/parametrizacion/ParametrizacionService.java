@@ -20,6 +20,7 @@ import ec.com.dlc.bunsys.entity.facturacion.Tfaccliente;
 import ec.com.dlc.bunsys.entity.inventario.Tinvproducto;
 import ec.com.dlc.bunsys.entity.inventario.pk.TinvproductoPK;
 import ec.com.dlc.bunsys.entity.seguridad.Tsyspersona;
+import ec.com.dlc.bunsys.entity.seguridad.pk.TsyspersonaPK;
 import ec.com.dlc.bunsys.util.FacturacionException;
 
 /**
@@ -161,4 +162,55 @@ public class ParametrizacionService {
 	public Tfaccliente busquedaClienteIdentificacion(String identificacion) throws FacturacionException {
 		return facturaDao.buscarClientePorIdentificacion(identificacion);
 	}
+	
+	
+	
+	//---------------------------------------
+	/**
+	 * Crea o actualiza un cliente
+	 * @param cliente
+	 * @throws FacturacionException
+	 */
+	public void guardarCliente(Tfaccliente cliente) throws FacturacionException{
+		Tsyspersona persona = cliente.getTsyspersona();
+		System.out.println("1   .."+persona.getPk().getCodigocompania());
+		System.out.println("2   .."+cliente.getPk().getCodigocompania());
+		if(persona.getPk().getCodigopersona() != null){//actualizacion
+			facturaDao.update(cliente.getTsyspersona());
+			if(cliente.getPk().getCodigocompania()!=null){
+				facturaDao.update(cliente);
+			}else{
+				cliente.setCodigopersona(persona.getPk().getCodigopersona());
+				facturaDao.create(cliente);
+			}
+		} else{
+			facturaDao.create(persona);
+			cliente.setCodigopersona(persona.getPk().getCodigopersona());
+			cliente.setTsyspersona(null);
+			facturaDao.create(cliente);
+		}
+	}
+	
+	/**
+	 * Buscar clientes
+	 * @param articulo
+	 * @throws FacturacionException
+	 */
+	public Collection<Tfaccliente> buscarClientes(Integer codCompania,
+			String nombre, String apellido, String identificacion) {
+		return facturaDao.buscarClientes(codCompania, nombre, apellido, identificacion);
+	}
+	
+	/**
+	 * Inactiva los clientes
+	 * @param articulo
+	 * @throws FacturacionException
+	 */
+	public void eliminarCliente(TsyspersonaPK personaPk, Integer estadoCodigo){
+		Tsyspersona persona= facturaDao.findById(Tsyspersona.class, personaPk);
+		persona.setEstado("I");
+		persona.setEstadocodigo(estadoCodigo);
+		facturaDao.update(persona);
+	}
+	
 }
