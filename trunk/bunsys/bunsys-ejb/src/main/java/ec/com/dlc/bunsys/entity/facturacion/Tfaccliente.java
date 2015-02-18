@@ -1,6 +1,5 @@
 package ec.com.dlc.bunsys.entity.facturacion;
 
-import java.math.BigDecimal;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -79,6 +78,7 @@ public class Tfaccliente extends BaseEntity<TfacclientePK>{
 	private Tsyspersona tsyspersona;
 
 	public Tfaccliente() {
+		this.pk = new TfacclientePK();
 	}
 
 	public Double getLimitecredito() {
@@ -141,6 +141,46 @@ public class Tfaccliente extends BaseEntity<TfacclientePK>{
 
 	public void setTsyspersona(Tsyspersona tsyspersona) {
 		this.tsyspersona = tsyspersona;
+	}
+
+	public String getFormapago() {
+		return formapago;
+	}
+
+	public void setFormapago(String formapago) {
+		this.formapago = formapago;
+	}
+
+	public Integer getFormapagocodigo() {
+		return formapagocodigo;
+	}
+
+	public void setFormapagocodigo(Integer formapagocodigo) {
+		this.formapagocodigo = formapagocodigo;
+	}
+
+	public String getGrupocliente() {
+		return grupocliente;
+	}
+
+	public void setGrupocliente(String grupocliente) {
+		this.grupocliente = grupocliente;
+	}
+
+	public Integer getGrupoclientecodigo() {
+		return grupoclientecodigo;
+	}
+
+	public void setGrupoclientecodigo(Integer grupoclientecodigo) {
+		this.grupoclientecodigo = grupoclientecodigo;
+	}
+
+	public Integer getCodigopersona() {
+		return codigopersona;
+	}
+
+	public void setCodigopersona(Integer codigopersona) {
+		this.codigopersona = codigopersona;
 	}
 
 }

@@ -9,29 +9,23 @@ import javax.persistence.SequenceGenerator;
 import ec.com.dlc.bunsys.entity.base.BasePK;
 
 /**
- * The primary key class for the tfacclientes database table.
+ * The primary key class for the tfacdetdevoluciones database table.
  * 
  */
 @Embeddable
-public class TfacclientePK extends BasePK{
-	//default serial version id, required for serializable classes.
+public class TfacdetproformaPK extends BasePK {
 	private static final long serialVersionUID = 1L;
 
 	@Column
-	@SequenceGenerator(name="tfacclientes_codigocliente_seq", sequenceName="seccliente")
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="tfacclientes_codigocliente_seq")
-	private Integer codigocliente;
+	@SequenceGenerator(name="tfacdetproforma_codigodetalleprof_seq",    sequenceName="tfacdetproforma_codigodetalleprof_seq",    allocationSize=1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,  generator="tfacdetproforma_codigodetalleprof_seq")
+	private Integer codigodetalleprof ;
 
 	@Column
 	private Integer codigocompania;
 
-	public TfacclientePK() {
-	}
-	public Integer getCodigocliente() {
-		return this.codigocliente;
-	}
-	public void setCodigocliente(Integer codigocliente) {
-		this.codigocliente = codigocliente;
+
+	public TfacdetproformaPK() {
 	}
 	public Integer getCodigocompania() {
 		return this.codigocompania;
@@ -39,24 +33,31 @@ public class TfacclientePK extends BasePK{
 	public void setCodigocompania(Integer codigocompania) {
 		this.codigocompania = codigocompania;
 	}
+	
 
+	public Integer getCodigodetalleprof() {
+		return codigodetalleprof;
+	}
+	public void setCodigodetalleprof(Integer codigodetalleprof) {
+		this.codigodetalleprof = codigodetalleprof;
+	}
 	public boolean equals(Object other) {
 		if (this == other) {
 			return true;
 		}
-		if (!(other instanceof TfacclientePK)) {
+		if (!(other instanceof TfacdetdevolucionePK)) {
 			return false;
 		}
-		TfacclientePK castOther = (TfacclientePK)other;
+		TfacdetproformaPK castOther = (TfacdetproformaPK)other;
 		return 
-			this.codigocliente.equals(castOther.codigocliente)
+			this.codigodetalleprof.equals(castOther.codigodetalleprof)
 			&& this.codigocompania.equals(castOther.codigocompania);
 	}
 
 	public int hashCode() {
 		final int prime = 31;
 		int hash = 17;
-		hash = hash * prime + this.codigocliente.hashCode();
+		hash = hash * prime + this.codigodetalleprof.hashCode();
 		hash = hash * prime + this.codigocompania.hashCode();
 		
 		return hash;
