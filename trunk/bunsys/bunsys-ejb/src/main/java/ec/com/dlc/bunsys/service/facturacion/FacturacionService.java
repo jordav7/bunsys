@@ -3,6 +3,7 @@ package ec.com.dlc.bunsys.service.facturacion;
 import static javax.ejb.TransactionAttributeType.MANDATORY;
 
 import java.util.Collection;
+import java.util.Date;
 
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -17,6 +18,7 @@ import ec.com.dlc.bunsys.entity.facturacion.Tfaccabproforma;
 import ec.com.dlc.bunsys.entity.facturacion.Tfacdetfactura;
 import ec.com.dlc.bunsys.entity.facturacion.Tfacdetproforma;
 import ec.com.dlc.bunsys.entity.seguridad.Tsyspersona;
+import ec.com.dlc.bunsys.entity.facturacion.Tfaccuentasxcobrar;
 import ec.com.dlc.bunsys.util.FacturacionException;
 
 /**
@@ -96,4 +98,11 @@ public class FacturacionService {
 		}
 	}
 	
+	public Collection<Tfaccuentasxcobrar> obtenerFacturasCredito(Integer codCompania, String numFac, String codId, String nombres, String apellidos, Date fecEmi, Date fecVen, Date fecPag, String numDoc) {
+		return facturaDao.obtenerFacturasCredito(codCompania, numFac, codId, nombres, apellidos, fecEmi, fecVen, fecPag, numDoc);
+	}
+	
+	public Collection<Tfaccuentasxcobrar> obtenerCuentasPorCobrar(Integer codCompania, String codigoCliente) throws FacturacionException {
+		return facturaDao.obtenerCuentasPorCobrar(codCompania, codigoCliente);
+	}
 }

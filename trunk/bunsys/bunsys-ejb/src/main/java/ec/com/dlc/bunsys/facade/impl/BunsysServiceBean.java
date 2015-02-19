@@ -3,6 +3,7 @@ package ec.com.dlc.bunsys.facade.impl;
 import static javax.ejb.TransactionAttributeType.REQUIRES_NEW;
 
 import java.util.Collection;
+import java.util.Date;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -26,6 +27,7 @@ import ec.com.dlc.bunsys.entity.administracion.pk.TadmcompaniaPK;
 import ec.com.dlc.bunsys.entity.cuentasxpagar.Tcxpproveedor;
 import ec.com.dlc.bunsys.entity.cuentasxpagar.pk.TcxpproveedorPK;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccabdevolucione;
+import ec.com.dlc.bunsys.entity.facturacion.Tfaccuentasxcobrar;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccliente;
 import ec.com.dlc.bunsys.entity.inventario.Tinvproducto;
 import ec.com.dlc.bunsys.entity.inventario.pk.TinvproductoPK;
@@ -140,7 +142,7 @@ public class BunsysServiceBean implements BunsysService {
 			throws FacturacionException {
 		parametrizacionService.actualizarCompania(compania);
 	}
-
+	
 	@Override
 	public Collection<Tfaccabdevolucione> buscarNotasCredito(Integer codCompania,
 			Tfaccabdevolucione tfaccabdevolucione, Tsyspersona tsyspersona)
@@ -196,5 +198,19 @@ public class BunsysServiceBean implements BunsysService {
 		facturacionService.guardarProforma(tfaccabproform,accion);
 
 	}
-	
+
+	@Override
+	public Collection<Tfaccuentasxcobrar> obtenerFacturasCredito(
+			Integer codCompania, String numFac, String codId, String nombres,
+			String apellidos, Date fecEmi, Date fecVen, Date fecPag,
+			String numDoc) throws FacturacionException {
+		return facturacionService.obtenerFacturasCredito(codCompania, numFac, codId, nombres, apellidos, fecEmi, fecVen, fecPag, numDoc);
+	}
+
+	@Override
+	public Collection<Tfaccuentasxcobrar> obtenerCuentasPorCobrar(
+			Integer codCompania, String codigoCliente)
+			throws FacturacionException {
+		return facturacionService.obtenerCuentasPorCobrar(codCompania, codigoCliente);
+	}
 }
