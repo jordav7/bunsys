@@ -1,8 +1,7 @@
 package ec.com.dlc.bunsys.dao.facturacion;
 
 import java.util.Collection;
-
-
+import java.util.Date;
 
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
@@ -12,9 +11,9 @@ import org.apache.commons.lang.StringUtils;
 import ec.com.dlc.bunsys.dao.general.GeneralDao;
 import ec.com.dlc.bunsys.entity.administracion.Tadmcatalogo;
 import ec.com.dlc.bunsys.entity.administracion.Tadmconversionunidad;
-import ec.com.dlc.bunsys.entity.facturacion.Tfaccliente;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccabdevolucione;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccliente;
+import ec.com.dlc.bunsys.entity.facturacion.Tfaccuentasxcobrar;
 import ec.com.dlc.bunsys.entity.inventario.Tinvproducto;
 import ec.com.dlc.bunsys.entity.seguridad.Tsyspersona;
 import ec.com.dlc.bunsys.util.FacturacionException;
@@ -107,6 +106,121 @@ public class FacturaDao extends GeneralDao {
 		}
 	}
 	
+	public Collection<Tfaccuentasxcobrar> obtenerFacturasCredito(Integer codCompania, String numFac, String codId, String nombres, String apellidos, Date fecEmi, Date fecVen, Date fecPag, String numDoc) {
+		Collection<Tfaccuentasxcobrar> cxcColl = null;
+		try{
+			final StringBuilder sql = new StringBuilder("SELECT o from Tfaccuentasxcobrar o LEFT JOIN FETCH o.tfaccliente p LEFT JOIN FETCH p.tsyspersona where o.numdoc is not null and o.pk.codigocompania=:codCompania ");
+			
+			if(StringUtils.isNotBlank(numFac)){
+				sql.append("and o.numerofactura = :numFac ");
+			}
+			
+			if (StringUtils.isNotBlank(codId)) {
+				sql.append("and o.tfaccliente.tsyspersona.identificacion = :codId ");
+			}
+			
+			if (StringUtils.isNotBlank(nombres)) {
+				sql.append("and upper(o.tfaccliente.tsyspersona.nombres) like :nombres ");
+			}
+			
+			if (StringUtils.isNotBlank(apellidos)) {
+				sql.append("and upper(o.tfaccliente.tsyspersona.apellidos) like :apellidos ");
+			}
+			
+			if (fecEmi != null) {
+				sql.append("and o.fechaemision = :fecEmi ");
+			}
+			
+			if (fecVen != null) {
+				sql.append("and o.fechavence = :fecVen ");
+			}
+			
+			if (fecPag != null) {
+				sql.append("and o.fechapago = :fecPag ");
+			}
+			
+			if(StringUtils.isNotBlank(numDoc)){
+				sql.append("and o.numdoc = :numDoc ");
+			}
+			
+			Query query = this.entityManager.createQuery(sql.toString());
+			query.setParameter("codCompania", codCompania);
+			
+			if(StringUtils.isNotBlank(numFac)){
+				query.setParameter("numFac", numFac);
+			}
+			
+			if (StringUtils.isNotBlank(codId)) {
+				query.setParameter("codId", codId);
+			}
+			
+			if (StringUtils.isNotBlank(nombres)) {
+				query.setParameter("nombres", nombres.toUpperCase());
+			}
+			
+			if (StringUtils.isNotBlank(apellidos)) {
+				query.setParameter("apellidos", apellidos.toUpperCase());
+			}
+			
+			if (fecEmi != null) {
+				query.setParameter("fecEmi", fecEmi);
+			}
+			
+			if (fecVen != null) {
+				query.setParameter("fecVen", fecVen);
+			}
+			
+			if (fecPag != null) {
+				query.setParameter("fecPag", fecPag);
+			}
+			
+			if(StringUtils.isNotBlank(numDoc)){
+				query.setParameter("numDoc", numDoc);
+			}
+			
+			cxcColl = query.getResultList();
+			return cxcColl;
+		}catch(Throwable e){
+			throw new FacturacionException(e);
+		}
+	}
+	
+	/**
+	 * Encuentra un cliente por indetificaci&oacute;n
+	 * @param identificacion
+	 * @return
+	 * @throws FacturacionException
+	 */
+	public Tfaccliente buscarClientePorIdentificacion(String identificacion) throws FacturacionException {
+		Tfaccliente cliente = null;
+		try {
+			final StringBuilder queryCliente = new StringBuilder("SELECT o FROM Tfaccliente o LEFT JOIN FETCH o.tsyspersona p WHERE p.identificacion=:identificacion");
+			Query query = this.entityManager.createQuery(queryCliente.toString());
+			query.setParameter("identificacion", identificacion);
+			cliente = (Tfaccliente) query.getSingleResult();
+			return cliente;
+		} catch(NoResultException e){
+			return null;
+		} catch (Throwable e) {
+			throw new FacturacionException(e);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public Collection<Tfaccuentasxcobrar> obtenerCuentasPorCobrar(Integer codCompania, String codigoCliente) throws FacturacionException {
+		Collection<Tfaccuentasxcobrar> cxcColl = null;
+		try{
+			final String sql="SELECT o FROM Tfaccuentasxcobrar o LEFT JOIN FETCH o.tadmtipodoc where o.numdoc is null and o.pk.codigocompania=:codCompania and o.tfaccliente.pk.codigocliente = :codigoCliente  ";
+			Query query = this.entityManager.createQuery(sql);
+			query.setParameter("codCompania", codCompania);
+			query.setParameter("codigoCliente", codigoCliente);
+			cxcColl = query.getResultList();
+			return cxcColl;
+		}catch (Throwable e) {
+			throw new FacturacionException(e);
+		}
+	}
+	
 	@SuppressWarnings("unchecked")
 	public Collection<Tfaccabdevolucione> buscarNotaCreditoCompleto(Integer codcompania, Tfaccabdevolucione tfaccabdevolucione, Tsyspersona tsyspersona) throws FacturacionException {
 		Collection<Tfaccabdevolucione> notasCreditoColl = null;
@@ -153,27 +267,6 @@ public class FacturaDao extends GeneralDao {
 			}
 			notasCreditoColl = query.getResultList();
 			return notasCreditoColl;
-		} catch (Throwable e) {
-			throw new FacturacionException(e);
-		}
-	}
-	
-	/**
-	 * Encuentra un cliente por indetificaci&oacute;n
-	 * @param identificacion
-	 * @return
-	 * @throws FacturacionException
-	 */
-	public Tfaccliente buscarClientePorIdentificacion(String identificacion) throws FacturacionException {
-		Tfaccliente cliente = null;
-		try {
-			final StringBuilder queryCliente = new StringBuilder("SELECT o FROM Tfaccliente o LEFT JOIN FETCH o.tsyspersona p WHERE p.identificacion=:identificacion");
-			Query query = this.entityManager.createQuery(queryCliente.toString());
-			query.setParameter("identificacion", identificacion);
-			cliente = (Tfaccliente) query.getSingleResult();
-			return cliente;
-		} catch(NoResultException e){
-			return null;
 		} catch (Throwable e) {
 			throw new FacturacionException(e);
 		}
