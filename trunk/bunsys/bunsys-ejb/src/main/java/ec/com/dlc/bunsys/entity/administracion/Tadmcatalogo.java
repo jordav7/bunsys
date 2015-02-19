@@ -13,6 +13,7 @@ import ec.com.dlc.bunsys.entity.administracion.pk.TadmcatalogoPK;
 import ec.com.dlc.bunsys.entity.base.BaseEntity;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccabfactura;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccliente;
+import ec.com.dlc.bunsys.entity.facturacion.Tfaccuentasxcobrar;
 import ec.com.dlc.bunsys.entity.inventario.Tinvproducto;
 import ec.com.dlc.bunsys.entity.seguridad.Tsyspersona;
 
@@ -104,6 +105,12 @@ public class Tadmcatalogo extends BaseEntity<TadmcatalogoPK>{
 	//bi-directional many-to-one association to Tsyspersona
 	@OneToMany(mappedBy="tadmtipopersona")
 	private Set<Tsyspersona> tsyspersonastipopersona;
+	
+	@OneToMany(mappedBy="tadmestado")
+	private Set<Tfaccuentasxcobrar> tfaccuentasxcobrarestado;
+	
+	@OneToMany(mappedBy="tadmtipodoc")
+	private Set<Tfaccuentasxcobrar> tfaccuentasxcobrartipodoc; 
 
 	public Tadmcatalogo() {
 	}
@@ -513,5 +520,25 @@ public class Tadmcatalogo extends BaseEntity<TadmcatalogoPK>{
 
 		return tsyspersonastipopersona;
 	}
+
+	public Set<Tfaccuentasxcobrar> getTfaccuentasxcobrarestado() {
+		return tfaccuentasxcobrarestado;
+	}
+
+	public void setTfaccuentasxcobrarestado(
+			Set<Tfaccuentasxcobrar> tfaccuentasxcobrarestado) {
+		this.tfaccuentasxcobrarestado = tfaccuentasxcobrarestado;
+	}
+
+	public Set<Tfaccuentasxcobrar> getTfaccuentasxcobrartipodoc() {
+		return tfaccuentasxcobrartipodoc;
+	}
+
+	public void setTfaccuentasxcobrartipodoc(
+			Set<Tfaccuentasxcobrar> tfaccuentasxcobrartipodoc) {
+		this.tfaccuentasxcobrartipodoc = tfaccuentasxcobrartipodoc;
+	}
+	
+	
 
 }
