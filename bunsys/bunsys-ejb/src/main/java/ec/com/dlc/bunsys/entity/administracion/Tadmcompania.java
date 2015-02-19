@@ -69,6 +69,9 @@ public class Tadmcompania extends BaseEntity<TadmcompaniaPK>{
 
 	@Column
 	private Integer tipoidcontador;
+	
+	@Column
+	private String telefonocelular;
 
 	//bi-directional many-to-one association to Tadmrole
 	@OneToMany(mappedBy="tadmcompania")
@@ -229,4 +232,13 @@ public class Tadmcompania extends BaseEntity<TadmcompaniaPK>{
 		this.logocompania = logocompania;
 	}
 
+	public String getTelefonocelular() {
+		return telefonocelular;
+	}
+
+	public void setTelefonocelular(String telefonocelular) {
+		this.telefonocelular = telefonocelular;
+	}
+
+	
 }
