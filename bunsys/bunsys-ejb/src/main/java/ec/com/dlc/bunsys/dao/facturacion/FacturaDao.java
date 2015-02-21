@@ -3,6 +3,8 @@ package ec.com.dlc.bunsys.dao.facturacion;
 import java.util.Collection;
 import java.util.Date;
 
+import java.util.List;
+
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
@@ -11,8 +13,10 @@ import org.apache.commons.lang.StringUtils;
 import ec.com.dlc.bunsys.dao.general.GeneralDao;
 import ec.com.dlc.bunsys.entity.administracion.Tadmcatalogo;
 import ec.com.dlc.bunsys.entity.administracion.Tadmconversionunidad;
+import ec.com.dlc.bunsys.entity.facturacion.Tfaccabproforma;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccabdevolucione;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccliente;
+import ec.com.dlc.bunsys.entity.facturacion.Tfacdetproforma;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccuentasxcobrar;
 import ec.com.dlc.bunsys.entity.inventario.Tinvproducto;
 import ec.com.dlc.bunsys.entity.seguridad.Tsyspersona;
@@ -332,4 +336,47 @@ public class FacturaDao extends GeneralDao {
 			throw new FacturacionException(e);
 		}
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Tfaccabproforma> cabeceraProformas(String numeroproforma){
+		try{
+			StringBuilder sql = new StringBuilder("SELECT o FROM Tfaccabproforma o "
+												 + " LEFT JOIN FETCH o.tfaccliente cli"
+								                 + " LEFT JOIN FETCH cli.tsyspersona  "
+								                 + " LEFT JOIN FETCH o.tadmairline");
+			
+			if(StringUtils.isNotBlank(numeroproforma)){
+				sql.append(" where o.pk.numeroproforma=:numeroproforma ");
+			}
+			Query query = entityManager.createQuery(sql.toString());
+			if(StringUtils.isNotBlank(numeroproforma)){
+				query.setParameter("numeroproforma", numeroproforma);
+			}
+			return query.getResultList();
+		} catch (Throwable e) {
+			throw new FacturacionException(e);
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Tfacdetproforma> detalleProformas(String numeroproforma){
+		try{
+			StringBuilder sql = new StringBuilder("SELECT o FROM Tfacdetproforma o "
+												 + " LEFT JOIN FETCH o.tadmatpa"
+								                 + " LEFT JOIN FETCH o.tadmunidadventa  "
+								                 + " LEFT JOIN FETCH o.tadmiva"
+								                 + " LEFT JOIN FETCH o.tadmice"
+								                 + " LEFT JOIN FETCH o.tinvproducto"
+								                 +" where o.numeroproforma=:numeroproforma ");
+			
+			Query query = entityManager.createQuery(sql.toString());
+			query.setParameter("numeroproforma", numeroproforma);
+			return query.getResultList();
+		} catch (Throwable e) {
+			throw new FacturacionException(e);
+		}
+	}
+	
+	
+	
 }
