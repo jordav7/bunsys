@@ -3,6 +3,7 @@ package ec.com.dlc.bunsys.facade.impl;
 import static javax.ejb.TransactionAttributeType.REQUIRES_NEW;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Date;
 
 import javax.ejb.EJB;
@@ -197,6 +198,18 @@ public class BunsysServiceBean implements BunsysService {
 		// TODO Auto-generated method stub
 		facturacionService.guardarProforma(tfaccabproform,accion);
 
+	}
+
+	@Override
+	public List<Tfaccabproforma> cabeceraProformas(String numeroproforma)
+			throws FacturacionException {
+		return facturacionService.cabeceraProformas(numeroproforma);
+	}
+
+	@Override
+	public List<Tfacdetproforma> detalleProformas(String numeroproforma)
+			throws FacturacionException {
+		  return facturacionService.detalleProformas(numeroproforma);
 	}
 
 	@Override

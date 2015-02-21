@@ -3,6 +3,7 @@ package ec.com.dlc.bunsys.service.facturacion;
 import static javax.ejb.TransactionAttributeType.MANDATORY;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Date;
 
 import javax.ejb.Stateless;
@@ -89,7 +90,6 @@ public class FacturacionService {
 	}
 	
 	public void grabarFactura(Tfaccabfactura tfaccabfactura){
-		tfaccabfactura.setTadmcatalogo(null);
 		facturaDao.create(tfaccabfactura);
 		for(Tfacdetfactura tfacdetfactura: tfaccabfactura.getTfacdetfacturas()){
 			tfacdetfactura.setNumerofactura(tfaccabfactura.getPk().getNumerofactura());
@@ -98,6 +98,18 @@ public class FacturacionService {
 		}
 	}
 	
+	/**
+	 * lista las cabeceras de las proformas
+	 * @param numeroproforma
+	 * @return
+	 */
+	public List<Tfaccabproforma> cabeceraProformas(String numeroproforma){
+		return facturaDao.cabeceraProformas(numeroproforma);
+	}
+	
+	public List<Tfacdetproforma> detalleProformas(String numeroproforma){
+		return facturaDao.detalleProformas(numeroproforma);
+	}
 	public Collection<Tfaccuentasxcobrar> obtenerFacturasCredito(Integer codCompania, String numFac, String codId, String nombres, String apellidos, Date fecEmi, Date fecVen, Date fecPag, String numDoc) {
 		return facturaDao.obtenerFacturasCredito(codCompania, numFac, codId, nombres, apellidos, fecEmi, fecVen, fecPag, numDoc);
 	}
