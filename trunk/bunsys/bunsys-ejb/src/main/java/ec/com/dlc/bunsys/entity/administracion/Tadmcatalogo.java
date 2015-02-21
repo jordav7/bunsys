@@ -51,7 +51,7 @@ public class Tadmcatalogo extends BaseEntity<TadmcatalogoPK>{
 	private Set<Tadmusuario> tadmusuarios;
 
 	//bi-directional many-to-one association to Tfaccabfactura
-	@OneToMany(mappedBy="tadmcatalogo")
+	@OneToMany(mappedBy="tadmairline")
 	private Set<Tfaccabfactura> tfaccabfacturas;
 
 	//bi-directional many-to-one association to Tfaccliente
@@ -223,14 +223,14 @@ public class Tadmcatalogo extends BaseEntity<TadmcatalogoPK>{
 
 	public Tfaccabfactura addTfaccabfactura(Tfaccabfactura tfaccabfactura) {
 		getTfaccabfacturas().add(tfaccabfactura);
-		tfaccabfactura.setTadmcatalogo(this);
+		tfaccabfactura.setTadmairline(this);
 
 		return tfaccabfactura;
 	}
 
 	public Tfaccabfactura removeTfaccabfactura(Tfaccabfactura tfaccabfactura) {
 		getTfaccabfacturas().remove(tfaccabfactura);
-		tfaccabfactura.setTadmcatalogo(null);
+		tfaccabfactura.setTadmairline(null);
 
 		return tfaccabfactura;
 	}
