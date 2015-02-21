@@ -115,6 +115,12 @@ public class Tfaccabproforma extends BaseEntity<TfaccabproformaPK>  {
 		this.pk = new TfaccabproformaPK();
 	}
 
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumns({
+		@JoinColumn(name="codigocliente", referencedColumnName="codigocliente", insertable=false, updatable=false),
+		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania", insertable=false, updatable=false)
+	})
+	private Tfaccliente tfaccliente;
 
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumns({
@@ -135,7 +141,7 @@ public class Tfaccabproforma extends BaseEntity<TfaccabproformaPK>  {
 	private Tadmcatalogo tadmairline;
 
 	//bi-directional many-to-one association to Tfacdetdevolucione
-	@OneToMany(mappedBy="tfacdetproforma")
+	@OneToMany(mappedBy="tfaccabproforma")
 	private Collection<Tfacdetproforma> tfacdetproformas;
 
 	public Date getFecha() {
@@ -425,6 +431,14 @@ public class Tfaccabproforma extends BaseEntity<TfaccabproformaPK>  {
 
 	public void setReferendum(String referendum) {
 		this.referendum = referendum;
+	}
+
+	public Tfaccliente getTfaccliente() {
+		return tfaccliente;
+	}
+
+	public void setTfaccliente(Tfaccliente tfaccliente) {
+		this.tfaccliente = tfaccliente;
 	}
 	
 	

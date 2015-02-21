@@ -18,12 +18,12 @@ public class TfacdetfacturaPK extends BasePK{
 	private static final long serialVersionUID = 1L;
 
 	@Column
-	private Integer codigocompania;
-
-	@Column
 	@SequenceGenerator(name="tfacdetfactura_seq", sequenceName="secfacdet")
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="tfacdetfactura_seq")
 	private Integer codigodetfactura;
+	
+	@Column
+	private Integer codigocompania;
 
 	public TfacdetfacturaPK() {
 	}

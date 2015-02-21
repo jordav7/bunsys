@@ -121,7 +121,7 @@ public class Tfacdetproforma extends BaseEntity<TfacdetproformaPK>  {
 		@JoinColumn(name="numeroproforma", referencedColumnName="numeroproforma",insertable=false, updatable=false),
 		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania",insertable=false, updatable=false)
 		})
-	private Tfaccabproforma tfacdetproforma;
+	private Tfaccabproforma tfaccabproforma;
 	
 	public Tfacdetproforma() {
 		this.pk = new TfacdetproformaPK();
@@ -305,12 +305,14 @@ public class Tfacdetproforma extends BaseEntity<TfacdetproformaPK>  {
 		this.numeroproforma = numeroproforma;
 	}
 
-	public Tfaccabproforma getTfacdetproforma() {
-		return tfacdetproforma;
+	
+
+	public Tfaccabproforma getTfaccabproforma() {
+		return tfaccabproforma;
 	}
 
-	public void setTfacdetproforma(Tfaccabproforma tfacdetproforma) {
-		this.tfacdetproforma = tfacdetproforma;
+	public void setTfaccabproforma(Tfaccabproforma tfaccabproforma) {
+		this.tfaccabproforma = tfaccabproforma;
 	}
 
 	public Double getEqfullboxes() {
