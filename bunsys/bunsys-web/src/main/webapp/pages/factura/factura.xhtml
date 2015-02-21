@@ -3,8 +3,226 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui" 
-      template="/WEB-INF/templates/template.xhtml">
-	<p:panel header="Factura">
-	
-	</p:panel>
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:b="http://xmlns.jcp.org/jsf/composite/bunsysComponents"
+      template="/WEB-INF/templates/template.xhtml" >
+      <ui:param name="idForm" value="frmFactura" />
+      <ui:param name="controller" value="#{facturaController}" />
+	  <ui:define name="contentBody">
+	  	<p:panel id="pnlDatosProforma" header="#{msg['lbl_factura_m']}">
+	  		<p:panel id="pnldatoscabBus" header="#{msg['lbl_seleccione_proforma']}">
+	  			<h:panelGrid columns="2">
+	  				<p:outputLabel value="#{msg.lbl_seleccione}:"  style="display:block;width:175px;"/>
+	  				<p:commandButton icon="ui-icon-extlink" oncomplete="PF('dialog').show();"/>
+	  			</h:panelGrid>
+	  			
+	  		</p:panel>
+			<p:panel id="pnldatoscab" header="#{msg['lbl_cabecera']}">
+				<h:panelGrid columns="1" >
+					<h:panelGrid columns="6" >
+						<p:outputLabel value="#{msg.lbl_numero_factura}:" for="numproforma" style="display:block;width:175px;"/>
+						<p:inputText id="numproforma" value="#{facturaDataManager.tfaccabfactura.pk.numerofactura}" style="display:block;width:180px;" required="true" />
+						<p:message for="numproforma"/>
+						
+						<p:outputLabel value="#{msg.lbl_referendum}:" for="referendum" style="display:block;width:115px;"/>
+						<p:inputMask id="referendum" value="#{facturaDataManager.tfaccabfactura.referendum}" style="display:block;width:430px;" required="true" mask="999-9999-99-9999999" disabled="true"/>
+						<p:message for="referendum"/>
+					</h:panelGrid>
+					<h:panelGrid columns="12" >
+					    <p:outputLabel value="#{msg.lbl_farm_code}:" for="farmcode" style="display:block;width:100px;"/>
+						<p:inputText id="farmcode" value="#{facturaDataManager.tfaccabfactura.farmcode}" style="display:block;width:130px;" required="true" disabled="true"/>
+						<p:message for="farmcode"/>
+						
+					    <p:outputLabel value="#{msg.lbl_country_code}:" for="countrycode" style="display:block;width:120px;margin-left:15px"/>
+						<p:inputText id="countrycode" value="#{facturaDataManager.tfaccabfactura.countrycode}" style="display:block;width:100px;" required="true" disabled="true"/>
+						<p:message for="countrycode"/>
+						
+						<p:outputLabel value="#{msg.lbl_area}:" for="area" style="display:block;width:60px;margin-left:15px"/>
+						<p:inputText id="area" value="#{facturaDataManager.tfaccabfactura.area}" style="display:block;width:100px;" required="true" disabled="true"/>
+						<p:message for="area"/>
+						
+						<p:outputLabel for="fecha" value="#{msg.lbl_fecha}:" style="display:block;width:70px;margin-left:15px"/>
+					    <p:calendar id="fecha" value="#{facturaDataManager.tfaccabfactura.fechafactura}"  style="display:block;width:180px;" required="true" />
+					    <p:message for="fecha"/>
+					</h:panelGrid>
+					<h:panelGrid columns="9" >
+						<p:outputLabel value="#{msg.lbl_master_awb}:" for="masterawb" style="display:block;width:140px;"/>
+						<p:inputText id="masterawb" value="#{facturaDataManager.tfaccabfactura.masterawm}" style="display:block;width:180px;" required="true" disabled="true"/>
+						<p:message for="masterawb"/>
+						
+						<p:outputLabel value="#{msg.lbl_house_awb}:" for="houseawb" style="display:block;width:130px;"/>
+						<p:inputText id="houseawb" value="#{facturaDataManager.tfaccabfactura.houseawb}" style="display:block;width:180px;" required="true" disabled="true"/>
+						<p:message for="houseawb"/>
+						
+						<p:outputLabel value="#{msg.lbl_aerolinea}:" for="txtaerolinea" style="display:block;width:100px;"/>
+						<p:inputText id="txtaerolinea" value="#{facturaDataManager.tfaccabfactura.tadmairline.descripcion}" style="display:block;width:170px;" required="true" disabled="true"/>
+						<p:message for="txtaerolinea"/>
+					</h:panelGrid>
+					<h:panelGrid columns="9" >
+						<p:outputLabel value="#{msg.lbl_dae}:" for="dae" style="display:block;width:140px;"/>
+						<p:inputText id="dae" value="#{facturaDataManager.tfaccabfactura.dae}" style="display:block;width:180px;" required="true" disabled="true"/>
+						<p:message for="dae"/>
+						
+						<p:outputLabel value="#{msg.lbl_consignee}:" for="consigne" style="display:block;width:130px;"/>
+						<p:inputText id="consigne" value="#{facturaDataManager.tfaccabfactura.consignee}" style="display:block;width:180px;" required="false" disabled="true"/>
+						<p:message for="consigne"/>
+						
+						<p:outputLabel value="#{msg.lbl_fixed_price}:" for="fixedprice" style="display:block;width:100px;"/>
+						<p:inputText id="fixedprice" value="#{facturaDataManager.tfaccabfactura.fixedprice}" style="display:block;width:160px;" required="false" disabled="true"/>
+						<p:message for="fixedprice"/>	
+					</h:panelGrid>
+					
+					
+					<h:panelGrid columns="9" id="pnlcliente" >
+						<p:outputLabel value="#{msg.lbl_codigo_cliente}:" for="txtcodcliente" style="display:block;width:140px;"/>
+						<p:inputText id="txtcodcliente" value="#{facturaDataManager.tfaccabfactura.tfaccliente.tsyspersona.pk.codigopersona}" style="display:block;width:180px;" disabled="true"/>
+					    <p:outputLabel value="#{msg.lbl_nombre_persona}:" for="consignename" style="padding-left:4px;display:block;width:130px;"/>
+						<p:inputText id="consignename" value="#{facturaDataManager.tfaccabfactura.tfaccliente.tsyspersona.nombres}" style="display:block;width:440px;" disabled="true"/>
+					</h:panelGrid>
+				</h:panelGrid>
+			</p:panel>
+			<p:panel id="pnlDetallefactura" header="#{msg['lbl_detalle']}">
+				<p:dataTable id="detalleFactura" value="#{facturaDataManager.tfaccabfactura.tfacdetfacturas}" var="item"
+				 style="width:100%;font-size:5px; ">
+					<p:column headerText="#{msg.lbl_pices_type}">
+						<p:outputLabel value="#{item.unidadventa}"/>
+					</p:column>
+					<p:column headerText="#{msg.lbl_total_pice}">
+						<p:outputLabel value="#{item.cantidad}"/>
+					</p:column>
+					<p:column headerText="#{msg.lbl_eq_full_boxes}">
+						<p:outputLabel value="#{item.eqfullboxes}"/>
+					</p:column>
+					<p:column headerText="#{msg.lbl_product_description}">
+						<p:outputLabel value="#{item.tinvproducto.nombre}"/>
+					</p:column>
+					<p:column headerText="#{msg.lbl_atpa}">
+						<p:outputLabel value="#{item.atpa}"/>
+					</p:column>
+					<p:column headerText="#{msg.lbl_andina}">
+						<p:outputLabel value="#{item.nandina}"/>
+					</p:column>
+					<p:column headerText="#{msg.lbl_stems_bunch}">
+						<p:outputLabel value="#{item.stemsbunch}"/>
+					</p:column>
+					<p:column headerText="#{msg.lbl_total_bunch}">
+						<p:outputLabel value="#{item.totalbunch}"/>
+					</p:column>
+					<p:column headerText="#{msg.lbl_total_stems}">
+						<p:outputLabel value="#{item.totalstems}"/>
+					</p:column>
+					<p:column headerText="#{msg.lbl_unit_price}">
+						<p:outputLabel value="#{item.preciounitario}"/>
+					</p:column>
+					<p:column headerText="#{msg.lbl_total_price}">
+						<p:outputLabel value="#{item.total}"/>
+					</p:column>
+					<p:columnGroup type="footer">
+		                <p:row>
+		                    <p:column footerText="Total: " style="text-align:right"/>
+		                    <p:column footerText="#{facturaDataManager.tfaccabfactura.totalpices}" />
+		                    <p:column footerText="#{facturaDataManager.tfaccabfactura.totaleqfullboxes}" />
+		                    <p:column colspan="5" footerText="#{facturaDataManager.tfaccabfactura.totalbunch}" style="text-align:right"/>
+		                    <p:column  footerText="#{facturaDataManager.tfaccabfactura.totalstems}" />
+		                    <p:column  footerText="" />
+		                    <p:column  footerText="#{facturaDataManager.tfaccabfactura.total}" />
+		                </p:row>
+		            </p:columnGroup>
+				</p:dataTable>
+			</p:panel>
+			<p:panel id="pnlformapago" header="#{msg['lbl_forma_pago_m']}">
+				<h:panelGrid columns="4" cellpadding="5">
+					<h:outputText value="#{msg.lbl_efectivo} " />
+		            <p:selectBooleanCheckbox value="#{facturaDataManager.formaPago1}">
+			            <p:ajax update="pnlformapago" listener="#{facturaController.formaPagoEfectivo()}" />
+			        </p:selectBooleanCheckbox>
+			        <h:outputText value="#{msg.lbl_cheque} " />
+			        <p:selectBooleanCheckbox value="#{facturaDataManager.formaPago2}">
+			            <p:ajax update="pnlformapago" listener="#{facturaController.formaPagoCheque()}" />
+			        </p:selectBooleanCheckbox>
+		        </h:panelGrid>
+		        <h:panelGrid columns="2" id="efectivo" rendered="#{facturaDataManager.formaPago1}">
+		        	<p:outputLabel value="Efectivo:" for="valorefectivo" style="padding-left:4px;display:block;width:100px;"/>
+					<p:inputText id="valorefectivo" value="" style="display:block;width:100px;" disabled="true"/>
+					<p:outputLabel value="Cheque:" for="cheque" style="padding-left:4px;display:block;width:100px;"/>
+					<p:inputText id="cheque" value="" style="display:block;width:100px;" disabled="true"/>
+		        </h:panelGrid>
+		        <h:panelGrid columns="2" id="pnlcredito" rendered="#{facturaDataManager.formaPago2}">
+		        	<p:outputLabel value="Credito:" for="credito" style="padding-left:4px;display:block;width:100px;"/>
+					<p:inputText id="credito" value="" style="display:block;width:100px;" disabled="true"/>
+		        </h:panelGrid>
+			</p:panel>
+			<h:panelGrid columns="2" style="margin-top:10px; margin-left:20px:">
+					<p:commandButton id="btngrabar" icon="ui-icon-disk" value="#{msg.lbl_generar_factura}" action="#{facturaController.grabar()}" process="@this pnlDatosProforma"  />
+				    <p:commandButton id="btncancelar" icon="ui-icon-close" value="#{msg.btn_cancelar}" action="#{facturaController.cancelar()}" process="@this" update="pnlDatosProforma" />
+				</h:panelGrid>
+		</p:panel>
+	</ui:define>
+	<ui:define name="dialogArea">
+		<p:dialog widgetVar="dialog" appendTo="@(body)" modal="true" resizable="false" closeOnEscape="true" >
+			<p:panel header="#{msg.lbl_proformas}" style="width:900px !important">
+				  	<p:fieldset legend="#{msg['lbl_busqueda']}">
+				  		<h:panelGroup layout="block" id="pnlfilter">
+				  			<h:panelGrid columns="3">
+				  				<p:outputLabel value="#{msg['lbl_numero_proforma']}:" for="numproforma"/>
+				  				<p:inputText id="numproforma" value="#{facturaDataManager.numeroproforma}"/>
+				  				<p:message for="numproforma"/>
+				  			</h:panelGrid>
+				  		</h:panelGroup>
+				  		<h:panelGroup layout="block" style="float:left">
+				  			<p:commandButton icon="ui-icon-search" value="#{msg['btn_buscar']}" action="#{facturaController.listarProformas()}" update="pnlProformas" process="@this pnlfilter"/>
+				  		</h:panelGroup>
+				  	</p:fieldset>
+				  	<p:fieldset legend="#{msg['lbl_proformas']}">
+				  		<h:panelGroup layout="block" id="pnlProformas">
+				  			<p:dataTable id="tblproforma" value="#{facturaDataManager.tfaccabproformaList}" var="item"
+							 style="width:100%;font: bold 100% monospace; ">
+								<p:column headerText="#{msg.lbl_numero_proforma}">
+									<p:outputLabel value="#{item.pk.numeroproforma}"/>
+								</p:column>
+								<p:column headerText="#{msg.lbl_referendum}">
+									<p:outputLabel value="#{item.referendum}"/>
+								</p:column>
+								<p:column headerText="#{msg.lbl_farm_code}">
+									<p:outputLabel value="#{item.farmcode}"/>
+								</p:column>
+								<p:column headerText="#{msg.lbl_country_code}">
+									<p:outputLabel value="#{item.countrycode}"/>
+								</p:column>
+								<p:column headerText="#{msg.lbl_area}">
+									<p:outputLabel value="#{item.area}"/>
+								</p:column>
+								<p:column headerText="#{msg.lbl_fecha}">
+									<p:outputLabel value="#{item.fecha}"/>
+								</p:column>
+								<p:column headerText="#{msg.lbl_master_awb}">
+									<p:outputLabel value="#{item.masterawm}"/>
+								</p:column>
+								<p:column headerText="#{msg.lbl_house_awb}">
+									<p:outputLabel value="#{item.houseawb}"/>
+								</p:column>
+								<p:column headerText="#{msg.lbl_aerolinea}">
+									<p:outputLabel value="#{item.tadmairline.descripcion}"/>
+								</p:column>
+								<p:column headerText="#{msg.lbl_total_pice}">
+									<p:outputLabel value="#{item.totalpices}"/>
+								</p:column>
+								<p:column headerText="#{msg.lbl_total_stems}">
+									<p:outputLabel value="#{item.totalstems}"/>
+								</p:column>
+								<p:column headerText="#{msg.lbl_total_price}">
+									<p:outputLabel value="#{item.total}"/>
+								</p:column>
+								<p:column>
+									<p:commandButton icon="ui-icon-circle-check" title="#{msg['btn_seleccionar']}" oncomplete="PF('dialog').hide();" actionListener="#{facturaController.selecionaProforma(item)}"
+									 process="@this tblproforma" immediate="true" update=":frmFactura:pnlDatosProforma">
+				  					</p:commandButton>
+				  				</p:column>
+							</p:dataTable>
+				  		</h:panelGroup>
+				  	</p:fieldset>
+		  </p:panel>	
+		</p:dialog>
+	  	
+	  </ui:define>
 </ui:composition>
