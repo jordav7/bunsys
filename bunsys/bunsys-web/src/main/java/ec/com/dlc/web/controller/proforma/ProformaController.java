@@ -99,10 +99,18 @@ public class ProformaController extends BaseController{
 	 * Metodo para agregar un producto al detalle de la factura
 	 */
 	public void agregarProducto(){
+		if(proformaDatamanager.getTinvproducto()==null ||
+				proformaDatamanager.getTinvproducto().getPk()==null
+				|| proformaDatamanager.getTinvproducto().getPk().getCodigoproductos()==null){
+			FacesContext context = FacesContext.getCurrentInstance();  
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"AGREGAR PRODUCTO","ESCOJA UN PRODUCTO"));
+			return;
+		}
 		//Busqueda del pices type segun el tipo de unidad de venta del articulo
 		Tadmconversionunidad tadmconversionunidad=bunsysService.conversionArticulo(proformaDatamanager.getTinvproducto().getUnidadventacodigo(), proformaDatamanager.getTinvproducto().getUnidadventa());
 		//articulo
 		proformaDatamanager.getTfacdetproforma().setTinvproducto(proformaDatamanager.getTinvproducto());
+		proformaDatamanager.getTfacdetproforma().setCodigoproductos(proformaDatamanager.getTinvproducto().getPk().getCodigoproductos());
 		//pices type
 		proformaDatamanager.getTfacdetproforma().setUnidadventa(proformaDatamanager.getTinvproducto().getUnidadventa());
 		proformaDatamanager.getTfacdetproforma().setUnidadventacodigo(proformaDatamanager.getTinvproducto().getUnidadventacodigo());
@@ -163,10 +171,23 @@ public class ProformaController extends BaseController{
 	
 	public void grabar(){
 		try {
+			if(proformaDatamanager.getTfaccliente()==null || proformaDatamanager.getTfaccliente().getPk()==null || proformaDatamanager.getTfaccliente().getPk().getCodigocliente()==null){
+				FacesContext context = FacesContext.getCurrentInstance();  
+				context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"PROFORMA","INGRESE EL CLIENTE"));
+				return;
+			}
+			if(proformaDatamanager.getTfaccabproforma().getTfacdetproformas()==null || proformaDatamanager.getTfaccabproforma().getTfacdetproformas().size()==0){
+				FacesContext context = FacesContext.getCurrentInstance();  
+				context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"PROFORMA","NO TIENE DETALLE DE FACTURA"));
+				return;
+			}
 			if(StringUtils.isNotBlank(proformaDatamanager.getTfaccabproforma().getAirline())){
 				proformaDatamanager.getTfaccabproforma().setAirlinecodigo(ContenidoMessages.getInteger("cod_catalogo_aerolineas"));
 			}
+			//compania
 			proformaDatamanager.getTfaccabproforma().getPk().setCodigocompania(articuloDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania());
+			//cliente
+			proformaDatamanager.getTfaccabproforma().setCodigocliente(proformaDatamanager.getTfaccliente().getPk().getCodigocliente());
 			bunsysService.guardarProforma(proformaDatamanager.getTfaccabproforma(),proformaDatamanager.getAccionAux());
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, ContenidoMessages.getString("msg_info_proforma"), ContenidoMessages.getString("msg_info_proforma")));
 		} catch(Throwable e){
