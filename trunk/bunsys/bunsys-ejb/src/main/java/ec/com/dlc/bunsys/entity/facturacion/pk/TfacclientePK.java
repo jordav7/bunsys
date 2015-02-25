@@ -6,6 +6,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.SequenceGenerator;
 
+import ec.com.dlc.bunsys.commons.annotations.SequenceDatabase;
+import ec.com.dlc.bunsys.commons.enumeration.TypeGenerator;
 import ec.com.dlc.bunsys.entity.base.BasePK;
 
 /**
@@ -18,8 +20,7 @@ public class TfacclientePK extends BasePK{
 	private static final long serialVersionUID = 1L;
 
 	@Column
-	@SequenceGenerator(name="tfacclientes_codigocliente_seq", sequenceName="seccliente")
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="tfacclientes_codigocliente_seq")
+	@SequenceDatabase(sequenceName="tfacclientes_codigocliente_seq", typeGenerator=TypeGenerator.SEQUENCE)
 	private Integer codigocliente;
 
 	@Column
