@@ -18,14 +18,14 @@
 	  			
 	  		</p:panel>
 			<p:panel id="pnldatoscab" header="#{msg['lbl_cabecera']}">
-				<h:panelGrid columns="1" >
+				<h:panelGrid columns="1" id="pnlgcabecera">
 					<h:panelGrid columns="6" >
 						<p:outputLabel value="#{msg.lbl_numero_factura}:" for="numproforma" style="display:block;width:175px;"/>
 						<p:inputText id="numproforma" value="#{facturaDataManager.tfaccabfactura.pk.numerofactura}" style="display:block;width:180px;" required="true" />
 						<p:message for="numproforma"/>
 						
 						<p:outputLabel value="#{msg.lbl_referendum}:" for="referendum" style="display:block;width:115px;"/>
-						<p:inputMask id="referendum" value="#{facturaDataManager.tfaccabfactura.referendum}" style="display:block;width:430px;" required="true" mask="999-9999-99-9999999" disabled="true"/>
+						<p:inputMask id="referendum" value="#{facturaDataManager.tfaccabfactura.referendo}" style="display:block;width:430px;" required="true" mask="999-9999-99-9999999" disabled="true"/>
 						<p:message for="referendum"/>
 					</h:panelGrid>
 					<h:panelGrid columns="12" >
@@ -47,7 +47,7 @@
 					</h:panelGrid>
 					<h:panelGrid columns="9" >
 						<p:outputLabel value="#{msg.lbl_master_awb}:" for="masterawb" style="display:block;width:140px;"/>
-						<p:inputText id="masterawb" value="#{facturaDataManager.tfaccabfactura.masterawm}" style="display:block;width:180px;" required="true" disabled="true"/>
+						<p:inputText id="masterawb" value="#{facturaDataManager.tfaccabfactura.masterawb}" style="display:block;width:180px;" required="true" disabled="true"/>
 						<p:message for="masterawb"/>
 						
 						<p:outputLabel value="#{msg.lbl_house_awb}:" for="houseawb" style="display:block;width:130px;"/>
@@ -136,25 +136,53 @@
 		            <p:selectBooleanCheckbox value="#{facturaDataManager.formaPago1}">
 			            <p:ajax update="pnlformapago" listener="#{facturaController.formaPagoEfectivo()}" />
 			        </p:selectBooleanCheckbox>
-			        <h:outputText value="#{msg.lbl_cheque} " />
+			        <h:outputText value="#{msg.lbl_credito} " />
 			        <p:selectBooleanCheckbox value="#{facturaDataManager.formaPago2}">
 			            <p:ajax update="pnlformapago" listener="#{facturaController.formaPagoCheque()}" />
 			        </p:selectBooleanCheckbox>
 		        </h:panelGrid>
-		        <h:panelGrid columns="2" id="efectivo" rendered="#{facturaDataManager.formaPago1}">
-		        	<p:outputLabel value="Efectivo:" for="valorefectivo" style="padding-left:4px;display:block;width:100px;"/>
-					<p:inputText id="valorefectivo" value="" style="display:block;width:100px;" disabled="true"/>
-					<p:outputLabel value="Cheque:" for="cheque" style="padding-left:4px;display:block;width:100px;"/>
-					<p:inputText id="cheque" value="" style="display:block;width:100px;" disabled="true"/>
+		        <h:panelGrid columns="4" id="efectivo" rendered="#{facturaDataManager.formaPago1}">
+		        	<p:outputLabel value="#{msg.lbl_efectivo}:" for="valorefectivo" style="padding-left:4px;display:block;width:100px;"/>
+		        	<pe:inputNumber id="valorefectivo" value="#{facturaDataManager.efectivo}" decimalPlaces="3" decimalSeparator="." thousandSeparator="," />
+		        	<p:outputLabel/>
+		        	<p:outputLabel/>
+		        	
+					<p:outputLabel value="#{msg.lbl_cheque}:" for="cheque" style="padding-left:4px;display:block;width:100px;"/>
+					<pe:inputNumber id="cheque" value="#{facturaDataManager.cheque}" decimalPlaces="3" decimalSeparator="." thousandSeparator="," />
+					<p:outputLabel value="#{msg.lbl_institucion}:" for="institucioncheque" style="padding-left:4px;display:block;width:100px;"/>
+					<p:selectOneMenu id="institucioncheque" value="#{facturaDataManager.institucionCheque}">
+	  					<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+	  					<f:selectItems value="#{facturaDataManager.institucion}" var="item" itemLabel="#{item.descripcion}" itemValue="#{item.pk.codigocatalogo}"/>
+	  				</p:selectOneMenu>
+	  				
+					<p:outputLabel value="#{msg.lbl_transferencia}:" for="transferencia" style="padding-left:4px;display:block;width:100px;"/>
+					<pe:inputNumber id="transferencia" value="#{facturaDataManager.transferencia}" decimalPlaces="3" decimalSeparator="." thousandSeparator="," />
+					<p:outputLabel value="#{msg.lbl_institucion}:" for="instituciontransfer" style="padding-left:4px;display:block;width:100px;"/>
+					<p:selectOneMenu id="instituciontransfer" value="#{facturaDataManager.institucionTransferencia}">
+	  					<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+	  					<f:selectItems value="#{facturaDataManager.institucion}" var="item" itemLabel="#{item.descripcion}" itemValue="#{item.pk.codigocatalogo}"/>
+	  				</p:selectOneMenu>
+	  				
+					<p:outputLabel value="#{msg.lbl_tarjeta_credito}:" for="tarjcredito" style="padding-left:4px;display:block;width:100px;"/>
+					<pe:inputNumber id="tarjcredito" value="#{facturaDataManager.tarjetaCredito}" decimalPlaces="3" decimalSeparator="." thousandSeparator="," />
+					<p:outputLabel value="#{msg.lbl_institucion}:" for="instituciontarjcred" style="padding-left:4px;display:block;width:100px;"/>
+					<p:selectOneMenu id="instituciontarjcred" value="#{facturaDataManager.institucionTarjetaCredito}">
+	  					<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+	  					<f:selectItems value="#{facturaDataManager.institucion}" var="item" itemLabel="#{item.descripcion}" itemValue="#{item.pk.codigocatalogo}"/>
+	  				</p:selectOneMenu>
 		        </h:panelGrid>
 		        <h:panelGrid columns="2" id="pnlcredito" rendered="#{facturaDataManager.formaPago2}">
-		        	<p:outputLabel value="Credito:" for="credito" style="padding-left:4px;display:block;width:100px;"/>
-					<p:inputText id="credito" value="" style="display:block;width:100px;" disabled="true"/>
+		        	<p:outputLabel value="#{msg.lbl_credito}" for="credito" style="padding-left:4px;display:block;width:100px;"/>
+					<p:inputText id="credito" value="#{facturaDataManager.tfaccabfactura.total}" style="display:block;width:100px;" disabled="true"/>
+					<p:outputLabel value="#{msg.lbl_numero_pago}" for="numpagos" style="padding-left:4px;display:block;width:100px;"/>
+					<p:inputText  	id="numpagos"	value="#{facturaDataManager.numeropagos}" 	required="true" style="width:100px" onkeyup="Maia.forceupper(event, this);" >						
+						<pe:keyFilter regEx="/[\d\-]/" />
+					</p:inputText>		
 		        </h:panelGrid>
 			</p:panel>
 			<h:panelGrid columns="2" style="margin-top:10px; margin-left:20px:">
-					<p:commandButton id="btngrabar" icon="ui-icon-disk" value="#{msg.lbl_generar_factura}" action="#{facturaController.grabar()}" process="@this pnlDatosProforma"  />
-				    <p:commandButton id="btncancelar" icon="ui-icon-close" value="#{msg.btn_cancelar}" action="#{facturaController.cancelar()}" process="@this" update="pnlDatosProforma" />
+					<p:commandButton id="btngrabar" icon="ui-icon-disk" value="#{msg.lbl_generar_factura}" action="#{facturaController.grabar()}" process="@this :frmFactura:pnlgcabecera pnlDatosProforma pnlformapago"  />
+				    <p:commandButton id="btncancelar" icon="ui-icon-close" value="#{msg.btn_cancelar}" action="#{facturaController.cancelar()}" process="@this" update="pnlDatosProforma pnlformapago" />
 				</h:panelGrid>
 		</p:panel>
 	</ui:define>
