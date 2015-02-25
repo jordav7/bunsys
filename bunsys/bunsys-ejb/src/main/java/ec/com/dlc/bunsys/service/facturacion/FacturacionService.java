@@ -18,6 +18,7 @@ import ec.com.dlc.bunsys.entity.facturacion.Tfaccabfactura;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccabproforma;
 import ec.com.dlc.bunsys.entity.facturacion.Tfacdetfactura;
 import ec.com.dlc.bunsys.entity.facturacion.Tfacdetproforma;
+import ec.com.dlc.bunsys.entity.facturacion.Tfacformapago;
 import ec.com.dlc.bunsys.entity.seguridad.Tsyspersona;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccuentasxcobrar;
 import ec.com.dlc.bunsys.util.FacturacionException;
@@ -76,13 +77,11 @@ public class FacturacionService {
 		}else{
 			facturaDao.update(tfaccabproform);
 		}
-		int i=1;
 		for(Tfacdetproforma tfacdetproforma2:tfaccabproform.getTfacdetproformas()){
 			Tfacdetproforma tfacdetproforma = tfacdetproforma2;
 			if(tfacdetproforma.getPk().getCodigodetalleprof()!= null){
 				facturaDao.update(tfacdetproforma);
 			}else{
-				tfacdetproforma.getPk().setCodigodetalleprof(i);
 				tfacdetproforma.setNumeroproforma(tfaccabproform.getPk().getNumeroproforma());
 				facturaDao.create(tfacdetproforma);
 			}
@@ -95,6 +94,14 @@ public class FacturacionService {
 			tfacdetfactura.setNumerofactura(tfaccabfactura.getPk().getNumerofactura());
 			tfacdetfactura.setTinvproducto(null);
 			facturaDao.create(tfacdetfactura);
+		}
+		//efectivo
+		for(Tfacformapago tfacformapago:tfaccabfactura.getTfacformapagos()){
+			facturaDao.create(tfacformapago);
+		}
+		//credito
+		for(Tfaccuentasxcobrar tfaccuentasxcobrar:tfaccabfactura.getTfaccuentasxcobrars()){
+			facturaDao.create(tfaccuentasxcobrar);
 		}
 	}
 	
