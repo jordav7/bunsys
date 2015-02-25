@@ -47,7 +47,7 @@ public class Tfaccabfactura extends BaseEntity<TfaccabfacturaPK> {
 	@Temporal(TemporalType.DATE)
 	private Date fechafactura;
 	@Column
-	private String referendum;
+	private String referendo;
 	@Column
 	private String farmcode;
 	@Column
@@ -196,12 +196,13 @@ public class Tfaccabfactura extends BaseEntity<TfaccabfacturaPK> {
 		this.fechafactura = fechafactura;
 	}
 
-	public String getReferendum() {
-		return referendum;
+
+	public String getReferendo() {
+		return referendo;
 	}
 
-	public void setReferendum(String referendum) {
-		this.referendum = referendum;
+	public void setReferendo(String referendo) {
+		this.referendo = referendo;
 	}
 
 	public String getFarmcode() {
