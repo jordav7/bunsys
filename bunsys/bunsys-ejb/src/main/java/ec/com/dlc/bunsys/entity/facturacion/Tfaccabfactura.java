@@ -36,8 +36,6 @@ public class Tfaccabfactura extends BaseEntity<TfaccabfacturaPK> {
 	@Column
 	private Integer codigocliente;
 
-	@Column
-	private Integer codigodetalleprof;
 	
 	@Column
 	private String estado;
@@ -56,7 +54,7 @@ public class Tfaccabfactura extends BaseEntity<TfaccabfacturaPK> {
 	@Temporal(TemporalType.DATE)
 	private Date fechaembarque;
 	@Column
-	private String masterawm;
+	private String masterawb;
 	@Column
 	private String houseawb;
 	@Column
@@ -96,7 +94,7 @@ public class Tfaccabfactura extends BaseEntity<TfaccabfacturaPK> {
 	@Column
 	private BigDecimal valorice;
 	@Column
-	private BigDecimal pocentajeirbpnr;
+	private BigDecimal porcentajeirbpnr;
 	@Column
 	private BigDecimal porcentajeiva;
 	@Column
@@ -142,6 +140,14 @@ public class Tfaccabfactura extends BaseEntity<TfaccabfacturaPK> {
 	@OneToMany(mappedBy="tfaccabfactura")
 	private Collection<Tfacdetfactura> tfacdetfacturas;
 
+	//bi-directional many-to-one association to Tfacdetdevolucione
+	@OneToMany(mappedBy="tfaccabfactura")
+	private Collection<Tfacformapago> tfacformapagos;
+	
+	//bi-directional many-to-one association to Tfacdetdevolucione
+	@OneToMany(mappedBy="tfaccabfactura")
+	private Collection<Tfaccuentasxcobrar>tfaccuentasxcobrars;
+		
 	public String getAirline() {
 		return airline;
 	}
@@ -164,14 +170,6 @@ public class Tfaccabfactura extends BaseEntity<TfaccabfacturaPK> {
 
 	public void setCodigocliente(Integer codigocliente) {
 		this.codigocliente = codigocliente;
-	}
-
-	public Integer getCodigodetalleprof() {
-		return codigodetalleprof;
-	}
-
-	public void setCodigodetalleprof(Integer codigodetalleprof) {
-		this.codigodetalleprof = codigodetalleprof;
 	}
 
 	public String getEstado() {
@@ -222,12 +220,13 @@ public class Tfaccabfactura extends BaseEntity<TfaccabfacturaPK> {
 		this.fechaembarque = fechaembarque;
 	}
 
-	public String getMasterawm() {
-		return masterawm;
+
+	public String getMasterawb() {
+		return masterawb;
 	}
 
-	public void setMasterawm(String masterawm) {
-		this.masterawm = masterawm;
+	public void setMasterawb(String masterawb) {
+		this.masterawb = masterawb;
 	}
 
 	public String getHouseawb() {
@@ -382,12 +381,13 @@ public class Tfaccabfactura extends BaseEntity<TfaccabfacturaPK> {
 		this.valorice = valorice;
 	}
 
-	public BigDecimal getPocentajeirbpnr() {
-		return pocentajeirbpnr;
+
+	public BigDecimal getPorcentajeirbpnr() {
+		return porcentajeirbpnr;
 	}
 
-	public void setPocentajeirbpnr(BigDecimal pocentajeirbpnr) {
-		this.pocentajeirbpnr = pocentajeirbpnr;
+	public void setPorcentajeirbpnr(BigDecimal porcentajeirbpnr) {
+		this.porcentajeirbpnr = porcentajeirbpnr;
 	}
 
 	public BigDecimal getPorcentajeiva() {
@@ -460,6 +460,23 @@ public class Tfaccabfactura extends BaseEntity<TfaccabfacturaPK> {
 
 	public void setTfaccliente(Tfaccliente tfaccliente) {
 		this.tfaccliente = tfaccliente;
+	}
+
+	public Collection<Tfacformapago> getTfacformapagos() {
+		return tfacformapagos;
+	}
+
+	public void setTfacformapagos(Collection<Tfacformapago> tfacformapagos) {
+		this.tfacformapagos = tfacformapagos;
+	}
+
+	public Collection<Tfaccuentasxcobrar> getTfaccuentasxcobrars() {
+		return tfaccuentasxcobrars;
+	}
+
+	public void setTfaccuentasxcobrars(
+			Collection<Tfaccuentasxcobrar> tfaccuentasxcobrars) {
+		this.tfaccuentasxcobrars = tfaccuentasxcobrars;
 	}
 	
 }
