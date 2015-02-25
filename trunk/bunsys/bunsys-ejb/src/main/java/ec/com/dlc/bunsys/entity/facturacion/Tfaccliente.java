@@ -4,6 +4,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
@@ -11,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import ec.com.dlc.bunsys.commons.listener.GenerateIdListener;
 import ec.com.dlc.bunsys.entity.administracion.Tadmcatalogo;
 import ec.com.dlc.bunsys.entity.base.BaseEntity;
 import ec.com.dlc.bunsys.entity.facturacion.pk.TfacclientePK;
@@ -22,6 +24,7 @@ import ec.com.dlc.bunsys.entity.seguridad.Tsyspersona;
  * 
  */
 @Entity
+@EntityListeners(GenerateIdListener.class)
 @Table(name="tfacclientes")
 public class Tfaccliente extends BaseEntity<TfacclientePK>{
 	private static final long serialVersionUID = 1L;
