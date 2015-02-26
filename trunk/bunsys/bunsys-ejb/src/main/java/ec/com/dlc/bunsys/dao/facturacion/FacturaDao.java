@@ -2,7 +2,6 @@ package ec.com.dlc.bunsys.dao.facturacion;
 
 import java.util.Collection;
 import java.util.Date;
-
 import java.util.List;
 
 import javax.persistence.NoResultException;
@@ -377,6 +376,21 @@ public class FacturaDao extends GeneralDao {
 		}
 	}
 	
-	
+	public Collection<Tadmcatalogo> obtieneCatalogosFiltros(Integer compania, Tadmcatalogo tadmcatalogo) {
+		try {
+			final StringBuilder sql = new StringBuilder("SELECT o FROM Tadmcatalogo o WHERE o.pk.codigocompania=:codigocompania ");
+			if(tadmcatalogo.getPk().getCodigotipocatalogo() != null){
+				sql.append(" AND o.pk.codigotipocatalogo=:codigotipocatalogo");
+			}
+			Query query = this.entityManager.createQuery(sql.toString());
+			query.setParameter("codigocompania", compania);
+			if(tadmcatalogo.getPk().getCodigotipocatalogo() != null){
+				query.setParameter("codigotipocatalogo", tadmcatalogo.getPk().getCodigotipocatalogo());
+			}
+			return query.getResultList();
+		} catch (Throwable e) {
+			throw new FacturacionException(e);
+		}
+	}
 	
 }
