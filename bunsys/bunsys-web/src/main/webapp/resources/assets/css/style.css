@@ -5478,3 +5478,14 @@ div.radio.disabled:hover {
 .bun-uppercase{
 	text-transform: uppercase;
 }
+
+::-webkit-input-placeholder { text-transform: capitalize; }
+::-moz-placeholder { text-transform: capitalize; } /* firefox 19+ */
+:-ms-input-placeholder { text-transform: capitalize; } /* ie */
+input:-moz-placeholder { text-transform: capitalize; }
+
+.alert-no-user{
+	color: #b94a48;
+	background-color: #f2dede;
+	border-color: #eed3d7;	
+}
