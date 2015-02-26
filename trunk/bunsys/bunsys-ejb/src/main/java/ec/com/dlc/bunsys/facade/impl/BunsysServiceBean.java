@@ -3,8 +3,8 @@ package ec.com.dlc.bunsys.facade.impl;
 import static javax.ejb.TransactionAttributeType.REQUIRES_NEW;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Date;
+import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -14,22 +14,16 @@ import ec.com.dlc.bunsys.entity.administracion.Tadmcatalogo;
 import ec.com.dlc.bunsys.entity.administracion.Tadmcompania;
 import ec.com.dlc.bunsys.entity.administracion.Tadmconversionunidad;
 import ec.com.dlc.bunsys.entity.administracion.Tadmparamsri;
-import ec.com.dlc.bunsys.entity.facturacion.Tfaccabfactura;
-import ec.com.dlc.bunsys.entity.facturacion.Tfaccabproforma;
-import ec.com.dlc.bunsys.entity.facturacion.Tfaccliente;
-import ec.com.dlc.bunsys.entity.facturacion.Tfacdetproforma;
-import ec.com.dlc.bunsys.entity.facturacion.pk.TfacclientePK;
-import ec.com.dlc.bunsys.entity.inventario.Tinvproducto;
-import ec.com.dlc.bunsys.entity.administracion.Tadmparamsri;
 import ec.com.dlc.bunsys.entity.administracion.Tadmusuario;
-import ec.com.dlc.bunsys.entity.cuentasxpagar.Tcxpproveedor;
-import ec.com.dlc.bunsys.entity.cuentasxpagar.pk.TcxpproveedorPK;
 import ec.com.dlc.bunsys.entity.administracion.pk.TadmcompaniaPK;
 import ec.com.dlc.bunsys.entity.cuentasxpagar.Tcxpproveedor;
 import ec.com.dlc.bunsys.entity.cuentasxpagar.pk.TcxpproveedorPK;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccabdevolucione;
-import ec.com.dlc.bunsys.entity.facturacion.Tfaccuentasxcobrar;
+import ec.com.dlc.bunsys.entity.facturacion.Tfaccabfactura;
+import ec.com.dlc.bunsys.entity.facturacion.Tfaccabproforma;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccliente;
+import ec.com.dlc.bunsys.entity.facturacion.Tfaccuentasxcobrar;
+import ec.com.dlc.bunsys.entity.facturacion.Tfacdetproforma;
 import ec.com.dlc.bunsys.entity.inventario.Tinvproducto;
 import ec.com.dlc.bunsys.entity.inventario.pk.TinvproductoPK;
 import ec.com.dlc.bunsys.entity.seguridad.Tsyspersona;
@@ -225,5 +219,11 @@ public class BunsysServiceBean implements BunsysService {
 			Integer codCompania, String codigoCliente)
 			throws FacturacionException {
 		return facturacionService.obtenerCuentasPorCobrar(codCompania, codigoCliente);
+	}
+
+	@Override
+	public Collection<Tadmcatalogo> obtenerCatalogos(Integer codigocompania, Tadmcatalogo tadmcatalogo)
+			throws FacturacionException {
+		return parametrizacionService.obtenerCatalogos(codigocompania, tadmcatalogo);
 	}
 }

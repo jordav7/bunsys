@@ -1,8 +1,8 @@
 package ec.com.dlc.bunsys.facade;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Date;
+import java.util.List;
 
 import javax.ejb.Local;
 
@@ -18,9 +18,8 @@ import ec.com.dlc.bunsys.entity.facturacion.Tfaccabdevolucione;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccabfactura;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccabproforma;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccliente;
-import ec.com.dlc.bunsys.entity.facturacion.Tfacdetproforma;
-import ec.com.dlc.bunsys.entity.facturacion.Tfaccliente;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccuentasxcobrar;
+import ec.com.dlc.bunsys.entity.facturacion.Tfacdetproforma;
 import ec.com.dlc.bunsys.entity.inventario.Tinvproducto;
 import ec.com.dlc.bunsys.entity.inventario.pk.TinvproductoPK;
 import ec.com.dlc.bunsys.entity.seguridad.Tsyspersona;
@@ -213,5 +212,5 @@ public interface BunsysService {
 	
 	Collection<Tfaccuentasxcobrar> obtenerCuentasPorCobrar(Integer codCompania, String codigoCliente) throws FacturacionException ;
 	
-	Collection<Tadmcatalogo> obtenerCatalogos(Tadmcatalogo tadmcatalogo) throws FacturacionException;
+	Collection<Tadmcatalogo> obtenerCatalogos(Integer codigocompania, Tadmcatalogo tadmcatalogo) throws FacturacionException;
 }
