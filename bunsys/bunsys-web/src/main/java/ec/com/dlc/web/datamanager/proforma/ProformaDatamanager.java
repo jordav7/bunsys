@@ -1,6 +1,7 @@
 package ec.com.dlc.web.datamanager.proforma;
 
 import java.util.Collection;
+import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -55,7 +56,15 @@ public class ProformaDatamanager extends BaseDatamanager {
 	 * atributo para saber si actualiza o graba
 	 */
 	private String accionAux;
-
+	/**
+	 * atributo para realizar la busqueda de las proformas
+	 */
+	private String numeroproforma;
+	/**
+	 * lista de proformas
+	 */
+	private List<Tfaccabproforma>tfaccabproformaList;
+	
 	public LoginDatamanager getLoginDatamanager() {
 		return loginDatamanager;
 	}
@@ -118,6 +127,22 @@ public class ProformaDatamanager extends BaseDatamanager {
 
 	public void setAccionAux(String accionAux) {
 		this.accionAux = accionAux;
+	}
+
+	public String getNumeroproforma() {
+		return numeroproforma;
+	}
+
+	public void setNumeroproforma(String numeroproforma) {
+		this.numeroproforma = numeroproforma;
+	}
+
+	public List<Tfaccabproforma> getTfaccabproformaList() {
+		return tfaccabproformaList;
+	}
+
+	public void setTfaccabproformaList(List<Tfaccabproforma> tfaccabproformaList) {
+		this.tfaccabproformaList = tfaccabproformaList;
 	}
 	
 	

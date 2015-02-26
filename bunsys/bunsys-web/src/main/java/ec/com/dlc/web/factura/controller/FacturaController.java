@@ -68,6 +68,7 @@ public class FacturaController extends BaseController implements Serializable{
 
 	public void listarProformas(){
 		try {
+			System.out.println("numero proforma.."+facturaDataManager.getNumeroproforma());
 			facturaDataManager.setTfaccabproformaList(bunsysService.cabeceraProformas(facturaDataManager.getNumeroproforma()));
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -137,7 +138,7 @@ public class FacturaController extends BaseController implements Serializable{
 		facturaDataManager.getTfaccabfactura().setTfacdetfacturas(new ArrayList<Tfacdetfactura>());
 		for(Tfacdetproforma detproforma: tfaccabproforma.getTfacdetproformas()){
 			Tfacdetfactura detalleFactura= new Tfacdetfactura();
-			detalleFactura.getPk().setCodigocompania(detalleFactura.getPk().getCodigocompania());
+			detalleFactura.getPk().setCodigocompania(detproforma.getPk().getCodigocompania());
 			detalleFactura.setUnidadventa(detproforma.getUnidadventa());
 			detalleFactura.setUnidadventacodigo(detproforma.getUnidadventacodigo());
 			detalleFactura.setIva(detproforma.getIva());
@@ -178,34 +179,44 @@ public class FacturaController extends BaseController implements Serializable{
 	}
 	
 	public void grabar(){
-		System.out.println("INGRESA A GRABAR");
-		//validamos que este la factura
-		if(facturaDataManager.getTfaccabfactura()==null ||
-				facturaDataManager.getTfaccabfactura().getTfacdetfacturas()==null ||
-				facturaDataManager.getTfaccabfactura().getTfacdetfacturas().size()==0){
-			FacesContext.getCurrentInstance().addMessage
-			(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "SELECCIONE UNA PROFORMA", "SELECCIONE UNA PROFORMA"));
-			return;
-		}
-		///forma de pago
-		if(facturaDataManager.isFormaPago1()){//efectivo
-			if(!validarValorCancelar()){
+		try {
+			System.out.println("INGRESA A GRABAR");
+			//validamos que este la factura
+			if(facturaDataManager.getTfaccabfactura()==null ||
+					facturaDataManager.getTfaccabfactura().getTfacdetfacturas()==null ||
+					facturaDataManager.getTfaccabfactura().getTfacdetfacturas().size()==0){
 				FacesContext.getCurrentInstance().addMessage
-				(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "VERIFIQUE EL VALOR A PAGAR", "VERIFIQUE EL VALOR A PAGAR"));
+				(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "SELECCIONE UNA PROFORMA", "SELECCIONE UNA PROFORMA"));
 				return;
 			}
-			pagoEfectivo();
-		}else{
-			pagoCredito();
+			facturaDataManager.getTfaccabfactura().setTfacformapagos(new ArrayList<Tfacformapago>());
+			facturaDataManager.getTfaccabfactura().setTfaccuentasxcobrars(new ArrayList<Tfaccuentasxcobrar>());
+			///forma de pago
+			if(facturaDataManager.isFormaPago1()){//efectivo
+				if(!validarValorCancelar()){
+					FacesContext.getCurrentInstance().addMessage
+					(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "VERIFIQUE EL VALOR A PAGAR", "VERIFIQUE EL VALOR A PAGAR"));
+					return;
+				}
+				pagoEfectivo();
+			}else if(facturaDataManager.isFormaPago2()){
+				pagoCredito();
+			}else{
+				FacesContext.getCurrentInstance().addMessage
+				(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "SELECCIONE LA FORMA DE PAGO", "SELECCIONE LA FORMA DE PAGO"));
+			}
+			bunsysService.grabarFactura(facturaDataManager.getTfaccabfactura());
+			FacesContext.getCurrentInstance().addMessage
+			(null, new FacesMessage(FacesMessage.SEVERITY_INFO, ContenidoMessages.getString("msg_info_factura"), ContenidoMessages.getString("msg_info_factura")));
+		} catch(Throwable e){
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ContenidoMessages.getString("msg_error_factura"), ContenidoMessages.getString("msg_error_factura")));
 		}
-		bunsysService.grabarFactura(facturaDataManager.getTfaccabfactura());
 	}
 	
 	private void pagoCredito(){
 		Double valorpagar=facturaDataManager.getTfaccabfactura().getTotal()/(facturaDataManager.getNumeropagos());
-		facturaDataManager.getTfaccabfactura().setTfaccuentasxcobrars(new ArrayList<Tfaccuentasxcobrar>());
 		Double suma=0d;
-		for (int j = 1; j < facturaDataManager.getNumeropagos()-1; j++) {
+		for (int j = 1; j < facturaDataManager.getNumeropagos(); j++) {
 			Tfaccuentasxcobrar tfaccuentasxcobrar= new Tfaccuentasxcobrar();
 			//codigo compania
 			tfaccuentasxcobrar.getPk().setCodigocompania(facturaDataManager.getLoginDatamanager().getLogin().getPk().getCodigocompania());
@@ -223,7 +234,10 @@ public class FacturaController extends BaseController implements Serializable{
 			//estado
 			tfaccuentasxcobrar.setEstado("PEN");
 			tfaccuentasxcobrar.setEstadocodigo(ContenidoMessages.getInteger("cod_catalogo_estado_cuentaxcobrar"));//32
-			
+			//fecha de pago
+			Date fechapago= new Date();
+			fechapago.setMonth(fechapago.getMonth()+j);
+			tfaccuentasxcobrar.setFechapago(fechapago);
 			facturaDataManager.getTfaccabfactura().getTfaccuentasxcobrars().add(tfaccuentasxcobrar);
 		}
 		Tfaccuentasxcobrar tfaccuentasxcobrar= new Tfaccuentasxcobrar();
@@ -241,6 +255,9 @@ public class FacturaController extends BaseController implements Serializable{
 		tfaccuentasxcobrar.setValorfactura(new BigDecimal(facturaDataManager.getTfaccabfactura().getTotal()));
 		//estado
 		tfaccuentasxcobrar.setEstado("PEN");
+		//fecha de pago
+		Date fechapago= new Date();
+		fechapago.setMonth(fechapago.getMonth()+facturaDataManager.getNumeropagos());
 		tfaccuentasxcobrar.setEstadocodigo(ContenidoMessages.getInteger("cod_catalogo_estado_cuentaxcobrar"));//32
 		
 		facturaDataManager.getTfaccabfactura().getTfaccuentasxcobrars().add(tfaccuentasxcobrar);
@@ -278,7 +295,6 @@ public class FacturaController extends BaseController implements Serializable{
 				tarjetacredito.setInstitucioncodigo(ContenidoMessages.getInteger("cod_catalogo_institucion_bancaria"));//29
 			}
 		}
-		facturaDataManager.getTfaccabfactura().setTfacformapagos(new ArrayList<Tfacformapago>());
 		if(efectivo!=null){
 			facturaDataManager.getTfaccabfactura().getTfacformapagos().add(efectivo);
 		}
