@@ -212,4 +212,6 @@ public interface BunsysService {
 	
 	
 	Collection<Tfaccuentasxcobrar> obtenerCuentasPorCobrar(Integer codCompania, String codigoCliente) throws FacturacionException ;
+	
+	Collection<Tadmcatalogo> obtenerCatalogos(Tadmcatalogo tadmcatalogo) throws FacturacionException;
 }
