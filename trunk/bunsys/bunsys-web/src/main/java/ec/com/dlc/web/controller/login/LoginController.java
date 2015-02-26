@@ -7,6 +7,8 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
+import org.primefaces.context.RequestContext;
+
 import ec.com.dlc.bunsys.entity.administracion.Tadmusuario;
 import ec.com.dlc.bunsys.facade.BunsysService;
 import ec.com.dlc.web.controller.base.BaseController;
@@ -44,6 +46,8 @@ public class LoginController extends BaseController {
 			loginDatamanager.setLogin(usuarioLogueado);
 			return "/home.xhtml?faces-redirect=true";
 		} else{
+			RequestContext.getCurrentInstance().execute("$('.alert-no-user').css('visibility','visible')");
+			RequestContext.getCurrentInstance().execute("$('.alert-no-user').removeClass('hide')");
 			return null;
 		}
 	}
