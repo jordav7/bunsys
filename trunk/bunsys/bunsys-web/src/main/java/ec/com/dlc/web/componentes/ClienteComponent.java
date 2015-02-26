@@ -78,7 +78,8 @@ public class ClienteComponent implements Serializable {
 				tfaccliente.getTsyspersona().setEstadocodigo(ContenidoMessages.getInteger("cod_catalogo_estado_cliente"));
 				for(Tadmcatalogo item:estadoCatalogoColl){
 					if(item.getPk().getCodigocatalogo().equals(tfaccliente.getTsyspersona().getEstado())){
-						tfaccliente.getTsyspersona().getTadmestado().setDescripcion(item.getDescripcion());
+						tfaccliente.getTsyspersona().setTadmestado(item);
+						//tfaccliente.getTsyspersona().getTadmestado().setDescripcion(item.getDescripcion());
 					}
 				}
 			}
@@ -89,11 +90,11 @@ public class ClienteComponent implements Serializable {
 			if(StringUtils.isNotBlank(tfaccliente.getTsyspersona().getTipoid())){
 				tfaccliente.getTsyspersona().setTipoidcodigo(ContenidoMessages.getInteger("cod_catalogo_tipo_cliente"));
 			}
-			
 			BunsysService bunsysService = (BunsysService) new BeanLocator.GlobalJNDIName().withAppName(ContenidoMessages.getString("application.name")).withModuleName(ContenidoMessages.getString("module.name")).withBeanName("BunsysServiceBean").withBusinessInterface(BunsysService.class).locate();
 			bunsysService.guardarCliente(tfaccliente);
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, ContenidoMessages.getString("msg_info_cliente"), ContenidoMessages.getString("msg_info_cliente")));
-		} catch(Throwable e){
+		}
+		catch(Throwable e){
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ContenidoMessages.getString("msg_error_cliente"), ContenidoMessages.getString("msg_error_cliente")));
 		}
 	}
