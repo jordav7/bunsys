@@ -211,4 +211,12 @@ public class ParametrizacionService {
 		facturaDao.update(persona);
 	}
 	
+	public Collection<Tadmcatalogo> obtenerCatalogos(Integer codigoCompania,Tadmcatalogo tadmcatalogo) throws FacturacionException{
+		try{
+			return facturaDao.obtieneCatalogosFiltros(codigoCompania, tadmcatalogo);
+		} catch (Throwable e) {
+			throw new FacturacionException(e);
+		}
+	}
+	
 }
