@@ -18,6 +18,7 @@
 	 <link href="resources/assets/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css"/>
 	 <link rel="stylesheet" type="text/css" href="resources/assets/plugins/select2/select2_metro.css" />
 	 <link href="resources/assets/css/pages/login-soft.css" rel="stylesheet" type="text/css"/>
+	 <h:outputScript library="js" name="bunsys.js"/>
 	 
   </h:head>
   <h:body styleClass="login">
@@ -30,12 +31,16 @@
   				<button class="close" data-dismiss="alert"></button>
   				<h:outputText value="#{msg['msg_error_campos_requeridos']}" />
   			</h:panelGroup>
+  			<h:panelGroup layout="block" styleClass="alert alert-no-user hide" style="visibility: hidden;">
+  				<button class="close" data-dismiss="alert"></button>
+  				<h:outputText value="#{msg['msg_usuario_clave_falla']}" />
+  			</h:panelGroup>
   			<h:panelGroup layout="block" styleClass="control-group">
   				<h:outputLabel value="#{msg['lbl_username']}" styleClass="control-label visible-ie8 visible-ie9"/>
   				<h:panelGroup layout="block" styleClass="controls">
   					<h:panelGroup layout="block" styleClass="input-icon left">
   						<i class="icon-user"></i>
-  						<h:inputText styleClass="m-wrap placeholder-no-fix" value="#{loginDatamanager.username}" autocomplete="off" pa:placeholder="Username" id="username"/>
+  						<h:inputText styleClass="m-wrap placeholder-no-fix" value="#{loginDatamanager.username}" autocomplete="off" pa:placeholder="Username" id="username" onkeyup="bunsys.toUppercase(event, this);"/>
   					</h:panelGroup>
   				</h:panelGroup>
   			</h:panelGroup>
