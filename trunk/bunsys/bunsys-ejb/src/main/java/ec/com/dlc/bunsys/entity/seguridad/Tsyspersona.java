@@ -19,6 +19,7 @@ import java.util.Set;
  * 
  */
 @Entity
+@Table(name="tsyspersona")
 @EntityListeners(GenerateIdListener.class)
 public class Tsyspersona extends BaseEntity<TsyspersonaPK>{
 	private static final long serialVersionUID = 1L;

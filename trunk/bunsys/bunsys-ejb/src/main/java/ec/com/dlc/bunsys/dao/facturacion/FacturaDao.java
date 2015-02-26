@@ -290,15 +290,15 @@ public class FacturaDao extends GeneralDao {
 					                                 + "WHERE o.pk.codigocompania=:codcompania ");
 			
 			if(StringUtils.isNotBlank(nombre)){
-				sql.append("and upper(p.nombres) like= :nombres ");
+				sql.append("and upper(p.nombres) like :nombres ");
 			}
 			
 			if(StringUtils.isNotBlank(apellido)){
-				sql.append("and upper(p.apellidos) like = :apellidos ");
+				sql.append("and upper(p.apellidos) like :apellidos ");
 			}
 			
 			if(StringUtils.isNotBlank(identificacion)){
-				sql.append("and p.identificacion :identificacion ");
+				sql.append("and p.identificacion =:identificacion ");
 			}
 			
 			Query query = this.entityManager.createQuery(sql.toString());
@@ -309,7 +309,7 @@ public class FacturaDao extends GeneralDao {
 			}
 			
 			if(StringUtils.isNotBlank(apellido)){
-				query.setParameter("codigoAuxiliar","%"+apellido.toUpperCase()+"%");
+				query.setParameter("apellidos","%"+apellido.toUpperCase()+"%");
 			}
 			
 			if(StringUtils.isNotBlank(identificacion)){

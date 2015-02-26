@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -24,6 +25,7 @@ import ec.com.dlc.bunsys.entity.facturacion.pk.TfaccabfacturaPK;
  * 
  */
 @Entity
+@Table(name="tfaccabfactura")
 public class Tfaccabfactura extends BaseEntity<TfaccabfacturaPK> {
 	private static final long serialVersionUID = 1L;
 
