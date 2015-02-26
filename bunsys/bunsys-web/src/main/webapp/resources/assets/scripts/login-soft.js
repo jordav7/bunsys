@@ -28,6 +28,7 @@ var Login = function () {
 
 	            invalidHandler: function (event, validator) { //display error alert on form submit   
 	                $('.alert-error', $('.login-form')).show();
+	                $('.alert-no-user', $('.login-form')).hide();
 	            },
 
 	            highlight: function (element) { // hightlight error inputs
