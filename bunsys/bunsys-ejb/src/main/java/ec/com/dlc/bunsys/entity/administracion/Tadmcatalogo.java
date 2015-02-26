@@ -113,14 +113,7 @@ public class Tadmcatalogo extends BaseEntity<TadmcatalogoPK>{
 	private Set<Tfaccuentasxcobrar> tfaccuentasxcobrartipodoc; 
 
 	public Tadmcatalogo() {
-	}
-
-	public TadmcatalogoPK getId() {
-		return this.pk;
-	}
-
-	public void setId(TadmcatalogoPK pk) {
-		this.pk = pk;
+		this.pk = new TadmcatalogoPK();
 	}
 
 	public String getDescripcion() {
