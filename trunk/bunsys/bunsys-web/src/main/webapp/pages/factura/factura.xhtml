@@ -22,10 +22,10 @@
 					<h:panelGrid columns="6" >
 						<p:outputLabel value="#{msg.lbl_numero_factura}:" for="numproforma" style="display:block;width:175px;"/>
 						<p:inputText id="numproforma" value="#{facturaDataManager.tfaccabfactura.pk.numerofactura}" style="display:block;width:180px;" required="true" />
-						<p:message for="numproforma"/>
+						<p:message for="numproforma" display="icon"/>
 						
 						<p:outputLabel value="#{msg.lbl_referendum}:" for="referendum" style="display:block;width:115px;"/>
-						<p:inputMask id="referendum" value="#{facturaDataManager.tfaccabfactura.referendo}" style="display:block;width:430px;" required="true" mask="999-9999-99-9999999" disabled="true"/>
+						<p:inputMask id="referendum" value="#{facturaDataManager.tfaccabfactura.referendo}" style="display:block;width:400px;" required="true" mask="999-9999-99-9999999" disabled="true"/>
 						<p:message for="referendum"/>
 					</h:panelGrid>
 					<h:panelGrid columns="12" >
@@ -41,9 +41,9 @@
 						<p:inputText id="area" value="#{facturaDataManager.tfaccabfactura.area}" style="display:block;width:100px;" required="true" disabled="true"/>
 						<p:message for="area"/>
 						
-						<p:outputLabel for="fecha" value="#{msg.lbl_fecha}:" style="display:block;width:70px;margin-left:15px"/>
+						<p:outputLabel for="fecha" value="#{msg.lbl_fecha}:" style="display:block;width:70px;"/>
 					    <p:calendar id="fecha" value="#{facturaDataManager.tfaccabfactura.fechafactura}"  style="display:block;width:180px;" required="true" />
-					    <p:message for="fecha"/>
+					    <p:message for="fecha" display="icon"/>
 					</h:panelGrid>
 					<h:panelGrid columns="9" >
 						<p:outputLabel value="#{msg.lbl_master_awb}:" for="masterawb" style="display:block;width:140px;"/>
@@ -54,7 +54,7 @@
 						<p:inputText id="houseawb" value="#{facturaDataManager.tfaccabfactura.houseawb}" style="display:block;width:180px;" required="true" disabled="true"/>
 						<p:message for="houseawb"/>
 						
-						<p:outputLabel value="#{msg.lbl_aerolinea}:" for="txtaerolinea" style="display:block;width:100px;"/>
+						<p:outputLabel value="#{msg.lbl_aerolinea}:" for="txtaerolinea" style="display:block;width:80px;"/>
 						<p:inputText id="txtaerolinea" value="#{facturaDataManager.tfaccabfactura.tadmairline.descripcion}" style="display:block;width:170px;" required="true" disabled="true"/>
 						<p:message for="txtaerolinea"/>
 					</h:panelGrid>
@@ -67,7 +67,7 @@
 						<p:inputText id="consigne" value="#{facturaDataManager.tfaccabfactura.consignee}" style="display:block;width:180px;" required="false" disabled="true"/>
 						<p:message for="consigne"/>
 						
-						<p:outputLabel value="#{msg.lbl_fixed_price}:" for="fixedprice" style="display:block;width:100px;"/>
+						<p:outputLabel value="#{msg.lbl_fixed_price}:" for="fixedprice" style="display:block;width:80px;"/>
 						<p:inputText id="fixedprice" value="#{facturaDataManager.tfaccabfactura.fixedprice}" style="display:block;width:160px;" required="false" disabled="true"/>
 						<p:message for="fixedprice"/>	
 					</h:panelGrid>
@@ -181,24 +181,24 @@
 		        </h:panelGrid>
 			</p:panel>
 			<h:panelGrid columns="2" style="margin-top:10px; margin-left:20px:">
-					<p:commandButton id="btngrabar" icon="ui-icon-disk" value="#{msg.lbl_generar_factura}" action="#{facturaController.grabar()}" process="@this :frmFactura:pnlgcabecera pnlDatosProforma pnlformapago"  />
+					<p:commandButton id="btngrabar" icon="ui-icon-disk" value="#{msg.lbl_generar_factura}" action="#{facturaController.grabar()}"
+					 process="@this :frmFactura:pnlgcabecera pnlDatosProforma pnlformapago"  update=":frmFactura:pnlgcabecera"/>
 				    <p:commandButton id="btncancelar" icon="ui-icon-close" value="#{msg.btn_cancelar}" action="#{facturaController.cancelar()}" process="@this" update="pnlDatosProforma pnlformapago" />
 				</h:panelGrid>
 		</p:panel>
 	</ui:define>
 	<ui:define name="dialogArea">
 		<p:dialog widgetVar="dialog" appendTo="@(body)" modal="true" resizable="false" closeOnEscape="true" >
+		<h:form id="frmPro">
 			<p:panel header="#{msg.lbl_proformas}" style="width:900px !important">
 				  	<p:fieldset legend="#{msg['lbl_busqueda']}">
-				  		<h:panelGroup layout="block" id="pnlfilter">
-				  			<h:panelGrid columns="3">
+				  			<h:panelGrid columns="3" id="pnlfilter">
 				  				<p:outputLabel value="#{msg['lbl_numero_proforma']}:" for="numproforma"/>
-				  				<p:inputText id="numproforma" value="#{facturaDataManager.numeroproforma}"/>
+				  				<p:inputText id="numproforma" value="#{facturaDataManager.numeroproforma}" />
 				  				<p:message for="numproforma"/>
 				  			</h:panelGrid>
-				  		</h:panelGroup>
 				  		<h:panelGroup layout="block" style="float:left">
-				  			<p:commandButton icon="ui-icon-search" value="#{msg['btn_buscar']}" action="#{facturaController.listarProformas()}" update="pnlProformas" process="@this pnlfilter"/>
+				  			<p:commandButton icon="ui-icon-search" value="#{msg['btn_buscar']}" action="#{facturaController.listarProformas()}" update="pnlProformas" process="@this :frmPro:pnlfilter"/>
 				  		</h:panelGroup>
 				  	</p:fieldset>
 				  	<p:fieldset legend="#{msg['lbl_proformas']}">
@@ -249,7 +249,8 @@
 							</p:dataTable>
 				  		</h:panelGroup>
 				  	</p:fieldset>
-		  </p:panel>	
+		  </p:panel>
+		 </h:form>	
 		</p:dialog>
 	  	
 	  </ui:define>

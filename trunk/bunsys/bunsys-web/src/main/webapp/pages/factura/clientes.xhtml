@@ -13,9 +13,6 @@
 		  	<p:fieldset legend="#{msg['lbl_busqueda']}">
 		  		<h:panelGroup layout="block">
 		  			<h:panelGrid columns="3">
-		  				<p:outputLabel value="#{msg['lbl_codigo_principal']}:" for="txtCodigoPrincipal"/>
-		  				<p:inputText id="txtCodigoPrincipal" value="#{clienteDatamanager.clienteserch.pk.codigocliente}"/>
-		  				<p:message for="txtCodigoPrincipal"/>
 		  				
 		  				<p:outputLabel value="#{msg['lbl_nombre']}:" for="txtNombre"/>
 		  				<p:inputText id="txtNombre" value="#{clienteDatamanager.clienteserch.tsyspersona.nombres}"/>
@@ -36,12 +33,6 @@
 		  				<p:inputText id="txtIdentificacion" value="#{clienteDatamanager.clienteserch.tsyspersona.identificacion}"/>
 		  				<p:message for="txtIdentificacion"/>
 		  				
-		  				<p:outputLabel value="#{msg['lbl_estado']}:" for="selEstado"/>
-		  				<p:selectOneMenu id="selEstado" value="#{clienteDatamanager.clienteserch.tsyspersona.estado}">
-		  					<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
-		  					<f:selectItems value="#{clienteDatamanager.estadosCatalogo}" var="estado" itemLabel="#{estado.descripcion}" itemValue="#{estado.pk.codigocatalogo}" />
-		  				</p:selectOneMenu>
-		  				<p:message for="selEstado"/>
 		  			</h:panelGrid>
 		  		</h:panelGroup>
 		  		<h:panelGroup layout="block" style="float:left">
