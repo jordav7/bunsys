@@ -14,9 +14,17 @@ import ec.com.dlc.web.datamanager.base.BaseDatamanager;
 @SessionScoped
 public class NotaCreditoDatamanager extends BaseDatamanager {
 
+	/**
+	 * Cabecera devoluci&oacute;n
+	 */
 	private Tfaccabdevolucione cabdevoluciones;
-	
+	/**
+	 * Detalle de la nota de cr&eacute;dito
+	 */
 	private Collection<Tfacdetdevolucione> detdevolucionesColl;
+	/**
+	 * Estado de la nota de cr&eacute;dito
+	 */
 	private Collection<Tadmcatalogo> catalogoEstadoColl;
 	
 	@Override
