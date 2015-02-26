@@ -1,6 +1,7 @@
 package ec.com.dlc.web.controller.proforma;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -56,6 +57,9 @@ public class ProformaController extends BaseController{
 	@Override
 	public void inicializar() {
 		Tfaccabproforma tfaccabproforma = new Tfaccabproforma();
+		tfaccabproforma.setCountrycode(ContenidoMessages.getString("cod_country"));
+		tfaccabproforma.setArea(ContenidoMessages.getString("cod_area"));
+		tfaccabproforma.setFecha(new Date());
 		tfaccabproforma.setTfacdetproformas(new ArrayList<Tfacdetproforma>());
 		proformaDatamanager.setTfaccabproforma(tfaccabproforma);
 		//inicializa el objeto de busqueda
@@ -197,6 +201,8 @@ public class ProformaController extends BaseController{
 	
 	public void cancelar(){
 		Tfaccabproforma tfaccabproforma = new Tfaccabproforma();
+		tfaccabproforma.setCountrycode(ContenidoMessages.getString("cod_country"));
+		tfaccabproforma.setArea(ContenidoMessages.getString("cod_area"));
 		tfaccabproforma.setTfacdetproformas(new ArrayList<Tfacdetproforma>());
 		proformaDatamanager.setTfaccabproforma(tfaccabproforma);
 		//inicializa el objeto de busqueda
@@ -208,6 +214,22 @@ public class ProformaController extends BaseController{
 		Tfaccliente tfacclienteG= new Tfaccliente();
 		tfacclienteG.setTsyspersona(new Tsyspersona());
 		proformaDatamanager.setTfaccliente(tfacclienteG);
+	}
+	
+	public void listarProformas(){
+		try {
+			System.out.println("numero proforma.."+proformaDatamanager.getNumeroproforma());
+			proformaDatamanager.setTfaccabproformaList(bunsysService.cabeceraProformas(proformaDatamanager.getNumeroproforma()));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void selecionaProforma(Tfaccabproforma tfaccabproforma){
+		proformaDatamanager.setTfaccabproforma(tfaccabproforma);
+		tfaccabproforma.setTfacdetproformas(new ArrayList<Tfacdetproforma>());
+		tfaccabproforma.setTfacdetproformas(bunsysService.detalleProformas(tfaccabproforma.getPk().getNumeroproforma()));
+		proformaDatamanager.setAccionAux("E");
 	}
 	
 	public LoginDatamanager getLoginDatamanager() {
