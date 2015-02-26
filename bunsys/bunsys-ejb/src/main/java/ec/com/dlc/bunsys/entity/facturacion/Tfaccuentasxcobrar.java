@@ -5,14 +5,17 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import ec.com.dlc.bunsys.commons.listener.GenerateIdListener;
 import ec.com.dlc.bunsys.entity.administracion.Tadmcatalogo;
 import ec.com.dlc.bunsys.entity.facturacion.pk.TfaccuentasxcobrarPK;
 
@@ -23,6 +26,8 @@ import ec.com.dlc.bunsys.entity.facturacion.pk.TfaccuentasxcobrarPK;
  */
 @Entity
 @NamedQuery(name="Tfaccuentasxcobrar.findAll", query="SELECT t FROM Tfaccuentasxcobrar t")
+@Table(name="tfaccuentasxcobrar")
+@EntityListeners(GenerateIdListener.class)
 public class Tfaccuentasxcobrar extends ec.com.dlc.bunsys.entity.base.BaseEntity<TfaccuentasxcobrarPK>  {
 	private static final long serialVersionUID = 1L;
 

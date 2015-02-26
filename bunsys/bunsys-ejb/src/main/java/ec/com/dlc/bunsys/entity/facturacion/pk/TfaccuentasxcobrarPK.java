@@ -2,13 +2,16 @@ package ec.com.dlc.bunsys.entity.facturacion.pk;
 
 import javax.persistence.Column;
 
+import ec.com.dlc.bunsys.commons.annotations.SequenceDatabase;
+import ec.com.dlc.bunsys.commons.enumeration.TypeGenerator;
 import ec.com.dlc.bunsys.entity.base.BasePK;
 
 public class TfaccuentasxcobrarPK extends BasePK{
 	private static final long serialVersionUID = 3676827398935560579L;
 
 	@Column
-	private String codigocuenxcobr;
+	@SequenceDatabase(sequenceName="tfaccuentasxcobrar_codigocuenxcobr_seq", typeGenerator=TypeGenerator.SEQUENCE)
+	private Integer codigocuenxcobr;
 	
 	@Column
 	private Integer codigocompania;
@@ -16,13 +19,16 @@ public class TfaccuentasxcobrarPK extends BasePK{
 	public TfaccuentasxcobrarPK() {
 	}
 
-	public String getCodigocuenxcobr() {
+
+	public Integer getCodigocuenxcobr() {
 		return codigocuenxcobr;
 	}
 
-	public void setCodigocuenxcobr(String codigocuenxcobr) {
+
+	public void setCodigocuenxcobr(Integer codigocuenxcobr) {
 		this.codigocuenxcobr = codigocuenxcobr;
 	}
+
 
 	public Integer getCodigocompania() {
 		return codigocompania;
