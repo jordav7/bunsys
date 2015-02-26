@@ -173,8 +173,6 @@ public class ParametrizacionService {
 	 */
 	public void guardarCliente(Tfaccliente cliente) throws FacturacionException{
 		Tsyspersona persona = cliente.getTsyspersona();
-		System.out.println("1   .."+persona.getPk().getCodigocompania());
-		System.out.println("2   .."+cliente.getPk().getCodigocompania());
 		if(persona.getPk().getCodigopersona() != null){//actualizacion
 			facturaDao.update(cliente.getTsyspersona());
 			if(cliente.getPk().getCodigocompania()!=null){
