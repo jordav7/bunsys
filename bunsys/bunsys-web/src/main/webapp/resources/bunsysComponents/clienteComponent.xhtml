@@ -44,28 +44,24 @@
 					<p:message for="txtDireccion" display="icon"/>
 					
 					<p:outputLabel value="#{msg['lbl_telefono_convencional']}:" for="txtTelefonocon"/>
-					<p:inputText id="txtTelefonocon" value="#{cc.attrs.controller.tfaccliente.tsyspersona.telefonoconvencional}" required="false"/>
+					<p:inputText id="txtTelefonocon" value="#{cc.attrs.controller.tfaccliente.tsyspersona.telefonoconvencional}" required="false" maxlength="10"/>
 					<p:message for="txtTelefonocon" display="icon"/>
 					
 					<p:outputLabel value="#{msg['lbl_telefono_trabajo']}:" for="txtTelefonotra"/>
-					<p:inputText id="txtTelefonotra" value="#{cc.attrs.controller.tfaccliente.tsyspersona.telefonotrabajo}" required="false"/>
+					<p:inputText id="txtTelefonotra" value="#{cc.attrs.controller.tfaccliente.tsyspersona.telefonotrabajo}" required="false" maxlength="10"/>
 					<p:message for="txtTelefonotra" display="icon"/>
 					
 					<p:outputLabel value="#{msg['lbl_extension']}:" for="txtExtencion"/>
-					<p:inputText id="txtExtencion" value="#{cc.attrs.controller.tfaccliente.tsyspersona.extension}" required="false"/>
+					<p:inputText id="txtExtencion" value="#{cc.attrs.controller.tfaccliente.tsyspersona.extension}" required="false" maxlength="5"/>
 					<p:message for="txtExtencion" display="icon"/>
 					
 					<p:outputLabel value="#{msg['lbl_celular']}:" for="txtCelular"/>
-					<p:inputText id="txtCelular" value="#{cc.attrs.controller.tfaccliente.tsyspersona.telefonocelular}" required="false"/>
+					<p:inputText id="txtCelular" value="#{cc.attrs.controller.tfaccliente.tsyspersona.telefonocelular}" required="false" maxlength="10"/>
 					<p:message for="txtCelular" display="icon"/>
 					
 					<p:outputLabel value="#{msg['lbl_correo']}:" for="txtCorreo"/>
-					<p:inputText id="txtCorreo" value="#{cc.attrs.controller.tfaccliente.tsyspersona.correo}" required="false"/>
+					<p:inputText id="txtCorreo" value="#{cc.attrs.controller.tfaccliente.tsyspersona.correo}" required="false" maxlength="50"/>
 					<p:message for="txtCorreo" display="icon"/>
-					
-					<p:outputLabel value="#{msg['lbl_contacto']}:" for="txtContacto"/>
-					<p:inputText id="txtContacto" value="#{cc.attrs.controller.tfaccliente.tsyspersona.contacto}" required="false"/>
-					<p:message for="txtContacto" display="icon"/>
 					
 					<p:outputLabel value="#{msg['lbl_estado']}" for="selEstado"/>
 					<p:selectOneMenu id="selEstado" value="#{cc.attrs.controller.tfaccliente.tsyspersona.estado}">
@@ -73,10 +69,6 @@
 						<f:selectItems value="#{cc.attrs.controller.estadoCatalogoColl}" var="estado" itemLabel="#{estado.descripcion}" itemValue="#{estado.pk.codigocatalogo}" />
 					</p:selectOneMenu>
 					<p:message for="selEstado" display="icon"/>
-					
-					<p:outputLabel value="#{msg['lbl_obs']}:" for="txtObservacion"/>
-					<p:inputText id="txtObservacion" value="#{cc.attrs.controller.tfaccliente.tsyspersona.observacion}" required="false"/>
-					<p:message for="txtObservacion" display="icon"/>
 					
 					<p:outputLabel value="#{msg['lbl_forma_pago']}" for="selFormapago"/>
 					<p:selectOneMenu id="selFormapago" value="#{cc.attrs.controller.tfaccliente.formapago}">
@@ -93,13 +85,20 @@
 					<p:message for="selGrupocli" display="icon"/>
 					
 					<p:outputLabel value="#{msg['lbl_limite_credito']}:" for="limitecredito"/>
-					<pe:inputNumber id="limitecredito" value="#{cc.attrs.controller.tfaccliente.limitecredito}" decimalPlaces="3" decimalSeparator="." thousandSeparator="," />
+					<pe:inputNumber id="limitecredito" value="#{cc.attrs.controller.tfaccliente.limitecredito}" decimalPlaces="2" decimalSeparator="." thousandSeparator="," />
 					<p:message for="limitecredito"/>
 					
 					<p:outputLabel value="#{msg['lbl_porcentaje_desc']}:" for="porcendesc"/>
-					<pe:inputNumber id="porcendesc" value="#{cc.attrs.controller.tfaccliente.porcentajedescuento}" decimalPlaces="3" decimalSeparator="." thousandSeparator="," />
+					<pe:inputNumber id="porcendesc" value="#{cc.attrs.controller.tfaccliente.porcentajedescuento}" decimalPlaces="2" decimalSeparator="." thousandSeparator="," />
 					<p:message for="porcendesc" display="icon"/>
 					
+					<p:outputLabel value="#{msg['lbl_contacto']}:" for="txtContacto"/>
+					<p:inputTextarea id="txtContacto" value="#{cc.attrs.controller.tfaccliente.tsyspersona.contacto}" required="false" maxlength="100" cols="5" rows="2" autoResize="false"/>
+					<p:message for="txtContacto" display="icon"/>
+					
+					<p:outputLabel value="#{msg['lbl_obs']}:" for="txtObservacion"/>
+					<p:inputTextarea id="txtObservacion" value="#{cc.attrs.controller.tfaccliente.tsyspersona.observacion}" required="false" maxlength="200" cols="5" rows="2" autoResize="false"/>
+					<p:message for="txtObservacion" display="icon"/>
 				</h:panelGrid>
 				<h:panelGroup layout="block">
 					<p:commandButton value="#{msg['btn_guardar']}" 
