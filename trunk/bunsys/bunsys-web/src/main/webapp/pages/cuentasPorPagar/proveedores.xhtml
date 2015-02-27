@@ -13,38 +13,38 @@
 		  	<p:fieldset legend="#{msg['lbl_busqueda']}">
 		  		<h:panelGroup layout="block">
 		  			<h:panelGrid columns="3">
-		  				<p:outputLabel value="#{msg['lbl_codigo']}:" for="txtCod"/>
-		  				<p:inputText id="txtCod" value="#{proveedorDatamanager.proveedorSearch.pk.codigoproveedor}"/>
+		  				<p:outputLabel value="#{msg['lbl_codigo']}:" for="txtCod" style="display: block; width:150px;"/>
+		  				<p:inputText id="txtCod" style="display: block; width:190px;" value="#{proveedorDatamanager.proveedorSearch.pk.codigoproveedor}"/>
 		  				<p:message for="txtCod"/>
 		  			
-				  		<p:outputLabel value="#{msg['lbl_tipo_id']}:" for="selTipoId"/>
-				  		<p:selectOneMenu id="selTipoId" value="#{proveedorDatamanager.proveedorSearch.tsyspersona.tipoid}" >
+				  		<p:outputLabel value="#{msg['lbl_tipo_id']}:" for="selTipoId" style="display: block; width:150px;"/>
+				  		<p:selectOneMenu id="selTipoId" style="display: block; width:190px;" value="#{proveedorDatamanager.proveedorSearch.tsyspersona.tipoid}" >
 		  					<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
 		  					<f:selectItems value="#{proveedorDatamanager.tipoIdColl}" var="tipoId" itemLabel="#{tipoId.descripcion}" itemValue="#{tipoId.pk.codigocatalogo}"/>
 		  				</p:selectOneMenu>
 				  		<p:message for="selTipoId"/>
 				  		
-				  		<p:outputLabel value="#{msg['lbl_identificacion']}:" for="txtId"/>
-				  		<p:inputText id="txtId" value="#{proveedorDatamanager.proveedorSearch.tsyspersona.identificacion}"/>
+				  		<p:outputLabel value="#{msg['lbl_identificacion']}:" for="txtId" style="display: block; width:150px;"/>
+				  		<p:inputText id="txtId" style="display: block; width:190px;" value="#{proveedorDatamanager.proveedorSearch.tsyspersona.identificacion}"/>
 				  		<p:message for="txtId"/>
 				  		
-				  		<p:outputLabel value="#{msg['lbl_nombre']}:" for="txtNombre"/>
-				  		<p:inputText id="txtNombre" value="#{proveedorDatamanager.proveedorSearch.tsyspersona.nombres}"/>
+				  		<p:outputLabel value="#{msg['lbl_nombre']}:" for="txtNombre" style="display: block; width:150px;"/>
+				  		<p:inputText id="txtNombre" style="display: block; width:190px;" value="#{proveedorDatamanager.proveedorSearch.tsyspersona.nombres}"/>
 				  		<p:message for="txtNombre"/>
 				  		
-				  		<p:outputLabel value="#{msg['lbl_apellidos']}:" for="txtApellidos"/>
-				  		<p:inputText id="txtApellidos" value="#{proveedorDatamanager.proveedorSearch.tsyspersona.apellidos}"/>
+				  		<p:outputLabel value="#{msg['lbl_apellidos']}:" for="txtApellidos" style="display: block; width:150px;"/>
+				  		<p:inputText id="txtApellidos" style="display: block; width:190px;" value="#{proveedorDatamanager.proveedorSearch.tsyspersona.apellidos}"/>
 				  		<p:message for="txtApellidos"/>
 				  		
-				  		<p:outputLabel value="#{msg['lbl_grupo_prov']}:" for="selGrupoProv"/>
-				  		<p:selectOneMenu id="selGrupoProv" value="#{proveedorDatamanager.proveedorSearch.grupoproveedor}">
+				  		<p:outputLabel value="#{msg['lbl_grupo_prov']}:" for="selGrupoProv" style="display: block; width:150px;"/>
+				  		<p:selectOneMenu id="selGrupoProv" style="display: block; width:190px;" value="#{proveedorDatamanager.proveedorSearch.grupoproveedor}">
 		  					<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
 		  					<f:selectItems value="#{proveedorDatamanager.grupoProvColl}" var="grupoProv" itemLabel="#{grupoProv.descripcion}" itemValue="#{grupoProv.pk.codigocatalogo}"/>
 		  				</p:selectOneMenu>
 		  				<p:message for="selGrupoProv"/>
 		  				
-		  				<p:outputLabel value="#{msg['lbl_estado']}:" for="selEstado"/>
-				  		<p:selectOneMenu id="selEstado" value="#{proveedorDatamanager.proveedorSearch.tsyspersona.estado}">
+		  				<p:outputLabel value="#{msg['lbl_estado']}:" for="selEstado" style="display: block; width:150px;"/>
+				  		<p:selectOneMenu id="selEstado" style="display: block; width:190px;" value="#{proveedorDatamanager.proveedorSearch.tsyspersona.estado}">
 		  					<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
 		  					<f:selectItems value="#{proveedorDatamanager.estadoProvColl}" var="estado" itemLabel="#{estado.descripcion}" itemValue="#{estado.pk.codigocatalogo}"/>
 		  				</p:selectOneMenu>
