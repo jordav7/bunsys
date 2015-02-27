@@ -13,27 +13,27 @@
 		  	<p:fieldset legend="#{msg['lbl_busqueda']}">
 		  		<h:panelGroup layout="block">
 		  			<h:panelGrid columns="3">
-		  				<p:outputLabel value="#{msg['lbl_codigo_principal']}:" for="txtCodigoPrincipal"/>
-		  				<p:inputText id="txtCodigoPrincipal" value="#{articuloDatamanager.articuloSearch.pk.codigoproductos}"/>
+		  				<p:outputLabel value="#{msg['lbl_codigo_principal']}:" for="txtCodigoPrincipal" style="display: block; width:150px;"/>
+		  				<p:inputText id="txtCodigoPrincipal" style="display: block; width:190px;" value="#{articuloDatamanager.articuloSearch.pk.codigoproductos}" onkeyup="bunsys.toUppercase(event, this)"/>
 		  				<p:message for="txtCodigoPrincipal"/>
 		  				
-		  				<p:outputLabel value="#{msg['lbl_codigo_auxiliar']}:" for="txtCodigoAuxiliar"/>
-		  				<p:inputText id="txtCodigoAuxiliar" value="#{articuloDatamanager.articuloSearch.codigoauxiliar}"/>
+		  				<p:outputLabel value="#{msg['lbl_codigo_auxiliar']}:" for="txtCodigoAuxiliar" style="display: block; width:150px;"/>
+		  				<p:inputText id="txtCodigoAuxiliar" style="display: block; width:190px;" value="#{articuloDatamanager.articuloSearch.codigoauxiliar}"/>
 		  				<p:message for="txtCodigoAuxiliar"/>
 		  				
-		  				<p:outputLabel value="#{msg['lbl_nombre_producto']}:" for="txtNombreProducto"/>
-		  				<p:inputText id="txtNombreProducto" value="#{articuloDatamanager.articuloSearch.nombre}"/>
+		  				<p:outputLabel value="#{msg['lbl_nombre_producto']}:" for="txtNombreProducto" style="display: block; width:150px;"/>
+		  				<p:inputText id="txtNombreProducto" style="display: block; width:190px;" value="#{articuloDatamanager.articuloSearch.nombre}" onkeyup="bunsys.toUppercase(event, this)"/>
 		  				<p:message for="txtNombreProducto"/>
 		  				
-		  				<p:outputLabel value="#{msg['lbl_color']}:" for="selColor"/>
-		  				<p:selectOneMenu id="selColor" value="#{articuloDatamanager.articuloSearch.color}">
+		  				<p:outputLabel value="#{msg['lbl_color']}:" for="selColor" style="display: block; width:150px;"/>
+		  				<p:selectOneMenu id="selColor" value="#{articuloDatamanager.articuloSearch.color}" style="display: block; width:179px;">
 		  					<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
 		  					<f:selectItems value="#{articuloDatamanager.colorCatalogoColl}" var="color" itemLabel="#{color.descripcion}" itemValue="#{color.pk.codigocatalogo}"/>
 		  				</p:selectOneMenu>
 		  				<p:message for="selColor"/>
 		  				
-		  				<p:outputLabel value="#{msg['lbl_estado']}:" for="selEstado"/>
-		  				<p:selectOneMenu id="selEstado" value="#{articuloDatamanager.articuloSearch.estado}">
+		  				<p:outputLabel value="#{msg['lbl_estado']}:" for="selEstado" style="display: block; width:150px;"/>
+		  				<p:selectOneMenu id="selEstado" value="#{articuloDatamanager.articuloSearch.estado}" style="display: block; width:179px;">
 		  					<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
 		  					<f:selectItems value="#{articuloDatamanager.estadoCatalogoColl}" var="estado" itemLabel="#{estado.descripcion}" itemValue="#{estado.pk.codigocatalogo}" />
 		  				</p:selectOneMenu>
