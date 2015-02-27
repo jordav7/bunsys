@@ -75,6 +75,8 @@ public class ArticuloComponent implements Serializable {
 	public void crear() {
 		this.articulo = new Tinvproducto();
 		this.articulo.setEstado("A");
+		this.articulo.setPeso(0d);
+		this.articulo.setPreciounitario(0d);
 	}
 	
 	/**
