@@ -16,103 +16,104 @@
 	<comp:implementation>
 		<div id="#{cc.clientId}">
 			<h:panelGroup layout="block" id="pnlArticulo">
-				<h:panelGrid columns="6">
-					<p:outputLabel value="#{msg['lbl_codigo_principal']}:" for="txtCodigoPrincipal"/>
-					<p:inputText id="txtCodigoPrincipal" value="#{cc.attrs.controller.articulo.pk.codigoproductos}" required="true" disabled="#{cc.attrs.controller.edition}"/>
-					<p:message for="txtCodigoPrincipal"/>
-					
-					<p:outputLabel value="#{msg['lbl_codigo_auxiliar']}:" for="txtCodigoAuxiliar"/>
-					<p:inputText id="txtCodigoAuxiliar" value="#{cc.attrs.controller.articulo.codigoauxiliar}"/>
-					<p:message for="txtCodigoAuxiliar"/>
-					
-					<p:outputLabel value="#{msg['lbl_nombre_producto']}:" for="txtNombreArticulo"/>
-					<p:row>
-						<p:inputTextarea id="txtNombreArticulo" value="#{cc.attrs.controller.articulo.nombre}" required="true" rows="10" counter="display" maxlength="180" counterTemplate="{0} characters remaining."/>
+				<p:fieldset legend="#{msg['lbl_caracteristicas_prov']}">
+					<h:panelGrid columns="6">
+						<p:outputLabel value="#{msg['lbl_codigo_principal']}:" for="txtCodigoPrincipal" style="display: block; width:150px;"/>
+						<p:inputText id="txtCodigoPrincipal" style="display: block; width:190px;" value="#{cc.attrs.controller.articulo.pk.codigoproductos}" required="true" disabled="#{cc.attrs.controller.edition}" onkeyup="bunsys.toUppercase(event, this)"/>
+						<p:message for="txtCodigoPrincipal"/>
+	
+						<p:outputLabel value="#{msg['lbl_codigo_auxiliar']}:" for="txtCodigoAuxiliar" style="display: block; width:150px;"/>
+						<p:inputText id="txtCodigoAuxiliar" style="display: block; width:190px;" value="#{cc.attrs.controller.articulo.codigoauxiliar}"/>
+						<p:message for="txtCodigoAuxiliar"/>
+					</h:panelGrid>
+					<h:panelGrid columns="3" >
+						<p:outputLabel value="#{msg['lbl_nombre_producto']}:" for="txtNombreArticulo" style="display: block; width:150px;"/>
+						<p:inputTextarea id="txtNombreArticulo" value="#{cc.attrs.controller.articulo.nombre}" style="display: block; width:542px; height:75px;" required="true" rows="10" counter="display" maxlength="180" counterTemplate="{0} caracteres restantes." onkeyup="bunsys.toUppercase(event, this)"/>
+						<p:message for="txtNombreArticulo"/>
+						<h:outputText id="space" />
 						<h:outputText id="display" />
-					</p:row>
-					<p:message for="txtNombreArticulo"/>
+					</h:panelGrid>
+					<h:panelGrid columns="6">
+						<p:outputLabel value="#{msg['lbl_fecha_caducidad']}:" for="txtFechaCaducidad" style="display: block; width:150px;"/>
+						<p:calendar id="txtFechaCaducidad" style="display: block; width:200px;" value="#{cc.attrs.controller.articulo.fechacaducidad}" pattern="#{msg['pattern_date']}" mask="true"/>
+						<p:message for="txtFechaCaducidad"/>
+	
+						<p:outputLabel value="#{msg['lbl_precio']}:" for="txtPrecioUnitario" style="display: block; width:150px;"/>
+						<pe:inputNumber id="txtPrecioUnitario" style="display: block; width:200px;" value="#{cc.attrs.controller.articulo.preciounitario}" decimalPlaces="2" decimalSeparator="." thousandSeparator="," />
+						<p:message for="txtPrecioUnitario"/>
+	
+						<p:outputLabel value="#{msg['lbl_peso']}:" for="txtPeso" style="display: block; width:150px;"/>
+						<pe:inputNumber id="txtPeso" style="display: block; width:200px;" value="#{cc.attrs.controller.articulo.peso}" decimalPlaces="2" decimalSeparator="." thousandSeparator="," />
+						<p:message for="txtPeso"/>
+	
+						<p:outputLabel value="#{msg['lbl_nandina']}:" for="txtNandina" style="display: block; width:150px;"/>
+						<p:inputText id="txtNandina" style="display: block; width:180px;" value="#{cc.attrs.controller.articulo.nandina}"/>
+						<p:message for="txtNandina"/>
+	
+						<p:outputLabel value="#{msg['lbl_color']}" for="selColor" style="display: block; width:150px;"/>
+						<p:selectOneMenu id="selColor" style="display: block; width:179px;" value="#{cc.attrs.controller.articulo.color}">
+							<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+							<f:selectItems value="#{cc.attrs.controller.colorCatalogoColl}" var="color" itemLabel="#{color.descripcion}" itemValue="#{color.pk.codigocatalogo}" />
+						</p:selectOneMenu>
+						<p:message for="selColor"/>
+	
+						<p:outputLabel value="#{msg['lbl_estado']}" for="selEstado" style="display: block; width:150px;"/>
+						<p:selectOneMenu id="selEstado" style="display: block; width:179px;" value="#{cc.attrs.controller.articulo.estado}">
+							<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+							<f:selectItems value="#{cc.attrs.controller.estadoCatalogoColl}" var="estado" itemLabel="#{estado.descripcion}" itemValue="#{estado.pk.codigocatalogo}" />
+						</p:selectOneMenu>
+						<p:message for="selEstado"/>
+	
+						<p:outputLabel value="#{msg['lbl_unidad_venta']}:" for="selUnidadVenta" style="display: block; width:150px;"/>
+						<p:selectOneMenu id="selUnidadVenta" style="display: block; width:179px;" value="#{cc.attrs.controller.articulo.unidadventa}">
+							<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+							<f:selectItems value="#{cc.attrs.controller.unidadVentaColl}" var="unVenta" itemLabel="#{unVenta.descripcion}" itemValue="#{unVenta.pk.codigocatalogo}" />
+						</p:selectOneMenu>
+						<p:message for="selUnidadVenta"/>
+	
+						<p:outputLabel value="#{msg['lbl_atpa']}:" for="selAtpa" style="display: block; width:150px;"/>
+						<p:selectOneMenu id="selAtpa" style="display: block; width:179px;" value="#{cc.attrs.controller.articulo.atpa}">
+							<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+							<f:selectItems value="#{cc.attrs.controller.aptaCatalogoColl}" var="apta" itemLabel="#{apta.descripcion}" itemValue="#{apta.pk.codigocatalogo}" />
+						</p:selectOneMenu>
+						<p:message for="selAtpa"/>
+	
+						<p:outputLabel value="#{msg['lbl_tipo_producto']}:" for="selTipoProducto" style="display: block; width:150px;"/>
+						<p:selectOneMenu id="selTipoProducto" style="display: block; width:179px;" value="#{cc.attrs.controller.articulo.tipoproducto}">
+							<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+							<f:selectItems value="#{cc.attrs.controller.tipoProductoColl}" var="tipoProducto" itemLabel="#{tipoProducto.descripcion}" itemValue="#{tipoProducto.pk.codigocatalogo}" />
+						</p:selectOneMenu>
+						<p:message for="selTipoProducto"/>
+					</h:panelGrid>
+				</p:fieldset>
+				
+				<p:fieldset legend="#{msg['lbl_impuestos']}">
+					<h:panelGrid columns="6">
+						<p:outputLabel value="#{msg['lbl_iva']}:" for="selIVA" style="display: block; width:150px;"/>
+						<p:selectOneMenu id="selIVA" style="display: block; width:179px;" value="#{cc.attrs.controller.articulo.iva}">
+							<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+							<f:selectItems value="#{cc.attrs.controller.ivaCatalogoColl}" var="iva" itemLabel="#{iva.descripcion}" itemValue="#{iva.pk.codigocatalogo}" />
+						</p:selectOneMenu>
+						<p:message for="selIVA"/>
+						
+						<p:outputLabel value="#{msg['lbl_ice']}:" for="selICE" style="display: block; width:150px;"/>
+						<p:selectOneMenu id="selICE" style="display: block; width:179px;" value="#{cc.attrs.controller.articulo.ice}">
+							<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+							<f:selectItems value="#{cc.attrs.controller.iceCatalogoColl}" var="ice" itemLabel="#{ice.descripcion}" itemValue="#{ice.pk.codigocatalogo}" />
+						</p:selectOneMenu>
+						<p:message for="selICE"/>
+					</h:panelGrid>
 					
-					<p:outputLabel value="#{msg['lbl_fecha_caducidad']}:" for="txtFechaCaducidad"/>
-					<p:calendar id="txtFechaCaducidad" value="#{cc.attrs.controller.articulo.fechacaducidad}"/>
-					<p:message for="txtFechaCaducidad"/>
-					
-					<p:outputLabel value="#{msg['lbl_precio']}:" for="txtPrecioUnitario"/>
-					<pe:inputNumber id="txtPrecioUnitario" value="#{cc.attrs.controller.articulo.preciounitario}" decimalPlaces="3" decimalSeparator="." thousandSeparator="," />
-					<p:message for="txtPrecioUnitario"/>
-					
-					<p:outputLabel value="#{msg['lbl_peso']}:" for="txtPeso"/>
-					<pe:inputNumber id="txtPeso" value="#{cc.attrs.controller.articulo.peso}" decimalPlaces="3" decimalSeparator="." thousandSeparator="," />
-					<p:message for="txtPeso"/>
-					
-					<p:outputLabel value="#{msg['lbl_nandina']}:" for="txtNandina"/>
-					<p:inputText id="txtNandina" value="#{cc.attrs.controller.articulo.nandina}"/>
-					<p:message for="txtNandina"/>
-					
-					<p:outputLabel value="#{msg['lbl_color']}" for="selColor"/>
-					<p:selectOneMenu id="selColor" value="#{cc.attrs.controller.articulo.color}">
-						<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
-						<f:selectItems value="#{cc.attrs.controller.colorCatalogoColl}" var="color" itemLabel="#{color.descripcion}" itemValue="#{color.pk.codigocatalogo}" />
-					</p:selectOneMenu>
-					<p:message for="selColor"/>
-					
-					<p:outputLabel value="#{msg['lbl_estado']}" for="selEstado"/>
-					<p:selectOneMenu id="selEstado" value="#{cc.attrs.controller.articulo.estado}">
-						<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
-						<f:selectItems value="#{cc.attrs.controller.estadoCatalogoColl}" var="estado" itemLabel="#{estado.descripcion}" itemValue="#{estado.pk.codigocatalogo}" />
-					</p:selectOneMenu>
-					<p:message for="selEstado"/>
-					
-					<p:outputLabel value="#{msg['lbl_unidad_venta']}:" for="selUnidadVenta"/>
-					<p:selectOneMenu id="selUnidadVenta" value="#{cc.attrs.controller.articulo.unidadventa}">
-						<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
-						<f:selectItems value="#{cc.attrs.controller.unidadVentaColl}" var="unVenta" itemLabel="#{unVenta.descripcion}" itemValue="#{unVenta.pk.codigocatalogo}" />
-					</p:selectOneMenu>
-					<p:message for="selUnidadVenta"/>
-					
-					<p:outputLabel value="#{msg['lbl_atpa']}:" for="selAtpa"/>
-					<p:selectOneMenu id="selAtpa" value="#{cc.attrs.controller.articulo.atpa}">
-						<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
-						<f:selectItems value="#{cc.attrs.controller.aptaCatalogoColl}" var="apta" itemLabel="#{apta.descripcion}" itemValue="#{apta.pk.codigocatalogo}" />
-					</p:selectOneMenu>
-					<p:message for="selAtpa"/>
-					
-					<p:outputLabel value="#{msg['lbl_tipo_producto']}:" for="selTipoProducto"/>
-					<p:selectOneMenu id="selTipoProducto" value="#{cc.attrs.controller.articulo.tipoproducto}">
-						<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
-						<f:selectItems value="#{cc.attrs.controller.tipoProductoColl}" var="tipoProducto" itemLabel="#{tipoProducto.descripcion}" itemValue="#{tipoProducto.pk.codigocatalogo}" />
-					</p:selectOneMenu>
-					<p:message for="selTipoProducto"/>
-					
-				</h:panelGrid>
-				<p:panelGrid columns="1" styleClass="bun-data-grid">
-					<f:facet name="header">
-						<h:outputText value="#{msg['lbl_impuestos']}" />
-					</f:facet>
-					<h:panelGroup layout="block">
-						<h:panelGrid columns="6">
-							<p:outputLabel value="#{msg['lbl_iva']}:" for="selIVA"/>
-							<p:selectOneMenu id="selIVA" value="#{cc.attrs.controller.articulo.iva}">
-								<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
-								<f:selectItems value="#{cc.attrs.controller.ivaCatalogoColl}" var="iva" itemLabel="#{iva.descripcion}" itemValue="#{iva.pk.codigocatalogo}" />
-							</p:selectOneMenu>
-							<p:message for="selIVA"/>
-							
-							<p:outputLabel value="#{msg['lbl_ice']}:" for="selICE"/>
-							<p:selectOneMenu id="selICE" value="#{cc.attrs.controller.articulo.ice}">
-								<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
-								<f:selectItems value="#{cc.attrs.controller.iceCatalogoColl}" var="ice" itemLabel="#{ice.descripcion}" itemValue="#{ice.pk.codigocatalogo}" />
-							</p:selectOneMenu>
-							<p:message for="selICE"/>
-							
-							<p:outputLabel value="#{msg['lbl_irbpnr']}:" for="selIRBPNR"/>
-							<p:selectOneMenu id="selIRBPNR" value="#{cc.attrs.controller.articulo.irbpnr}">
-								<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
-								<f:selectItems value="#{cc.attrs.controller.irbpnrCatalogoColl}" var="irbpnr" itemLabel="#{irbpnr.descripcion}" itemValue="#{irbpnr.pk.codigocatalogo}" />
-							</p:selectOneMenu>
-							<p:message for="selIRBPNR"/>
-						</h:panelGrid>
-					</h:panelGroup>
-				</p:panelGrid>
+					<h:panelGrid columns="3">
+						<p:outputLabel value="#{msg['lbl_irbpnr']}:" for="selIRBPNR" style="display: block; width:150px;"/>
+						<p:selectOneMenu id="selIRBPNR" style="display: block; width:250px;" value="#{cc.attrs.controller.articulo.irbpnr}">
+							<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+							<f:selectItems value="#{cc.attrs.controller.irbpnrCatalogoColl}" var="irbpnr" itemLabel="#{irbpnr.descripcion}" itemValue="#{irbpnr.pk.codigocatalogo}" />
+						</p:selectOneMenu>
+						<p:message for="selIRBPNR"/>
+					</h:panelGrid>
+				</p:fieldset>
+				
 				<h:panelGroup layout="block">
 					<p:commandButton value="#{msg['btn_guardar']}" 
 						icon="ui-icon-disk"
