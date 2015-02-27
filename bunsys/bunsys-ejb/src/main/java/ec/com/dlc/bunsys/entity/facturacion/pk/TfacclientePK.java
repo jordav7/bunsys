@@ -2,12 +2,7 @@ package ec.com.dlc.bunsys.entity.facturacion.pk;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.SequenceGenerator;
 
-import ec.com.dlc.bunsys.commons.annotations.SequenceDatabase;
-import ec.com.dlc.bunsys.commons.enumeration.TypeGenerator;
 import ec.com.dlc.bunsys.entity.base.BasePK;
 
 /**
@@ -20,18 +15,17 @@ public class TfacclientePK extends BasePK{
 	private static final long serialVersionUID = 1L;
 
 	@Column
-	@SequenceDatabase(sequenceName="tfacclientes_codigocliente_seq", typeGenerator=TypeGenerator.SEQUENCE)
-	private Integer codigocliente;
+	private String codigocliente;
 
 	@Column
 	private Integer codigocompania;
 
 	public TfacclientePK() {
 	}
-	public Integer getCodigocliente() {
+	public String getCodigocliente() {
 		return this.codigocliente;
 	}
-	public void setCodigocliente(Integer codigocliente) {
+	public void setCodigocliente(String codigocliente) {
 		this.codigocliente = codigocliente;
 	}
 	public Integer getCodigocompania() {
