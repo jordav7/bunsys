@@ -232,7 +232,7 @@ public class FacturaController extends BaseController implements Serializable{
 			//valor factura
 			tfaccuentasxcobrar.setValorfactura(new BigDecimal(facturaDataManager.getTfaccabfactura().getTotal()));
 			//estado
-			tfaccuentasxcobrar.setEstado("PEN");
+			tfaccuentasxcobrar.setEstado("P");
 			tfaccuentasxcobrar.setEstadocodigo(ContenidoMessages.getInteger("cod_catalogo_estado_cuentaxcobrar"));//32
 			//fecha de pago
 			Date fechapago= new Date();
@@ -254,7 +254,7 @@ public class FacturaController extends BaseController implements Serializable{
 		//valor factura
 		tfaccuentasxcobrar.setValorfactura(new BigDecimal(facturaDataManager.getTfaccabfactura().getTotal()));
 		//estado
-		tfaccuentasxcobrar.setEstado("PEN");
+		tfaccuentasxcobrar.setEstado("P");
 		//fecha de pago
 		Date fechapago= new Date();
 		fechapago.setMonth(fechapago.getMonth()+facturaDataManager.getNumeropagos());
