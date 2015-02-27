@@ -1,6 +1,5 @@
 package ec.com.dlc.web.controller.administracion;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
 import javax.faces.application.FacesMessage;
@@ -11,6 +10,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 
 import org.apache.commons.io.IOUtils;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
 
@@ -45,7 +45,14 @@ public class CompaniaController extends BaseController {
 	}
 	
 	public void actualizarCompania() {
-		bunsysService.actualizarCompania(companiaDatamanager.getCompania());
+		try {
+			bunsysService.actualizarCompania(companiaDatamanager.getCompania());
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Registro guardado correctamente", "Registro guardado correctamente"));
+		} catch (Exception e) {
+			FacesContext.getCurrentInstance().validationFailed();
+    		RequestContext.getCurrentInstance().showMessageInDialog(new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
+		}
+		
 	}
 
 	public CompaniaDatamanager getCompaniaDatamanager() {
@@ -60,7 +67,7 @@ public class CompaniaController extends BaseController {
         try {
         	companiaDatamanager.getCompania().setLogocompania(IOUtils.toByteArray(event.getFile().getInputstream()));
 			companiaDatamanager.setStrContent(new DefaultStreamedContent(event.getFile().getInputstream(), event.getFile().getContentType(), event.getFile().getFileName()));
-			FacesMessage message = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
+			FacesMessage message = new FacesMessage("Imagen cargada correctamente", event.getFile().getFileName() + " is uploaded.");
 	        FacesContext.getCurrentInstance().addMessage(null, message);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
