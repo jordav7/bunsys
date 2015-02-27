@@ -32,7 +32,7 @@ public class Tfaccuentasxcobrar extends ec.com.dlc.bunsys.entity.base.BaseEntity
 	private static final long serialVersionUID = 1L;
 
 	@Column
-	private Integer codigocliente;
+	private String codigocliente;
 
 	@Column
 	private String estado;
@@ -121,12 +121,12 @@ public class Tfaccuentasxcobrar extends ec.com.dlc.bunsys.entity.base.BaseEntity
 	}
 
 
-	public Integer getCodigocliente() {
+	public String getCodigocliente() {
 		return codigocliente;
 	}
 
 
-	public void setCodigocliente(Integer codigocliente) {
+	public void setCodigocliente(String codigocliente) {
 		this.codigocliente = codigocliente;
 	}
 

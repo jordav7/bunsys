@@ -36,7 +36,7 @@ public class Tfaccabproforma extends BaseEntity<TfaccabproformaPK>  {
 	private Date fecha;
 	
 	@Column
-	private Integer codigocliente;
+	private String codigocliente;
 
 	@Column
 	private String estado;
@@ -152,11 +152,11 @@ public class Tfaccabproforma extends BaseEntity<TfaccabproformaPK>  {
 		this.fecha = fecha;
 	}
 
-	public Integer getCodigocliente() {
+	public String getCodigocliente() {
 		return codigocliente;
 	}
 
-	public void setCodigocliente(Integer codigocliente) {
+	public void setCodigocliente(String codigocliente) {
 		this.codigocliente = codigocliente;
 	}
 

@@ -36,7 +36,7 @@ public class Tfaccabfactura extends BaseEntity<TfaccabfacturaPK> {
 	private Integer airlinecodigo;
 	
 	@Column
-	private Integer codigocliente;
+	private String codigocliente;
 
 	
 	@Column
@@ -166,11 +166,11 @@ public class Tfaccabfactura extends BaseEntity<TfaccabfacturaPK> {
 		this.airlinecodigo = airlinecodigo;
 	}
 
-	public Integer getCodigocliente() {
+	public String getCodigocliente() {
 		return codigocliente;
 	}
 
-	public void setCodigocliente(Integer codigocliente) {
+	public void setCodigocliente(String codigocliente) {
 		this.codigocliente = codigocliente;
 	}
 
