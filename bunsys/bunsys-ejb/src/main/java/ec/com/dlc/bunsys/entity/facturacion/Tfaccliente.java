@@ -1,5 +1,6 @@
 package ec.com.dlc.bunsys.entity.facturacion;
 
+import java.math.BigDecimal;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -53,6 +54,9 @@ public class Tfaccliente extends BaseEntity<TfacclientePK>{
 	//bi-directional many-to-one association to Tfaccabfactura
 	@OneToMany(mappedBy="tfaccliente")
 	private Set<Tfaccabfactura> tfaccabfacturas;
+	
+	@OneToMany(mappedBy="tfaccliente")
+	private Set<Tfaccuentasxcobrar> tfaccuentasxcobrar;
 	
 	//bi-directional many-to-one association to Tadmcatalogo
 	@ManyToOne(fetch=FetchType.LAZY)
@@ -145,7 +149,7 @@ public class Tfaccliente extends BaseEntity<TfacclientePK>{
 	public void setTsyspersona(Tsyspersona tsyspersona) {
 		this.tsyspersona = tsyspersona;
 	}
-
+	
 	public String getFormapago() {
 		return formapago;
 	}
@@ -186,4 +190,13 @@ public class Tfaccliente extends BaseEntity<TfacclientePK>{
 		this.codigopersona = codigopersona;
 	}
 
+	public Set<Tfaccuentasxcobrar> getTfaccuentasxcobrar() {
+		return tfaccuentasxcobrar;
+	}
+
+	public void setTfaccuentasxcobrar(Set<Tfaccuentasxcobrar> tfaccuentasxcobrar) {
+		this.tfaccuentasxcobrar = tfaccuentasxcobrar;
+	}
+
+	
 }
