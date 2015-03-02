@@ -3,8 +3,8 @@ package ec.com.dlc.bunsys.service.facturacion;
 import static javax.ejb.TransactionAttributeType.MANDATORY;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Date;
+import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -16,11 +16,11 @@ import ec.com.dlc.bunsys.entity.administracion.Tadmconversionunidad;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccabdevolucione;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccabfactura;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccabproforma;
+import ec.com.dlc.bunsys.entity.facturacion.Tfaccuentasxcobrar;
 import ec.com.dlc.bunsys.entity.facturacion.Tfacdetfactura;
 import ec.com.dlc.bunsys.entity.facturacion.Tfacdetproforma;
 import ec.com.dlc.bunsys.entity.facturacion.Tfacformapago;
 import ec.com.dlc.bunsys.entity.seguridad.Tsyspersona;
-import ec.com.dlc.bunsys.entity.facturacion.Tfaccuentasxcobrar;
 import ec.com.dlc.bunsys.util.FacturacionException;
 
 /**
@@ -71,37 +71,54 @@ public class FacturacionService {
 	 * @param accion
 	 * @throws FacturacionException
 	 */
-	public void guardarProforma(Tfaccabproforma tfaccabproform,String accion) throws FacturacionException {
-		if(accion.equals("G")){
-			facturaDao.create(tfaccabproform);
-		}else{
-			facturaDao.update(tfaccabproform);
-		}
-		for(Tfacdetproforma tfacdetproforma2:tfaccabproform.getTfacdetproformas()){
-			Tfacdetproforma tfacdetproforma = tfacdetproforma2;
-			if(tfacdetproforma.getPk().getCodigodetalleprof()!= null){
-				facturaDao.update(tfacdetproforma);
-			}else{
-				tfacdetproforma.setNumeroproforma(tfaccabproform.getPk().getNumeroproforma());
-				facturaDao.create(tfacdetproforma);
+	public void guardarProforma(Tfaccabproforma tfaccabproform,String accion,Collection<Tfacdetproforma>listaEliminar) throws FacturacionException {
+		try{
+			Collection<Tfacdetproforma>tfacdetproformas=tfaccabproform.getTfacdetproformas();
+			if(accion.equals("G")){
+				facturaDao.create(tfaccabproform);
 			}
+			for(Tfacdetproforma tfacdetproforma2:tfacdetproformas){
+				Tfacdetproforma tfacdetproforma = tfacdetproforma2;
+				if(tfacdetproforma.getPk().getCodigodetalleprof()!= null){
+					//elimina
+					facturaDao.update(tfacdetproforma);
+				}else{
+					tfacdetproforma.setNumeroproforma(tfaccabproform.getPk().getNumeroproforma());
+					facturaDao.create(tfacdetproforma);
+				}
+			}
+			if(!accion.equals("G")){
+				tfaccabproform.setTfaccliente(null);
+				facturaDao.update(tfaccabproform);
+			}
+			//elimar detalle
+			for(Tfacdetproforma eliminarItem:listaEliminar){
+				facturaDao.delete(eliminarItem);
+			}
+		} catch (Throwable e) {
+			e.printStackTrace();
+			throw new FacturacionException(e);
 		}
 	}
 	
-	public void grabarFactura(Tfaccabfactura tfaccabfactura){
-		facturaDao.create(tfaccabfactura);
-		for(Tfacdetfactura tfacdetfactura: tfaccabfactura.getTfacdetfacturas()){
-			tfacdetfactura.setNumerofactura(tfaccabfactura.getPk().getNumerofactura());
-			tfacdetfactura.setTinvproducto(null);
-			facturaDao.create(tfacdetfactura);
-		}
-		//efectivo
-		for(Tfacformapago tfacformapago:tfaccabfactura.getTfacformapagos()){
-			facturaDao.create(tfacformapago);
-		}
-		//credito
-		for(Tfaccuentasxcobrar tfaccuentasxcobrar:tfaccabfactura.getTfaccuentasxcobrars()){
-			facturaDao.create(tfaccuentasxcobrar);
+	public void grabarFactura(Tfaccabfactura tfaccabfactura)throws FacturacionException{
+		try{
+			facturaDao.create(tfaccabfactura);
+			for(Tfacdetfactura tfacdetfactura: tfaccabfactura.getTfacdetfacturas()){
+				tfacdetfactura.setNumerofactura(tfaccabfactura.getPk().getNumerofactura());
+				tfacdetfactura.setTinvproducto(null);
+				facturaDao.create(tfacdetfactura);
+			}
+			//efectivo
+			for(Tfacformapago tfacformapago:tfaccabfactura.getTfacformapagos()){
+				facturaDao.create(tfacformapago);
+			}
+			//credito
+			for(Tfaccuentasxcobrar tfaccuentasxcobrar:tfaccabfactura.getTfaccuentasxcobrars()){
+				facturaDao.create(tfaccuentasxcobrar);
+			}
+		} catch (Throwable e) {
+			throw new FacturacionException(e);
 		}
 	}
 	
