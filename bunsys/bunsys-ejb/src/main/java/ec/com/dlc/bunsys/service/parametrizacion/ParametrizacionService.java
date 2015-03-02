@@ -195,7 +195,7 @@ public class ParametrizacionService {
 	 * @throws FacturacionException
 	 */
 	public Collection<Tfaccliente> buscarClientes(Integer codCompania,
-			String nombre, String apellido, String identificacion) {
+			String nombre, String apellido, String identificacion)throws FacturacionException {
 		return facturaDao.buscarClientes(codCompania, nombre, apellido, identificacion);
 	}
 	
@@ -204,11 +204,15 @@ public class ParametrizacionService {
 	 * @param articulo
 	 * @throws FacturacionException
 	 */
-	public void eliminarCliente(TsyspersonaPK personaPk, Integer estadoCodigo){
-		Tsyspersona persona= facturaDao.findById(Tsyspersona.class, personaPk);
-		persona.setEstado("I");
-		persona.setEstadocodigo(estadoCodigo);
-		facturaDao.update(persona);
+	public void eliminarCliente(TsyspersonaPK personaPk, Integer estadoCodigo)throws FacturacionException{
+		try{
+			Tsyspersona persona= facturaDao.findById(Tsyspersona.class, personaPk);
+			persona.setEstado("I");
+			persona.setEstadocodigo(estadoCodigo);
+			facturaDao.update(persona);
+		} catch (Throwable e) {
+			throw new FacturacionException(e);
+		}
 	}
 	
 	public Collection<Tadmcatalogo> obtenerCatalogos(Integer codigoCompania,Tadmcatalogo tadmcatalogo) throws FacturacionException{
