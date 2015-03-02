@@ -277,7 +277,7 @@ public class FacturaDao extends GeneralDao {
 	
 	//--------
 	@SuppressWarnings("unchecked")
-	public Collection<Tfaccliente> buscarClientes(Integer codCompania,	String nombre, String apellido, String identificacion) {
+	public Collection<Tfaccliente> buscarClientes(Integer codCompania,	String nombre, String apellido, String identificacion)throws FacturacionException {
 		Collection<Tfaccliente> clientesColl = null;
 		try{
 			final StringBuilder sql = new StringBuilder("SELECT o FROM Tfaccliente o "
@@ -323,7 +323,7 @@ public class FacturaDao extends GeneralDao {
 	}
 	
 	
-	public Tadmconversionunidad conversionArticulo(Integer unidadVentaCodigo, String unidadVenta){
+	public Tadmconversionunidad conversionArticulo(Integer unidadVentaCodigo, String unidadVenta)throws FacturacionException{
 		try{
 			System.out.println(unidadVentaCodigo+" ----- "+unidadVenta);
 			Query query = entityManager.createQuery("SELECT o FROM Tadmconversionunidad o "+
@@ -337,7 +337,7 @@ public class FacturaDao extends GeneralDao {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Tfaccabproforma> cabeceraProformas(String numeroproforma){
+	public List<Tfaccabproforma> cabeceraProformas(String numeroproforma)throws FacturacionException{
 		try{
 			StringBuilder sql = new StringBuilder("SELECT o FROM Tfaccabproforma o "
 												 + " LEFT JOIN FETCH o.tfaccliente cli"
@@ -358,7 +358,7 @@ public class FacturaDao extends GeneralDao {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Tfacdetproforma> detalleProformas(String numeroproforma){
+	public List<Tfacdetproforma> detalleProformas(String numeroproforma)throws FacturacionException{
 		try{
 			StringBuilder sql = new StringBuilder("SELECT o FROM Tfacdetproforma o "
 												 + " LEFT JOIN FETCH o.tadmatpa"
@@ -376,7 +376,8 @@ public class FacturaDao extends GeneralDao {
 		}
 	}
 	
-	public Collection<Tadmcatalogo> obtieneCatalogosFiltros(Integer compania, Tadmcatalogo tadmcatalogo) {
+	@SuppressWarnings("unchecked")
+	public Collection<Tadmcatalogo> obtieneCatalogosFiltros(Integer compania, Tadmcatalogo tadmcatalogo)throws FacturacionException {
 		try {
 			final StringBuilder sql = new StringBuilder("SELECT o FROM Tadmcatalogo o WHERE o.pk.codigocompania=:codigocompania ");
 			if(tadmcatalogo.getPk().getCodigotipocatalogo() != null){
