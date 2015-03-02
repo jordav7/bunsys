@@ -56,46 +56,35 @@ public class ProformaController extends BaseController{
 
 	@Override
 	public void inicializar() {
-		Tfaccabproforma tfaccabproforma = new Tfaccabproforma();
-		tfaccabproforma.setCountrycode(ContenidoMessages.getString("cod_country"));
-		tfaccabproforma.setArea(ContenidoMessages.getString("cod_area"));
-		tfaccabproforma.setFecha(new Date());
-		tfaccabproforma.setTfacdetproformas(new ArrayList<Tfacdetproforma>());
-		proformaDatamanager.setTfaccabproforma(tfaccabproforma);
-		//inicializa el objeto de busqueda
-		proformaDatamanager.setTfaccabproformaSerch(new Tfaccabproforma());
-		
-		proformaDatamanager.setAerolineasCatalogo(bunsysService.buscarObtenerCatalogos(loginDatamanager.getLogin().getPk().getCodigocompania(), ContenidoMessages.getInteger("cod_catalogo_aerolineas")));
 		
 		//componete del cliente
 		Tfaccliente tfaccliente= new Tfaccliente();
 		tfaccliente.setTsyspersona(new Tsyspersona());
 		clienteDatamanager.setClienteserch(tfaccliente);
-		clienteDatamanager.setFormaspagosCatalogo(bunsysService.buscarObtenerCatalogos(clienteDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania(),
-				                                                                       ContenidoMessages.getInteger("cod_catalogo_forma_pago")));
-		clienteDatamanager.setEstadosCatalogo(bunsysService.buscarObtenerCatalogos(clienteDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania(),
-				                                                                    ContenidoMessages.getInteger("cod_catalogo_estado_cliente")));
-		clienteDatamanager.setGruposCatalogo(bunsysService.buscarObtenerCatalogos(clienteDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania(),
-				                                                                  ContenidoMessages.getInteger("cod_catalogo_grupo_cliente")));
-		clienteDatamanager.setTiposCatalogo(bunsysService.buscarObtenerCatalogos(clienteDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania(),
-				                                                                 ContenidoMessages.getInteger("cod_catalogo_tipo_cliente")));
-		clienteDatamanager.setClienteComponente(new ClienteComponent(clienteDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania()));
-		//objeto cliente 
-		Tfaccliente tfacclienteG= new Tfaccliente();
-		tfacclienteG.setTsyspersona(new Tsyspersona());
-		proformaDatamanager.setTfaccliente(tfacclienteG);
-		
 		//Articulo
 		articuloDatamanager.setArticuloSearch(new Tinvproducto());
+		proformaDatamanager.setTinvproducto(new Tinvproducto());
+		//objeto detalle de la proforma
+		proformaDatamanager.setTfacdetproforma(new Tfacdetproforma());
+		//catalogos
+		clienteDatamanager.setFormaspagosCatalogo(bunsysService.buscarObtenerCatalogos(clienteDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania(),
+                	 ContenidoMessages.getInteger("cod_catalogo_forma_pago")));
+		clienteDatamanager.setEstadosCatalogo(bunsysService.buscarObtenerCatalogos(clienteDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania(),
+		             ContenidoMessages.getInteger("cod_catalogo_estado_cliente")));
+		clienteDatamanager.setGruposCatalogo(bunsysService.buscarObtenerCatalogos(clienteDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania(),
+		             ContenidoMessages.getInteger("cod_catalogo_grupo_cliente")));
+		clienteDatamanager.setTiposCatalogo(bunsysService.buscarObtenerCatalogos(clienteDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania(),
+		             ContenidoMessages.getInteger("cod_catalogo_tipo_cliente")));
+		
+		clienteDatamanager.setClienteComponente(new ClienteComponent(clienteDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania()));
+		
+		proformaDatamanager.setAerolineasCatalogo(bunsysService.buscarObtenerCatalogos(loginDatamanager.getLogin().getPk().getCodigocompania(), ContenidoMessages.getInteger("cod_catalogo_aerolineas")));
+		proformaDatamanager.setCatalogoPicesType(bunsysService.buscarObtenerCatalogos(loginDatamanager.getLogin().getPk().getCodigocompania(), ContenidoMessages.getInteger("cod_catalogo_pices_type")));
+		
 		articuloDatamanager.setColorCatalogoColl(bunsysService.buscarObtenerCatalogos(articuloDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania(), ContenidoMessages.getInteger("cod_catalogo_color_articulo")));
 		articuloDatamanager.setEstadoCatalogoColl(bunsysService.buscarObtenerCatalogos(articuloDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania(), ContenidoMessages.getInteger("cod_catalogo_estado_articulo")));
 		articuloDatamanager.setArticuloComponente(new ArticuloComponent(articuloDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania()));
-	
-		proformaDatamanager.setTinvproducto(new Tinvproducto());
 		
-		//objeto detalle de la proforma
-		proformaDatamanager.setTfacdetproforma(new Tfacdetproforma());
-		proformaDatamanager.setAccionAux("G");
 	}
 
 	
@@ -163,11 +152,70 @@ public class ProformaController extends BaseController{
 		}
 	}
 	
+	public void cambioPicesType(Tfacdetproforma tfacdetproforma){
+		//Busqueda del pices type segun el tipo de unidad de venta del articulo
+				Tadmconversionunidad tadmconversionunidad=
+						bunsysService.conversionArticulo(tfacdetproforma.getUnidadventacodigo(), tfacdetproforma.getUnidadventa());
+				//pices type
+				//proformaDatamanager.getTfacdetproforma().setUnidadventa(proformaDatamanager.getTinvproducto().getUnidadventa());
+				//eq full boxes
+				tfacdetproforma.setEqfullboxes(tadmconversionunidad.getBoxes());
+				//steamsbunch
+				tfacdetproforma.setStemsbunch(tadmconversionunidad.getCantidadbunch());
+				//total bunch
+				tfacdetproforma.setTotalbunch(tadmconversionunidad.getTotalbunch());
+				//total stems
+				tfacdetproforma.setTotalstems(tfacdetproforma.getStemsbunch()*tfacdetproforma.getTotalbunch());
+				//unit price
+				tfacdetproforma.setPreciounitario(tfacdetproforma.getPreciounitario());
+				//total price
+				tfacdetproforma.setTotal(tfacdetproforma.getTotalstems()*tfacdetproforma.getPreciounitario());
+				calculos();
+	}
+	
+	public void cambioTotalPices(Tfacdetproforma tfacdetproforma){
+		calculos();
+	}
+	public void cambioeqfullboxes(Tfacdetproforma tfacdetproforma){
+		calculos();
+	}
+	public void cambioStemsBunch(Tfacdetproforma tfacdetproforma){
+		//total stems
+		tfacdetproforma.setTotalstems(tfacdetproforma.getStemsbunch()*tfacdetproforma.getTotalbunch());
+		//total price
+		tfacdetproforma.setTotal(tfacdetproforma.getTotalstems()*tfacdetproforma.getPreciounitario());
+		calculos();
+	}
+	
+	public void cambiototalBunch(Tfacdetproforma tfacdetproforma){
+		//total stems
+		tfacdetproforma.setTotalstems(tfacdetproforma.getStemsbunch()*tfacdetproforma.getTotalbunch());
+		//total price
+		tfacdetproforma.setTotal(tfacdetproforma.getTotalstems()*tfacdetproforma.getPreciounitario());
+		calculos();
+	}
+	
+	public void cambiototalSteams(Tfacdetproforma tfacdetproforma){
+		tfacdetproforma.setTotal(tfacdetproforma.getTotalstems()*tfacdetproforma.getPreciounitario());
+		calculos();
+	}
+	
+	public void cambiounitprice(Tfacdetproforma tfacdetproforma){
+		tfacdetproforma.setTotal(tfacdetproforma.getTotalstems()*tfacdetproforma.getPreciounitario());
+		calculos();
+	}
+	
+	public void cambiototal(Tfacdetproforma tfacdetproforma){
+		calculos();
+	}
 	/**
 	 * Metodo para eliminar un registro del detalle de la factura
 	 * @param tfacdetfactura
 	 */
 	public void eliminarArticulo(Tfacdetproforma tfacdetproforma){
+		if(tfacdetproforma.getPk().getCodigodetalleprof()!=null){
+			proformaDatamanager.getDetproformasEliminar().add(tfacdetproforma);
+		}
 		proformaDatamanager.getTfaccabproforma().getTfacdetproformas().remove(tfacdetproforma);
 		calculos();
 	}
@@ -192,45 +240,28 @@ public class ProformaController extends BaseController{
 			proformaDatamanager.getTfaccabproforma().getPk().setCodigocompania(articuloDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania());
 			//cliente
 			proformaDatamanager.getTfaccabproforma().setCodigocliente(proformaDatamanager.getTfaccliente().getPk().getCodigocliente());
-			bunsysService.guardarProforma(proformaDatamanager.getTfaccabproforma(),proformaDatamanager.getAccionAux());
+			bunsysService.guardarProforma(proformaDatamanager.getTfaccabproforma(),proformaDatamanager.getAccionAux(),proformaDatamanager.getDetproformasEliminar());
+			proformaDatamanager.setDetproformasEliminar(new ArrayList<Tfacdetproforma>());
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, ContenidoMessages.getString("msg_info_proforma"), ContenidoMessages.getString("msg_info_proforma")));
 		} catch(Throwable e){
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ContenidoMessages.getString("msg_error_proforma"), ContenidoMessages.getString("msg_error_proforma")));
 		}
 	}
 	
-	public void cancelar(){
+	public String cancelar(){
 		Tfaccabproforma tfaccabproforma = new Tfaccabproforma();
 		tfaccabproforma.setCountrycode(ContenidoMessages.getString("cod_country"));
 		tfaccabproforma.setArea(ContenidoMessages.getString("cod_area"));
 		tfaccabproforma.setTfacdetproformas(new ArrayList<Tfacdetproforma>());
 		proformaDatamanager.setTfaccabproforma(tfaccabproforma);
 		//inicializa el objeto de busqueda
-		proformaDatamanager.setTfaccabproformaSerch(new Tfaccabproforma());
+		//proformaDatamanager.setTfaccabproformaSerch(new Tfaccabproforma());
 		proformaDatamanager.setTinvproducto(new Tinvproducto());
 		//objeto detalle de la proforma
 		proformaDatamanager.setTfacdetproforma(new Tfacdetproforma());
-		//objeto cliente 
-		Tfaccliente tfacclienteG= new Tfaccliente();
-		tfacclienteG.setTsyspersona(new Tsyspersona());
-		proformaDatamanager.setTfaccliente(tfacclienteG);
+		return "/pages/factura/proforma/buscarProforma?faces-redirect=true";
 	}
 	
-	public void listarProformas(){
-		try {
-			System.out.println("numero proforma.."+proformaDatamanager.getNumeroproforma());
-			proformaDatamanager.setTfaccabproformaList(bunsysService.cabeceraProformas(proformaDatamanager.getNumeroproforma()));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public void selecionaProforma(Tfaccabproforma tfaccabproforma){
-		proformaDatamanager.setTfaccabproforma(tfaccabproforma);
-		tfaccabproforma.setTfacdetproformas(new ArrayList<Tfacdetproforma>());
-		tfaccabproforma.setTfacdetproformas(bunsysService.detalleProformas(tfaccabproforma.getPk().getNumeroproforma()));
-		proformaDatamanager.setAccionAux("E");
-	}
 	
 	public LoginDatamanager getLoginDatamanager() {
 		return loginDatamanager;
