@@ -200,7 +200,7 @@ public interface BunsysService {
 	 * @param tfaccabproforma
 	 * @throws FacturacionException
 	 */
-	void guardarProforma(Tfaccabproforma tfaccabproforma, String accion) throws FacturacionException;
+	void guardarProforma(Tfaccabproforma tfaccabproforma, String accion,Collection<Tfacdetproforma>listaEliminar) throws FacturacionException;
 	
 	List<Tfaccabproforma> cabeceraProformas(String numeroproforma)throws FacturacionException;
 	
