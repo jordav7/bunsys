@@ -187,11 +187,10 @@ public class BunsysServiceBean implements BunsysService {
 	}
 	
 	@Override
-	public void guardarProforma(Tfaccabproforma tfaccabproform,String accion)
+	public void guardarProforma(Tfaccabproforma tfaccabproform,String accion,Collection<Tfacdetproforma>listaEliminar)
 			throws FacturacionException {
 		// TODO Auto-generated method stub
-		facturacionService.guardarProforma(tfaccabproform,accion);
-
+		facturacionService.guardarProforma(tfaccabproform,accion,listaEliminar);
 	}
 
 	@Override
