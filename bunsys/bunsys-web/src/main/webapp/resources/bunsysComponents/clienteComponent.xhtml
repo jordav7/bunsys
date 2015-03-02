@@ -16,8 +16,12 @@
 	<comp:implementation>
 		<div id="#{cc.clientId}">
 			<h:panelGroup layout="block" id="pnlArticulo">
+				<h:panelGrid columns="3">
+					<p:outputLabel value="#{msg['lbl_codigo_cliente']}:" for="codigocliente" style="display:block;width:145px;"/>
+					<p:inputText id="codigocliente" value="#{cc.attrs.controller.tfaccliente.pk.codigocliente}" disabled="#{cc.attrs.controller.tfaccliente.pk.codigocliente != null}"/>
+					<p:message for="codigocliente" display="icon"/>
+				</h:panelGrid>
 				<h:panelGrid columns="6">
-					
 					<p:outputLabel value="#{msg['lbl_tipo_id']}" for="seltipoid"/>
 					<p:selectOneMenu id="seltipoid" value="#{cc.attrs.controller.tfaccliente.tsyspersona.tipoid}" required="true">
 						<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
