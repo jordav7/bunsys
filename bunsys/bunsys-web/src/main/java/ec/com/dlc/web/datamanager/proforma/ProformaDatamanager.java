@@ -23,14 +23,6 @@ public class ProformaDatamanager extends BaseDatamanager {
 		return "proformaDatamanager";
 	}
 
-	@ManagedProperty(value="#{loginDatamanager}")
-	private LoginDatamanager loginDatamanager;
-	
-	/**
-	 * Objeto para realizar la busqueda de la proforma
-	 */
-	private Tfaccabproforma tfaccabproformaSerch;
-	
 	/**
 	 * Objeto cabecera a ser guardar
 	 */
@@ -53,33 +45,16 @@ public class ProformaDatamanager extends BaseDatamanager {
 	 */
 	private Collection<Tadmcatalogo> aerolineasCatalogo;
 	/**
+	 * Aerolineas
+	 */
+	private Collection<Tadmcatalogo> catalogoPicesType;
+	/**
 	 * atributo para saber si actualiza o graba
 	 */
 	private String accionAux;
-	/**
-	 * atributo para realizar la busqueda de las proformas
-	 */
-	private String numeroproforma;
-	/**
-	 * lista de proformas
-	 */
-	private List<Tfaccabproforma>tfaccabproformaList;
+
+	private Collection<Tfacdetproforma>detproformasEliminar;
 	
-	public LoginDatamanager getLoginDatamanager() {
-		return loginDatamanager;
-	}
-
-	public void setLoginDatamanager(LoginDatamanager loginDatamanager) {
-		this.loginDatamanager = loginDatamanager;
-	}
-
-	public Tfaccabproforma getTfaccabproformaSerch() {
-		return tfaccabproformaSerch;
-	}
-
-	public void setTfaccabproformaSerch(Tfaccabproforma tfaccabproformaSerch) {
-		this.tfaccabproformaSerch = tfaccabproformaSerch;
-	}
 
 	public Tfaccabproforma getTfaccabproforma() {
 		return tfaccabproforma;
@@ -129,21 +104,21 @@ public class ProformaDatamanager extends BaseDatamanager {
 		this.accionAux = accionAux;
 	}
 
-	public String getNumeroproforma() {
-		return numeroproforma;
+	public Collection<Tfacdetproforma> getDetproformasEliminar() {
+		return detproformasEliminar;
 	}
 
-	public void setNumeroproforma(String numeroproforma) {
-		this.numeroproforma = numeroproforma;
+	public void setDetproformasEliminar(
+			Collection<Tfacdetproforma> detproformasEliminar) {
+		this.detproformasEliminar = detproformasEliminar;
 	}
 
-	public List<Tfaccabproforma> getTfaccabproformaList() {
-		return tfaccabproformaList;
+	public Collection<Tadmcatalogo> getCatalogoPicesType() {
+		return catalogoPicesType;
 	}
 
-	public void setTfaccabproformaList(List<Tfaccabproforma> tfaccabproformaList) {
-		this.tfaccabproformaList = tfaccabproformaList;
+	public void setCatalogoPicesType(Collection<Tadmcatalogo> catalogoPicesType) {
+		this.catalogoPicesType = catalogoPicesType;
 	}
-	
-	
+
 }
