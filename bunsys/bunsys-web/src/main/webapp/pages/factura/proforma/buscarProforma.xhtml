@@ -1,0 +1,79 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+       			xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                template="/WEB-INF/templates/template.xhtml">
+    <ui:param name="idForm" value="frm"/>
+    <ui:param name="controller" value="#{notaCreditoController}"/>
+    <ui:define name="contentBody">
+		<p:panel header="#{msg.lbl_proformas}">
+				  	<p:fieldset legend="#{msg['lbl_busqueda']}">
+				  			<h:panelGrid columns="3" id="pnlfilter">
+				  				<p:outputLabel value="#{msg['lbl_numero_proforma']}:" for="numproforma"/>
+				  				<p:inputText id="numproforma" value="#{busquedaProformaDatamanager.numeroproforma}" />
+				  				<p:message for="numproforma"/>
+				  			</h:panelGrid>
+				  		<h:panelGroup layout="block" style="float:left">
+				  			<p:commandButton icon="ui-icon-search" value="#{msg['btn_buscar']}" action="#{busquedaProformaController.listarProformas()}"
+				  			 update="pnlProformas" process="@this :frm:pnlfilter"/>
+				  			 
+	      				<p:commandButton value="#{msg['btn_crear']}"
+	      					icon="ui-icon-plusthick" action="#{busquedaProformaController.crear}"
+	      					immediate="true"	process="@this"/>
+				  			 
+				  		</h:panelGroup>
+				  	</p:fieldset>
+				  	<p:fieldset legend="#{msg['lbl_proformas']}">
+				  		<h:panelGroup layout="block" id="pnlProformas">
+				  			<p:dataTable id="tblproforma" value="#{busquedaProformaDatamanager.tfaccabproformaList}" var="item"
+							 style="width:100%;font: bold 100% monospace; ">
+								<p:column headerText="#{msg.lbl_numero_proforma}">
+									<p:outputLabel value="#{item.pk.numeroproforma}"/>
+								</p:column>
+								<p:column headerText="#{msg.lbl_referendum}">
+									<p:outputLabel value="#{item.referendum}"/>
+								</p:column>
+								<p:column headerText="#{msg.lbl_farm_code}">
+									<p:outputLabel value="#{item.farmcode}"/>
+								</p:column>
+								<p:column headerText="#{msg.lbl_country_code}">
+									<p:outputLabel value="#{item.countrycode}"/>
+								</p:column>
+								<p:column headerText="#{msg.lbl_area}">
+									<p:outputLabel value="#{item.area}"/>
+								</p:column>
+								<p:column headerText="#{msg.lbl_fecha}">
+									<p:outputLabel value="#{item.fecha}"/>
+								</p:column>
+								<p:column headerText="#{msg.lbl_master_awb}">
+									<p:outputLabel value="#{item.masterawm}"/>
+								</p:column>
+								<p:column headerText="#{msg.lbl_house_awb}">
+									<p:outputLabel value="#{item.houseawb}"/>
+								</p:column>
+								<p:column headerText="#{msg.lbl_aerolinea}">
+									<p:outputLabel value="#{item.tadmairline.descripcion}"/>
+								</p:column>
+								<p:column headerText="#{msg.lbl_total_pice}">
+									<p:outputLabel value="#{item.totalpices}"/>
+								</p:column>
+								<p:column headerText="#{msg.lbl_total_stems}">
+									<p:outputLabel value="#{item.totalstems}"/>
+								</p:column>
+								<p:column headerText="#{msg.lbl_total_price}">
+									<p:outputLabel value="#{item.total}"/>
+								</p:column>
+								<p:column>
+									<p:commandButton icon="ui-icon-circle-check" title="#{msg['btn_seleccionar']}" action="#{busquedaProformaController.editar(item)}"
+									 process="@this tblproforma" immediate="true" >
+				  					</p:commandButton>
+				  				</p:column>
+							</p:dataTable>
+	
+				  		</h:panelGroup>
+			</p:fieldset>
+		</p:panel>
+	</ui:define>
+</ui:composition>
