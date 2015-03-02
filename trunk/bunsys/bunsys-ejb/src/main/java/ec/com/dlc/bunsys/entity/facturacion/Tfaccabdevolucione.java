@@ -31,7 +31,7 @@ public class Tfaccabdevolucione extends BaseEntity<TfaccabdevolucionePK>  {
 	private static final long serialVersionUID = 1L;
 
 	@Column
-	private Integer codigocliente;
+	private String codigocliente;
 
 	@Column
 	private String estado;
@@ -157,13 +157,16 @@ public class Tfaccabdevolucione extends BaseEntity<TfaccabdevolucionePK>  {
 		this.pk = new TfaccabdevolucionePK();
 	}
 
-	public Integer getCodigocliente() {
-		return this.codigocliente;
+
+	public String getCodigocliente() {
+		return codigocliente;
 	}
 
-	public void setCodigocliente(Integer codigocliente) {
+
+	public void setCodigocliente(String codigocliente) {
 		this.codigocliente = codigocliente;
 	}
+
 
 	public String getEstado() {
 		return this.estado;
