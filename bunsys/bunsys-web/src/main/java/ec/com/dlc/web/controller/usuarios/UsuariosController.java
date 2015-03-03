@@ -11,6 +11,7 @@ import ec.com.dlc.bunsys.facade.BunsysService;
 import ec.com.dlc.web.controller.base.BaseController;
 import ec.com.dlc.web.datamanager.base.BaseDatamanager;
 import ec.com.dlc.web.datamanager.usuarios.UsuariosDatamanager;
+import ec.com.dlc.web.util.jsf.MessagesUtil;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -75,7 +76,7 @@ public class UsuariosController extends BaseController{
 			buscar();
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Registro eliminado correctamente", "Registro eliminado correctamente"));
 		} catch (Throwable e) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
+			MessagesUtil.showErrorMessage(e.getMessage());
 		}
 	}
     
@@ -88,8 +89,7 @@ public class UsuariosController extends BaseController{
     		buscar();
     		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Registro guardado correctamente", "Registro guardado correctamente"));
     	}catch(Throwable e){
-    		FacesContext.getCurrentInstance().validationFailed();
-    		RequestContext.getCurrentInstance().showMessageInDialog(new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
+    		MessagesUtil.showErrorMessage(e.getMessage());
     	}
 	}
     
@@ -97,8 +97,7 @@ public class UsuariosController extends BaseController{
 		try {
 			RequestContext.getCurrentInstance().execute("PF('dialogUsuario').hide();");
 		} catch (Throwable e) {
-			FacesContext.getCurrentInstance().validationFailed();
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
+			MessagesUtil.showErrorMessage(e.getMessage());
 		}
 	}
     
