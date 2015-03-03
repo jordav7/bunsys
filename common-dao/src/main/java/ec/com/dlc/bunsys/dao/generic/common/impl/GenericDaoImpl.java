@@ -52,7 +52,7 @@ public class GenericDaoImpl<T extends EntityCommonImpl> implements GenericDao<T>
 	public void delete(T entity) throws DaoExcepcion{
 		try {
 			entityManager.clear();
-			entityManager.remove(entity);
+			entityManager.remove(entityManager.merge(entity));
 			entityManager.flush();
 		} catch (Exception e) {
 			throw convertToDaoException(e);
