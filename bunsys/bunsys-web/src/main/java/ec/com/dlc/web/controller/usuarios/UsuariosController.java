@@ -5,6 +5,13 @@
  */
 package ec.com.dlc.web.controller.usuarios;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+import javax.inject.Inject;
+
+import org.primefaces.context.RequestContext;
+
 import ec.com.dlc.bunsys.entity.administracion.Tadmusuario;
 import ec.com.dlc.bunsys.entity.seguridad.Tsyspersona;
 import ec.com.dlc.bunsys.facade.BunsysService;
@@ -12,15 +19,6 @@ import ec.com.dlc.web.controller.base.BaseController;
 import ec.com.dlc.web.datamanager.base.BaseDatamanager;
 import ec.com.dlc.web.datamanager.usuarios.UsuariosDatamanager;
 import ec.com.dlc.web.util.jsf.MessagesUtil;
-
-import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
-import javax.inject.Inject;
-
-import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -74,7 +72,7 @@ public class UsuariosController extends BaseController{
 		try {
 			bunsysService.eliminarUsuario(usuariosDatamanager.getUsuario());
 			buscar();
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Registro eliminado correctamente", "Registro eliminado correctamente"));
+			MessagesUtil.showInfoMessage("Registro eliminado correctamente");
 		} catch (Throwable e) {
 			MessagesUtil.showErrorMessage(e.getMessage());
 		}
@@ -87,7 +85,7 @@ public class UsuariosController extends BaseController{
     	try{
     		bunsysService.guardarUsuario(usuariosDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania(), usuariosDatamanager.getUsuario(), usuariosDatamanager.getUsuario().getTsyspersona());
     		buscar();
-    		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Registro guardado correctamente", "Registro guardado correctamente"));
+    		MessagesUtil.showInfoMessage("Registro guardado correctamente");
     	}catch(Throwable e){
     		MessagesUtil.showErrorMessage(e.getMessage());
     	}
