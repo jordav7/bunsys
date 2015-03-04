@@ -18,6 +18,9 @@ import ec.com.dlc.web.datamanager.login.LoginDatamanager;
 @SessionScoped
 public class ProformaDatamanager extends BaseDatamanager {
 
+	@ManagedProperty(value="#{loginDatamanager}")
+	private LoginDatamanager loginDatamanager;
+	
 	@Override
 	public String getIdDatamanager() {
 		return "proformaDatamanager";
@@ -119,6 +122,14 @@ public class ProformaDatamanager extends BaseDatamanager {
 
 	public void setCatalogoPicesType(Collection<Tadmcatalogo> catalogoPicesType) {
 		this.catalogoPicesType = catalogoPicesType;
+	}
+
+	public LoginDatamanager getLoginDatamanager() {
+		return loginDatamanager;
+	}
+
+	public void setLoginDatamanager(LoginDatamanager loginDatamanager) {
+		this.loginDatamanager = loginDatamanager;
 	}
 
 }
