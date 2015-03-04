@@ -74,15 +74,11 @@ public class BusquedaProformaController extends BaseController {
 	}
 	
 	public String editar(Tfaccabproforma tfaccabproforma){
-		System.out.println("numero proforma.."+tfaccabproforma.getPk().getNumeroproforma());
 		tfaccabproforma.setTfacdetproformas(bunsysService.detalleProformas(tfaccabproforma.getPk().getNumeroproforma()));
 		proformaDatamanager.setTfaccabproforma(tfaccabproforma);
 		proformaDatamanager.getTfaccabproforma().setTfacdetproformas(bunsysService.detalleProformas(tfaccabproforma.getPk().getNumeroproforma()));
-		System.out.println("tamanio detalle..."+proformaDatamanager.getTfaccabproforma().getTfacdetproformas().size());
 		//cliente
-		System.out.println("codigo cliente..."+tfaccabproforma.getTfaccliente().getPk().getCodigocliente());
 		proformaDatamanager.setTfaccliente(tfaccabproforma.getTfaccliente());
-		System.out.println("nombre cliente...."+proformaDatamanager.getTfaccliente().getTsyspersona().getNombres());
 		proformaDatamanager.setAccionAux("E");
 		//lista de elimar
 		proformaDatamanager.setDetproformasEliminar(new ArrayList<Tfacdetproforma>());

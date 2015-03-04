@@ -34,9 +34,6 @@ import ec.com.dlc.web.datamanager.proforma.ProformaDatamanager;
 @SessionScoped
 public class ProformaController extends BaseController{
 
-	@ManagedProperty(value="#{loginDatamanager}")
-	private LoginDatamanager loginDatamanager;
-	
 	@ManagedProperty(value="#{proformaDatamanager}")
 	private ProformaDatamanager proformaDatamanager;
 	
@@ -78,8 +75,8 @@ public class ProformaController extends BaseController{
 		
 		clienteDatamanager.setClienteComponente(new ClienteComponent(clienteDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania()));
 		
-		proformaDatamanager.setAerolineasCatalogo(bunsysService.buscarObtenerCatalogos(loginDatamanager.getLogin().getPk().getCodigocompania(), ContenidoMessages.getInteger("cod_catalogo_aerolineas")));
-		proformaDatamanager.setCatalogoPicesType(bunsysService.buscarObtenerCatalogos(loginDatamanager.getLogin().getPk().getCodigocompania(), ContenidoMessages.getInteger("cod_catalogo_pices_type")));
+		proformaDatamanager.setAerolineasCatalogo(bunsysService.buscarObtenerCatalogos(proformaDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania(), ContenidoMessages.getInteger("cod_catalogo_aerolineas")));
+		proformaDatamanager.setCatalogoPicesType(bunsysService.buscarObtenerCatalogos(proformaDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania(), ContenidoMessages.getInteger("cod_catalogo_pices_type")));
 		
 		articuloDatamanager.setColorCatalogoColl(bunsysService.buscarObtenerCatalogos(articuloDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania(), ContenidoMessages.getInteger("cod_catalogo_color_articulo")));
 		articuloDatamanager.setEstadoCatalogoColl(bunsysService.buscarObtenerCatalogos(articuloDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania(), ContenidoMessages.getInteger("cod_catalogo_estado_articulo")));
@@ -263,14 +260,6 @@ public class ProformaController extends BaseController{
 	}
 	
 	
-	public LoginDatamanager getLoginDatamanager() {
-		return loginDatamanager;
-	}
-
-	public void setLoginDatamanager(LoginDatamanager loginDatamanager) {
-		this.loginDatamanager = loginDatamanager;
-	}
-
 	public ProformaDatamanager getProformaDatamanager() {
 		return proformaDatamanager;
 	}
