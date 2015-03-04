@@ -77,6 +77,7 @@ public class ArticuloComponent implements Serializable {
 		this.articulo.setEstado("A");
 		this.articulo.setPeso(0d);
 		this.articulo.setPreciounitario(0d);
+		this.edition=Boolean.FALSE;
 	}
 	
 	/**
