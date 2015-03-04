@@ -23,11 +23,11 @@
                         <p:message for="txtIdentificacion" />
                         
                         <p:outputLabel for="txtNombrePersona" value="#{msg.lbl_nombre_persona}:"/>
-                        <p:inputText value="#{usuariosDatamanager.usuarioSearch.tsyspersona.nombres}" id="txtNombrePersona" onkeyup="bunsys.toUppercase(event, this);"/>
+                        <p:inputText value="#{usuariosDatamanager.usuarioSearch.tsyspersona.nombres}" id="txtNombrePersona" onkeyup="bunsys.toUppercase(event, this);" style="width: 350px;"/>
                         <p:message for="txtNombrePersona" />
                         
                         <p:outputLabel for="txtApellidoPersona" value="#{msg.lbl_apellido_persona}:"/>
-                        <p:inputText value="#{usuariosDatamanager.usuarioSearch.tsyspersona.apellidos}" id="txtApellidoPersona" onkeyup="bunsys.toUppercase(event, this);"/>
+                        <p:inputText value="#{usuariosDatamanager.usuarioSearch.tsyspersona.apellidos}" id="txtApellidoPersona" onkeyup="bunsys.toUppercase(event, this);" style="width: 350px;"/>
                         <p:message for="txtApellidoPersona" />
                     </h:panelGrid>
                 </h:panelGroup>
@@ -82,6 +82,7 @@
             		<p:column styleClass="bun-action">
             			<p:commandButton icon="ui-icon-pencil" 
             				title="#{msg['btn_editar']}" 
+            				action="#{usuariosController.editar}"
             				oncomplete="PF('dialogUsuario').show();" 
             				update=":frmGuardarUsuarios:pnlUsuario">
             				<f:setPropertyActionListener target="#{usuariosDatamanager.usuario}" value="#{usuario}"/>
@@ -110,8 +111,16 @@
                 <h:panelGroup layout="block">
                     <h:panelGrid columns="3" id="pnlUsuario">
                         <p:outputLabel for="txtUsuario" value="#{msg['lbl_usuario']}:"/>
-                        <p:inputText id="txtUsuario" value="#{usuariosDatamanager.usuario.usuario}" required="true"/>
+                        <p:inputText id="txtUsuario" value="#{usuariosDatamanager.usuario.usuario}" required="true" onkeyup="bunsys.toUppercase(event, this);"/>
                         <p:message for="txtUsuario"/>
+                        
+                        <p:outputLabel for="txtPassword" value="#{msg['lbl_password']}:"/>
+                        <p:password id="txtPassword" value="#{usuariosDatamanager.usuario.password}" match="txtRepeatPassword" redisplay="true" required="true"/>
+                        <p:message for="txtPassword"/>
+                        
+                        <p:outputLabel for="txtRepeatPassword" value="#{msg['lbl_repetir_password']}:"/>
+                        <p:password id="txtRepeatPassword" value="#{usuariosDatamanager.usuario.aditionalProperties['repeatpassword']}" redisplay="true" required="true"/>
+                        <p:message for="txtRepeatPassword"/>
                         
                         <p:outputLabel for="txtIdentificacion" value="#{msg['lbl_identificacion']}:"/>
                         <p:inputText id="txtIdentificacion" value="#{usuariosDatamanager.usuario.tsyspersona.identificacion}" required="true">
@@ -120,15 +129,15 @@
                         <p:message for="txtIdentificacion"/>
                         
                         <p:outputLabel for="txtNombrePersona" value="#{msg['lbl_nombre_persona']}:"/>
-                        <p:inputText id="txtNombrePersona" value="#{usuariosDatamanager.usuario.tsyspersona.nombres}" required="true"/>
+                        <p:inputText id="txtNombrePersona" value="#{usuariosDatamanager.usuario.tsyspersona.nombres}" required="true" style="width: 250px;" onkeyup="bunsys.toUppercase(event, this);"/>
                         <p:message for="txtNombrePersona"/>
                         
                         <p:outputLabel for="txtApellidoPersona" value="#{msg['lbl_apellido_persona']}:"/>
-                        <p:inputText id="txtApellidoPersona" value="#{usuariosDatamanager.usuario.tsyspersona.apellidos}" required="true"/>
+                        <p:inputText id="txtApellidoPersona" value="#{usuariosDatamanager.usuario.tsyspersona.apellidos}" required="true" style="width: 250px;" onkeyup="bunsys.toUppercase(event, this);"/>
                         <p:message for="txtApellidoPersona"/>
                         
                         <p:outputLabel for="txtDireccion" value="#{msg['lbl_direccion']}:"/>
-                        <p:inputText id="txtDireccion" value="#{usuariosDatamanager.usuario.tsyspersona.direccion}"/>
+                        <p:inputText id="txtDireccion" value="#{usuariosDatamanager.usuario.tsyspersona.direccion}" style="width: 450px;" onkeyup="bunsys.toUppercase(event, this);"/>
                         <p:message for="txtDireccion"/>
                         
                         <p:outputLabel for="txtEmail" value="#{msg['lbl_correo']}:"/>
@@ -138,15 +147,15 @@
                         <p:message for="txtEmail"/>
                         
                         <p:outputLabel for="txtTelefonoConv" value="#{msg['lbl_telefono_convencional']}:"/>
-                        <p:inputMask id="txtTelefonoConv" value="#{usuariosDatamanager.usuario.tsyspersona.telefonoconvencional}" mask="#{msg['mask_phone']}" />
+                        <p:inputMask id="txtTelefonoConv" value="#{usuariosDatamanager.usuario.tsyspersona.telefonoconvencional}" mask="#{msg['pattern_telf']}" />
                         <p:message for="txtTelefonoConv"/>
                         
                         <p:outputLabel for="txtTelefonoOficina" value="#{msg['lbl_telefono_convencional']}:"/>
-                        <p:inputMask id="txtTelefonoOficina" value="#{usuariosDatamanager.usuario.tsyspersona.telefonotrabajo}" mask="#{msg['mask_phone']}"/>
+                        <p:inputMask id="txtTelefonoOficina" value="#{usuariosDatamanager.usuario.tsyspersona.telefonotrabajo}" mask="#{msg['pattern_telf']}"/>
                         <p:message for="txtTelefonoOficina"/>
                         
                         <p:outputLabel for="txtTelefonoCelular" value="#{msg['lbl_telefono_convencional']}:"/>
-                        <p:inputMask id="txtTelefonoCelular" value="#{usuariosDatamanager.usuario.tsyspersona.telefonocelular}" mask="#{msg['mask_phone_celular']}"/>
+                        <p:inputMask id="txtTelefonoCelular" value="#{usuariosDatamanager.usuario.tsyspersona.telefonocelular}" mask="#{msg['pattern_telf_cel']}"/>
                         <p:message for="txtTelefonoCelular"/>
                     </h:panelGrid>
                     
