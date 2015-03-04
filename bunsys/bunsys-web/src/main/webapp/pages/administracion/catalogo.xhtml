@@ -1,11 +1,108 @@
-<ui:composition xmlns:p="http://primefaces.org/ui" xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
       template="/WEB-INF/templates/template.xhtml">
     <ui:param name="idForm" value="frmCatalogo" />
-    <ui:param name="controller" value="#{menu}" />
+    <ui:param name="controller" value="#{catalogoController}" />
 	<ui:define name="contentBody">
+		<p:panel header="#{msg.lbl_catalogo}">
+			<p:fieldset legend="#{msg.lbl_busqueda}">
+				<h:panelGroup layout="block" id="pnlCatalogo">
+					<h:panelGrid columns="3">
+						<p:outputLabel for="selTipo" value="#{msg.lbl_tipo_catalogo}:"/>
+						<p:selectOneMenu id="selTipo" value="#{catalogoDatamanager.catalogoBusq.pk.codigotipocatalogo}" required="true">
+							<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+							<f:selectItems value="#{catalogoDatamanager.tipoCatalogoColl}" var="tipoCatalogo" itemLabel="#{tipoCatalogo.descripcion}" itemValue="#{tipoCatalogo.pk.codigotipocatalogo}"/>
+						</p:selectOneMenu>
+						<p:message for="selTipo"/>
+					</h:panelGrid>
+				</h:panelGroup>
+				<h:panelGroup layout="block">
+					<p:commandButton icon="ui-icon-search" 
+                    				 value="#{msg.btn_buscar}" 
+                    				 action="#{catalogoController.buscar}"
+                    				 update="pnlCatalogo :frmCatalogo:pnlDataCatalogo" process="@this :frmCatalogo:pnlCatalogo"/>
+                    <p:commandButton icon="ui-icon-plusthick" 
+                                     action="#{catalogoController.crear}"
+                                     process="@this"
+                                     immediate="true"
+                                     update=":frmGuardarCatalogo:pnlCatalogo"
+                                     oncomplete="PF('dialogCatalogo').show();"
+                                     value="#{msg.btn_crear}"/>
+				</h:panelGroup>
+			</p:fieldset>
+			<p:fieldset legend="#{msg.lbl_catalogo}" id="pnlDataCatalogo">
+				<p:dataTable value="#{catalogoDatamanager.catalogoColl}" var="catalogo">
+					<p:column headerText="#{msg.lbl_tipo_catalogo}">
+						<h:outputText value="#{catalogo.tadmtipocatalogo.descripcion}" />
+					</p:column>
+					<p:column headerText="#{msg.lbl_catalogo}">
+						<h:outputText value="#{catalogo.pk.codigocatalogo}" />
+					</p:column>
+					<p:column headerText="#{msg.lbl_descripcion}">
+						<h:outputText value="#{catalogo.descripcion}" />
+					</p:column>
+					<p:column styleClass="bun-action">
+            			<p:commandButton icon="ui-icon-pencil" 
+            				title="#{msg['btn_editar']}" 
+            				oncomplete="PF('dialogCatalogo').show();" 
+            				update=":frmGuardarCatalogo:pnlCatalogo">
+            				<f:setPropertyActionListener target="#{catalogoDatamanager.catalogo}" value="#{catalogo}"/>
+            			</p:commandButton>
+            		</p:column>
+            		<p:column styleClass="bun-action">
+            			<p:commandButton icon="ui-icon-trash"
+            				update=":frmCatalogo:pnlDataCatalogo" 
+            				title="#{msg['btn_eliminar']}" 
+            				action="#{catalogoController.eliminar}">
+            				<f:setPropertyActionListener target="#{catalogoDatamanager.catalogo}" value="#{catalogo}"/>
+            				<p:confirm header="#{msg['lbl_confirmacion']}" message="#{msg['lbl_mensaje_alerta']}" icon="ui-icon-alert" />
+            			</p:commandButton>
+            		</p:column>
+				</p:dataTable>
+			</p:fieldset>
+		</p:panel>
 	</ui:define>
-		
+	<ui:define name="dialogArea">
+		<p:dialog widgetVar="dialogCatalogo" closeOnEscape="true" resizable="false" appendTo="@(body)" modal="true">
+			<f:facet name="header">
+				<h:outputText value="#{msg.lbl_catalogo}" />
+			</f:facet>
+			<h:form id="frmGuardarCatalogo">
+				<p:messages autoUpdate="true" globalOnly="true"/>
+				<h:panelGroup layout="block">
+					<h:panelGrid columns="3" id="pnlCatalogo">
+						<p:outputLabel for="txtTipoCatalogo" value="#{msg.lbl_tipo_catalogo}:"/>
+						<p:inputText id="txtTipoCatalogo" value="#{catalogoDatamanager.catalogo.pk.codigotipocatalogo}" disabled="true"/>
+						<p:message for="txtTipoCatalogo"/>
+						
+						<p:outputLabel for="txtCatalogo" value="#{msg.lbl_catalogo}:"/>
+						<p:inputText id="txtCatalogo" value="#{catalogoDatamanager.catalogo.pk.codigocatalogo}" maxlength="30" required="true" onkeyup="bunsys.toUppercase(event, this);">
+							<pe:keyFilter mask="alphanum"/>
+						</p:inputText>
+						<p:message for="txtCatalogo"/>
+						
+						<p:outputLabel value="#{msg.lbl_descripcion}:"/>
+						<p:inputText id="txtDescripcion" value="#{catalogoDatamanager.catalogo.descripcion}" required="true" maxlength="300" style="width: 450px;" onkeyup="bunsys.toUppercase(event, this);"/>
+						<p:message for="txtDescripcion"/>
+					</h:panelGrid>
+					<h:panelGroup layout="block">
+						<p:commandButton value="#{msg['btn_guardar']}"
+                    		icon="ui-icon-disk" 
+                    		process="@this :frmGuardarCatalogo:pnlCatalogo"
+                    		update=":frmGuardarCatalogo:pnlCatalogo :frmCatalogo:pnlDataCatalogo"
+                    		oncomplete="if(args.validationFailed){return false;} PF('dialogCatalogo').hide();"
+                    		action="#{catalogoController.guardar()}"/>
+                    	<p:commandButton value="#{msg['btn_cancelar']}"
+                    		icon="ui-icon-close"
+                    		immediate="true"
+                    		oncomplete="PF('dialogCatalogo').hide();"/>
+					</h:panelGroup>
+				</h:panelGroup>
+			</h:form>
+		</p:dialog>
+	</ui:define>	
 </ui:composition>
