@@ -91,6 +91,14 @@ public class UsuariosController extends BaseController{
     	}
 	}
     
+    public void editar() {
+		try {
+			usuariosDatamanager.getUsuario().addAditionalProperty("repeatpassword", usuariosDatamanager.getUsuario().getPassword());
+		} catch (Throwable e) {
+			MessagesUtil.showErrorMessage(e.getMessage());
+		}
+	}
+    
     public void cerrar() {
 		try {
 			RequestContext.getCurrentInstance().execute("PF('dialogUsuario').hide();");
