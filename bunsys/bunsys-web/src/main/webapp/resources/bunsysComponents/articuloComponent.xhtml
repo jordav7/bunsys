@@ -19,7 +19,7 @@
 				<p:fieldset legend="#{msg['lbl_caracteristicas_prov']}">
 					<h:panelGrid columns="6">
 						<p:outputLabel value="#{msg['lbl_codigo_principal']}:" for="txtCodigoPrincipal" style="display: block; width:150px;"/>
-						<p:inputText id="txtCodigoPrincipal" style="display: block; width:190px;" value="#{cc.attrs.controller.articulo.pk.codigoproductos}" required="true" disabled="#{cc.attrs.controller.articulo.pk.codigoproductos!=null}" onkeyup="bunsys.toUppercase(event, this)"/>
+						<p:inputText id="txtCodigoPrincipal" style="display: block; width:190px;" value="#{cc.attrs.controller.articulo.pk.codigoproductos}" required="true" disabled="#{cc.attrs.controller.edition}" onkeyup="bunsys.toUppercase(event, this)"/>
 						<p:message for="txtCodigoPrincipal"/>
 	
 						<p:outputLabel value="#{msg['lbl_codigo_auxiliar']}:" for="txtCodigoAuxiliar" style="display: block; width:150px;"/>
