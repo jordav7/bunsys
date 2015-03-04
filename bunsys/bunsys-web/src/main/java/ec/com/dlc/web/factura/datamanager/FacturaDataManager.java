@@ -1,25 +1,16 @@
 package ec.com.dlc.web.factura.datamanager;
 
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 
 import ec.com.dlc.bunsys.entity.administracion.Tadmcatalogo;
-import ec.com.dlc.bunsys.entity.administracion.pk.TadmcatalogoPK;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccabfactura;
-import ec.com.dlc.bunsys.entity.facturacion.Tfaccabproforma;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccliente;
 import ec.com.dlc.bunsys.entity.facturacion.Tfacdetfactura;
-import ec.com.dlc.bunsys.entity.facturacion.pk.TfaccabfacturaPK;
-import ec.com.dlc.bunsys.entity.facturacion.pk.TfacclientePK;
-import ec.com.dlc.bunsys.entity.facturacion.pk.TfacdetfacturaPK;
 import ec.com.dlc.bunsys.entity.inventario.Tinvproducto;
-import ec.com.dlc.bunsys.entity.inventario.pk.TinvproductoPK;
-import ec.com.dlc.bunsys.entity.seguridad.Tsyspersona;
 import ec.com.dlc.web.datamanager.base.BaseDatamanager;
 import ec.com.dlc.web.datamanager.login.LoginDatamanager;
 
@@ -39,14 +30,21 @@ public class FacturaDataManager extends BaseDatamanager {
 	 * Factura para ser guaradada
 	 */
 	private Tfaccabfactura tfaccabfactura;
+	
+	private Tinvproducto tinvproducto;
+	
+	private Tfacdetfactura tfacdetfactura;
+	
+	private Tfaccliente tfaccliente;
+	
 	/**
-	 * lista de proformas
+	 * Aerolineas
 	 */
-	private List<Tfaccabproforma>tfaccabproformaList;
+	private Collection<Tadmcatalogo> aerolineasCatalogo;
 	/**
-	 * atributo para realizar la busqueda de las proformas
+	 * pices type
 	 */
-	private String numeroproforma;
+	private Collection<Tadmcatalogo> catalogoPicesType;
 	
 	private boolean formaPago1;
 	
@@ -71,32 +69,16 @@ public class FacturaDataManager extends BaseDatamanager {
     
     private Collection<Tadmcatalogo> institucion;
     
-	/**
-	 * 
-	 * @return
-	 */
+    private String AccionAux;
+    
+    private Boolean editable;
+    
 	public Tfaccabfactura getTfaccabfactura() {
 		return tfaccabfactura;
 	}
 
 	public void setTfaccabfactura(Tfaccabfactura tfaccabfactura) {
 		this.tfaccabfactura = tfaccabfactura;
-	}
-
-	public List<Tfaccabproforma> getTfaccabproformaList() {
-		return tfaccabproformaList;
-	}
-
-	public void setTfaccabproformaList(List<Tfaccabproforma> tfaccabproformaList) {
-		this.tfaccabproformaList = tfaccabproformaList;
-	}
-
-	public String getNumeroproforma() {
-		return numeroproforma;
-	}
-
-	public void setNumeroproforma(String numeroproforma) {
-		this.numeroproforma = numeroproforma;
 	}
 
 	public boolean isFormaPago1() {
@@ -193,6 +175,62 @@ public class FacturaDataManager extends BaseDatamanager {
 
 	public void setNumeropagos(Integer numeropagos) {
 		this.numeropagos = numeropagos;
+	}
+
+	public String getAccionAux() {
+		return AccionAux;
+	}
+
+	public void setAccionAux(String accionAux) {
+		AccionAux = accionAux;
+	}
+
+	public Boolean getEditable() {
+		return editable;
+	}
+
+	public void setEditable(Boolean editable) {
+		this.editable = editable;
+	}
+
+	public Tinvproducto getTinvproducto() {
+		return tinvproducto;
+	}
+
+	public void setTinvproducto(Tinvproducto tinvproducto) {
+		this.tinvproducto = tinvproducto;
+	}
+
+	public Tfacdetfactura getTfacdetfactura() {
+		return tfacdetfactura;
+	}
+
+	public void setTfacdetfactura(Tfacdetfactura tfacdetfactura) {
+		this.tfacdetfactura = tfacdetfactura;
+	}
+
+	public Tfaccliente getTfaccliente() {
+		return tfaccliente;
+	}
+
+	public void setTfaccliente(Tfaccliente tfaccliente) {
+		this.tfaccliente = tfaccliente;
+	}
+
+	public Collection<Tadmcatalogo> getAerolineasCatalogo() {
+		return aerolineasCatalogo;
+	}
+
+	public void setAerolineasCatalogo(Collection<Tadmcatalogo> aerolineasCatalogo) {
+		this.aerolineasCatalogo = aerolineasCatalogo;
+	}
+
+	public Collection<Tadmcatalogo> getCatalogoPicesType() {
+		return catalogoPicesType;
+	}
+
+	public void setCatalogoPicesType(Collection<Tadmcatalogo> catalogoPicesType) {
+		this.catalogoPicesType = catalogoPicesType;
 	}
 
 
