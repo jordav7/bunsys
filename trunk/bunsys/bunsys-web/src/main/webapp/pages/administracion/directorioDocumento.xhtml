@@ -5,10 +5,23 @@
       xmlns:p="http://primefaces.org/ui" 
       template="/WEB-INF/templates/template.xhtml">
       <ui:param name="idForm" value="frmDirectorio" />
-      <ui:param name="controller" value="#{menu}" />
+      <ui:param name="controller" value="#{directorioController}" />
       <ui:define name="contentBody">
-			<p:panel header="Directorio Documentaci\u00f3n">
-			
+			<p:panel id="pnlDirectorio" header="#{msg.lbl_directorio_comp}">
+				<p:fieldset legend="#{msg.lbl_directorios}">
+					<h:panelGroup id="pnlDataDirectorio" layout="block">
+						<ui:repeat var="directorio" varStatus="status" value="#{directorioDatamanager.directoriosColl}" >
+							<h:panelGrid columns="3" cellspacing="0">
+								<p:outputLabel for="txtDirectorio" value="#{directorio.descripcion}:" style="display: block; width: 150px;"/>
+								<p:inputText id="txtDirectorio" value="#{directorio.valor}" required="true" style="width: 550px;" maxlength="100"/>
+								<p:message for="txtDirectorio"/>
+							</h:panelGrid>
+						</ui:repeat>
+						<h:panelGroup layout="block">
+							<p:commandButton icon="ui-icon-disk" process="pnlDataDirectorio" action="#{directorioController.guardar}" update="pnlDataDirectorio" value="#{msg.btn_guardar}"/>
+						</h:panelGroup>
+					</h:panelGroup>
+				</p:fieldset>
 			</p:panel>      
       </ui:define>
 </ui:composition>
