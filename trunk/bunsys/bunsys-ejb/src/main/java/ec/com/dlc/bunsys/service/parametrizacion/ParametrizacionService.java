@@ -229,7 +229,7 @@ public class ParametrizacionService {
 	
 	public void guardarCatalogo(Tadmcatalogo tadmcatalogo) throws FacturacionException{
 		try {
-			facturaDao.create(tadmcatalogo);
+			facturaDao.update(tadmcatalogo);
 		} catch (Throwable e) {
 			throw new FacturacionException(e);
 		}
