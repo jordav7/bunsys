@@ -51,12 +51,17 @@ public class CatalogoController extends BaseController {
 	}
 	
 	public void eliminar() {
-		bunsysService.eliminarCatalogo(catalogoDatamanager.getCatalogo());
+		try {
+			bunsysService.eliminarCatalogo(catalogoDatamanager.getCatalogo());
+		} catch (Throwable e) {
+			MessagesUtil.showErrorMessage(e.getMessage());
+		}
 	}
 
 	public void guardar() {
 		try{
 			catalogoDatamanager.getCatalogo().getPk().setCodigocompania(catalogoDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania());
+			catalogoDatamanager.getCatalogo().setEstado(ContenidoMessages.getString("A"));
 			bunsysService.guardarCatalogo(catalogoDatamanager.getCatalogo());
 			MessagesUtil.showInfoMessage(ContenidoMessages.getString("msg_info_catalogo_guardado"));
 		} catch (Throwable e) {
