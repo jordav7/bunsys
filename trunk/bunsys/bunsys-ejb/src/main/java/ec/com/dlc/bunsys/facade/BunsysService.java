@@ -10,6 +10,7 @@ import ec.com.dlc.bunsys.entity.administracion.Tadmcatalogo;
 import ec.com.dlc.bunsys.entity.administracion.Tadmcompania;
 import ec.com.dlc.bunsys.entity.administracion.Tadmconversionunidad;
 import ec.com.dlc.bunsys.entity.administracion.Tadmparamsri;
+import ec.com.dlc.bunsys.entity.administracion.Tadmtipocatalogo;
 import ec.com.dlc.bunsys.entity.administracion.Tadmusuario;
 import ec.com.dlc.bunsys.entity.administracion.pk.TadmcompaniaPK;
 import ec.com.dlc.bunsys.entity.cuentasxpagar.Tcxpproveedor;
@@ -213,4 +214,12 @@ public interface BunsysService {
 	Collection<Tfaccuentasxcobrar> obtenerCuentasPorCobrar(Integer codCompania, String codigoCliente) throws FacturacionException ;
 	
 	Collection<Tadmcatalogo> obtenerCatalogos(Integer codigocompania, Tadmcatalogo tadmcatalogo) throws FacturacionException;
+	
+	void guardarCatalogo(Tadmcatalogo tadmcatalogo) throws FacturacionException;
+	
+	void guardarCatalogos(Collection<Tadmcatalogo> tadmcatalogoColl) throws FacturacionException;
+	
+	void eliminarCatalogo(Tadmcatalogo tadmcatalogo) throws FacturacionException;
+	
+	Collection<Tadmtipocatalogo> obtenerTiposCatalogo() throws FacturacionException;
 }
