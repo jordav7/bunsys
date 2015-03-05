@@ -9,6 +9,7 @@ import javax.inject.Inject;
 
 import ec.com.dlc.bunsys.entity.administracion.Tadmcatalogo;
 import ec.com.dlc.bunsys.facade.BunsysService;
+import ec.com.dlc.web.commons.resource.ContenidoMessages;
 import ec.com.dlc.web.controller.base.BaseController;
 import ec.com.dlc.web.datamanager.administracion.CatalogoDatamanager;
 import ec.com.dlc.web.datamanager.base.BaseDatamanager;
@@ -46,6 +47,7 @@ public class CatalogoController extends BaseController {
 	
 	public void crear() {
 		catalogoDatamanager.setCatalogo(new Tadmcatalogo());
+		catalogoDatamanager.getCatalogo().getPk().setCodigotipocatalogo(catalogoDatamanager.getCatalogoBusq().getPk().getCodigotipocatalogo());
 	}
 	
 	public void eliminar() {
@@ -53,7 +55,13 @@ public class CatalogoController extends BaseController {
 	}
 
 	public void guardar() {
-		bunsysService.guardarCatalogo(catalogoDatamanager.getCatalogo());
+		try{
+			catalogoDatamanager.getCatalogo().getPk().setCodigocompania(catalogoDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania());
+			bunsysService.guardarCatalogo(catalogoDatamanager.getCatalogo());
+			MessagesUtil.showInfoMessage(ContenidoMessages.getString("msg_info_catalogo_guardado"));
+		} catch (Throwable e) {
+			MessagesUtil.showErrorMessage(e.getMessage());
+		}
 	}
 	
 	public CatalogoDatamanager getCatalogoDatamanager() {
