@@ -251,10 +251,20 @@ public class ParametrizacionService {
 		}
 	}
 	
-	public void guardarCatalogos(Collection<Tadmcatalogo> tadmcatalogoColl) throws FacturacionException{
+	public void guardarDirectorios(Collection<Tadmcatalogo> tadmcatalogoColl) throws FacturacionException{
 		try {
 			for (Tadmcatalogo tadmcatalogo : tadmcatalogoColl) {
 				Files.createDirectories(Paths.get(tadmcatalogo.getValor()));
+				admDao.update(tadmcatalogo);
+			}
+		} catch (Throwable e) {
+			throw new FacturacionException(e);
+		}
+	}
+	
+	public void guardarCatalogos(Collection<Tadmcatalogo> tadmcatalogoColl) throws FacturacionException{
+		try {
+			for (Tadmcatalogo tadmcatalogo : tadmcatalogoColl) {
 				admDao.update(tadmcatalogo);
 			}
 		} catch (Throwable e) {
