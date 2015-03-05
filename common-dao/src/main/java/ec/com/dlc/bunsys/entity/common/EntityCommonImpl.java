@@ -18,5 +18,13 @@ public class EntityCommonImpl implements EntityCommon {
 		this.aditionalProperties.put(key, value);
 	}
 
+	public Map<String, Object> getAditionalProperties() {
+		return aditionalProperties;
+	}
+
+	public void setAditionalProperties(Map<String, Object> aditionalProperties) {
+		this.aditionalProperties = aditionalProperties;
+	}
+
 
 }
