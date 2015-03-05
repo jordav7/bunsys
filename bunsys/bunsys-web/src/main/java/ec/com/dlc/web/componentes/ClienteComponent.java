@@ -8,12 +8,13 @@ import javax.faces.context.FacesContext;
 
 import org.apache.commons.lang3.StringUtils;
 
+import ec.com.dlc.bunsys.commons.locator.BeanLocator;
+import ec.com.dlc.bunsys.commons.resource.BunsysMessages;
 import ec.com.dlc.bunsys.entity.administracion.Tadmcatalogo;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccliente;
 import ec.com.dlc.bunsys.entity.seguridad.Tsyspersona;
 import ec.com.dlc.bunsys.facade.BunsysService;
 import ec.com.dlc.web.commons.resource.ContenidoMessages;
-import ec.com.dlc.web.util.locator.BeanLocator;
 
 /**
  * Clase que representa a las acciones del componente de creaci&oacute;n y edici&oacute;n de clientes
@@ -90,7 +91,7 @@ public class ClienteComponent implements Serializable {
 			if(StringUtils.isNotBlank(tfaccliente.getTsyspersona().getTipoid())){
 				tfaccliente.getTsyspersona().setTipoidcodigo(ContenidoMessages.getInteger("cod_catalogo_tipo_cliente"));
 			}
-			BunsysService bunsysService = (BunsysService) new BeanLocator.GlobalJNDIName().withAppName(ContenidoMessages.getString("application.name")).withModuleName(ContenidoMessages.getString("module.name")).withBeanName("BunsysServiceBean").withBusinessInterface(BunsysService.class).locate();
+			BunsysService bunsysService = (BunsysService) new BeanLocator.GlobalJNDIName().withAppName(BunsysMessages.getString("application.name")).withModuleName(BunsysMessages.getString("module.name")).withBeanName("BunsysServiceBean").withBusinessInterface(BunsysService.class).locate();
 			bunsysService.guardarCliente(tfaccliente);
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, ContenidoMessages.getString("msg_info_cliente"), ContenidoMessages.getString("msg_info_cliente")));
 		}
