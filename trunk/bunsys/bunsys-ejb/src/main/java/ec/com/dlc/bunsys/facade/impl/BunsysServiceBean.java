@@ -14,6 +14,7 @@ import ec.com.dlc.bunsys.entity.administracion.Tadmcatalogo;
 import ec.com.dlc.bunsys.entity.administracion.Tadmcompania;
 import ec.com.dlc.bunsys.entity.administracion.Tadmconversionunidad;
 import ec.com.dlc.bunsys.entity.administracion.Tadmparamsri;
+import ec.com.dlc.bunsys.entity.administracion.Tadmtipocatalogo;
 import ec.com.dlc.bunsys.entity.administracion.Tadmusuario;
 import ec.com.dlc.bunsys.entity.administracion.pk.TadmcompaniaPK;
 import ec.com.dlc.bunsys.entity.cuentasxpagar.Tcxpproveedor;
@@ -224,5 +225,29 @@ public class BunsysServiceBean implements BunsysService {
 	public Collection<Tadmcatalogo> obtenerCatalogos(Integer codigocompania, Tadmcatalogo tadmcatalogo)
 			throws FacturacionException {
 		return parametrizacionService.obtenerCatalogos(codigocompania, tadmcatalogo);
+	}
+
+	@Override
+	public void guardarCatalogo(Tadmcatalogo tadmcatalogo)
+			throws FacturacionException {
+		parametrizacionService.guardarCatalogo(tadmcatalogo);
+	}
+	
+	@Override
+	public void eliminarCatalogo(Tadmcatalogo tadmcatalogo)
+			throws FacturacionException {
+		parametrizacionService.eliminarLogicoCatalogo(tadmcatalogo);
+	}
+
+	@Override
+	public Collection<Tadmtipocatalogo> obtenerTiposCatalogo()
+			throws FacturacionException {
+		return parametrizacionService.obtenerTipoCatalogos();
+	}
+
+	@Override
+	public void guardarCatalogos(Collection<Tadmcatalogo> tadmcatalogoColl)
+			throws FacturacionException {
+		parametrizacionService.guardarCatalogos(tadmcatalogoColl);
 	}
 }
