@@ -16,6 +16,7 @@ import ec.com.dlc.bunsys.entity.administracion.Tadmcatalogo;
 import ec.com.dlc.bunsys.entity.administracion.Tadmcompania;
 import ec.com.dlc.bunsys.entity.administracion.Tadmparamsri;
 import ec.com.dlc.bunsys.entity.administracion.Tadmtipocatalogo;
+import ec.com.dlc.bunsys.entity.administracion.pk.TadmcatalogoPK;
 import ec.com.dlc.bunsys.entity.administracion.pk.TadmcompaniaPK;
 import ec.com.dlc.bunsys.entity.cuentasxpagar.Tcxpproveedor;
 import ec.com.dlc.bunsys.entity.cuentasxpagar.pk.TcxpproveedorPK;
@@ -251,7 +252,7 @@ public class ParametrizacionService {
 		}
 	}
 	
-	public void guardarDirectorios(Collection<Tadmcatalogo> tadmcatalogoColl) throws FacturacionException{
+	public void guardarDirectorios(Collection<Tadmcatalogo> tadmcatalogoColl) throws FacturacionException {
 		try {
 			for (Tadmcatalogo tadmcatalogo : tadmcatalogoColl) {
 				Files.createDirectories(Paths.get(tadmcatalogo.getValor()));
@@ -262,11 +263,23 @@ public class ParametrizacionService {
 		}
 	}
 	
-	public void guardarCatalogos(Collection<Tadmcatalogo> tadmcatalogoColl) throws FacturacionException{
+	public void guardarCatalogos(Collection<Tadmcatalogo> tadmcatalogoColl) throws FacturacionException {
 		try {
 			for (Tadmcatalogo tadmcatalogo : tadmcatalogoColl) {
 				admDao.update(tadmcatalogo);
 			}
+		} catch (Throwable e) {
+			throw new FacturacionException(e);
+		}
+	}
+	
+	public Tadmcatalogo obtenerCatalogo(Integer codCompania, Integer codTipo, String codCatalogo) throws FacturacionException {
+		try {
+			TadmcatalogoPK pk = new TadmcatalogoPK();
+			pk.setCodigocompania(codCompania);
+			pk.setCodigotipocatalogo(codTipo);
+			pk.setCodigocatalogo(codCatalogo);
+			return admDao.findById(Tadmcatalogo.class, pk);
 		} catch (Throwable e) {
 			throw new FacturacionException(e);
 		}

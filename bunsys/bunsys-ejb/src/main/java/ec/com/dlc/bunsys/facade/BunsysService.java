@@ -224,4 +224,6 @@ public interface BunsysService {
 	void eliminarCatalogo(Tadmcatalogo tadmcatalogo) throws FacturacionException;
 	
 	Collection<Tadmtipocatalogo> obtenerTiposCatalogo() throws FacturacionException;
+	
+	Tadmcatalogo obtenerCatalogo(Integer codcompania, Integer codigotipo, String valor) throws FacturacionException;
 }

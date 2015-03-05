@@ -256,4 +256,10 @@ public class BunsysServiceBean implements BunsysService {
 			throws FacturacionException {
 		parametrizacionService.guardarDirectorios(tadmcatalogoColl);
 	}
+
+	@Override
+	public Tadmcatalogo obtenerCatalogo(Integer codcompania,
+			Integer codigotipo, String valor) throws FacturacionException {
+		return null;
+	}
 }
