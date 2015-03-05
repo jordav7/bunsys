@@ -2,6 +2,7 @@ package ec.com.dlc.bunsys.entity.administracion;
 
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -26,8 +27,13 @@ import ec.com.dlc.bunsys.entity.seguridad.Tsyspersona;
 public class Tadmcatalogo extends BaseEntity<TadmcatalogoPK>{
 	private static final long serialVersionUID = 1L;
 
+	@Column
 	private String descripcion;
+	
+	@Column
+	private String valor;
 
+	@Column
 	private String estado;
 
 	//bi-directional many-to-one association to Tadmtipocatalogo
@@ -530,6 +536,14 @@ public class Tadmcatalogo extends BaseEntity<TadmcatalogoPK>{
 	public void setTfaccuentasxcobrartipodoc(
 			Set<Tfaccuentasxcobrar> tfaccuentasxcobrartipodoc) {
 		this.tfaccuentasxcobrartipodoc = tfaccuentasxcobrartipodoc;
+	}
+
+	public String getValor() {
+		return valor;
+	}
+
+	public void setValor(String valor) {
+		this.valor = valor;
 	}
 	
 	
