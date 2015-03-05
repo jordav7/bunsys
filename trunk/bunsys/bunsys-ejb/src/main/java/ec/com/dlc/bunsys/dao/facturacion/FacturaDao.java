@@ -12,11 +12,11 @@ import org.apache.commons.lang.StringUtils;
 import ec.com.dlc.bunsys.dao.general.GeneralDao;
 import ec.com.dlc.bunsys.entity.administracion.Tadmcatalogo;
 import ec.com.dlc.bunsys.entity.administracion.Tadmconversionunidad;
-import ec.com.dlc.bunsys.entity.facturacion.Tfaccabproforma;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccabdevolucione;
+import ec.com.dlc.bunsys.entity.facturacion.Tfaccabproforma;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccliente;
-import ec.com.dlc.bunsys.entity.facturacion.Tfacdetproforma;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccuentasxcobrar;
+import ec.com.dlc.bunsys.entity.facturacion.Tfacdetproforma;
 import ec.com.dlc.bunsys.entity.inventario.Tinvproducto;
 import ec.com.dlc.bunsys.entity.seguridad.Tsyspersona;
 import ec.com.dlc.bunsys.util.FacturacionException;
@@ -379,7 +379,7 @@ public class FacturaDao extends GeneralDao {
 	@SuppressWarnings("unchecked")
 	public Collection<Tadmcatalogo> obtieneCatalogosFiltros(Integer compania, Tadmcatalogo tadmcatalogo)throws FacturacionException {
 		try {
-			final StringBuilder sql = new StringBuilder("SELECT o FROM Tadmcatalogo o WHERE o.pk.codigocompania=:codigocompania ");
+			final StringBuilder sql = new StringBuilder("SELECT o FROM Tadmcatalogo o LEFT JOIN FETCH o.tadmtipocatalogo WHERE o.pk.codigocompania=:codigocompania ");
 			if(tadmcatalogo.getPk().getCodigotipocatalogo() != null){
 				sql.append(" AND o.pk.codigotipocatalogo=:codigotipocatalogo");
 			}
