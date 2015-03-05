@@ -44,6 +44,9 @@
 					<p:column headerText="#{msg.lbl_descripcion}">
 						<h:outputText value="#{catalogo.descripcion}" />
 					</p:column>
+					<p:column headerText="#{msg.lbl_estado}">
+						<h:outputText value="#{catalogo.estado == 'A' ? 'ACTIVO' : 'INACTIVO'}" />
+					</p:column>
 					<p:column styleClass="bun-action">
             			<p:commandButton icon="ui-icon-pencil" 
             				title="#{msg['btn_editar']}" 
