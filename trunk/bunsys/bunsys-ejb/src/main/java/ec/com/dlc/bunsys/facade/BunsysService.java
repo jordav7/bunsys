@@ -219,6 +219,8 @@ public interface BunsysService {
 	
 	void guardarCatalogos(Collection<Tadmcatalogo> tadmcatalogoColl) throws FacturacionException;
 	
+	void guardarDirectorios(Collection<Tadmcatalogo> tadmcatalogoColl) throws FacturacionException;
+	
 	void eliminarCatalogo(Tadmcatalogo tadmcatalogo) throws FacturacionException;
 	
 	Collection<Tadmtipocatalogo> obtenerTiposCatalogo() throws FacturacionException;
