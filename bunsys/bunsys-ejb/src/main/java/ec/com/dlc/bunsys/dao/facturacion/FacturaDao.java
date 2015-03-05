@@ -38,9 +38,10 @@ public class FacturaDao extends GeneralDao {
 	public Collection<Tadmcatalogo> obtenerCatalogos(Integer codCompania, Integer codTipoCatalogo) throws FacturacionException{
 		Collection<Tadmcatalogo> catalogosColl = null;
 		try{
-			Query query = this.entityManager.createQuery("SELECT o FROM Tadmcatalogo o WHERE o.pk.codigocompania=:codcompania AND o.pk.codigotipocatalogo=:codtipocatalogo");
+			Query query = this.entityManager.createQuery("SELECT o FROM Tadmcatalogo o WHERE o.pk.codigocompania=:codcompania AND o.pk.codigotipocatalogo=:codtipocatalogo AND o.estado=:estado");
 			query.setParameter("codcompania", codCompania);
 			query.setParameter("codtipocatalogo", codTipoCatalogo);
+			query.setParameter("estado", "A");
 			catalogosColl = query.getResultList();
 			return catalogosColl;
 		} catch(Throwable e){
