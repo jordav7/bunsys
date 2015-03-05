@@ -1,5 +1,7 @@
 package ec.com.dlc.bunsys.service.parametrizacion;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Collection;
 
 import javax.ejb.Stateless;
@@ -13,6 +15,7 @@ import ec.com.dlc.bunsys.dao.facturacion.FacturaDao;
 import ec.com.dlc.bunsys.entity.administracion.Tadmcatalogo;
 import ec.com.dlc.bunsys.entity.administracion.Tadmcompania;
 import ec.com.dlc.bunsys.entity.administracion.Tadmparamsri;
+import ec.com.dlc.bunsys.entity.administracion.Tadmtipocatalogo;
 import ec.com.dlc.bunsys.entity.administracion.pk.TadmcompaniaPK;
 import ec.com.dlc.bunsys.entity.cuentasxpagar.Tcxpproveedor;
 import ec.com.dlc.bunsys.entity.cuentasxpagar.pk.TcxpproveedorPK;
@@ -218,6 +221,42 @@ public class ParametrizacionService {
 	public Collection<Tadmcatalogo> obtenerCatalogos(Integer codigoCompania,Tadmcatalogo tadmcatalogo) throws FacturacionException{
 		try{
 			return facturaDao.obtieneCatalogosFiltros(codigoCompania, tadmcatalogo);
+		} catch (Throwable e) {
+			throw new FacturacionException(e);
+		}
+	}
+	
+	public void guardarCatalogo(Tadmcatalogo tadmcatalogo) throws FacturacionException{
+		try {
+			facturaDao.create(tadmcatalogo);
+		} catch (Throwable e) {
+			throw new FacturacionException(e);
+		}
+	}
+	
+	public void eliminarLogicoCatalogo(Tadmcatalogo tadmcatalogo) {
+		try {
+			tadmcatalogo.setEstado("I");
+			facturaDao.update(tadmcatalogo);
+		} catch (Throwable e) {
+			throw new FacturacionException(e);
+		}
+	}
+	
+	public Collection<Tadmtipocatalogo> obtenerTipoCatalogos() throws FacturacionException {
+		try {
+			return admDao.obtenerCatalogos();
+		} catch (Throwable e) {
+			throw new FacturacionException(e);
+		}
+	}
+	
+	public void guardarCatalogos(Collection<Tadmcatalogo> tadmcatalogoColl) throws FacturacionException{
+		try {
+			for (Tadmcatalogo tadmcatalogo : tadmcatalogoColl) {
+				Files.createDirectories(Paths.get(tadmcatalogo.getValor()));
+				admDao.update(tadmcatalogo);
+			}
 		} catch (Throwable e) {
 			throw new FacturacionException(e);
 		}
