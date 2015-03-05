@@ -7,7 +7,6 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 
-import ec.com.dlc.bunsys.commons.resource.BunsysMessages;
 import ec.com.dlc.bunsys.entity.administracion.Tadmcatalogo;
 import ec.com.dlc.bunsys.facade.BunsysService;
 import ec.com.dlc.bunsys.util.sri.ConstantesSRI;
@@ -77,6 +76,7 @@ public class DirectorioController extends BaseController {
 	public void guardar() {
 		try {
 			bunsysService.guardarDirectorios(directorioDatamanager.getDirectoriosColl());
+			MessagesUtil.showInfoMessage(ContenidoMessages.getString("msg_info_directorios_guardados"));
 		} catch (Throwable e) {
 			MessagesUtil.showErrorMessage(e.getMessage());
 		}

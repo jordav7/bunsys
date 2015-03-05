@@ -73,6 +73,7 @@ public class SecuenciaController extends BaseController {
 	public void guardar() {
 		try {
 			bunsysService.guardarCatalogos(secuenciaDatamanager.getSecuenciasColl());
+			MessagesUtil.showInfoMessage(ContenidoMessages.getString("msg_info_secuencias_guardadas"));
 		} catch (Throwable e) {
 			MessagesUtil.showErrorMessage(e.getMessage());
 		}
