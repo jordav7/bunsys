@@ -27,10 +27,9 @@
                     				 update="pnlCatalogo :frmCatalogo:pnlDataCatalogo" process="@this :frmCatalogo:pnlCatalogo"/>
                     <p:commandButton icon="ui-icon-plusthick" 
                                      action="#{catalogoController.crear}"
-                                     process="@this"
-                                     immediate="true"
-                                     update=":frmGuardarCatalogo:pnlCatalogo"
-                                     oncomplete="PF('dialogCatalogo').show();"
+                                     process="@this pnlCatalogo"
+                                     update="pnlCatalogo :frmGuardarCatalogo:pnlCatalogo"
+                                     oncomplete="if(args.validationFailed){return false;}PF('dialogCatalogo').show();"
                                      value="#{msg.btn_crear}"/>
 				</h:panelGroup>
 			</p:fieldset>
