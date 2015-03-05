@@ -7,8 +7,10 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 
+import ec.com.dlc.bunsys.commons.resource.BunsysMessages;
 import ec.com.dlc.bunsys.entity.administracion.Tadmcatalogo;
 import ec.com.dlc.bunsys.facade.BunsysService;
+import ec.com.dlc.bunsys.util.sri.ConstantesSRI;
 import ec.com.dlc.web.commons.resource.ContenidoMessages;
 import ec.com.dlc.web.controller.base.BaseController;
 import ec.com.dlc.web.datamanager.administracion.DirectorioDatamanager;
@@ -41,28 +43,28 @@ public class DirectorioController extends BaseController {
 	private void createNewDirectories(){
 		directorioDatamanager.setDirectoriosColl(new ArrayList<Tadmcatalogo>());
 		Tadmcatalogo factura = new Tadmcatalogo();
-		factura.getPk().setCodigocatalogo("FAC");
+		factura.getPk().setCodigocatalogo(ConstantesSRI.COD_FACTURA);
 		factura.getPk().setCodigocompania(directorioDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania());
 		factura.getPk().setCodigotipocatalogo(18);
 		factura.setDescripcion(ContenidoMessages.getString("lbl_factura"));
 		directorioDatamanager.getDirectoriosColl().add(factura);
 		
 		Tadmcatalogo notaCredito = new Tadmcatalogo();
-		notaCredito.getPk().setCodigocatalogo("NCE");
+		notaCredito.getPk().setCodigocatalogo(ConstantesSRI.COD_NOTA_CREDITO);
 		notaCredito.getPk().setCodigocompania(directorioDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania());
 		notaCredito.getPk().setCodigotipocatalogo(18);
 		notaCredito.setDescripcion(ContenidoMessages.getString("lbl_notas_credito"));
 		directorioDatamanager.getDirectoriosColl().add(notaCredito);
 		
 		Tadmcatalogo comprobante = new Tadmcatalogo();
-		comprobante.getPk().setCodigocatalogo("COM");
+		comprobante.getPk().setCodigocatalogo(ConstantesSRI.COD_COMPROBANTE_RET);
 		comprobante.getPk().setCodigocompania(directorioDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania());
 		comprobante.getPk().setCodigotipocatalogo(18);
 		comprobante.setDescripcion(ContenidoMessages.getString("lbl_comprobantes_ret"));
 		directorioDatamanager.getDirectoriosColl().add(comprobante);
 		
 		Tadmcatalogo notaDebito = new Tadmcatalogo();
-		notaDebito.getPk().setCodigocatalogo("NDE");
+		notaDebito.getPk().setCodigocatalogo(ConstantesSRI.COD_NOTA_DEBITO);
 		notaDebito.getPk().setCodigocompania(directorioDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania());
 		notaDebito.getPk().setCodigotipocatalogo(18);
 		notaDebito.setDescripcion(ContenidoMessages.getString("lbl_notas_debito"));
