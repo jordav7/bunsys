@@ -8,14 +8,14 @@ import javax.faces.context.FacesContext;
 
 import org.apache.commons.lang3.StringUtils;
 
+import ec.com.dlc.bunsys.commons.locator.BeanLocator;
+import ec.com.dlc.bunsys.commons.resource.BunsysMessages;
 import ec.com.dlc.bunsys.entity.administracion.Tadmcatalogo;
 import ec.com.dlc.bunsys.entity.administracion.Tadmparamsri;
 import ec.com.dlc.bunsys.entity.cuentasxpagar.Tcxpproveedor;
-import ec.com.dlc.bunsys.entity.inventario.Tinvproducto;
 import ec.com.dlc.bunsys.entity.seguridad.Tsyspersona;
 import ec.com.dlc.bunsys.facade.BunsysService;
 import ec.com.dlc.web.commons.resource.ContenidoMessages;
-import ec.com.dlc.web.util.locator.BeanLocator;
 
 public class ProveedorComponent implements Serializable {
 
@@ -48,7 +48,7 @@ public class ProveedorComponent implements Serializable {
 	}
 	
 	public ProveedorComponent(Integer compania) {
-		BunsysService bunsysService = (BunsysService) new BeanLocator.GlobalJNDIName().withAppName(ContenidoMessages.getString("application.name")).withModuleName(ContenidoMessages.getString("module.name")).withBeanName("BunsysServiceBean").withBusinessInterface(BunsysService.class).locate();
+		BunsysService bunsysService = (BunsysService) new BeanLocator.GlobalJNDIName().withAppName(BunsysMessages.getString("application.name")).withModuleName(BunsysMessages.getString("module.name")).withBeanName("BunsysServiceBean").withBusinessInterface(BunsysService.class).locate();
 		tipoIdColl = bunsysService.buscarObtenerCatalogos(compania, ContenidoMessages.getInteger("cod_catalogo_tipoid_persona"));
 		grupoProvColl = bunsysService.buscarObtenerCatalogos(compania, ContenidoMessages.getInteger("cod_catalogo_grupo_prov"));
 		contribuyenteColl = bunsysService.buscarObtenerCatalogos(compania, ContenidoMessages.getInteger("cod_catalogo_contribuyenge_prov"));
@@ -86,7 +86,7 @@ public class ProveedorComponent implements Serializable {
 				proveedor.getTsyspersona().setEstadocodigo(ContenidoMessages.getInteger("cod_catalogo_estado_persona"));
 			}
 			
-			BunsysService bunsysService = (BunsysService) new BeanLocator.GlobalJNDIName().withAppName(ContenidoMessages.getString("application.name")).withModuleName(ContenidoMessages.getString("module.name")).withBeanName("BunsysServiceBean").withBusinessInterface(BunsysService.class).locate();
+			BunsysService bunsysService = (BunsysService) new BeanLocator.GlobalJNDIName().withAppName(BunsysMessages.getString("application.name")).withModuleName(BunsysMessages.getString("module.name")).withBeanName("BunsysServiceBean").withBusinessInterface(BunsysService.class).locate();
 			bunsysService.guardarProveedor(proveedor);
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,  ContenidoMessages.getString("msg_info_prov"), ContenidoMessages.getString("msg_info_prov")));
 		}catch(Throwable e){

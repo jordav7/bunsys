@@ -8,11 +8,12 @@ import javax.faces.context.FacesContext;
 
 import org.apache.commons.lang3.StringUtils;
 
+import ec.com.dlc.bunsys.commons.locator.BeanLocator;
+import ec.com.dlc.bunsys.commons.resource.BunsysMessages;
 import ec.com.dlc.bunsys.entity.administracion.Tadmcatalogo;
 import ec.com.dlc.bunsys.entity.inventario.Tinvproducto;
 import ec.com.dlc.bunsys.facade.BunsysService;
 import ec.com.dlc.web.commons.resource.ContenidoMessages;
-import ec.com.dlc.web.util.locator.BeanLocator;
 
 /**
  * Clase que representa a las acciones del componente de creaci&oacute;n y edici&oacute;n de art&iacute;culos
@@ -56,7 +57,7 @@ public class ArticuloComponent implements Serializable {
 	}
 	
 	public ArticuloComponent(Integer compania){
-		BunsysService bunsysService = (BunsysService) new BeanLocator.GlobalJNDIName().withAppName(ContenidoMessages.getString("application.name")).withModuleName(ContenidoMessages.getString("module.name")).withBeanName("BunsysServiceBean").withBusinessInterface(BunsysService.class).locate();
+		BunsysService bunsysService = (BunsysService) new BeanLocator.GlobalJNDIName().withAppName(BunsysMessages.getString("application.name")).withModuleName(BunsysMessages.getString("module.name")).withBeanName("BunsysServiceBean").withBusinessInterface(BunsysService.class).locate();
 		colorCatalogoColl = bunsysService.buscarObtenerCatalogos(compania, ContenidoMessages.getInteger("cod_catalogo_color_articulo"));
 		estadoCatalogoColl = bunsysService.buscarObtenerCatalogos(compania, ContenidoMessages.getInteger("cod_catalogo_estado_articulo"));
 		unidadVentaColl = bunsysService.buscarObtenerCatalogos(compania, ContenidoMessages.getInteger("cod_catalogo_unidad_venta_articulo"));
@@ -117,7 +118,7 @@ public class ArticuloComponent implements Serializable {
 				articulo.setIcecodigo(ContenidoMessages.getInteger("cod_catalogo_ice_articulo"));
 			}
 			
-			BunsysService bunsysService = (BunsysService) new BeanLocator.GlobalJNDIName().withAppName(ContenidoMessages.getString("application.name")).withModuleName(ContenidoMessages.getString("module.name")).withBeanName("BunsysServiceBean").withBusinessInterface(BunsysService.class).locate();
+			BunsysService bunsysService = (BunsysService) new BeanLocator.GlobalJNDIName().withAppName(BunsysMessages.getString("application.name")).withModuleName(BunsysMessages.getString("module.name")).withBeanName("BunsysServiceBean").withBusinessInterface(BunsysService.class).locate();
 			bunsysService.guardarArticulo(articulo);
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, ContenidoMessages.getString("msg_info_articulo"), ContenidoMessages.getString("msg_info_articulo")));
 		} catch(Throwable e){
