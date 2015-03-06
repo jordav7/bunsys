@@ -45,7 +45,7 @@
       		</p:fieldset>
       		<p:fieldset legend="#{msg['lbl_cobros']}">
       			<h:panelGroup layout="block" id="pnlDataCobros">
-      				<p:dataTable value="#{registroCobroDatamanager.cxcPendientesColl}" var="cxcPend">
+      				<p:dataTable id="dataCxc" value="#{registroCobroDatamanager.cxcPendientesColl}" var="cxcPend">
       					<p:column headerText="#{msg['lbl_tipo_id']}">
       						<h:outputText value="#{cxcPend.tadmtipodoc.descripcion}" />
       					</p:column>
@@ -56,12 +56,12 @@
       						<h:outputText value="#{cxcPend.fechavence}" />
       					</p:column>
  						<p:column headerText="#{msg['lbl_val_cobro']}" >
- 							<h:inputText  value="#{cxcPend.valor}" style="text-align:right;">
- 								<p:ajax event="blur" listener="#{registrarCobroController.editarValor()}" process=":frmRegCobro:pnlDataCobros" update=":frmRegCobro:pnlDataCobros :frmRegCobro:pnlTotales"/>
- 							</h:inputText>
+ 							<p:inputText id="txtValor" value="#{cxcPend.valor}" style="text-align:right;" disabled="#{cxcPend.aditionalProperties['editCxc']}">
+ 								<p:ajax event="blur" listener="#{registrarCobroController.editValor(cxcPend)}" process="@this" update="@this  :frmRegCobro:dataCxc:txtSaldo :frmRegCobro:pnlTotales"/>
+ 							</p:inputText>
  						</p:column>	
  						<p:column headerText="#{msg['lbl_saldo_total']}">
- 							<h:outputText value="#{cxcPend.saldo}" style="text-align:right;"/>
+ 							<h:outputText id="txtSaldo" value="#{cxcPend.aditionalProperties['saldoCxc']}" style="text-align:right;"/>
  						</p:column>
  						<p:column>
  							<f:facet name="header">
@@ -71,7 +71,7 @@
  								</p:selectBooleanCheckbox>
  							</f:facet>
  							<p:selectBooleanCheckbox value="#{cxcPend.aditionalProperties['seleccionado']}" >
- 								<p:ajax listener="#{registrarCobroController.seleccionarCxc()}" update=":frmRegCobro:pnlTotales"/>
+ 								<p:ajax listener="#{registrarCobroController.selectedRegCxc(cxcPend)}" update=":frmRegCobro:dataCxc:txtValor  :frmRegCobro:dataCxc:txtSaldo :frmRegCobro:pnlTotales"/>
  							</p:selectBooleanCheckbox>
  						</p:column>				
       				</p:dataTable>
@@ -88,7 +88,7 @@
       		</p:fieldset>
       		<h:panelGroup layout="block">
 				<p:commandButton value="#{msg['btn_guardar']}" 
-					icon="ui-icon-disk"/>
+					icon="ui-icon-disk" action="#{registrarCobroController.guardar()}"/>
 				<p:commandButton value="#{msg['btn_cancelar']}"
 					icon="ui-icon-close"/> 
 			</h:panelGroup>
