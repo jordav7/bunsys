@@ -28,7 +28,6 @@ public class RegistrarCobroDatamanager extends BaseDatamanager{
 	
 	private BigDecimal total;
 	
-	
 	@Override
 	public String getIdDatamanager() {
 		return "registroCobroDatamanager";
@@ -82,6 +81,7 @@ public class RegistrarCobroDatamanager extends BaseDatamanager{
 	public void setTotal(BigDecimal total) {
 		this.total = total;
 	}
+
 
 	
 }
