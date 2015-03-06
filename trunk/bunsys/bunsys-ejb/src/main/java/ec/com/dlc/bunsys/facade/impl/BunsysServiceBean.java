@@ -2,6 +2,7 @@ package ec.com.dlc.bunsys.facade.impl;
 
 import static javax.ejb.TransactionAttributeType.REQUIRES_NEW;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -25,6 +26,7 @@ import ec.com.dlc.bunsys.entity.facturacion.Tfaccabproforma;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccliente;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccuentasxcobrar;
 import ec.com.dlc.bunsys.entity.facturacion.Tfacdetproforma;
+import ec.com.dlc.bunsys.entity.facturacion.pk.TfaccuentasxcobrarPK;
 import ec.com.dlc.bunsys.entity.inventario.Tinvproducto;
 import ec.com.dlc.bunsys.entity.inventario.pk.TinvproductoPK;
 import ec.com.dlc.bunsys.entity.seguridad.Tsyspersona;
@@ -226,7 +228,8 @@ public class BunsysServiceBean implements BunsysService {
 			throws FacturacionException {
 		return parametrizacionService.obtenerCatalogos(codigocompania, tadmcatalogo);
 	}
-
+	
+	
 	@Override
 	public void guardarCatalogo(Tadmcatalogo tadmcatalogo)
 			throws FacturacionException {
@@ -261,5 +264,40 @@ public class BunsysServiceBean implements BunsysService {
 	public Tadmcatalogo obtenerCatalogo(Integer codcompania,
 			Integer codigotipo, String valor) throws FacturacionException {
 		return null;
+	}
+	
+	@Override
+	public void registrarPago(Collection<Tfaccuentasxcobrar> cxcColl, Integer codCompania, Integer estadoCodigo, Integer tipoDocCodigo, String numdoc, String concepto, Date fechaPago) {
+		// TODO Auto-generated method stub
+		Tfaccuentasxcobrar cobro = null, cxcReg = null;
+		TfaccuentasxcobrarPK cobroPk = new TfaccuentasxcobrarPK();
+		cobroPk.setCodigocompania(codCompania);
+		for (Tfaccuentasxcobrar cxc : cxcColl) {
+			cxcReg = new Tfaccuentasxcobrar();
+			cxcReg = facturacionService.buscarCxc(cxc.getPk());
+			cxcReg.setSaldo(cxc.getSaldo());
+			cxcReg.setReferencia(cxc.getPk().getCodigocuenxcobr());
+			facturacionService.actualizarCxc(cxcReg);
+			
+			cobro = new Tfaccuentasxcobrar();
+			cobro.setPk(cobroPk);
+			cobro.setNumerofactura(cxc.getNumerofactura());
+			cobro.setCodigocliente(cxc.getCodigocliente());
+			cobro.setEstado("C");
+			cobro.setEstadocodigo(estadoCodigo);
+			cobro.setTipodoc("AB");
+			cobro.setTipodoccodigo(tipoDocCodigo);
+			cobro.setFecharegistro(fechaPago);
+			cobro.setFechapago(fechaPago);
+			cobro.setNumeropago(cxc.getNumeropago());
+			cobro.setValor(cxc.getValor());
+			cobro.setValorfactura(cxc.getValorfactura());
+			cobro.setNumdoc(numdoc);
+			cobro.setReferencia(cxc.getReferencia());
+			cobro.setConcepto(concepto);
+			
+			facturacionService.grabaAbono(cobro);
+		}
+		
 	}
 }
