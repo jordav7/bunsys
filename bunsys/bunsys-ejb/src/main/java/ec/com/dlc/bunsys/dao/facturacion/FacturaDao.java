@@ -214,7 +214,9 @@ public class FacturaDao extends GeneralDao {
 	public Collection<Tfaccuentasxcobrar> obtenerCuentasPorCobrar(Integer codCompania, String codigoCliente) throws FacturacionException {
 		Collection<Tfaccuentasxcobrar> cxcColl = null;
 		try{
-			final String sql="SELECT o FROM Tfaccuentasxcobrar o LEFT JOIN FETCH o.tadmtipodoc where o.numdoc is null and o.pk.codigocompania=:codCompania and o.tfaccliente.pk.codigocliente = :codigoCliente  ";
+			final String sql="SELECT o FROM Tfaccuentasxcobrar o LEFT JOIN FETCH o.tadmtipodoc where o.numdoc is null and "
+					+ "o.pk.codigocompania=:codCompania and o.tfaccliente.pk.codigocliente = :codigoCliente  "
+					+ "and o.saldo > 0";
 			Query query = this.entityManager.createQuery(sql);
 			query.setParameter("codCompania", codCompania);
 			query.setParameter("codigoCliente", codigoCliente);
