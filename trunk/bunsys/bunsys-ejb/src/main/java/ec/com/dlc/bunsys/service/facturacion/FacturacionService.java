@@ -21,6 +21,7 @@ import ec.com.dlc.bunsys.entity.facturacion.Tfacdetfactura;
 import ec.com.dlc.bunsys.entity.facturacion.Tfacdetproforma;
 import ec.com.dlc.bunsys.entity.facturacion.Tfacformapago;
 import ec.com.dlc.bunsys.entity.seguridad.Tsyspersona;
+import ec.com.dlc.bunsys.entity.facturacion.pk.TfaccuentasxcobrarPK;
 import ec.com.dlc.bunsys.util.FacturacionException;
 
 /**
@@ -141,4 +142,17 @@ public class FacturacionService {
 	public Collection<Tfaccuentasxcobrar> obtenerCuentasPorCobrar(Integer codCompania, String codigoCliente) throws FacturacionException {
 		return facturaDao.obtenerCuentasPorCobrar(codCompania, codigoCliente);
 	}
+	
+	public void grabaAbono(Tfaccuentasxcobrar abono) {
+		facturaDao.create(abono);
+	}
+	
+	public Tfaccuentasxcobrar buscarCxc( TfaccuentasxcobrarPK pkCxc) {
+		return facturaDao.findById(Tfaccuentasxcobrar.class, pkCxc);
+	}
+	
+	public void actualizarCxc(Tfaccuentasxcobrar cxc) {
+		facturaDao.update(cxc);
+	}
+	
 }
