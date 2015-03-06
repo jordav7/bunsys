@@ -66,7 +66,7 @@ public class Tfaccuentasxcobrar extends ec.com.dlc.bunsys.entity.base.BaseEntity
 	private Integer numeropago;
 
 	@Column
-	private String referencia;
+	private Integer referencia;
 
 	@Column
 	private BigDecimal saldo;
@@ -203,11 +203,11 @@ public class Tfaccuentasxcobrar extends ec.com.dlc.bunsys.entity.base.BaseEntity
 		this.numeropago = numeropago;
 	}
 
-	public String getReferencia() {
+	public Integer getReferencia() {
 		return this.referencia;
 	}
 
-	public void setReferencia(String referencia) {
+	public void setReferencia(Integer referencia) {
 		this.referencia = referencia;
 	}
 
