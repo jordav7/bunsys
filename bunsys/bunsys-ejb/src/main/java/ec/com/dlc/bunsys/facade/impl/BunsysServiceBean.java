@@ -2,7 +2,6 @@ package ec.com.dlc.bunsys.facade.impl;
 
 import static javax.ejb.TransactionAttributeType.REQUIRES_NEW;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -35,6 +34,7 @@ import ec.com.dlc.bunsys.facade.BunsysService;
 import ec.com.dlc.bunsys.service.facturacion.FacturacionService;
 import ec.com.dlc.bunsys.service.login.SeguridadService;
 import ec.com.dlc.bunsys.service.parametrizacion.ParametrizacionService;
+import ec.com.dlc.bunsys.service.parametrizacion.SecuenciaService;
 import ec.com.dlc.bunsys.util.FacturacionException;
 
 @Stateless
@@ -49,6 +49,9 @@ public class BunsysServiceBean implements BunsysService {
 	
 	@EJB
 	private ParametrizacionService parametrizacionService;
+	
+	@EJB
+	private SecuenciaService secuenciaService;
 	
 	@Override
 	public Collection<Tadmcompania> obtenerCompanias() {
@@ -263,7 +266,7 @@ public class BunsysServiceBean implements BunsysService {
 	@Override
 	public Tadmcatalogo obtenerCatalogo(Integer codcompania,
 			Integer codigotipo, String valor) throws FacturacionException {
-		return null;
+		return parametrizacionService.obtenerCatalogo(codcompania, codigotipo, valor);
 	}
 	
 	@Override
@@ -299,5 +302,11 @@ public class BunsysServiceBean implements BunsysService {
 			facturacionService.grabaAbono(cobro);
 		}
 		
+	}
+
+	@Override
+	public Integer obtenerSecuencias(Integer codCompania, String codComprobante)
+			throws FacturacionException {
+		return secuenciaService.obtenerSecuenciaComp(codCompania, codComprobante);
 	}
 }

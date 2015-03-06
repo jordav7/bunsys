@@ -228,4 +228,6 @@ public interface BunsysService {
 	Tadmcatalogo obtenerCatalogo(Integer codcompania, Integer codigotipo, String valor) throws FacturacionException;
 	
 	void registrarPago(Collection<Tfaccuentasxcobrar> cxcColl, Integer codCompania, Integer estadoCodigo, Integer tipoDocCodigo, String numdoc, String concepto, Date fechaPago);
+	
+	Integer obtenerSecuencias(Integer codCompania, String codComprobante) throws FacturacionException;
 }
