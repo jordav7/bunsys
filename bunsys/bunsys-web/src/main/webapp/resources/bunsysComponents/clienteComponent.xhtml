@@ -18,7 +18,7 @@
 			<h:panelGroup layout="block" id="pnlArticulo">
 				<h:panelGrid columns="3">
 					<p:outputLabel value="#{msg['lbl_codigo_cliente']}:" for="codigocliente" style="display:block;width:145px;"/>
-					<p:inputText id="codigocliente" value="#{cc.attrs.controller.tfaccliente.pk.codigocliente}" disabled="#{cc.attrs.controller.tfaccliente.pk.codigocliente != null}"/>
+					<p:inputText id="codigocliente" value="#{cc.attrs.controller.tfaccliente.pk.codigocliente}" required="true" disabled="#{cc.attrs.controller.tfaccliente.pk.codigocliente != null}"/>
 					<p:message for="codigocliente" display="icon"/>
 				</h:panelGrid>
 				<h:panelGrid columns="6">
@@ -30,7 +30,7 @@
 					<p:message for="seltipoid" display="icon"/>
 					
 					<p:outputLabel value="#{msg['lbl_identificacion']}:" for="txtIdentifiacion"/>
-					<p:inputText id="txtIdentifiacion" value="#{cc.attrs.controller.tfaccliente.tsyspersona.identificacion}" />
+					<p:inputText id="txtIdentifiacion" value="#{cc.attrs.controller.tfaccliente.tsyspersona.identificacion}" required="true" />
 					<p:message for="txtIdentifiacion" display="icon"/>
 					
 					
@@ -44,7 +44,7 @@
 					<p:message for="txtApellidos" display="icon"/>
 					
 					<p:outputLabel value="#{msg['lbl_direccion']}:" for="txtDireccion"/>
-					<p:inputText id="txtDireccion" value="#{cc.attrs.controller.tfaccliente.tsyspersona.direccion}" required="false"/>
+					<p:inputText id="txtDireccion" value="#{cc.attrs.controller.tfaccliente.tsyspersona.direccion}" required="true"/>
 					<p:message for="txtDireccion" display="icon"/>
 					
 					<p:outputLabel value="#{msg['lbl_telefono_convencional']}:" for="txtTelefonocon"/>
