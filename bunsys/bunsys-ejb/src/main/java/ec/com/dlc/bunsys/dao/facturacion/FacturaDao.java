@@ -14,9 +14,11 @@ import ec.com.dlc.bunsys.entity.administracion.Tadmcatalogo;
 import ec.com.dlc.bunsys.entity.administracion.Tadmconversionunidad;
 import ec.com.dlc.bunsys.entity.administracion.Tadmparamsri;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccabdevolucione;
+import ec.com.dlc.bunsys.entity.facturacion.Tfaccabfactura;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccabproforma;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccliente;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccuentasxcobrar;
+import ec.com.dlc.bunsys.entity.facturacion.Tfacdetfactura;
 import ec.com.dlc.bunsys.entity.facturacion.Tfacdetproforma;
 import ec.com.dlc.bunsys.entity.inventario.Tinvproducto;
 import ec.com.dlc.bunsys.entity.seguridad.Tsyspersona;
@@ -359,10 +361,11 @@ public class FacturaDao extends GeneralDao {
 			StringBuilder sql = new StringBuilder("SELECT o FROM Tfaccabproforma o "
 												 + " LEFT JOIN FETCH o.tfaccliente cli"
 								                 + " LEFT JOIN FETCH cli.tsyspersona  "
-								                 + " LEFT JOIN FETCH o.tadmairline");
+								                 + " LEFT JOIN FETCH o.tadmairline"
+								                 + " where o.pk.numeroproforma not in (SELECT f.numeroproforma From Tfaccabfactura f where f.numeroproforma=o.pk.numeroproforma) ");
 			
 			if(StringUtils.isNotBlank(numeroproforma)){
-				sql.append(" where o.pk.numeroproforma=:numeroproforma ");
+				sql.append(" and o.pk.numeroproforma=:numeroproforma ");
 			}
 			Query query = entityManager.createQuery(sql.toString());
 			if(StringUtils.isNotBlank(numeroproforma)){
@@ -411,4 +414,50 @@ public class FacturaDao extends GeneralDao {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Tfaccabfactura> cabeceraFacturas(String numerofactura,String estadosri)throws FacturacionException{
+		try{
+			StringBuilder sql = new StringBuilder("SELECT o FROM Tfaccabfactura o "
+												 + " LEFT JOIN FETCH o.tfaccliente cli"
+								                 + " LEFT JOIN FETCH cli.tsyspersona  "
+								                 + " LEFT JOIN FETCH o.tadmairline"
+								                 + " where 1=1 ");
+			
+			if(StringUtils.isNotBlank(numerofactura)){
+				sql.append(" and o.pk.numerofactura=:numerofactura ");
+			}
+			if(StringUtils.isNotBlank(estadosri)){
+				sql.append(" and o.estadosri=:estadosri ");
+			}
+			Query query = entityManager.createQuery(sql.toString());
+			if(StringUtils.isNotBlank(numerofactura)){
+				query.setParameter("numerofactura", numerofactura);
+			}
+			if(StringUtils.isNotBlank(estadosri)){
+				query.setParameter("estadosri",estadosri);
+			}
+			return query.getResultList();
+		} catch (Throwable e) {
+			throw new FacturacionException(e);
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Tfacdetfactura> detalleFacturas(String numerofactura)throws FacturacionException{
+		try{
+			StringBuilder sql = new StringBuilder("SELECT o FROM Tfacdetfactura o "
+												 + " LEFT JOIN FETCH o.tadmatpa"
+								                 + " LEFT JOIN FETCH o.tadmunidadventa  "
+								                 + " LEFT JOIN FETCH o.tadmiva"
+								                 + " LEFT JOIN FETCH o.tadmice"
+								                 + " LEFT JOIN FETCH o.tinvproducto"
+								                 +" where o.numerofactura=:numerofactura ");
+			
+			Query query = entityManager.createQuery(sql.toString());
+			query.setParameter("numerofactura", numerofactura);
+			return query.getResultList();
+		} catch (Throwable e) {
+			throw new FacturacionException(e);
+		}
+	}
 }
