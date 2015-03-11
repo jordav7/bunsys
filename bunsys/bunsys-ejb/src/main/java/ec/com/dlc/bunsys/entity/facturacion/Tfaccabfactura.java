@@ -107,6 +107,17 @@ public class Tfaccabfactura extends BaseEntity<TfaccabfacturaPK> {
 	private String area;
 	@Column
 	private BigDecimal valorirbpnr;
+	@Column
+	private String estadosri;
+
+	@Column
+	private Integer estadosricodigo;
+	
+	@Column
+	private String numeroproforma;
+	
+	@Column
+	private String claveacceso;
 	
 	public Tfaccabfactura() {
 		this.pk = new TfaccabfacturaPK();
@@ -137,6 +148,14 @@ public class Tfaccabfactura extends BaseEntity<TfaccabfacturaPK> {
 		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania", insertable=false, updatable=false)
 	})
 	private Tfaccliente tfaccliente;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumns({
+		@JoinColumn(name="estadosri", referencedColumnName="codigocatalogo", insertable=false, updatable=false),
+		@JoinColumn(name="estadosricodigo", referencedColumnName="codigotipocatalogo", insertable=false, updatable=false),
+		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania", insertable=false, updatable=false)
+	})
+	private Tadmcatalogo tadmestadosri;
 
 	//bi-directional many-to-one association to Tfacdetdevolucione
 	@OneToMany(mappedBy="tfaccabfactura")
@@ -480,6 +499,46 @@ public class Tfaccabfactura extends BaseEntity<TfaccabfacturaPK> {
 	public void setTfaccuentasxcobrars(
 			Collection<Tfaccuentasxcobrar> tfaccuentasxcobrars) {
 		this.tfaccuentasxcobrars = tfaccuentasxcobrars;
+	}
+
+	public String getEstadosri() {
+		return estadosri;
+	}
+
+	public void setEstadosri(String estadosri) {
+		this.estadosri = estadosri;
+	}
+
+	public Integer getEstadosricodigo() {
+		return estadosricodigo;
+	}
+
+	public void setEstadosricodigo(Integer estadosricodigo) {
+		this.estadosricodigo = estadosricodigo;
+	}
+
+	public Tadmcatalogo getTadmestadosri() {
+		return tadmestadosri;
+	}
+
+	public void setTadmestadosri(Tadmcatalogo tadmestadosri) {
+		this.tadmestadosri = tadmestadosri;
+	}
+
+	public String getNumeroproforma() {
+		return numeroproforma;
+	}
+
+	public void setNumeroproforma(String numeroproforma) {
+		this.numeroproforma = numeroproforma;
+	}
+
+	public String getClaveacceso() {
+		return claveacceso;
+	}
+
+	public void setClaveacceso(String claveacceso) {
+		this.claveacceso = claveacceso;
 	}
 	
 }
