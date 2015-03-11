@@ -55,6 +55,8 @@ public interface BunsysService {
 	 */
 	Collection<Tadmcatalogo> buscarObtenerCatalogos(Integer codCompania, Integer codTipoCatalogo) throws FacturacionException;
 	
+	
+	public Collection<Tadmparamsri> buscarObtenerCatSri(Integer codigoCatalogo);
 	/**
 	 * Crea o actualiza un nuevo art&iacute;culo
 	 * @param articulo
