@@ -1,7 +1,7 @@
 package ec.com.dlc.web.controller.proforma;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -15,7 +15,6 @@ import org.apache.commons.lang3.StringUtils;
 import ec.com.dlc.bunsys.entity.administracion.Tadmconversionunidad;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccabproforma;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccliente;
-import ec.com.dlc.bunsys.entity.facturacion.Tfacdetfactura;
 import ec.com.dlc.bunsys.entity.facturacion.Tfacdetproforma;
 import ec.com.dlc.bunsys.entity.inventario.Tinvproducto;
 import ec.com.dlc.bunsys.entity.seguridad.Tsyspersona;
@@ -27,8 +26,8 @@ import ec.com.dlc.web.controller.base.BaseController;
 import ec.com.dlc.web.datamanager.articulo.ArticuloDatamanager;
 import ec.com.dlc.web.datamanager.base.BaseDatamanager;
 import ec.com.dlc.web.datamanager.cliente.ClienteDatamanager;
-import ec.com.dlc.web.datamanager.login.LoginDatamanager;
 import ec.com.dlc.web.datamanager.proforma.ProformaDatamanager;
+import ec.com.dlc.web.util.jsf.MessagesUtil;
 
 @ManagedBean(name="proformaController")
 @SessionScoped
@@ -96,6 +95,11 @@ public class ProformaController extends BaseController{
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"AGREGAR PRODUCTO","ESCOJA UN PRODUCTO"));
 			return;
 		}
+		if(proformaDatamanager.getTfaccliente()==null || proformaDatamanager.getTfaccliente().getPk()==null || proformaDatamanager.getTfaccliente().getPk().getCodigocliente()==null){
+			MessagesUtil.showErrorMessage("Ingrese el cliente"); 
+			return;
+		}
+		proformaDatamanager.getTfacdetproforma().setCantidad(1d);
 		//Busqueda del pices type segun el tipo de unidad de venta del articulo
 		Tadmconversionunidad tadmconversionunidad=bunsysService.conversionArticulo(proformaDatamanager.getTinvproducto().getUnidadventacodigo(), proformaDatamanager.getTinvproducto().getUnidadventa());
 		//articulo
@@ -123,6 +127,15 @@ public class ProformaController extends BaseController{
 		proformaDatamanager.getTfacdetproforma().setTotal(proformaDatamanager.getTfacdetproforma().getTotalstems()*proformaDatamanager.getTfacdetproforma().getPreciounitario());
 		//compania
 		proformaDatamanager.getTfacdetproforma().getPk().setCodigocompania(articuloDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania());
+		//iva
+		proformaDatamanager.getTfacdetproforma().setIva(proformaDatamanager.getTinvproducto().getIva());
+		proformaDatamanager.getTfacdetproforma().setIvacodigo(proformaDatamanager.getTinvproducto().getIvacodigo());
+		//ice
+		proformaDatamanager.getTfacdetproforma().setIce(proformaDatamanager.getTinvproducto().getIce());
+		proformaDatamanager.getTfacdetproforma().setIcecodigo(proformaDatamanager.getTinvproducto().getIcecodigo());
+		//ibpnr
+		proformaDatamanager.getTfacdetproforma().setIrbpnr(proformaDatamanager.getTinvproducto().getIrbpnr());
+		proformaDatamanager.getTfacdetproforma().setIrbpnrcodigo(proformaDatamanager.getTinvproducto().getIrbpnrcodigo());
 		//se aniade a la lista
 		proformaDatamanager.getTfaccabproforma().getTfacdetproformas().add(proformaDatamanager.getTfacdetproforma());
 		calculos();
@@ -133,41 +146,92 @@ public class ProformaController extends BaseController{
 	/**
 	 * calculos totales
 	 */
-	private void calculos(){
+	public void calculos(){
 		proformaDatamanager.getTfaccabproforma().setTotalpices(0d);
 		proformaDatamanager.getTfaccabproforma().setTotaleqfullboxes(0d);
 		proformaDatamanager.getTfaccabproforma().setTotalbunch(0d);
 		proformaDatamanager.getTfaccabproforma().setTotalstems(0d);
 		proformaDatamanager.getTfaccabproforma().setTotal(0d);
+		//
+		proformaDatamanager.getTfaccabproforma().setSubtotalnoiva(new BigDecimal(0));
+		proformaDatamanager.getTfaccabproforma().setSubtotaliva(new BigDecimal(0));
+		proformaDatamanager.getTfaccabproforma().setIva(new BigDecimal(0));
+		proformaDatamanager.getTfaccabproforma().setSubtotalexcentoiva(new BigDecimal(0));
+		proformaDatamanager.getTfaccabproforma().setSubtotalneto(new BigDecimal(0));
 		for(Tfacdetproforma tfacdetproforma:proformaDatamanager.getTfaccabproforma().getTfacdetproformas()){
 			proformaDatamanager.getTfaccabproforma().setTotalpices(tfacdetproforma.getCantidad()+proformaDatamanager.getTfaccabproforma().getTotalpices());
 			proformaDatamanager.getTfaccabproforma().setTotaleqfullboxes(tfacdetproforma.getEqfullboxes()+proformaDatamanager.getTfaccabproforma().getTotaleqfullboxes());
 			
 			proformaDatamanager.getTfaccabproforma().setTotalbunch(tfacdetproforma.getTotalbunch()+proformaDatamanager.getTfaccabproforma().getTotalbunch());
 			proformaDatamanager.getTfaccabproforma().setTotalstems(tfacdetproforma.getTotalstems()+proformaDatamanager.getTfaccabproforma().getTotalstems());
-			proformaDatamanager.getTfaccabproforma().setTotal(tfacdetproforma.getTotal()+proformaDatamanager.getTfaccabproforma().getTotal());
+			
+			//calculos
+			//--subtotal 0%
+			if(tfacdetproforma.getIva().equals("0") && tfacdetproforma.getIvacodigo().equals(9)){
+				proformaDatamanager.getTfaccabproforma().setSubtotalnoiva(round(proformaDatamanager.getTfaccabproforma().getSubtotalnoiva().add(new BigDecimal(tfacdetproforma.getTotal()))));
+			}
+			//--sbtotal iva 12%
+			if(	tfacdetproforma.getIva().equals("2") && tfacdetproforma.getIvacodigo().equals(9)){
+				proformaDatamanager.getTfaccabproforma().setSubtotaliva(round( proformaDatamanager.getTfaccabproforma().getSubtotaliva().add(new BigDecimal(tfacdetproforma.getTotal()))));
+				//validamos si tiene descuento
+				if(proformaDatamanager.getTfaccliente().getPorcentajedescuento()!=null && proformaDatamanager.getTfaccliente().getPorcentajedescuento()>0){
+					//descuento subtotal * %descuento
+					BigDecimal descuento=proformaDatamanager.getTfaccabproforma().getSubtotaliva().multiply(new BigDecimal(proformaDatamanager.getTfaccliente().getPorcentajedescuento()/100));
+					tfacdetproforma.setDescuento(descuento);
+					//total -descunto
+					BigDecimal descuentoMenTotal=proformaDatamanager.getTfaccabproforma().getSubtotaliva().subtract(descuento);
+					//descuentoMenTotal * iva 12%
+					BigDecimal iva=descuentoMenTotal.multiply(new BigDecimal(0.12));
+					//se suma
+					proformaDatamanager.getTfaccabproforma().setIva(round(proformaDatamanager.getTfaccabproforma().getIva().add(iva)));
+				}else{
+					//iva 12%
+					BigDecimal iva=proformaDatamanager.getTfaccabproforma().getSubtotaliva().multiply(new BigDecimal(0.12));
+					proformaDatamanager.getTfaccabproforma().setIva(round(proformaDatamanager.getTfaccabproforma().getIva().add(iva)));
+				}
+			}
+			//--subtotal excento de iva
+			if(tfacdetproforma.getIva().equals("7") && tfacdetproforma.getIvacodigo().equals(9)){
+				proformaDatamanager.getTfaccabproforma().setSubtotalexcentoiva(round(proformaDatamanager.getTfaccabproforma().getSubtotalexcentoiva().add(new BigDecimal(tfacdetproforma.getTotal()))));
+			}
+			//--subtotal neto
+			proformaDatamanager.getTfaccabproforma().setSubtotalneto(round(proformaDatamanager.getTfaccabproforma().getSubtotalneto().add(new BigDecimal(tfacdetproforma.getTotal()))));
 		}
+		//calculos finales
+		if(proformaDatamanager.getTfaccliente().getPorcentajedescuento()!=null &&
+				proformaDatamanager.getTfaccliente().getPorcentajedescuento()>0){
+			//-total descuento
+			proformaDatamanager.getTfaccabproforma().setTotaldescuento(round(proformaDatamanager.getTfaccabproforma().getSubtotalneto().multiply(
+					new BigDecimal(proformaDatamanager.getTfaccliente().getPorcentajedescuento()/100))));
+			//porcentaje decuento
+			proformaDatamanager.getTfaccabproforma().setPorcentajedesc(new BigDecimal(proformaDatamanager.getTfaccliente().getPorcentajedescuento()));
+		}else{
+			proformaDatamanager.getTfaccabproforma().setTotaldescuento(new BigDecimal(0));
+		}
+		//total=totalneto-descuentos+iva
+		BigDecimal total=proformaDatamanager.getTfaccabproforma().getSubtotalneto().subtract(proformaDatamanager.getTfaccabproforma().getTotaldescuento()).add(proformaDatamanager.getTfaccabproforma().getIva());
+		proformaDatamanager.getTfaccabproforma().setTotal(total.doubleValue());
 	}
 	
 	public void cambioPicesType(Tfacdetproforma tfacdetproforma){
 		//Busqueda del pices type segun el tipo de unidad de venta del articulo
-				Tadmconversionunidad tadmconversionunidad=
-						bunsysService.conversionArticulo(tfacdetproforma.getUnidadventacodigo(), tfacdetproforma.getUnidadventa());
-				//pices type
-				//proformaDatamanager.getTfacdetproforma().setUnidadventa(proformaDatamanager.getTinvproducto().getUnidadventa());
-				//eq full boxes
-				tfacdetproforma.setEqfullboxes(tadmconversionunidad.getBoxes());
-				//steamsbunch
-				tfacdetproforma.setStemsbunch(tadmconversionunidad.getCantidadbunch());
-				//total bunch
-				tfacdetproforma.setTotalbunch(tadmconversionunidad.getTotalbunch());
-				//total stems
-				tfacdetproforma.setTotalstems(tfacdetproforma.getStemsbunch()*tfacdetproforma.getTotalbunch());
-				//unit price
-				tfacdetproforma.setPreciounitario(tfacdetproforma.getPreciounitario());
-				//total price
-				tfacdetproforma.setTotal(tfacdetproforma.getTotalstems()*tfacdetproforma.getPreciounitario());
-				calculos();
+		Tadmconversionunidad tadmconversionunidad=
+				bunsysService.conversionArticulo(tfacdetproforma.getUnidadventacodigo(), tfacdetproforma.getUnidadventa());
+		//pices type
+		//proformaDatamanager.getTfacdetproforma().setUnidadventa(proformaDatamanager.getTinvproducto().getUnidadventa());
+		//eq full boxes
+		tfacdetproforma.setEqfullboxes(tadmconversionunidad.getBoxes());
+		//steamsbunch
+		tfacdetproforma.setStemsbunch(tadmconversionunidad.getCantidadbunch());
+		//total bunch
+		tfacdetproforma.setTotalbunch(tadmconversionunidad.getTotalbunch());
+		//total stems
+		tfacdetproforma.setTotalstems(tfacdetproforma.getStemsbunch()*tfacdetproforma.getTotalbunch());
+		//unit price
+		tfacdetproforma.setPreciounitario(tfacdetproforma.getPreciounitario());
+		//total price
+		tfacdetproforma.setTotal(tfacdetproforma.getTotalstems()*tfacdetproforma.getPreciounitario());
+		calculos();
 	}
 	
 	public void cambioTotalPices(Tfacdetproforma tfacdetproforma){
@@ -221,13 +285,11 @@ public class ProformaController extends BaseController{
 	public void grabar(){
 		try {
 			if(proformaDatamanager.getTfaccliente()==null || proformaDatamanager.getTfaccliente().getPk()==null || proformaDatamanager.getTfaccliente().getPk().getCodigocliente()==null){
-				FacesContext context = FacesContext.getCurrentInstance();  
-				context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"PROFORMA","INGRESE EL CLIENTE"));
+				MessagesUtil.showErrorMessage("Ingrese el cliente"); 
 				return;
 			}
 			if(proformaDatamanager.getTfaccabproforma().getTfacdetproformas()==null || proformaDatamanager.getTfaccabproforma().getTfacdetproformas().size()==0){
-				FacesContext context = FacesContext.getCurrentInstance();  
-				context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"PROFORMA","NO TIENE DETALLE DE FACTURA"));
+				MessagesUtil.showErrorMessage("No ha ingresado el detalle de la factura");
 				return;
 			}
 			if(StringUtils.isNotBlank(proformaDatamanager.getTfaccabproforma().getAirline())){
@@ -235,13 +297,14 @@ public class ProformaController extends BaseController{
 			}
 			//compania
 			proformaDatamanager.getTfaccabproforma().getPk().setCodigocompania(articuloDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania());
+			
 			//cliente
 			proformaDatamanager.getTfaccabproforma().setCodigocliente(proformaDatamanager.getTfaccliente().getPk().getCodigocliente());
 			bunsysService.guardarProforma(proformaDatamanager.getTfaccabproforma(),proformaDatamanager.getAccionAux(),proformaDatamanager.getDetproformasEliminar());
 			proformaDatamanager.setDetproformasEliminar(new ArrayList<Tfacdetproforma>());
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, ContenidoMessages.getString("msg_info_proforma"), ContenidoMessages.getString("msg_info_proforma")));
+			MessagesUtil.showInfoMessage(ContenidoMessages.getString("msg_info_proforma"));
 		} catch(Throwable e){
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ContenidoMessages.getString("msg_error_proforma"), ContenidoMessages.getString("msg_error_proforma")));
+			MessagesUtil.showErrorMessage( ContenidoMessages.getString("msg_error_proforma"));
 		}
 	}
 	
@@ -259,6 +322,10 @@ public class ProformaController extends BaseController{
 		return "/pages/factura/proforma/buscarProforma?faces-redirect=true";
 	}
 	
+	public static BigDecimal round(BigDecimal d) {
+		  int mode = BigDecimal.ROUND_UP ;
+		  return d.setScale(2, mode);
+		}
 	
 	public ProformaDatamanager getProformaDatamanager() {
 		return proformaDatamanager;
