@@ -10,6 +10,8 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.inject.Inject;
 
+import org.apache.commons.lang.StringUtils;
+
 import ec.com.dlc.bunsys.dao.facturacion.FacturaDao;
 import ec.com.dlc.bunsys.entity.administracion.Tadmcompania;
 import ec.com.dlc.bunsys.entity.administracion.Tadmconversionunidad;
@@ -20,8 +22,9 @@ import ec.com.dlc.bunsys.entity.facturacion.Tfaccuentasxcobrar;
 import ec.com.dlc.bunsys.entity.facturacion.Tfacdetfactura;
 import ec.com.dlc.bunsys.entity.facturacion.Tfacdetproforma;
 import ec.com.dlc.bunsys.entity.facturacion.Tfacformapago;
-import ec.com.dlc.bunsys.entity.seguridad.Tsyspersona;
 import ec.com.dlc.bunsys.entity.facturacion.pk.TfaccuentasxcobrarPK;
+import ec.com.dlc.bunsys.entity.seguridad.Tsyspersona;
+import ec.com.dlc.bunsys.service.parametrizacion.SecuenciaService;
 import ec.com.dlc.bunsys.util.FacturacionException;
 
 /**
@@ -35,6 +38,8 @@ public class FacturacionService {
 	@Inject
 	private FacturaDao facturaDao;
 	
+	@Inject
+	private SecuenciaService secuenciaService;
 	public Collection<Tadmcompania> obtenerCompania() {
 		return facturaDao.findObjects(new Tadmcompania());
 	}
@@ -104,6 +109,9 @@ public class FacturacionService {
 	
 	public void grabarFactura(Tfaccabfactura tfaccabfactura)throws FacturacionException{
 		try{
+			Integer sec=secuenciaService.obtenerSecuenciaComp(tfaccabfactura.getPk().getCodigocompania(), "numerofactura");
+			System.out.println("sec..."+sec);
+			tfaccabfactura.getPk().setNumerofactura(getsecuencia(sec.toString()));
 			facturaDao.create(tfaccabfactura);
 			for(Tfacdetfactura tfacdetfactura: tfaccabfactura.getTfacdetfacturas()){
 				tfacdetfactura.setNumerofactura(tfaccabfactura.getPk().getNumerofactura());
@@ -112,11 +120,15 @@ public class FacturacionService {
 			}
 			//efectivo
 			for(Tfacformapago tfacformapago:tfaccabfactura.getTfacformapagos()){
+				tfacformapago.setNumerofactura(tfaccabfactura.getPk().getNumerofactura());
 				facturaDao.create(tfacformapago);
 			}
 			//credito
 			for(Tfaccuentasxcobrar tfaccuentasxcobrar:tfaccabfactura.getTfaccuentasxcobrars()){
+				tfaccuentasxcobrar.setNumerofactura(tfaccabfactura.getPk().getNumerofactura());
 				facturaDao.create(tfaccuentasxcobrar);
+				tfaccuentasxcobrar.setReferencia(tfaccuentasxcobrar.getPk().getCodigocuenxcobr());
+				facturaDao.update(tfaccuentasxcobrar);
 			}
 		} catch (Throwable e) {
 			throw new FacturacionException(e);
@@ -155,4 +167,17 @@ public class FacturacionService {
 		facturaDao.update(cxc);
 	}
 	
+	public List<Tfaccabfactura> cabeceraFacturas(String numerofactura,String estadosri)throws FacturacionException{
+		return facturaDao.cabeceraFacturas(numerofactura,estadosri);
+	}
+	
+	public List<Tfacdetfactura> detalleFacturas(String numerofactura)throws FacturacionException{
+		return facturaDao.detalleFacturas(numerofactura);
+	}
+	
+	private String getsecuencia(String secuencia){
+		System.out.println("Ingresa al secuencial");
+		return StringUtils.leftPad(secuencia, 9, '0');
+    }
+		
 }
