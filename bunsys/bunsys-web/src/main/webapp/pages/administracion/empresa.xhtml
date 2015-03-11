@@ -102,6 +102,16 @@
 						</p:selectOneRadio>
 						<p:message for="rbtnContabilidad"/>
 						
+						<p:outputLabel value="Exportadora" for="txtTipoCompania" style="display: block; width:150px;"/>
+						<p:selectBooleanCheckbox id="txtTipoCompania" value="#{companiaDatamanager.exportadora}"/>
+						<p:message for="txtTipoCompania"/>
+						
+						<p:outputLabel value="Tipo Ambiente" for="selTipoAdm" style="display: block; width:150px;"/>
+						<p:selectOneMenu id="selTipoAdm" value="#{companiaDatamanager.compania.tipoambiente}" style="display: block; width:179px;">
+							<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+		  					<f:selectItems value="#{companiaDatamanager.tipoAmbienteColl}" var="tipoAdm" itemLabel="#{tipoAdm.descripcion}" itemValue="#{tipoAdm.pk.codigoparamsri}" />
+						</p:selectOneMenu>
+						
 					</h:panelGrid>
 				</h:panelGroup>
 				<h:panelGroup layout="block" style="float:left">
