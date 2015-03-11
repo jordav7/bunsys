@@ -112,10 +112,7 @@
 								<p:inputText id="preproducto" value="#{proformaDatamanager.tinvproducto.preciounitario}" style="display:block;width:180px;" disabled="true"/>
 							</h:panelGrid>
 							<h:panelGrid columns="6" id="pnldetalle" >
-								<p:outputLabel value="#{msg.lbl_cantidad}:" for="cantidad" style="display:block;width:100px;"/>
-								<pe:inputNumber id="cantidad" value="#{proformaDatamanager.tfacdetproforma.cantidad}" decimalPlaces="3" decimalSeparator="." thousandSeparator="," required="true"/>
-								<p:message for="cantidad" display="icon"/>	
-								<p:commandButton id="btnagregar" value="#{msg['btn_anadir']}" icon="ui-icon-plusthick"  process="@this pnldetalle"
+								<p:commandButton id="btnagregar" value="#{msg['btn_anadir']}" icon="ui-icon-plusthick"  process="@this"
 									 action="#{proformaController.agregarProducto()}" update="pnldetalle, detalleFactura, pnldetalleproducto totales" />
 							</h:panelGrid>
 							
@@ -124,21 +121,21 @@
 								<p:column headerText="#{msg.lbl_pices_type}" style="width:100px" >
 									<p:selectOneMenu id="catpicestype" value="#{item.unidadventa}"  var="p" style="width:100px" panelStyle="width:100px" >						
 										<p:ajax event="change"  listener="#{proformaController.cambioPicesType(item)}" 
-											process="@this catpicestype" update="detalleFactura :frm:totales"/>
+											process="@this catpicestype" update="picestype eqfullboxes stemsbunch totalbunch totalstems priceunit totalprice :frm:total :frm:sinimpuestos :frm:subtotal12 :frm:subtotal0 :frm:noiva :frm:exiva :frm:descuento :frm:iva12"/>
 										<f:selectItems value="#{proformaDatamanager.catalogoPicesType}" 
 											var="itemcat" itemValue="#{itemcat.pk.codigocatalogo}" itemLabel="#{itemcat.descripcion}"/>
 									</p:selectOneMenu>	
 								</p:column>
 								<p:column headerText="#{msg.lbl_total_pice}">
-									<p:inputText id="picestype" value="#{item.cantidad}" disabled="#{facturaDataManager.editable}">
-										<p:ajax event="blur"  listener="#{facturaController.cambioPicesType(item)}" 
-											process="@this picestype" update="picestype eqfullboxes stemsbunch totalbunch totalstems priceunit totalprice :frm:total"/>
+									<p:inputText id="picestype" value="#{item.cantidad}" >
+										<p:ajax event="blur"  listener="#{proformaController.cambioPicesType(item)}" 
+											process="@this picestype" update="picestype eqfullboxes stemsbunch totalbunch totalstems priceunit totalprice :frm:total :frm:sinimpuestos :frm:subtotal12 :frm:subtotal0 :frm:noiva :frm:exiva :frm:descuento :frm:iva12"/>
 									</p:inputText>
 								</p:column>
 								<p:column headerText="#{msg.lbl_eq_full_boxes}">
-									<p:inputText id="eqfullboxes" value="#{item.eqfullboxes}" disabled="#{facturaDataManager.editable}">
-										<p:ajax event="blur"  listener="#{facturaController.cambioeqfullboxes(item)}" 
-											process="@this eqfullboxes" update="picestype eqfullboxes stemsbunch totalbunch totalstems priceunit totalprice :frm:total"/>
+									<p:inputText id="eqfullboxes" value="#{item.eqfullboxes}" >
+										<p:ajax event="blur"  listener="#{proformaController.cambioeqfullboxes(item)}" 
+											process="@this eqfullboxes" update="picestype eqfullboxes stemsbunch totalbunch totalstems priceunit totalprice :frm:total :frm:sinimpuestos :frm:subtotal12 :frm:subtotal0 :frm:noiva :frm:exiva :frm:descuento :frm:iva12"/>
 									</p:inputText>
 								</p:column>
 								<p:column headerText="#{msg.lbl_product_description}">
@@ -151,40 +148,40 @@
 									<p:outputLabel value="#{item.nandina}"/>
 								</p:column>
 								<p:column headerText="#{msg.lbl_stems_bunch}">
-									<p:inputText id="stemsbunch" value="#{item.stemsbunch}" disabled="#{facturaDataManager.editable}">
-										<p:ajax event="blur"  listener="#{facturaController.cambioStemsBunch(item)}" 
-											process="@this stemsbunch" update="picestype eqfullboxes stemsbunch totalbunch totalstems priceunit totalprice :frm:total"/>
+									<p:inputText id="stemsbunch" value="#{item.stemsbunch}" >
+										<p:ajax event="blur"  listener="#{proformaController.cambioStemsBunch(item)}" 
+											process="@this stemsbunch" update="picestype eqfullboxes stemsbunch totalbunch totalstems priceunit totalprice :frm:total :frm:sinimpuestos :frm:subtotal12 :frm:subtotal0 :frm:noiva :frm:exiva :frm:descuento :frm:iva12"/>
 									</p:inputText>
 								</p:column>
 								<p:column headerText="#{msg.lbl_total_bunch}">
-									<p:inputText id="totalbunch" value="#{item.totalbunch}" disabled="#{facturaDataManager.editable}">
-										<p:ajax event="blur"  listener="#{facturaController.cambiototalBunch(item)}" 
-											process="@this totalbunch" update="picestype eqfullboxes stemsbunch totalbunch totalstems priceunit totalprice :frm:total"/>
+									<p:inputText id="totalbunch" value="#{item.totalbunch}" >
+										<p:ajax event="blur"  listener="#{proformaController.cambiototalBunch(item)}" 
+											process="@this totalbunch" update="picestype eqfullboxes stemsbunch totalbunch totalstems priceunit totalprice :frm:total :frm:sinimpuestos :frm:subtotal12 :frm:subtotal0 :frm:noiva :frm:exiva :frm:descuento :frm:iva12"/>
 									</p:inputText>
 								</p:column>
 								<p:column headerText="#{msg.lbl_total_stems}">
-									<p:inputText id="totalstems" value="#{item.totalstems}" disabled="#{facturaDataManager.editable}">
-										<p:ajax event="blur"  listener="#{facturaController.cambiototalSteams(item)}" 
-											process="@this totalstems" update="picestype eqfullboxes stemsbunch totalbunch totalstems priceunit totalprice :frm:total"/>
+									<p:inputText id="totalstems" value="#{item.totalstems}" >
+										<p:ajax event="blur"  listener="#{proformaController.cambiototalSteams(item)}" 
+											process="@this totalstems" update="picestype eqfullboxes stemsbunch totalbunch totalstems priceunit totalprice :frm:total :frm:sinimpuestos :frm:subtotal12 :frm:subtotal0 :frm:noiva :frm:exiva :frm:descuento :frm:iva12"/>
 									</p:inputText>
 								</p:column>
 								<p:column headerText="#{msg.lbl_unit_price}">
-									<p:inputText id="priceunit" value="#{item.preciounitario}" disabled="#{facturaDataManager.editable}">
-										<p:ajax event="blur"  listener="#{facturaController.cambiounitprice(item)}" 
-											process="@this priceunit" update="picestype eqfullboxes stemsbunch totalbunch totalstems priceunit totalprice :frm:total"/>
+									<p:inputText id="priceunit" value="#{item.preciounitario}" >
+										<p:ajax event="blur"  listener="#{proformaController.cambiounitprice(item)}" 
+											process="@this priceunit" update="picestype eqfullboxes stemsbunch totalbunch totalstems priceunit totalprice :frm:total :frm:sinimpuestos :frm:subtotal12 :frm:subtotal0 :frm:noiva :frm:exiva :frm:descuento :frm:iva12"/>
 									</p:inputText>
 								</p:column>
 								<p:column headerText="#{msg.lbl_total_price}">
-									<p:inputText id="totalprice" value="#{item.total}" disabled="#{facturaDataManager.editable}">
-										<p:ajax event="blur"  listener="#{facturaController.cambiototal(item)}" 
-											process="@this totalprice" update="picestype eqfullboxes stemsbunch totalbunch totalstems priceunit totalprice :frm:total"/>
+									<p:inputText id="totalprice" value="#{item.total}" >
+										<p:ajax event="blur"  listener="#{proformaController.cambiototal(item)}" 
+											process="@this totalprice" update="picestype eqfullboxes stemsbunch totalbunch totalstems priceunit totalprice :frm:total :frm:sinimpuestos :frm:subtotal12 :frm:subtotal0 :frm:noiva :frm:exiva :frm:descuento :frm:iva12"/>
 									</p:inputText>
 								</p:column>
 								<p:column>
 									<p:commandButton id="btneliminar" icon="ui-icon-close" 
-										action="#{proformaController.eliminarArticulo(item)}" process="@this detalleFactura" update="detalleFactura :frm:totales" />
+										action="#{proformaController.eliminarArticulo(item)}" process="@this detalleFactura" update="detalleFactura :frm:totales :frm:sinimpuestos :frm:subtotal12 :frm:subtotal0 :frm:noiva :frm:exiva :frm:descuento :frm:iva12" />
 								</p:column>
-								<p:columnGroup type="footer">
+								<!-- <p:columnGroup type="footer">
 					                <p:row>
 					                    <p:column footerText="Total: " style="text-align:right"/>
 					                    <p:column footerText="#{proformaDatamanager.tfaccabproforma.totalpices}" />
@@ -195,7 +192,7 @@
 					                    <p:column  footerText="#{proformaDatamanager.tfaccabproforma.total}" />
 					                    <p:column  footerText="" />
 					                </p:row>
-					            </p:columnGroup>
+					            </p:columnGroup> -->
 							</p:dataTable>
 						</h:panelGroup>
 					</p:panelGrid>
@@ -203,26 +200,28 @@
 			
 			<p:fieldset legend="#{msg['lbl_totales']}" id="totales">
 				<h:panelGrid columns="6">
+					<p:outputLabel value="#{msg['lbl_porcentaje_desc']}:" style="display:block;width: 150px;" for="pordescuento"/>
+					<p:inputText id="pordescuento" value="#{proformaDatamanager.tfaccliente.porcentajedescuento}" >
+						<p:ajax event="blur" listener="#{proformaController.calculos()}" process="@this" update="sinimpuestos subtotal12 subtotal0 noiva exiva descuento iva12 total"></p:ajax>
+					</p:inputText>
+				</h:panelGrid>
+				<h:panelGrid columns="6">
 					<p:outputLabel value="#{msg['lbl_subtotal_sin_impuestos']}:" style="display:block;width: 150px;"/>
-					<h:outputText id="sinimpuestos" value="#{facturaDataManager.tfaccabfactura.subtotalnoiva}" />
-					<p:outputLabel value="#{msg['lbl_subtotal12']}:"/>
-					<h:outputText  id="subtotal12" value="#{facturaDataManager.tfaccabfactura.subtotaliva}" />
+					<h:outputText id="sinimpuestos" value="#{proformaDatamanager.tfaccabproforma.subtotalneto}" style="display:block;width: 100px;" />
+					<p:outputLabel value="#{msg['lbl_subtotal12']}:" style="display:block;width: 200px;"/>
+					<h:outputText  id="subtotal12" value="#{proformaDatamanager.tfaccabproforma.subtotaliva}" style="display:block;width: 100px;"/>
 					<p:outputLabel value="#{msg['lbl_subtotal0']}:" style="display:block;width: 150px;"/>
-					<h:outputText id="subtotal0" value="" />
+					<h:outputText id="subtotal0" value="#{proformaDatamanager.tfaccabproforma.subtotalnoiva}" style="display:block;width: 100px;"/>
 					<p:outputLabel value="#{msg['lbl_subtotal_noiva']}:"/>
-					<h:outputText id="noiva" value="#{facturaDataManager.tfaccabfactura.subtotalnoiva}" />
-					<p:outputLabel  value="#{msg['lbl_subtotal_exiva']}:" style="display:block;width: 150px;"/>
-					<h:outputText id="exiva" value="" />
+					<h:outputText id="noiva" value="0.00" />
+					<p:outputLabel  value="#{msg['lbl_subtotal_exiva']}:" />
+					<h:outputText id="exiva" value="#{proformaDatamanager.tfaccabproforma.subtotalexcentoiva}" />
 					<p:outputLabel value="#{msg['lbl_total_descuento']}:"/>
-					<h:outputText id="descuento" value="" />
-					<p:outputLabel  value="#{msg['lbl_valorice']}:" style="display:block;width: 150px;"/>
-					<h:outputText id="valorice" value="#{facturaDataManager.tfaccabfactura.valorice}" />
-					<p:outputLabel value="#{msg['lbl_valorirbpnr']}:"/>
-					<h:outputText id="valorirbpnr" value="#{facturaDataManager.tfaccabfactura.valorirbpnr}" />
-					<p:outputLabel value="#{msg['lbl_iva12']}:" style="display:block;width: 150px;"/>
-					<h:outputText id="iva12" value="" />
+					<h:outputText id="descuento" value="#{proformaDatamanager.tfaccabproforma.totaldescuento}" />
+					<p:outputLabel value="#{msg['lbl_iva12']}:"/>
+					<h:outputText id="iva12" value="#{proformaDatamanager.tfaccabproforma.iva}" />
 					<p:outputLabel value="#{msg['lbl_total_factura']}:"/>
-					<h:outputText id="total" value="#{facturaDataManager.tfaccabfactura.total}" />
+					<h:outputText id="total" value="#{proformaDatamanager.tfaccabproforma.total}" />
 				</h:panelGrid>
 			</p:fieldset>
 			<h:panelGrid columns="3">
