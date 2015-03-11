@@ -106,4 +106,22 @@ public class ComprasDao extends GeneralDao{
 			throw new FacturacionException(e);
 		}
 	}
+	
+	/**
+	 * Retorna una lista de cat&aacute;logos de parametros del SRI
+	 * @param codCompania
+	 * @return Collection<Tadmparamsri>
+	 */
+	@SuppressWarnings("unchecked")
+	public Collection<Tadmparamsri> parametroSri(Integer codTipoParametro) throws FacturacionException{
+		Collection<Tadmparamsri> catalogosColl = null;
+		try{
+			Query query = this.entityManager.createQuery("SELECT o FROM Tadmparamsri o WHERE o.pk.codigotipoparamsri=:codTipoParametro ");
+			query.setParameter("codTipoParametro", codTipoParametro);
+			catalogosColl = query.getResultList();
+			return catalogosColl;
+		} catch(Throwable e){
+			throw new FacturacionException(e);
+		}
+	}
 }
