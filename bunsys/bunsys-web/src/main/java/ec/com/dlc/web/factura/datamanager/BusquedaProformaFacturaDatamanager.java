@@ -7,8 +7,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 
-import ec.com.dlc.bunsys.entity.facturacion.Tfaccabdevolucione;
-import ec.com.dlc.bunsys.entity.facturacion.Tfaccabproforma;
+import ec.com.dlc.bunsys.entity.administracion.Tadmparamsri;
+import ec.com.dlc.bunsys.entity.facturacion.Tfaccabfactura;
 import ec.com.dlc.web.datamanager.base.BaseDatamanager;
 import ec.com.dlc.web.datamanager.login.LoginDatamanager;
 
@@ -22,19 +22,18 @@ public class BusquedaProformaFacturaDatamanager extends BaseDatamanager {
 	/**
 	 * atributo para realizar la busqueda de las proformas
 	 */
-	private String numeroproforma;
+	private String numerofactura;
+	
+	private String codigoparamsri;
 	
 	/**
-	 * lista de proformas
+	 * lista de facturas
 	 */
-	private List<Tfaccabproforma>tfaccabproformaList;
+	private List<Tfaccabfactura>tfaccabfacturasList;
 	
-	/**
-	 * Objeto para realizar la busqueda de la proforma
-	 */
-	private Tfaccabproforma tfaccabproformaSerch;
+	private Collection<Tadmparamsri> tadmparamsriList;
 	
-	private Collection<Tfaccabdevolucione> notasCreditoColl;
+	
 	
 	@Override
 	public String getIdDatamanager() {
@@ -49,38 +48,37 @@ public class BusquedaProformaFacturaDatamanager extends BaseDatamanager {
 		this.loginDatamanager = loginDatamanager;
 	}
 
-	public Tfaccabproforma getTfaccabproformaSerch() {
-		return tfaccabproformaSerch;
+	public List<Tfaccabfactura> getTfaccabfacturasList() {
+		return tfaccabfacturasList;
 	}
 
-	public void setTfaccabproformaSerch(Tfaccabproforma tfaccabproformaSerch) {
-		this.tfaccabproformaSerch = tfaccabproformaSerch;
+	public void setTfaccabfacturasList(List<Tfaccabfactura> tfaccabfacturasList) {
+		this.tfaccabfacturasList = tfaccabfacturasList;
 	}
 
-	public Collection<Tfaccabdevolucione> getNotasCreditoColl() {
-		return notasCreditoColl;
+	public String getCodigoparamsri() {
+		return codigoparamsri;
 	}
 
-	public void setNotasCreditoColl(Collection<Tfaccabdevolucione> notasCreditoColl) {
-		this.notasCreditoColl = notasCreditoColl;
+	public void setCodigoparamsri(String codigoparamsri) {
+		this.codigoparamsri = codigoparamsri;
 	}
 
-	public String getNumeroproforma() {
-		return numeroproforma;
+	public Collection<Tadmparamsri> getTadmparamsriList() {
+		return tadmparamsriList;
 	}
 
-	public void setNumeroproforma(String numeroproforma) {
-		this.numeroproforma = numeroproforma;
+	public void setTadmparamsriList(Collection<Tadmparamsri> tadmparamsriList) {
+		this.tadmparamsriList = tadmparamsriList;
 	}
 
-	public List<Tfaccabproforma> getTfaccabproformaList() {
-		return tfaccabproformaList;
+	public String getNumerofactura() {
+		return numerofactura;
 	}
 
-	public void setTfaccabproformaList(List<Tfaccabproforma> tfaccabproformaList) {
-		this.tfaccabproformaList = tfaccabproformaList;
+	public void setNumerofactura(String numerofactura) {
+		this.numerofactura = numerofactura;
 	}
-
 
 
 }
