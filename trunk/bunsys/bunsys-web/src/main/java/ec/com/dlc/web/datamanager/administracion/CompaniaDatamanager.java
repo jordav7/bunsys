@@ -1,6 +1,7 @@
 package ec.com.dlc.web.datamanager.administracion;
 
 import java.io.ByteArrayInputStream;
+import java.util.Collection;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -11,6 +12,7 @@ import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 
 import ec.com.dlc.bunsys.entity.administracion.Tadmcompania;
+import ec.com.dlc.bunsys.entity.administracion.Tadmparamsri;
 import ec.com.dlc.web.datamanager.base.BaseDatamanager;
 import ec.com.dlc.web.datamanager.login.LoginDatamanager;
 
@@ -24,7 +26,11 @@ public class CompaniaDatamanager extends BaseDatamanager{
 	private StreamedContent strContent;
 	
 	private Tadmcompania compania;
+	
+	private Collection<Tadmparamsri> tipoAmbienteColl;
 
+	private boolean exportadora;
+	
 	@Override
 	public String getIdDatamanager() {
 		return "companiaDatamanager";
@@ -44,7 +50,7 @@ public class CompaniaDatamanager extends BaseDatamanager{
 		}
 		return strContent;
 	}
-
+	
 	public void setStrContent(StreamedContent strContent) {
 		this.strContent = strContent;
 	}
@@ -55,6 +61,22 @@ public class CompaniaDatamanager extends BaseDatamanager{
 
 	public void setCompania(Tadmcompania compania) {
 		this.compania = compania;
+	}
+
+	public Collection<Tadmparamsri> getTipoAmbienteColl() {
+		return tipoAmbienteColl;
+	}
+
+	public void setTipoAmbienteColl(Collection<Tadmparamsri> tipoAmbienteColl) {
+		this.tipoAmbienteColl = tipoAmbienteColl;
+	}
+
+	public boolean isExportadora() {
+		return exportadora;
+	}
+
+	public void setExportadora(boolean exportadora) {
+		this.exportadora = exportadora;
 	}
 	
 	
