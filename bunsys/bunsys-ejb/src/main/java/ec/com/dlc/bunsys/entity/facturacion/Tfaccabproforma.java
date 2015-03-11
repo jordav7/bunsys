@@ -60,6 +60,9 @@ public class Tfaccabproforma extends BaseEntity<TfaccabproformaPK>  {
 	private BigDecimal subtotaliva;
 	
 	@Column
+	private BigDecimal	subtotalexcentoiva;
+	
+	@Column
 	private BigDecimal subtotalbase;
 	
 	@Column
@@ -439,6 +442,14 @@ public class Tfaccabproforma extends BaseEntity<TfaccabproformaPK>  {
 
 	public void setTfaccliente(Tfaccliente tfaccliente) {
 		this.tfaccliente = tfaccliente;
+	}
+
+	public BigDecimal getSubtotalexcentoiva() {
+		return subtotalexcentoiva;
+	}
+
+	public void setSubtotalexcentoiva(BigDecimal subtotalexcentoiva) {
+		this.subtotalexcentoiva = subtotalexcentoiva;
 	}
 	
 	
