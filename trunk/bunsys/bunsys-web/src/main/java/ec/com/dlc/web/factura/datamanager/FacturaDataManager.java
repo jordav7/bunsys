@@ -73,6 +73,8 @@ public class FacturaDataManager extends BaseDatamanager {
     
     private Boolean editable;
     
+    private String numeroproforma;
+    
 	public Tfaccabfactura getTfaccabfactura() {
 		return tfaccabfactura;
 	}
@@ -231,6 +233,14 @@ public class FacturaDataManager extends BaseDatamanager {
 
 	public void setCatalogoPicesType(Collection<Tadmcatalogo> catalogoPicesType) {
 		this.catalogoPicesType = catalogoPicesType;
+	}
+
+	public String getNumeroproforma() {
+		return numeroproforma;
+	}
+
+	public void setNumeroproforma(String numeroproforma) {
+		this.numeroproforma = numeroproforma;
 	}
 
 
