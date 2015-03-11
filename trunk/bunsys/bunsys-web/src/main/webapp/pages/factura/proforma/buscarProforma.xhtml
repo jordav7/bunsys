@@ -32,6 +32,9 @@
 								<p:column headerText="#{msg.lbl_numero_proforma}">
 									<p:outputLabel value="#{item.pk.numeroproforma}"/>
 								</p:column>
+								<p:column headerText="#{msg.lbl_cliente}">
+									<p:outputLabel value="#{item.tfaccliente.tsyspersona.nombres} #{item.tfaccliente.tsyspersona.apellidos}"/>
+								</p:column>
 								<p:column headerText="#{msg.lbl_referendum}">
 									<p:outputLabel value="#{item.referendum}"/>
 								</p:column>
