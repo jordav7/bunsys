@@ -10,12 +10,14 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
 
 import ec.com.dlc.bunsys.entity.administracion.pk.TadmcompaniaPK;
 import ec.com.dlc.bunsys.facade.BunsysService;
+import ec.com.dlc.web.commons.resource.ContenidoMessages;
 import ec.com.dlc.web.controller.base.BaseController;
 import ec.com.dlc.web.datamanager.administracion.CompaniaDatamanager;
 import ec.com.dlc.web.datamanager.base.BaseDatamanager;
@@ -42,10 +44,22 @@ public class CompaniaController extends BaseController {
 		TadmcompaniaPK companiaPk = new TadmcompaniaPK();
 		companiaPk.setCodigocompania(companiaDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania());
 		companiaDatamanager.setCompania(bunsysService.buscarCompania(companiaPk));
+		companiaDatamanager.setTipoAmbienteColl(bunsysService.buscarObtenerCatSri(ContenidoMessages.getInteger("cod_catalogo_tipo_amb")));
+		
+		if(StringUtils.isNotBlank(companiaDatamanager.getCompania().getTipocompania()) && companiaDatamanager.getCompania().getTipocompania().equalsIgnoreCase("E")){
+			companiaDatamanager.setExportadora(true);
+		}else{
+			companiaDatamanager.setExportadora(false);
+		}
 	}
 	
 	public void actualizarCompania() {
 		try {
+			if(companiaDatamanager.isExportadora()){
+				companiaDatamanager.getCompania().setTipocompania("E");
+			}else{
+				companiaDatamanager.getCompania().setTipocompania("N");
+			}
 			bunsysService.actualizarCompania(companiaDatamanager.getCompania());
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Registro guardado correctamente", "Registro guardado correctamente"));
 		} catch (Exception e) {
