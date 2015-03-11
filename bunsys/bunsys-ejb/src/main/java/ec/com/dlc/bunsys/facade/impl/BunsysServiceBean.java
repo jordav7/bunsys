@@ -70,6 +70,10 @@ public class BunsysServiceBean implements BunsysService {
 		return parametrizacionService.obtenerCatalogos(codCompania, codTipoCatalogo);
 	}
 
+	public Collection<Tadmparamsri> buscarObtenerCatSri(Integer codigoCatalogo) {
+		return parametrizacionService.obtenerCatalogosSri(codigoCatalogo);
+	}
+	
 	@Override
 	public void guardarArticulo(Tinvproducto articulo)
 			throws FacturacionException {
