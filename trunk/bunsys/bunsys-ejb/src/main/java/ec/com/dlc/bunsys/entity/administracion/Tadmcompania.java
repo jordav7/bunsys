@@ -4,7 +4,11 @@ import java.util.Collection;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -72,7 +76,16 @@ public class Tadmcompania extends BaseEntity<TadmcompaniaPK>{
 	
 	@Column
 	private String telefonocelular;
+	
+	@Column
+	private String tipocompania;
 
+	@Column
+	private String tipoambiente;
+
+	@Column
+	private Integer tipoambientecodigo;
+	
 	//bi-directional many-to-one association to Tadmrole
 	@OneToMany(mappedBy="tadmcompania")
 	private Collection<Tadmrole> tadmroles;
@@ -85,6 +98,13 @@ public class Tadmcompania extends BaseEntity<TadmcompaniaPK>{
 	@OneToMany(mappedBy="tadmcompania")
 	private Collection<Tadmusuario> tadmusuarios;
 
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumns({
+			@JoinColumn(name="tipoambiente", referencedColumnName="codigoparamsri", insertable=false, updatable=false),
+			@JoinColumn(name="tipoambientecodigo", referencedColumnName="codigotipoparamsri", insertable=false, updatable=false)
+	})
+	private Tadmparamsri tadmtipoambiente;
+	
 	public Tadmcompania() {
 	}
 
@@ -238,6 +258,38 @@ public class Tadmcompania extends BaseEntity<TadmcompaniaPK>{
 
 	public void setTelefonocelular(String telefonocelular) {
 		this.telefonocelular = telefonocelular;
+	}
+
+	public String getTipocompania() {
+		return tipocompania;
+	}
+
+	public void setTipocompania(String tipocompania) {
+		this.tipocompania = tipocompania;
+	}
+
+	public String getTipoambiente() {
+		return tipoambiente;
+	}
+
+	public void setTipoambiente(String tipoambiente) {
+		this.tipoambiente = tipoambiente;
+	}
+
+	public Integer getTipoambientecodigo() {
+		return tipoambientecodigo;
+	}
+
+	public void setTipoambientecodigo(Integer tipoambientecodigo) {
+		this.tipoambientecodigo = tipoambientecodigo;
+	}
+
+	public Tadmparamsri getTadmtipoambiente() {
+		return tadmtipoambiente;
+	}
+
+	public void setTadmtipoambiente(Tadmparamsri tadmtipoambiente) {
+		this.tadmtipoambiente = tadmtipoambiente;
 	}
 
 	

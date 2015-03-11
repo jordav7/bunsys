@@ -1,10 +1,13 @@
 package ec.com.dlc.bunsys.entity.administracion;
 
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import ec.com.dlc.bunsys.entity.administracion.pk.TadmparamsriPK;
 import ec.com.dlc.bunsys.entity.base.BaseEntity;
@@ -38,6 +41,9 @@ public class Tadmparamsri extends BaseEntity<TadmparamsriPK>  {
 	@JoinColumn(name="codigotipoparamsri", insertable=false, updatable=false)
 	private Tadmtipoparamsri tadmtipoparamsri;
 
+	@OneToMany(mappedBy="tadmtipoambiente")
+	private Set<Tadmcompania> tadmcompania;
+	
 	public Tadmparamsri() {
 	}
 
@@ -89,4 +95,13 @@ public class Tadmparamsri extends BaseEntity<TadmparamsriPK>  {
 		this.tadmtipoparamsri = tadmtipoparamsri;
 	}
 
+	public Set<Tadmcompania> getTadmcompania() {
+		return tadmcompania;
+	}
+
+	public void setTadmcompania(Set<Tadmcompania> tadmcompania) {
+		this.tadmcompania = tadmcompania;
+	}
+
+	
 }
