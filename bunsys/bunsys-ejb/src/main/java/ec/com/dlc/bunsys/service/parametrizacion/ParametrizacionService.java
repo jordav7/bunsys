@@ -291,5 +291,15 @@ public class ParametrizacionService {
 			throw new FacturacionException(e);
 		}
 	}
-	
+
+	/**
+	 * Busca todos los c&aacute;talogos de tipo de documento SRI proveedores
+	 * @param codigoCompania
+	 * @param codigoCatalogo
+	 * @return
+	 * @throws FacturacionException
+	 */
+	public Collection<Tadmparamsri> parametroSri(Integer codTipoParametro) throws FacturacionException{
+		return  comprasDao.parametroSri(codTipoParametro);
+	}
 }
