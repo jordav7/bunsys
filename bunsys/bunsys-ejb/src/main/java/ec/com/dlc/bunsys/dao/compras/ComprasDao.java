@@ -23,7 +23,7 @@ public class ComprasDao extends GeneralDao{
 	public Collection<Tadmparamsri> obtenerTipoDocProv(Integer codTipoParametro, String cxp) throws FacturacionException{
 		Collection<Tadmparamsri> catalogosColl = null;
 		try{
-			Query query = this.entityManager.createQuery("SELECT o FROM Tadmparamsri o WHERE o.pk.codigotipoparamsri=:codTipoParametro and o.cxp=:cxp");
+			Query query = this.entityManager.createQuery("SELECT o FROM Tadmparamsri o WHERE o.pk.codigotipoparamsri=:codTipoParametro and o.cxp = :cxp");
 			query.setParameter("codTipoParametro", codTipoParametro);
 			query.setParameter("cxp", cxp);
 			catalogosColl = query.getResultList();
