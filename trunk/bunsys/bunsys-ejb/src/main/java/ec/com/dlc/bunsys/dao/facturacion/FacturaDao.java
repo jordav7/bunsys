@@ -12,6 +12,7 @@ import org.apache.commons.lang.StringUtils;
 import ec.com.dlc.bunsys.dao.general.GeneralDao;
 import ec.com.dlc.bunsys.entity.administracion.Tadmcatalogo;
 import ec.com.dlc.bunsys.entity.administracion.Tadmconversionunidad;
+import ec.com.dlc.bunsys.entity.administracion.Tadmparamsri;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccabdevolucione;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccabproforma;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccliente;
@@ -42,6 +43,19 @@ public class FacturaDao extends GeneralDao {
 			query.setParameter("codcompania", codCompania);
 			query.setParameter("codtipocatalogo", codTipoCatalogo);
 			query.setParameter("estado", "A");
+			catalogosColl = query.getResultList();
+			return catalogosColl;
+		} catch(Throwable e){
+			throw new FacturacionException(e);
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Collection<Tadmparamsri> obtenerCatalogosSri(Integer codTipoParametro) throws FacturacionException{
+		Collection<Tadmparamsri> catalogosColl = null;
+		try{
+			Query query = this.entityManager.createQuery("SELECT o FROM Tadmparamsri o WHERE o.pk.codigotipoparamsri=:codTipoParametro");
+			query.setParameter("codTipoParametro", codTipoParametro);
 			catalogosColl = query.getResultList();
 			return catalogosColl;
 		} catch(Throwable e){
