@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -14,15 +15,19 @@ import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
 
+import ec.com.dlc.bunsys.entity.administracion.Tadmcatalogo;
 import ec.com.dlc.bunsys.entity.administracion.Tadmconversionunidad;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccabfactura;
+import ec.com.dlc.bunsys.entity.facturacion.Tfaccabproforma;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccliente;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccuentasxcobrar;
 import ec.com.dlc.bunsys.entity.facturacion.Tfacdetfactura;
+import ec.com.dlc.bunsys.entity.facturacion.Tfacdetproforma;
 import ec.com.dlc.bunsys.entity.facturacion.Tfacformapago;
 import ec.com.dlc.bunsys.entity.inventario.Tinvproducto;
 import ec.com.dlc.bunsys.entity.seguridad.Tsyspersona;
 import ec.com.dlc.bunsys.facade.BunsysService;
+import ec.com.dlc.bunsys.util.FacturacionException;
 import ec.com.dlc.web.commons.resource.ContenidoMessages;
 import ec.com.dlc.web.componentes.ArticuloComponent;
 import ec.com.dlc.web.componentes.ClienteComponent;
@@ -105,6 +110,7 @@ public class FacturaController extends BaseController implements Serializable{
 	}
 	
 	
+	@SuppressWarnings("deprecation")
 	private void pagoCredito(){
 		Double valorpagar=facturaDataManager.getTfaccabfactura().getTotal()/(facturaDataManager.getNumeropagos());
 		Double suma=0d;
@@ -120,16 +126,31 @@ public class FacturaController extends BaseController implements Serializable{
 			tfaccuentasxcobrar.setNumeropago(j);
 			//valor
 			tfaccuentasxcobrar.setValor(new BigDecimal(valorpagar));
+			//saldo
+			tfaccuentasxcobrar.setSaldo(tfaccuentasxcobrar.getValor());
 			suma=suma+valorpagar;
 			//valor factura
 			tfaccuentasxcobrar.setValorfactura(new BigDecimal(facturaDataManager.getTfaccabfactura().getTotal()));
 			//estado
 			tfaccuentasxcobrar.setEstado("P");
 			tfaccuentasxcobrar.setEstadocodigo(ContenidoMessages.getInteger("cod_catalogo_estado_cuentaxcobrar"));//32
-			//fecha de pago
-			Date fechapago= new Date();
-			fechapago.setMonth(fechapago.getMonth()+j);
-			tfaccuentasxcobrar.setFechapago(fechapago);
+			//tipo documento
+			tfaccuentasxcobrar.setTipodoc("FAC");
+			tfaccuentasxcobrar.setTipodoccodigo(ContenidoMessages.getInteger("cod_tipo_doc_cuentaxcobrar"));//32
+			//fecha de la factura
+			tfaccuentasxcobrar.setFecharegistro(facturaDataManager.getTfaccabfactura().getFechafactura());
+			//fecha de vence
+			Date fechavence= new Date();
+			fechavence.setMonth(fechavence.getMonth()+j);
+			tfaccuentasxcobrar.setFechavence(fechavence);
+			
+			Date fechaemision= new Date();
+			if(j>1){
+				fechaemision.setMonth(fechaemision.getMonth()+(j-1));
+			}
+			fechaemision.setDate(fechaemision.getDate()+1);
+			//fecha de emision
+			tfaccuentasxcobrar.setFechaemision(fechaemision);
 			facturaDataManager.getTfaccabfactura().getTfaccuentasxcobrars().add(tfaccuentasxcobrar);
 		}
 		Tfaccuentasxcobrar tfaccuentasxcobrar= new Tfaccuentasxcobrar();
@@ -143,14 +164,27 @@ public class FacturaController extends BaseController implements Serializable{
 		tfaccuentasxcobrar.setNumeropago(facturaDataManager.getNumeropagos());
 		//valor
 		tfaccuentasxcobrar.setValor(new BigDecimal(facturaDataManager.getTfaccabfactura().getTotal()-suma));
+		//saldo
+		tfaccuentasxcobrar.setSaldo(tfaccuentasxcobrar.getValor());
 		//valor factura
 		tfaccuentasxcobrar.setValorfactura(new BigDecimal(facturaDataManager.getTfaccabfactura().getTotal()));
 		//estado
 		tfaccuentasxcobrar.setEstado("P");
+		//tipo documento
+		tfaccuentasxcobrar.setTipodoc("FAC");
+		tfaccuentasxcobrar.setTipodoccodigo(ContenidoMessages.getInteger("cod_tipo_doc_cuentaxcobrar"));
+		//fecha de la factura
+		tfaccuentasxcobrar.setFecharegistro(facturaDataManager.getTfaccabfactura().getFechafactura());
 		//fecha de pago
-		Date fechapago= new Date();
-		fechapago.setMonth(fechapago.getMonth()+facturaDataManager.getNumeropagos());
-		tfaccuentasxcobrar.setFechapago(fechapago);
+		Date fechavence= new Date();
+		fechavence.setMonth(fechavence.getMonth()+facturaDataManager.getNumeropagos());
+		tfaccuentasxcobrar.setFechavence(fechavence);
+		//fecha de emision
+		Date fechaemision= new Date();
+		fechaemision.setMonth(fechaemision.getMonth()+(facturaDataManager.getNumeropagos()-1));
+		fechaemision.setDate(fechaemision.getDate()+1);
+		//fecha de emision
+		tfaccuentasxcobrar.setFechaemision(fechaemision);
 		tfaccuentasxcobrar.setEstadocodigo(ContenidoMessages.getInteger("cod_catalogo_estado_cuentaxcobrar"));//32
 		
 		facturaDataManager.getTfaccabfactura().getTfaccuentasxcobrars().add(tfaccuentasxcobrar);
@@ -242,6 +276,11 @@ public class FacturaController extends BaseController implements Serializable{
 	}
 	
 	public String cancelar(){
+		inicializarFactura();
+		return "/pages/factura/factura/buscarProformaFactura?faces-redirect=true";
+	}
+		
+	private void inicializarFactura(){
 		//factura cabecera
 		Tfaccabfactura tfaccabfactura = new Tfaccabfactura();
 		//detalle factura
@@ -258,9 +297,8 @@ public class FacturaController extends BaseController implements Serializable{
 		//variables adicionales
 		facturaDataManager.setFormaPago1(false);
 		facturaDataManager.setFormaPago2(false);
-		return "/pages/factura/factura/buscarProformaFactura?faces-redirect=true";
 	}
-		
+	
 	/**
 	 * Metodo para agregar un producto al detalle de la factura
 	 */
@@ -271,8 +309,14 @@ public class FacturaController extends BaseController implements Serializable{
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ContenidoMessages.getString("msg_error_seleccione_producto"), ContenidoMessages.getString("msg_error_seleccione_producto")));
 			return;
 		}
+		if(facturaDataManager.getTfaccliente()==null || facturaDataManager.getTfaccliente().getPk()==null || facturaDataManager.getTfaccliente().getPk().getCodigocliente()==null){
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, ContenidoMessages.getString("msg_error_sin_cliente"), ContenidoMessages.getString("msg_error_sin_cliente")));
+			return;
+		}
 		//Busqueda del pices type segun el tipo de unidad de venta del articulo
 		Tadmconversionunidad tadmconversionunidad=bunsysService.conversionArticulo(facturaDataManager.getTinvproducto().getUnidadventacodigo(), facturaDataManager.getTinvproducto().getUnidadventa());
+		//catidad
+		facturaDataManager.getTfacdetfactura().setCantidad(1d);
 		//articulo
 		facturaDataManager.getTfacdetfactura().setTinvproducto(facturaDataManager.getTinvproducto());
 		facturaDataManager.getTfacdetfactura().setCodigoproductos(facturaDataManager.getTinvproducto().getPk().getCodigoproductos());
@@ -298,8 +342,18 @@ public class FacturaController extends BaseController implements Serializable{
 		facturaDataManager.getTfacdetfactura().setTotal(facturaDataManager.getTfacdetfactura().getTotalstems()*facturaDataManager.getTfacdetfactura().getPreciounitario());
 		//compania
 		facturaDataManager.getTfacdetfactura().getPk().setCodigocompania(facturaDataManager.getLoginDatamanager().getLogin().getPk().getCodigocompania());
+		//iva
+		facturaDataManager.getTfacdetfactura().setIva(facturaDataManager.getTinvproducto().getIva());
+		facturaDataManager.getTfacdetfactura().setIvacodigo(facturaDataManager.getTinvproducto().getIvacodigo());
+		//ice
+		facturaDataManager.getTfacdetfactura().setIce(facturaDataManager.getTinvproducto().getIce());
+		facturaDataManager.getTfacdetfactura().setIcecodigo(facturaDataManager.getTinvproducto().getIcecodigo());
+		//irbpnr
+		facturaDataManager.getTfacdetfactura().setIrbpnr(facturaDataManager.getTinvproducto().getIrbpnr());
+		facturaDataManager.getTfacdetfactura().setIrbpnrcodigo(facturaDataManager.getTinvproducto().getIrbpnrcodigo());
 		//se aniade a la lista
 		facturaDataManager.getTfaccabfactura().getTfacdetfacturas().add(facturaDataManager.getTfacdetfactura());
+		
 		calculos();
 		facturaDataManager.setTinvproducto(new Tinvproducto());
 		facturaDataManager.setTfacdetfactura(new Tfacdetfactura());
@@ -308,20 +362,72 @@ public class FacturaController extends BaseController implements Serializable{
 	/**
 	 * calculos totales
 	 */
-	private void calculos(){
+	public void calculos(){
 		facturaDataManager.getTfaccabfactura().setTotalpices(0d);
 		facturaDataManager.getTfaccabfactura().setTotaleqfullboxes(0d);
 		facturaDataManager.getTfaccabfactura().setTotalbunch(0d);
 		facturaDataManager.getTfaccabfactura().setTotalstems(0d);
 		facturaDataManager.getTfaccabfactura().setTotal(0d);
+		//
+		facturaDataManager.getTfaccabfactura().setSubtotalnoiva(new BigDecimal(0));
+		facturaDataManager.getTfaccabfactura().setSubtotaliva(new BigDecimal(0));
+		facturaDataManager.getTfaccabfactura().setIva(new BigDecimal(0));
+		facturaDataManager.getTfaccabfactura().setSubtotalexcentoiva(new BigDecimal(0));
+		facturaDataManager.getTfaccabfactura().setSubtotalneto(new BigDecimal(0));
 		for(Tfacdetfactura detalle:facturaDataManager.getTfaccabfactura().getTfacdetfacturas()){
+			//total pices
 			facturaDataManager.getTfaccabfactura().setTotalpices(detalle.getCantidad()+facturaDataManager.getTfaccabfactura().getTotalpices());
+			//total eqfullboxes
 			facturaDataManager.getTfaccabfactura().setTotaleqfullboxes(detalle.getEqfullboxes()+facturaDataManager.getTfaccabfactura().getTotaleqfullboxes());
-			
+			//total bunch
 			facturaDataManager.getTfaccabfactura().setTotalbunch(detalle.getTotalbunch()+facturaDataManager.getTfaccabfactura().getTotalbunch());
+			//total stems
 			facturaDataManager.getTfaccabfactura().setTotalstems(detalle.getTotalstems()+facturaDataManager.getTfaccabfactura().getTotalstems());
-			facturaDataManager.getTfaccabfactura().setTotal(detalle.getTotal()+facturaDataManager.getTfaccabfactura().getTotal());
+			//calculos
+			//--subtotal 0%
+			if(detalle.getIva().equals("0") && detalle.getIvacodigo().equals(9)){
+				facturaDataManager.getTfaccabfactura().setSubtotalnoiva(round(facturaDataManager.getTfaccabfactura().getSubtotalnoiva().add(new BigDecimal(detalle.getTotal()))));
+			}
+			//--sbtotal iva 12%
+			if(detalle.getIva().equals("2") && detalle.getIvacodigo().equals(9)){
+				facturaDataManager.getTfaccabfactura().setSubtotaliva(round(facturaDataManager.getTfaccabfactura().getSubtotaliva().add(new BigDecimal(detalle.getTotal()))));
+				//validamos si tiene descuento
+				if(facturaDataManager.getTfaccliente().getPorcentajedescuento()!=null && facturaDataManager.getTfaccliente().getPorcentajedescuento()>0){
+					//descuento subtotal * %descuento
+					BigDecimal descuento=facturaDataManager.getTfaccabfactura().getSubtotaliva().multiply(new BigDecimal(facturaDataManager.getTfaccliente().getPorcentajedescuento()/100));
+					//descuento
+					detalle.setDescuento(descuento);
+					//total -descunto
+					BigDecimal descuentoMenTotal=facturaDataManager.getTfaccabfactura().getSubtotaliva().subtract(descuento);
+					//descuentoMenTotal * iva 12%
+					BigDecimal iva=descuentoMenTotal.multiply(new BigDecimal(0.12));
+					//se suma
+					facturaDataManager.getTfaccabfactura().setIva(round(facturaDataManager.getTfaccabfactura().getIva().add(iva)));
+				}else{
+					//iva 12%
+					BigDecimal iva=facturaDataManager.getTfaccabfactura().getSubtotaliva().multiply(new BigDecimal(0.12));
+					facturaDataManager.getTfaccabfactura().setIva(round(facturaDataManager.getTfaccabfactura().getIva().add(iva)));
+				}
+			}
+			//--subtotal excento de iva
+			if(detalle.getIva().equals("7") && 	detalle.getIvacodigo().equals(9)){
+				facturaDataManager.getTfaccabfactura().setSubtotalexcentoiva(new BigDecimal(detalle.getTotal()));
+			}
+			//--subtotal neto
+			facturaDataManager.getTfaccabfactura().setSubtotalneto(facturaDataManager.getTfaccabfactura().getSubtotalneto().add(new BigDecimal(detalle.getTotal())));
 		}
+		//calculos finales
+		if(facturaDataManager.getTfaccliente().getPorcentajedescuento()!=null &&
+				facturaDataManager.getTfaccliente().getPorcentajedescuento()>0){
+			//-total descuento
+			facturaDataManager.getTfaccabfactura().setTotaldescuento(round(facturaDataManager.getTfaccabfactura().getSubtotalneto().multiply(
+					new BigDecimal(facturaDataManager.getTfaccliente().getPorcentajedescuento()/100))));
+		}else{
+			facturaDataManager.getTfaccabfactura().setTotaldescuento(new BigDecimal(0));
+		}
+		//total=totalneto-descuentos+iva
+		BigDecimal total=facturaDataManager.getTfaccabfactura().getSubtotalneto().subtract(facturaDataManager.getTfaccabfactura().getTotaldescuento()).add(facturaDataManager.getTfaccabfactura().getIva());
+		facturaDataManager.getTfaccabfactura().setTotal(total.doubleValue());
 	}
 	
 	public void cambioPicesType(Tfacdetfactura detalle){
@@ -388,40 +494,27 @@ public class FacturaController extends BaseController implements Serializable{
 		calculos();
 	}
 	
-	public void grabar(){
-		try {//valida si es editar
-			if(!facturaDataManager.getEditable()){
-				//validamos que este la factura
-				if(facturaDataManager.getTfaccabfactura()==null){
-					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, ContenidoMessages.getString("msg_error_datos_fatura"), ContenidoMessages.getString("msg_error_datos_fatura")));
-					return;
-				}
-				if(facturaDataManager.getTfaccliente()==null || facturaDataManager.getTfaccliente().getPk()==null || facturaDataManager.getTfaccliente().getPk().getCodigocliente()==null){
-					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, ContenidoMessages.getString("msg_error_sin_cliente"), ContenidoMessages.getString("msg_error_sin_cliente")));
-					return;
-				}
-				if(facturaDataManager.getTfaccabfactura().getTfacdetfacturas()==null || facturaDataManager.getTfaccabfactura().getTfacdetfacturas().size()==0){
-					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, ContenidoMessages.getString("msg_error_sin_detalle"), ContenidoMessages.getString("msg_error_sin_detalle")));
-					return;
-				}
-				if(StringUtils.isNotBlank(facturaDataManager.getTfaccabfactura().getAirline())){
-					facturaDataManager.getTfaccabfactura().setAirlinecodigo(ContenidoMessages.getInteger("cod_catalogo_aerolineas"));
-				}
-				//compania
-				facturaDataManager.getTfaccabfactura().getPk().setCodigocompania(facturaDataManager.getLoginDatamanager().getLogin().getPk().getCodigocompania());
-				//cliente
-				facturaDataManager.getTfaccabfactura().setCodigocliente(facturaDataManager.getTfaccliente().getPk().getCodigocliente());
-			}
-			//verifica la forma de pago
-			formaPagoGrabar();
-			bunsysService.grabarFactura(facturaDataManager.getTfaccabfactura());
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, ContenidoMessages.getString("msg_info_factura"), ContenidoMessages.getString("msg_info_factura")));
-		} catch(Throwable e){
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ContenidoMessages.getString("msg_error_factura"), ContenidoMessages.getString("msg_error_factura")));
+	public Boolean validacionesGrabar(){
+		//validamos que este la factura
+		if(facturaDataManager.getTfaccabfactura()==null){
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, ContenidoMessages.getString("msg_error_datos_fatura"), ContenidoMessages.getString("msg_error_datos_fatura")));
+			return false;
 		}
-	}
-	
-	public void formaPagoGrabar(){
+		if(facturaDataManager.getTfaccliente()==null || facturaDataManager.getTfaccliente().getPk()==null || facturaDataManager.getTfaccliente().getPk().getCodigocliente()==null){
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, ContenidoMessages.getString("msg_error_sin_cliente"), ContenidoMessages.getString("msg_error_sin_cliente")));
+			return false;
+		}
+		if(facturaDataManager.getTfaccabfactura().getTfacdetfacturas()==null || facturaDataManager.getTfaccabfactura().getTfacdetfacturas().size()==0){
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, ContenidoMessages.getString("msg_error_sin_detalle"), ContenidoMessages.getString("msg_error_sin_detalle")));
+			return false;
+		}
+		if(StringUtils.isNotBlank(facturaDataManager.getTfaccabfactura().getAirline())){
+			facturaDataManager.getTfaccabfactura().setAirlinecodigo(ContenidoMessages.getInteger("cod_catalogo_aerolineas"));
+		}
+		//compania
+		facturaDataManager.getTfaccabfactura().getPk().setCodigocompania(facturaDataManager.getLoginDatamanager().getLogin().getPk().getCodigocompania());
+		//cliente
+		facturaDataManager.getTfaccabfactura().setCodigocliente(facturaDataManager.getTfaccliente().getPk().getCodigocliente());
 		System.out.println("INGRESA A GRABAR");
 		facturaDataManager.getTfaccabfactura().setTfacformapagos(new ArrayList<Tfacformapago>());
 		facturaDataManager.getTfaccabfactura().setTfaccuentasxcobrars(new ArrayList<Tfaccuentasxcobrar>());
@@ -429,7 +522,7 @@ public class FacturaController extends BaseController implements Serializable{
 		if(facturaDataManager.isFormaPago1()){//efectivo
 			if(!validarValorCancelar()){
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, ContenidoMessages.getString("msg_error_verifique_pago"), ContenidoMessages.getString("msg_error_verifique_pago")));
-				return;
+				return false;
 			}
 			pagoEfectivo();
 		}else if(facturaDataManager.isFormaPago2()){//credito
@@ -437,16 +530,188 @@ public class FacturaController extends BaseController implements Serializable{
 				pagoCredito();
 			}else{
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, ContenidoMessages.getString("msg_error_numero_pagos"), ContenidoMessages.getString("msg_error_numero_pagos")));
-				return;
+				return false;
 			}
 		}else{
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, ContenidoMessages.getString("msg_error_seleccione_pago"), ContenidoMessages.getString("msg_error_seleccione_pago")));
-			return;
+			return false;
+		}
+		return true;
+	}
+	
+	
+	public void grabarSinFirma(){
+		try{
+			//verifica los datos y la forma de pago
+			if(validacionesGrabar()){
+				facturaDataManager.getTfaccabfactura().setEstadosri("SF");
+				facturaDataManager.getTfaccabfactura().setEstadosricodigo(ContenidoMessages.getInteger("cod_catalogo_estado_factura_sri"));
+				bunsysService.grabarFactura(facturaDataManager.getTfaccabfactura());
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, ContenidoMessages.getString("msg_info_factura"), ContenidoMessages.getString("msg_info_factura")));	
+			}
+		} catch(Throwable e){
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ContenidoMessages.getString("msg_error_factura"), ContenidoMessages.getString("msg_error_factura")));
 		}
 	}
 	
-	public void grabarProcesar(){
-		grabar();
+	public void grabarFirmarEnviar(){
+		try{
+			//verifica los datos y la forma de pago
+			if(validacionesGrabar()){
+				facturaDataManager.getTfaccabfactura().setEstadosri("FE");
+				facturaDataManager.getTfaccabfactura().setEstadosricodigo(ContenidoMessages.getInteger("cod_catalogo_estado_factura_sri"));
+				bunsysService.grabarFactura(facturaDataManager.getTfaccabfactura());
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, ContenidoMessages.getString("msg_info_factura"), ContenidoMessages.getString("msg_info_factura")));	
+			}
+		} catch(Throwable e){
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ContenidoMessages.getString("msg_error_factura"), ContenidoMessages.getString("msg_error_factura")));
+		}
+	}
+	
+	public void firmarEnviar(){
+		System.out.println("Firmar Enviar");
+	}
+	
+	
+	
+	
+	public void buscarProforma(){
+		try {
+			System.out.println("numero proforma.."+facturaDataManager.getNumeroproforma());
+			if(facturaDataManager.getNumeroproforma()!=null && facturaDataManager.getNumeroproforma().trim().length()>0){
+				List<Tfaccabproforma> proformas=bunsysService.cabeceraProformas(facturaDataManager.getNumeroproforma());
+				if(proformas!=null && proformas.size()>0){
+					selecionaProforma(proformas.get(0));
+				}else{
+					inicializarFactura();
+				}
+			}else{
+				inicializarFactura();
+			}
+		} catch (FacturacionException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private String selecionaProforma(Tfaccabproforma tfaccabproforma){
+		try {
+			//factura cabecera
+			Tfaccabfactura tfaccabfactura = new Tfaccabfactura();
+			//numero proforma
+			tfaccabfactura.setNumeroproforma(tfaccabproforma.getPk().getNumeroproforma());
+			//cliente
+			Tfaccliente tfaccliente = new Tfaccliente();
+			tfaccliente.setTsyspersona(new Tsyspersona());
+			tfaccabfactura.setTfaccliente(tfaccliente);
+			//aerolinea
+			tfaccabfactura.setTadmairline(new Tadmcatalogo());
+			//detalle factura
+			tfaccabfactura.setTfacdetfacturas(new ArrayList<Tfacdetfactura>());
+			facturaDataManager.setTfaccabfactura(tfaccabfactura);
+			
+			facturaDataManager.setEditable(Boolean.TRUE);
+			facturaDataManager.setAccionAux("E");
+			//proforma
+			tfaccabproforma.setTfacdetproformas(new ArrayList<Tfacdetproforma>());
+			tfaccabproforma.setTfacdetproformas(bunsysService.detalleProformas(tfaccabproforma.getPk().getNumeroproforma()));
+			//cliente
+			facturaDataManager.setTfaccliente(tfaccabproforma.getTfaccliente());
+			//seteamos la cabecera de la FACTURA
+			facturaDataManager.getTfaccabfactura().getPk().setCodigocompania(tfaccabproforma.getPk().getCodigocompania());
+			//aerolinea
+			facturaDataManager.getTfaccabfactura().setAirline(tfaccabproforma.getAirline());
+			facturaDataManager.getTfaccabfactura().setAirlinecodigo(tfaccabproforma.getAirlinecodigo());
+			facturaDataManager.getTfaccabfactura().setTadmairline(tfaccabproforma.getTadmairline());
+			//cliente de la factura
+			facturaDataManager.getTfaccabfactura().setCodigocliente(tfaccabproforma.getCodigocliente());
+			facturaDataManager.getTfaccabfactura().setTfaccliente(tfaccabproforma.getTfaccliente());
+			//forma de pago
+			if(tfaccabproforma.getTfaccliente()!=null){
+				if(tfaccabproforma.getTfaccliente().getFormapago()!=null && tfaccabproforma.getTfaccliente().getFormapago().equals("C")){
+					facturaDataManager.setFormaPago1(true);//efectivo
+					facturaDataManager.setFormaPago2(false);//credito
+				}else{
+					facturaDataManager.setFormaPago1(false);//efectivo
+					facturaDataManager.setFormaPago2(true);//credito
+				}
+			}
+			
+			facturaDataManager.getTfaccabfactura().setEstado("A");
+			facturaDataManager.getTfaccabfactura().setEstadocodigo(tfaccabproforma.getEstadocodigo());
+			
+			facturaDataManager.getTfaccabfactura().setFarmcode(tfaccabproforma.getFarmcode());
+			facturaDataManager.getTfaccabfactura().setCountrycode(tfaccabproforma.getCountrycode());
+			facturaDataManager.getTfaccabfactura().setArea(tfaccabproforma.getArea());
+			facturaDataManager.getTfaccabfactura().setMasterawb(tfaccabproforma.getMasterawm());
+			facturaDataManager.getTfaccabfactura().setHouseawb(tfaccabproforma.getHouseawb());
+			facturaDataManager.getTfaccabfactura().setDae(tfaccabproforma.getDae());
+			facturaDataManager.getTfaccabfactura().setConsignee(tfaccabproforma.getConsignee());
+			facturaDataManager.getTfaccabfactura().setFixedprice(tfaccabproforma.getFixedprice());
+			facturaDataManager.getTfaccabfactura().setReferendo(tfaccabproforma.getReferendum());
+			
+			facturaDataManager.getTfaccabfactura().setTotalpices(tfaccabproforma.getTotalpices());
+			facturaDataManager.getTfaccabfactura().setTotaleqfullboxes(tfaccabproforma.getTotaleqfullboxes());
+			facturaDataManager.getTfaccabfactura().setTotalbunch(tfaccabproforma.getTotalbunch());
+			facturaDataManager.getTfaccabfactura().setTotalstems(tfaccabproforma.getTotalstems());
+			facturaDataManager.getTfaccabfactura().setTotal(tfaccabproforma.getTotal());
+			//subtotal
+			facturaDataManager.getTfaccabfactura().setSubtotalneto(tfaccabproforma.getSubtotalneto());
+			facturaDataManager.getTfaccabfactura().setSubtotaliva(tfaccabproforma.getSubtotaliva());
+			facturaDataManager.getTfaccabfactura().setSubtotalbase(tfaccabproforma.getSubtotalbase());
+			facturaDataManager.getTfaccabfactura().setSubtotalnoiva(tfaccabproforma.getSubtotalnoiva());
+			//facturaDataManager.getTfaccabfactura().setSubtotalexcentoiva(tfaccabproforma.getsubtotalexcentoiva);
+			facturaDataManager.getTfaccabfactura().setPorcentajedesc(tfaccabproforma.getPorcentajedesc());
+			facturaDataManager.getTfaccabfactura().setTotaldescuento(tfaccabproforma.getTotaldescuento());
+			facturaDataManager.getTfaccabfactura().setPorcentajeice(tfaccabproforma.getPorcentajeice());
+			facturaDataManager.getTfaccabfactura().setValorice(tfaccabproforma.getValorice());
+			facturaDataManager.getTfaccabfactura().setPorcentajeirbpnr(tfaccabproforma.getPocentajeirbpnr());
+			facturaDataManager.getTfaccabfactura().setValorirbpnr(tfaccabproforma.getValorirbpnr());
+			facturaDataManager.getTfaccabfactura().setPorcentajeiva(tfaccabproforma.getPorcentajeiva());
+			facturaDataManager.getTfaccabfactura().setIva(tfaccabproforma.getIva());
+			//numeroproforma 
+	//		  fecha date,
+			
+			//seteamos el detalle
+			facturaDataManager.getTfaccabfactura().setTfacdetfacturas(new ArrayList<Tfacdetfactura>());
+			for(Tfacdetproforma detproforma: tfaccabproforma.getTfacdetproformas()){
+				Tfacdetfactura detalleFactura= new Tfacdetfactura();
+				detalleFactura.getPk().setCodigocompania(detproforma.getPk().getCodigocompania());
+				detalleFactura.setUnidadventa(detproforma.getUnidadventa());
+				detalleFactura.setUnidadventacodigo(detproforma.getUnidadventacodigo());
+				detalleFactura.setIva(detproforma.getIva());
+				detalleFactura.setIvacodigo(detproforma.getIvacodigo());
+				detalleFactura.setIce(detproforma.getIce());
+				detalleFactura.setIcecodigo(detproforma.getIcecodigo());
+				detalleFactura.setIrbpnr(detproforma.getIrbpnr());
+				detalleFactura.setIrbpnrcodigo(detproforma.getIrbpnrcodigo());
+				detalleFactura.setAtpa(detproforma.getAtpa());
+				detalleFactura.setAtpacodigo(detproforma.getAtpacodigo());
+				//producto
+				detalleFactura.setCodigoproductos(detproforma.getCodigoproductos());
+				detalleFactura.setTinvproducto(detproforma.getTinvproducto());
+				
+				detalleFactura.setCantidad(detproforma.getCantidad());
+				detalleFactura.setPreciounitario(detproforma.getPreciounitario());
+				detalleFactura.setDescuento(detproforma.getDescuento());
+				detalleFactura.setNandina(detproforma.getNandina());
+				detalleFactura.setEqfullboxes(detproforma.getEqfullboxes());
+				detalleFactura.setStemsbunch(detproforma.getStemsbunch());
+				detalleFactura.setTotalbunch(detproforma.getTotalbunch());
+				detalleFactura.setTotalstems(detproforma.getTotalstems());
+				detalleFactura.setTotal(detproforma.getTotal());
+				  //numerofactura
+				facturaDataManager.getTfaccabfactura().getTfacdetfacturas().add(detalleFactura);
+			}
+			return "/pages/factura/factura/factura?faces-redirect=true";
+		} catch (FacturacionException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public static BigDecimal round(BigDecimal d) {
+		  int mode = BigDecimal.ROUND_UP ;
+		  return d.setScale(2, mode);
 	}
 	
 	public FacturaDataManager getFacturaDataManager() {
