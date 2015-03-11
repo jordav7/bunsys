@@ -55,6 +55,10 @@ public class ParametrizacionService {
 		return facturaDao.obtenerCatalogos(codigoCompania, codigoCatalogo);
 	}
 	
+	public Collection<Tadmparamsri> obtenerCatalogosSri( Integer codigoCatalogo) throws FacturacionException{
+		return facturaDao.obtenerCatalogosSri(codigoCatalogo);
+	}
+	
 	/**
 	 * Crea o actualiza un art&iacute;culo
 	 * @param articulo
@@ -153,6 +157,9 @@ public class ParametrizacionService {
 		compAct.setTelefono(compania.getTelefono());
 		compAct.setTiemporespuesta(compania.getTiemporespuesta());
 		compAct.setTipoidcontador(compania.getTipoidcontador());
+		compAct.setTipocompania(compania.getTipocompania());
+		compAct.setTipoambiente(compania.getTipoambiente());
+		compAct.setTipoambientecodigo(compania.getTipoambientecodigo());
 		
 		admDao.update(compAct);
 	}
