@@ -12,11 +12,18 @@
 				  	<p:fieldset legend="#{msg['lbl_busqueda']}">
 				  			<h:panelGrid columns="3" id="pnlfilter">
 				  				<p:outputLabel value="#{msg['lbl_numero_proforma']}:" for="numproforma"/>
-				  				<p:inputText id="numproforma" value="#{busquedaProformaFacturaDatamanager.numeroproforma}" />
+				  				<p:inputText id="numproforma" value="#{busquedaProformaFacturaDatamanager.numerofactura}" />
 				  				<p:message for="numproforma"/>
+				  				
+				  				<p:outputLabel value="#{msg.lbl_aerolinea}:" for="estadosri" style="display:block;width:140px;"/>
+								<p:selectOneMenu id="estadosri" value="#{busquedaProformaFacturaDatamanager.codigoparamsri}"  var="p" style="width:180px" panelStyle="width:180px" >						
+									<f:selectItem itemLabel="Seleccione" itemValue="" />
+									<f:selectItems value="#{busquedaProformaFacturaDatamanager.tadmparamsriList}" var="item" itemValue="#{item.pk.codigoparamsri}" itemLabel="#{item.descripcion}" />
+								</p:selectOneMenu>	
+								<p:message for="estadosri" display="icon"/>
 				  			</h:panelGrid>
 				  		<h:panelGroup layout="block" style="float:left">
-				  			<p:commandButton icon="ui-icon-search" value="#{msg['btn_buscar']}" action="#{busquedaProformaFacturaController.listarProformas()}"
+				  			<p:commandButton icon="ui-icon-search" value="#{msg['btn_buscar']}" action="#{busquedaProformaFacturaController.listarfacturas()}"
 				  			 update="pnlProformas" process="@this :frm:pnlfilter"/>
 				  			 
 	      				<p:commandButton value="#{msg['btn_crear']}"
@@ -25,15 +32,18 @@
 				  			 
 				  		</h:panelGroup>
 				  	</p:fieldset>
-				  	<p:fieldset legend="#{msg['lbl_proformas']}">
+				  	<p:fieldset legend="#{msg['lbl_facturas']}">
 				  		<h:panelGroup layout="block" id="pnlProformas">
-				  			<p:dataTable id="tblproforma" value="#{busquedaProformaFacturaDatamanager.tfaccabproformaList}" var="item"
+				  			<p:dataTable id="tblproforma" value="#{busquedaProformaFacturaDatamanager.tfaccabfacturasList}" var="item"
 							 style="width:100%;font: bold 100% monospace; ">
-								<p:column headerText="#{msg.lbl_numero_proforma}">
-									<p:outputLabel value="#{item.pk.numeroproforma}"/>
+								<p:column headerText="#{msg.lbl_numero_factura}">
+									<p:outputLabel value="#{item.pk.numerofactura}"/>
+								</p:column>
+								<p:column headerText="#{msg.lbl_cliente}">
+									<p:outputLabel value="#{item.tfaccliente.tsyspersona.nombres} #{item.tfaccliente.tsyspersona.apellidos}"/>
 								</p:column>
 								<p:column headerText="#{msg.lbl_referendum}">
-									<p:outputLabel value="#{item.referendum}"/>
+									<p:outputLabel value="#{item.referendo}"/>
 								</p:column>
 								<p:column headerText="#{msg.lbl_farm_code}">
 									<p:outputLabel value="#{item.farmcode}"/>
@@ -45,10 +55,10 @@
 									<p:outputLabel value="#{item.area}"/>
 								</p:column>
 								<p:column headerText="#{msg.lbl_fecha}">
-									<p:outputLabel value="#{item.fecha}"/>
+									<p:outputLabel value="#{item.fechafactura}"/>
 								</p:column>
 								<p:column headerText="#{msg.lbl_master_awb}">
-									<p:outputLabel value="#{item.masterawm}"/>
+									<p:outputLabel value="#{item.masterawb}"/>
 								</p:column>
 								<p:column headerText="#{msg.lbl_house_awb}">
 									<p:outputLabel value="#{item.houseawb}"/>
@@ -66,8 +76,8 @@
 									<p:outputLabel value="#{item.total}"/>
 								</p:column>
 								<p:column>
-									<p:commandButton icon="ui-icon-circle-check" title="#{msg['btn_seleccionar']}" action="#{busquedaProformaFacturaController.selecionaProforma(item)}"
-									 process="@this tblproforma" immediate="true" >
+									<p:commandButton icon="ui-icon-circle-check" title="#{msg['btn_seleccionar']}" rendered="#{item.estadosri!='FE'}"
+									action="#{busquedaProformaFacturaController.selecionaFactura(item)}" process="@this tblproforma" immediate="true" >
 				  					</p:commandButton>
 				  				</p:column>
 							</p:dataTable>
