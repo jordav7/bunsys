@@ -20,6 +20,7 @@ import ec.com.dlc.bunsys.entity.facturacion.Tfaccabfactura;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccabproforma;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccliente;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccuentasxcobrar;
+import ec.com.dlc.bunsys.entity.facturacion.Tfacdetfactura;
 import ec.com.dlc.bunsys.entity.facturacion.Tfacdetproforma;
 import ec.com.dlc.bunsys.entity.inventario.Tinvproducto;
 import ec.com.dlc.bunsys.entity.inventario.pk.TinvproductoPK;
@@ -232,4 +233,16 @@ public interface BunsysService {
 	void registrarPago(Collection<Tfaccuentasxcobrar> cxcColl, Integer codCompania, Integer estadoCodigo, Integer tipoDocCodigo, String numdoc, String concepto, Date fechaPago);
 	
 	Integer obtenerSecuencias(Integer codCompania, String codComprobante) throws FacturacionException;
+	
+	List<Tfaccabfactura> cabeceraFacturas(String numerofactura,String estadosri)throws FacturacionException;
+	
+	List<Tfacdetfactura> detalleFacturas(String numerofactura)throws FacturacionException;
+	
+	/**
+	 * Busca cat&aacute;logos de par&aacute;metros SRI
+	 * @param codTipoCatalogo
+	 * @return Collection<Tadmparamsri>
+	 * @throws FacturacionException
+	 */
+	Collection<Tadmparamsri> parametroSri(Integer codTipoParametro) throws FacturacionException ;
 }
