@@ -55,8 +55,6 @@ public class Tfacdetfactura extends BaseEntity<TfacdetfacturaPK> {
 	private String codigoproductos;
 	@Column
 	private Double cantidad;
-	@Transient
-	private Double cantidadAux;
 	@Column
 	private Double preciounitario;
 	@Column
@@ -355,14 +353,5 @@ public class Tfacdetfactura extends BaseEntity<TfacdetfacturaPK> {
 	public void setTfaccabfactura(Tfaccabfactura tfaccabfactura) {
 		this.tfaccabfactura = tfaccabfactura;
 	}
-
-	public Double getCantidadAux() {
-		return cantidadAux;
-	}
-
-	public void setCantidadAux(Double cantidadAux) {
-		this.cantidadAux = cantidadAux;
-	}
-	
 	
 }
