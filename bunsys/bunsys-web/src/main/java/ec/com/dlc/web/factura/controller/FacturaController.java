@@ -317,7 +317,7 @@ public class FacturaController extends BaseController implements Serializable{
 		Tadmconversionunidad tadmconversionunidad=bunsysService.conversionArticulo(facturaDataManager.getTinvproducto().getUnidadventacodigo(), facturaDataManager.getTinvproducto().getUnidadventa());
 		//catidad
 		facturaDataManager.getTfacdetfactura().setCantidad(1d);
-		facturaDataManager.getTfacdetfactura().setCantidadAux(1d);
+		facturaDataManager.getTfacdetfactura().getAditionalProperties().put("cantidadaux", 1d);
 		//articulo
 		facturaDataManager.getTfacdetfactura().setTinvproducto(facturaDataManager.getTinvproducto());
 		facturaDataManager.getTfacdetfactura().setCodigoproductos(facturaDataManager.getTinvproducto().getPk().getCodigoproductos());
@@ -415,7 +415,7 @@ public class FacturaController extends BaseController implements Serializable{
 				facturaDataManager.getTfaccabfactura().setSubtotalexcentoiva(new BigDecimal(detalle.getTotal()));
 			}
 			//--subtotal neto
-			facturaDataManager.getTfaccabfactura().setSubtotalneto(facturaDataManager.getTfaccabfactura().getSubtotalneto().add(new BigDecimal(detalle.getTotal())));
+			facturaDataManager.getTfaccabfactura().setSubtotalneto(round(facturaDataManager.getTfaccabfactura().getSubtotalneto().add(new BigDecimal(detalle.getTotal()))));
 		}
 		//calculos finales
 		if(facturaDataManager.getTfaccliente().getPorcentajedescuento()!=null &&
@@ -454,14 +454,14 @@ public class FacturaController extends BaseController implements Serializable{
 	public void cambioCantidad(Tfacdetfactura detalle){
 		//seteo
 		//eq full boxes=cantidad *eqfullboxes
-		if(detalle.getCantidad()>detalle.getCantidadAux()){
+		if(detalle.getCantidad()>Double.parseDouble(detalle.getAditionalProperties().get("cantidadaux").toString())){
 			detalle.setEqfullboxes(detalle.getEqfullboxes()*detalle.getCantidad());
 			//total bunch
 			detalle.setTotalbunch(detalle.getTotalbunch()*detalle.getCantidad());
-		}else if(detalle.getCantidad()<detalle.getCantidadAux()){
-			detalle.setEqfullboxes(detalle.getEqfullboxes()/detalle.getCantidadAux());
+		}else if(detalle.getCantidad()<Double.parseDouble(detalle.getAditionalProperties().get("cantidadaux").toString())){
+			detalle.setEqfullboxes(detalle.getEqfullboxes()/Double.parseDouble(detalle.getAditionalProperties().get("cantidadaux").toString()));
 			//total bunch
-			detalle.setTotalbunch(detalle.getTotalbunch()/detalle.getCantidadAux());
+			detalle.setTotalbunch(detalle.getTotalbunch()/Double.parseDouble(detalle.getAditionalProperties().get("cantidadaux").toString()));
 		}
 		//calculos
 		//total stems
@@ -469,7 +469,7 @@ public class FacturaController extends BaseController implements Serializable{
 		//total price
 		detalle.setTotal(detalle.getTotalstems()*detalle.getPreciounitario());
 		calculos();
-		detalle.setCantidadAux(detalle.getCantidad());
+		detalle.getAditionalProperties().put("cantidadaux",detalle.getCantidad());
 	}
 
 	public void cambioeqfullboxes(Tfacdetfactura detalle){
