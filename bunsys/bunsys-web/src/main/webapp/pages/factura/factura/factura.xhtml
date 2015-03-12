@@ -11,13 +11,14 @@
 	  <ui:define name="contentBody">
 	  	<p:panel id="pnlDatos" header="#{msg['lbl_factura_m']}">
 	  		<p:fieldset legend="#{msg['lbl_busqueda']}">
-	  			<h:panelGrid columns="3" id="pnlfilter">
+	  			<h:panelGrid columns="4" id="pnlfilter">
 	  				<p:outputLabel value="#{msg['lbl_numero_proforma']}:" for="numproforma"/>
 	  				<p:inputText id="numproforma" value="#{facturaDataManager.numeroproforma}" />
 	  				<p:message for="numproforma"/>
-	  			</h:panelGrid>
-		  			<p:commandButton icon="ui-icon-search" value="#{msg['btn_buscar']}" action="#{facturaController.buscarProforma}"
+	  				<p:commandButton icon="ui-icon-search" value="#{msg['btn_buscar']}" action="#{facturaController.buscarProforma}"
 		  			 update="pnldetalle, detalleFactura, pnldatoscab, pnlDetallefactura :frm:sinimpuestos :frm:subtotal12 :frm:subtotal0 :frm:noiva :frm:exiva :frm:descuento :frm:iva12 :frm:total :frm:pnlformapago" process="@this :frm:pnlfilter"/>
+			
+	  			</h:panelGrid>
 			</p:fieldset>
 			<p:fieldset id="pnldatoscab" legend="#{msg['lbl_cabecera']}">
 							<h:panelGroup layout="block">
@@ -136,7 +137,7 @@
 								</p:column>
 								<p:column headerText="#{msg.lbl_total_pice}">
 									<p:inputText id="picestype" value="#{item.cantidad}" >
-										<p:ajax event="blur"  listener="#{facturaController.cambioPicesType(item)}" 
+										<p:ajax event="blur"  listener="#{facturaController.cambioCantidad(item)}" 
 											process="@this picestype" update="picestype eqfullboxes stemsbunch totalbunch totalstems priceunit totalprice :frm:total :frm:sinimpuestos :frm:subtotal12 :frm:subtotal0 :frm:noiva :frm:exiva :frm:descuento :frm:iva12"/>
 									</p:inputText>
 								</p:column>
@@ -185,11 +186,11 @@
 											process="@this totalprice" update="picestype eqfullboxes stemsbunch totalbunch totalstems priceunit totalprice :frm:total :frm:sinimpuestos :frm:subtotal12 :frm:subtotal0 :frm:noiva :frm:exiva :frm:descuento :frm:iva12"/>
 									</p:inputText>
 								</p:column>
-								<p:column rendered="#{facturaDataManager.editable}">
+								<p:column >
 									<p:commandButton id="btneliminar" icon="ui-icon-close" 
 										action="#{facturaController.eliminarArticulo(item)}" process="@this detalleFactura" update="detalleFactura :frm:totales :frm:sinimpuestos :frm:subtotal12 :frm:subtotal0 :frm:noiva :frm:exiva :frm:descuento :frm:iva12" />
 								</p:column>
-								<p:columnGroup type="footer">
+								<!-- <p:columnGroup type="footer">
 					                <p:row>
 					                    <p:column footerText="Total: " style="text-align:right"/>
 					                    <p:column footerText="#{facturaDataManager.tfaccabfactura.totalpices}" />
@@ -200,7 +201,7 @@
 					                    <p:column  footerText="#{facturaDataManager.tfaccabfactura.total}" />
 					                    <p:column  footerText="" />
 					                </p:row>
-					            </p:columnGroup>
+					            </p:columnGroup> -->
 							</p:dataTable>
 					</p:panelGrid>
 			</p:fieldset>
