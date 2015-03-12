@@ -136,16 +136,16 @@
 									</p:selectOneMenu>	
 								</p:column>
 								<p:column headerText="#{msg.lbl_total_pice}">
-									<p:inputText id="picestype" value="#{item.cantidad}" >
+									<pe:inputNumber id="picestype" value="#{item.cantidad}"  decimalPlaces="2" decimalSeparator="." thousandSeparator="" >
 										<p:ajax event="blur"  listener="#{facturaController.cambioCantidad(item)}" 
 											process="@this picestype" update="picestype eqfullboxes stemsbunch totalbunch totalstems priceunit totalprice :frm:total :frm:sinimpuestos :frm:subtotal12 :frm:subtotal0 :frm:noiva :frm:exiva :frm:descuento :frm:iva12"/>
-									</p:inputText>
+									</pe:inputNumber>
 								</p:column>
 								<p:column headerText="#{msg.lbl_eq_full_boxes}">
-									<p:inputText id="eqfullboxes" value="#{item.eqfullboxes}" >
+									<pe:inputNumber  id="eqfullboxes" value="#{item.eqfullboxes}" decimalPlaces="2" decimalSeparator="." thousandSeparator="" >
 										<p:ajax event="blur"  listener="#{facturaController.cambioeqfullboxes(item)}" 
 											process="@this eqfullboxes" update="picestype eqfullboxes stemsbunch totalbunch totalstems priceunit totalprice :frm:total :frm:sinimpuestos :frm:subtotal12 :frm:subtotal0 :frm:noiva :frm:exiva :frm:descuento :frm:iva12"/>
-									</p:inputText>
+									</pe:inputNumber>
 								</p:column>
 								<p:column headerText="#{msg.lbl_product_description}">
 									<p:outputLabel value="#{item.tinvproducto.nombre}"/>
@@ -157,34 +157,34 @@
 									<p:outputLabel value="#{item.nandina}"/>
 								</p:column>
 								<p:column headerText="#{msg.lbl_stems_bunch}">
-									<p:inputText id="stemsbunch" value="#{item.stemsbunch}" >
+									<pe:inputNumber  id="stemsbunch" value="#{item.stemsbunch}" decimalPlaces="2" decimalSeparator="." thousandSeparator="" >
 										<p:ajax event="blur"  listener="#{facturaController.cambioStemsBunch(item)}" 
 											process="@this stemsbunch" update="picestype eqfullboxes stemsbunch totalbunch totalstems priceunit totalprice :frm:total :frm:sinimpuestos :frm:subtotal12 :frm:subtotal0 :frm:noiva :frm:exiva :frm:descuento :frm:iva12"/>
-									</p:inputText>
+									</pe:inputNumber>
 								</p:column>
 								<p:column headerText="#{msg.lbl_total_bunch}">
-									<p:inputText id="totalbunch" value="#{item.totalbunch}" >
+									<pe:inputNumber  id="totalbunch" value="#{item.totalbunch}"  decimalPlaces="2" decimalSeparator="." thousandSeparator="" >
 										<p:ajax event="blur"  listener="#{facturaController.cambiototalBunch(item)}" 
 											process="@this totalbunch" update="picestype eqfullboxes stemsbunch totalbunch totalstems priceunit totalprice :frm:total :frm:sinimpuestos :frm:subtotal12 :frm:subtotal0 :frm:noiva :frm:exiva :frm:descuento :frm:iva12"/>
-									</p:inputText>
+									</pe:inputNumber>
 								</p:column>
 								<p:column headerText="#{msg.lbl_total_stems}">
-									<p:inputText id="totalstems" value="#{item.totalstems}" >
+									<pe:inputNumber   id="totalstems" value="#{item.totalstems}"   decimalPlaces="2" decimalSeparator="." thousandSeparator="" >
 										<p:ajax event="blur"  listener="#{facturaController.cambiototalSteams(item)}" 
 											process="@this totalstems" update="picestype eqfullboxes stemsbunch totalbunch totalstems priceunit totalprice :frm:total :frm:sinimpuestos :frm:subtotal12 :frm:subtotal0 :frm:noiva :frm:exiva :frm:descuento :frm:iva12"/>
-									</p:inputText>
+									</pe:inputNumber>
 								</p:column>
 								<p:column headerText="#{msg.lbl_unit_price}">
-									<p:inputText id="priceunit" value="#{item.preciounitario}" >
+									<pe:inputNumber  id="priceunit" value="#{item.preciounitario}"   decimalPlaces="2" decimalSeparator="." thousandSeparator="" >
 										<p:ajax event="blur"  listener="#{facturaController.cambiounitprice(item)}" 
 											process="@this priceunit" update="picestype eqfullboxes stemsbunch totalbunch totalstems priceunit totalprice :frm:total :frm:sinimpuestos :frm:subtotal12 :frm:subtotal0 :frm:noiva :frm:exiva :frm:descuento :frm:iva12"/>
-									</p:inputText>
+									</pe:inputNumber>
 								</p:column>
 								<p:column headerText="#{msg.lbl_total_price}">
-									<p:inputText id="totalprice" value="#{item.total}" >
+									<pe:inputNumber   id="totalprice" value="#{item.total}"   decimalPlaces="2" decimalSeparator="." thousandSeparator="" >
 										<p:ajax event="blur"  listener="#{facturaController.cambiototal(item)}" 
 											process="@this totalprice" update="picestype eqfullboxes stemsbunch totalbunch totalstems priceunit totalprice :frm:total :frm:sinimpuestos :frm:subtotal12 :frm:subtotal0 :frm:noiva :frm:exiva :frm:descuento :frm:iva12"/>
-									</p:inputText>
+									</pe:inputNumber>
 								</p:column>
 								<p:column >
 									<p:commandButton id="btneliminar" icon="ui-icon-close" 
