@@ -46,6 +46,7 @@ public class DirectorioController extends BaseController {
 		factura.getPk().setCodigocompania(directorioDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania());
 		factura.getPk().setCodigotipocatalogo(18);
 		factura.setDescripcion(ContenidoMessages.getString("lbl_factura"));
+		factura.setEstado("A");
 		directorioDatamanager.getDirectoriosColl().add(factura);
 		
 		Tadmcatalogo notaCredito = new Tadmcatalogo();
@@ -53,6 +54,7 @@ public class DirectorioController extends BaseController {
 		notaCredito.getPk().setCodigocompania(directorioDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania());
 		notaCredito.getPk().setCodigotipocatalogo(18);
 		notaCredito.setDescripcion(ContenidoMessages.getString("lbl_notas_credito"));
+		notaCredito.setEstado("A");
 		directorioDatamanager.getDirectoriosColl().add(notaCredito);
 		
 		Tadmcatalogo comprobante = new Tadmcatalogo();
@@ -60,6 +62,7 @@ public class DirectorioController extends BaseController {
 		comprobante.getPk().setCodigocompania(directorioDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania());
 		comprobante.getPk().setCodigotipocatalogo(18);
 		comprobante.setDescripcion(ContenidoMessages.getString("lbl_comprobantes_ret"));
+		comprobante.setEstado("A");
 		directorioDatamanager.getDirectoriosColl().add(comprobante);
 		
 		Tadmcatalogo notaDebito = new Tadmcatalogo();
@@ -67,6 +70,7 @@ public class DirectorioController extends BaseController {
 		notaDebito.getPk().setCodigocompania(directorioDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania());
 		notaDebito.getPk().setCodigotipocatalogo(18);
 		notaDebito.setDescripcion(ContenidoMessages.getString("lbl_notas_debito"));
+		notaDebito.setEstado("A");
 		directorioDatamanager.getDirectoriosColl().add(notaDebito);
 	}
 	
