@@ -29,8 +29,8 @@
 								<h:panelGroup layout="block">
 										<h:panelGrid columns="5" style="border: collapse;" >
 											<p:outputLabel value="#{msg.lbl_numero_factura}:" for="numeroproforma" style="display:block;width:175px;"/>
-											<p:inputText style="width: 50px;" disabled="true"/>
-											<p:inputText style="width: 50px;" disabled="true"/>
+											<p:inputText value="#{facturaDataManager.tadmcompania.codigoestablecimiento}" style="width: 50px;" disabled="true"/>
+											<p:inputText value="#{facturaDataManager.tadmcompania.codigopuntoemision}" style="width: 50px;" disabled="true"/>
 											<p:inputText id="numeroproforma"  value="#{facturaDataManager.tfaccabfactura.pk.numerofactura}" style="display:block;width:180px;" required="true" disabled="true">
 												<pe:keyFilter mask="pint"/>
 											</p:inputText>
@@ -125,8 +125,8 @@
 									 action="#{facturaController.agregarProducto()}" update="pnldetalle, detalleFactura, pnldetalleproducto totales" />
 							</h:panelGrid>
 					</h:panelGroup>	
-					<p:dataTable id="detalleFactura" value="#{facturaDataManager.tfaccabfactura.tfacdetfacturas}" var="item"
-							 		style="width:100%;font: bold 100% monospace; ">
+					<p:dataTable id="detalleFactura" value="#{facturaDataManager.tfaccabfactura.tfacdetfacturas}" var="item" scrollable="true"
+							 		style="width:auto;font: bold 100% monospace; " scrollWidth="900" scrollRows="2">
 								<p:column headerText="#{msg.lbl_pices_type}" style="width:100px" >
 									<p:selectOneMenu id="catpicestype" value="#{item.unidadventa}"  var="p" style="width:100px" panelStyle="width:100px" >						
 										<p:ajax event="change"  listener="#{facturaController.cambioPicesType(item)}" 
@@ -135,58 +135,63 @@
 											var="itemcat" itemValue="#{itemcat.pk.codigocatalogo}" itemLabel="#{itemcat.descripcion}"/>
 									</p:selectOneMenu>	
 								</p:column>
-								<p:column headerText="#{msg.lbl_total_pice}">
-									<pe:inputNumber id="picestype" value="#{item.cantidad}"  decimalPlaces="2" decimalSeparator="." thousandSeparator="" >
-										<p:ajax event="blur"  listener="#{facturaController.cambioCantidad(item)}" 
+								<p:column headerText="#{msg.lbl_total_pice}" style="width:100px">
+									<pe:inputNumber id="picestype" value="#{item.cantidad}"  decimalPlaces="2" decimalSeparator="." thousandSeparator="" styleClass="b-input50" style="text-align:right">
+										<p:ajax event="change"  listener="#{facturaController.cambioCantidad(item)}" 
 											process="@this picestype" update="picestype eqfullboxes stemsbunch totalbunch totalstems priceunit totalprice :frm:total :frm:sinimpuestos :frm:subtotal12 :frm:subtotal0 :frm:noiva :frm:exiva :frm:descuento :frm:iva12"/>
 									</pe:inputNumber>
 								</p:column>
-								<p:column headerText="#{msg.lbl_eq_full_boxes}">
-									<pe:inputNumber  id="eqfullboxes" value="#{item.eqfullboxes}" decimalPlaces="2" decimalSeparator="." thousandSeparator="" >
-										<p:ajax event="blur"  listener="#{facturaController.cambioeqfullboxes(item)}" 
+								<p:column headerText="#{msg.lbl_eq_full_boxes}" style="width:100px">
+									<pe:inputNumber  id="eqfullboxes" value="#{item.eqfullboxes}" decimalPlaces="2" decimalSeparator="." thousandSeparator="" styleClass="b-input50" style="text-align:right">
+										<p:ajax event="change"  listener="#{facturaController.cambioeqfullboxes(item)}" 
 											process="@this eqfullboxes" update="picestype eqfullboxes stemsbunch totalbunch totalstems priceunit totalprice :frm:total :frm:sinimpuestos :frm:subtotal12 :frm:subtotal0 :frm:noiva :frm:exiva :frm:descuento :frm:iva12"/>
 									</pe:inputNumber>
 								</p:column>
-								<p:column headerText="#{msg.lbl_product_description}">
+								<p:column headerText="#{msg.lbl_product_description}" style="width:100px">
 									<p:outputLabel value="#{item.tinvproducto.nombre}"/>
 								</p:column>
-								<p:column headerText="#{msg.lbl_atpa}">
+								<p:column headerText="#{msg.lbl_atpa}" style="width:100px">
 									<p:outputLabel value="#{item.atpa}"/>
 								</p:column>
-								<p:column headerText="#{msg.lbl_andina}">
+								<p:column headerText="#{msg.lbl_andina}" style="width:100px">
 									<p:outputLabel value="#{item.nandina}"/>
 								</p:column>
-								<p:column headerText="#{msg.lbl_stems_bunch}">
-									<pe:inputNumber  id="stemsbunch" value="#{item.stemsbunch}" decimalPlaces="2" decimalSeparator="." thousandSeparator="" >
-										<p:ajax event="blur"  listener="#{facturaController.cambioStemsBunch(item)}" 
+								<p:column headerText="#{msg.lbl_stems_bunch}" style="width:100px">
+									<pe:inputNumber  id="stemsbunch" value="#{item.stemsbunch}" decimalPlaces="2" decimalSeparator="." thousandSeparator="" disabled="true"
+										 styleClass="b-input50" style="text-align:right">
+										<p:ajax event="change"  listener="#{facturaController.cambioStemsBunch(item)}" 
 											process="@this stemsbunch" update="picestype eqfullboxes stemsbunch totalbunch totalstems priceunit totalprice :frm:total :frm:sinimpuestos :frm:subtotal12 :frm:subtotal0 :frm:noiva :frm:exiva :frm:descuento :frm:iva12"/>
 									</pe:inputNumber>
 								</p:column>
-								<p:column headerText="#{msg.lbl_total_bunch}">
-									<pe:inputNumber  id="totalbunch" value="#{item.totalbunch}"  decimalPlaces="2" decimalSeparator="." thousandSeparator="" >
-										<p:ajax event="blur"  listener="#{facturaController.cambiototalBunch(item)}" 
+								<p:column headerText="#{msg.lbl_total_bunch}" style="width:100px">
+									<pe:inputNumber  id="totalbunch" value="#{item.totalbunch}"  decimalPlaces="2" decimalSeparator="." thousandSeparator="" 
+										styleClass="b-input50" style="text-align:right">
+										<p:ajax event="change"  listener="#{facturaController.cambiototalBunch(item)}" 
 											process="@this totalbunch" update="picestype eqfullboxes stemsbunch totalbunch totalstems priceunit totalprice :frm:total :frm:sinimpuestos :frm:subtotal12 :frm:subtotal0 :frm:noiva :frm:exiva :frm:descuento :frm:iva12"/>
 									</pe:inputNumber>
 								</p:column>
-								<p:column headerText="#{msg.lbl_total_stems}">
-									<pe:inputNumber   id="totalstems" value="#{item.totalstems}"   decimalPlaces="2" decimalSeparator="." thousandSeparator="" >
-										<p:ajax event="blur"  listener="#{facturaController.cambiototalSteams(item)}" 
+								<p:column headerText="#{msg.lbl_total_stems}" style="width:100px">
+									<pe:inputNumber   id="totalstems" value="#{item.totalstems}"   decimalPlaces="2" decimalSeparator="." thousandSeparator="" 
+										styleClass="b-input50" style="text-align:right">
+										<p:ajax event="change"  listener="#{facturaController.cambiototalSteams(item)}" 
 											process="@this totalstems" update="picestype eqfullboxes stemsbunch totalbunch totalstems priceunit totalprice :frm:total :frm:sinimpuestos :frm:subtotal12 :frm:subtotal0 :frm:noiva :frm:exiva :frm:descuento :frm:iva12"/>
 									</pe:inputNumber>
 								</p:column>
-								<p:column headerText="#{msg.lbl_unit_price}">
-									<pe:inputNumber  id="priceunit" value="#{item.preciounitario}"   decimalPlaces="2" decimalSeparator="." thousandSeparator="" >
-										<p:ajax event="blur"  listener="#{facturaController.cambiounitprice(item)}" 
+								<p:column headerText="#{msg.lbl_unit_price}" style="width:100px">
+									<pe:inputNumber  id="priceunit" value="#{item.preciounitario}"   decimalPlaces="2" decimalSeparator="." thousandSeparator="" 
+										styleClass="b-input50" style="text-align:right">
+										<p:ajax event="change"  listener="#{facturaController.cambiounitprice(item)}" 
 											process="@this priceunit" update="picestype eqfullboxes stemsbunch totalbunch totalstems priceunit totalprice :frm:total :frm:sinimpuestos :frm:subtotal12 :frm:subtotal0 :frm:noiva :frm:exiva :frm:descuento :frm:iva12"/>
 									</pe:inputNumber>
 								</p:column>
-								<p:column headerText="#{msg.lbl_total_price}">
-									<pe:inputNumber   id="totalprice" value="#{item.total}"   decimalPlaces="2" decimalSeparator="." thousandSeparator="" >
-										<p:ajax event="blur"  listener="#{facturaController.cambiototal(item)}" 
+								<p:column headerText="#{msg.lbl_total_price}" style="width:100px">
+									<pe:inputNumber   id="totalprice" value="#{item.total}"   decimalPlaces="2" decimalSeparator="." thousandSeparator="" disabled="true" 
+										styleClass="b-input50" style="text-align:right">
+										<p:ajax event="change"  listener="#{facturaController.cambiototal(item)}" 
 											process="@this totalprice" update="picestype eqfullboxes stemsbunch totalbunch totalstems priceunit totalprice :frm:total :frm:sinimpuestos :frm:subtotal12 :frm:subtotal0 :frm:noiva :frm:exiva :frm:descuento :frm:iva12"/>
 									</pe:inputNumber>
 								</p:column>
-								<p:column >
+								<p:column style="width:40px">
 									<p:commandButton id="btneliminar" icon="ui-icon-close" 
 										action="#{facturaController.eliminarArticulo(item)}" process="@this detalleFactura" update="detalleFactura :frm:totales :frm:sinimpuestos :frm:subtotal12 :frm:subtotal0 :frm:noiva :frm:exiva :frm:descuento :frm:iva12" />
 								</p:column>
@@ -290,13 +295,12 @@
 			
 			
 			<h:panelGrid columns="4">
-				
 				<p:commandButton id="btngrabarsinfirma" icon="ui-icon-disk" value="#{msg['btn_guardar_nofirma']}" action="#{facturaController.grabarSinFirma()}" 
-					process="@this detalleFactura pnldatoscab :frm:pnlformapago pnlcredito" disabled="#{facturaDataManager.tfaccabfactura.pk.numerofactura!=null}"
+					process="@this detalleFactura pnldatoscab :frm:pnlformapago pnlcredito" disabled="#{facturaDataManager.accionAux != 'G'}"
 					update="pnldetalle, detalleFactura :frm:pnlDatos :frm:pnlformapago pnlcredito" />
 					
 				<p:commandButton id="btngrabarfirmeniviar" icon="ui-icon-disk" value="#{msg['btn_guardar_firmar_enviar']}" action="#{facturaController.grabarFirmarEnviar()}" 
-					process="@this detalleFactura pnldatoscab :frm:pnlformapago pnlcredito" disabled="#{facturaDataManager.tfaccabfactura.pk.numerofactura!=null}"
+					process="@this detalleFactura pnldatoscab :frm:pnlformapago pnlcredito" disabled="#{facturaDataManager.accionAux != 'G'}"
 					update="pnldetalle, detalleFactura :frm:pnlDatos :frm:pnlformapago pnlcredito" />
 				
 				<p:commandButton id="btnfirmarenviar" icon="ui-icon-disk" value="#{msg['btn_firmar_enviar']}" action="#{facturaController.firmarEnviar()}" 
