@@ -1,5 +1,7 @@
 package ec.com.dlc.bunsys.util;
 
+import org.apache.commons.lang.StringUtils;
+
 import ec.com.dlc.bunsys.commons.locator.BeanLocator;
 import ec.com.dlc.bunsys.commons.resource.BunsysMessages;
 import ec.com.dlc.bunsys.entity.administracion.Tadmcatalogo;
@@ -42,4 +44,8 @@ public class ComprobantesUtil {
 		Tadmcatalogo comprobante = bunsysService.obtenerCatalogo(codcompania, 19, ConstantesSRI.COD_COMPROBANTE_RET);
 		return Integer.parseInt(comprobante.getValor());
 	}
+	
+	public String getsecuencia(String secuencia,int tamanio){
+		return StringUtils.leftPad(secuencia, tamanio, '0');
+    }
 }
