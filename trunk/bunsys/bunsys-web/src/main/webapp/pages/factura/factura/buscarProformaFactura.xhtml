@@ -36,7 +36,7 @@
 				  		<h:panelGroup layout="block" id="pnlProformas">
 				  			<p:dataTable id="tblproforma" value="#{busquedaProformaFacturaDatamanager.tfaccabfacturasList}" var="item"
 							 style="width:100%;font: bold 100% monospace; ">
-								<p:column headerText="#{msg.lbl_numero_factura}">
+								<p:column headerText="#{msg.lbl_numero_factura}" style="width:90px">
 									<p:outputLabel value="#{item.pk.numerofactura}"/>
 								</p:column>
 								<p:column headerText="#{msg.lbl_cliente}">
