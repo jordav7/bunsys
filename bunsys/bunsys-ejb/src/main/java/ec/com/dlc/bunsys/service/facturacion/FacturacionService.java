@@ -25,6 +25,7 @@ import ec.com.dlc.bunsys.entity.facturacion.Tfacformapago;
 import ec.com.dlc.bunsys.entity.facturacion.pk.TfaccuentasxcobrarPK;
 import ec.com.dlc.bunsys.entity.seguridad.Tsyspersona;
 import ec.com.dlc.bunsys.service.parametrizacion.SecuenciaService;
+import ec.com.dlc.bunsys.util.ComprobantesUtil;
 import ec.com.dlc.bunsys.util.FacturacionException;
 
 /**
@@ -110,8 +111,10 @@ public class FacturacionService {
 	public void grabarFactura(Tfaccabfactura tfaccabfactura)throws FacturacionException{
 		try{
 			Integer sec=secuenciaService.obtenerSecuenciaComp(tfaccabfactura.getPk().getCodigocompania(), "numerofactura");
-			System.out.println("sec..."+sec);
-			tfaccabfactura.getPk().setNumerofactura(getsecuencia(sec.toString()));
+			tfaccabfactura.getPk().setNumerofactura(ComprobantesUtil.getInstancia().getsecuencia(sec.toString(), 9));
+			tfaccabfactura.setClaveacceso(
+					secuenciaService.generaClaveAcceso(tfaccabfactura.getFechafactura(),
+							                           tfaccabfactura.getPk().getCodigocompania(), tfaccabfactura.getPk().getNumerofactura()));
 			facturaDao.create(tfaccabfactura);
 			for(Tfacdetfactura tfacdetfactura: tfaccabfactura.getTfacdetfacturas()){
 				tfacdetfactura.setNumerofactura(tfaccabfactura.getPk().getNumerofactura());
@@ -175,9 +178,9 @@ public class FacturacionService {
 		return facturaDao.detalleFacturas(numerofactura);
 	}
 	
-	private String getsecuencia(String secuencia){
-		System.out.println("Ingresa al secuencial");
-		return StringUtils.leftPad(secuencia, 9, '0');
-    }
+	public List<Tfacformapago> tfacformapagos(Integer codigocompania,
+			String numerofactura) throws FacturacionException{
+		return facturaDao.tfacformapagos(codigocompania, numerofactura);
+	}
 		
 }

@@ -20,6 +20,7 @@ import ec.com.dlc.bunsys.entity.facturacion.Tfaccliente;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccuentasxcobrar;
 import ec.com.dlc.bunsys.entity.facturacion.Tfacdetfactura;
 import ec.com.dlc.bunsys.entity.facturacion.Tfacdetproforma;
+import ec.com.dlc.bunsys.entity.facturacion.Tfacformapago;
 import ec.com.dlc.bunsys.entity.inventario.Tinvproducto;
 import ec.com.dlc.bunsys.entity.seguridad.Tsyspersona;
 import ec.com.dlc.bunsys.util.FacturacionException;
@@ -459,5 +460,14 @@ public class FacturaDao extends GeneralDao {
 		} catch (Throwable e) {
 			throw new FacturacionException(e);
 		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Tfacformapago> tfacformapagos(Integer codigocompania,
+			String numerofactura) throws FacturacionException{
+		Query query = entityManager.createQuery("select o from Tfacformapago o where o.numerofactura=:numerofactura and o.pk.codigocompania=:codigocompania")
+				      .setParameter("codigocompania", codigocompania)
+				      .setParameter("numerofactura", numerofactura);
+		return query.getResultList();
 	}
 }
