@@ -9,5 +9,7 @@ public class ConstantesSRI {
 	public static final String COD_COMPROBANTE_RET = BunsysMessages.getString("cod_comprobante_sri");
 	public static final String COD_NOTA_DEBITO = BunsysMessages.getString("cod_notadebito_sri");
 	public static final String COD_GUIA_REMISION = BunsysMessages.getString("cod_guia_remision");
+	public static final String COD_EMISION_NORMAL = BunsysMessages.getString("cod_emision_normal");
+	public static final String COD_EMISION_INDISPONIBILIDAD = BunsysMessages.getString("cod_emision_idisponibilidad");
 	
 }
