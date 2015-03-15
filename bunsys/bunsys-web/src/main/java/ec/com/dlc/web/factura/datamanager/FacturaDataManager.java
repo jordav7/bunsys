@@ -7,6 +7,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 
 import ec.com.dlc.bunsys.entity.administracion.Tadmcatalogo;
+import ec.com.dlc.bunsys.entity.administracion.Tadmcompania;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccabfactura;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccliente;
 import ec.com.dlc.bunsys.entity.facturacion.Tfacdetfactura;
@@ -36,6 +37,8 @@ public class FacturaDataManager extends BaseDatamanager {
 	private Tfacdetfactura tfacdetfactura;
 	
 	private Tfaccliente tfaccliente;
+	
+	private Tadmcompania tadmcompania ;
 	
 	/**
 	 * Aerolineas
@@ -241,6 +244,14 @@ public class FacturaDataManager extends BaseDatamanager {
 
 	public void setNumeroproforma(String numeroproforma) {
 		this.numeroproforma = numeroproforma;
+	}
+
+	public Tadmcompania getTadmcompania() {
+		return tadmcompania;
+	}
+
+	public void setTadmcompania(Tadmcompania tadmcompania) {
+		this.tadmcompania = tadmcompania;
 	}
 
 

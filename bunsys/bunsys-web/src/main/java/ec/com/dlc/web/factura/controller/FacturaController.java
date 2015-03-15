@@ -2,6 +2,7 @@ package ec.com.dlc.web.factura.controller;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,7 +17,9 @@ import javax.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 
 import ec.com.dlc.bunsys.entity.administracion.Tadmcatalogo;
+import ec.com.dlc.bunsys.entity.administracion.Tadmcompania;
 import ec.com.dlc.bunsys.entity.administracion.Tadmconversionunidad;
+import ec.com.dlc.bunsys.entity.administracion.pk.TadmcompaniaPK;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccabfactura;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccabproforma;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccliente;
@@ -27,7 +30,9 @@ import ec.com.dlc.bunsys.entity.facturacion.Tfacformapago;
 import ec.com.dlc.bunsys.entity.inventario.Tinvproducto;
 import ec.com.dlc.bunsys.entity.seguridad.Tsyspersona;
 import ec.com.dlc.bunsys.facade.BunsysService;
+import ec.com.dlc.bunsys.util.ComprobantesUtil;
 import ec.com.dlc.bunsys.util.FacturacionException;
+import ec.com.dlc.bunsys.util.sri.ConstantesSRI;
 import ec.com.dlc.web.commons.resource.ContenidoMessages;
 import ec.com.dlc.web.componentes.ArticuloComponent;
 import ec.com.dlc.web.componentes.ClienteComponent;
@@ -63,6 +68,7 @@ public class FacturaController extends BaseController implements Serializable{
 	@Override
 	public void inicializar() {
 		try {
+			
 			//componete del cliente
 			Tfaccliente tfaccliente= new Tfaccliente();
 			tfaccliente.setTsyspersona(new Tsyspersona());
