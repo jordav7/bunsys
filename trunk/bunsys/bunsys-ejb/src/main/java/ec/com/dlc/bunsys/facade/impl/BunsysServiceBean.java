@@ -26,6 +26,7 @@ import ec.com.dlc.bunsys.entity.facturacion.Tfaccliente;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccuentasxcobrar;
 import ec.com.dlc.bunsys.entity.facturacion.Tfacdetfactura;
 import ec.com.dlc.bunsys.entity.facturacion.Tfacdetproforma;
+import ec.com.dlc.bunsys.entity.facturacion.Tfacformapago;
 import ec.com.dlc.bunsys.entity.facturacion.pk.TfaccuentasxcobrarPK;
 import ec.com.dlc.bunsys.entity.inventario.Tinvproducto;
 import ec.com.dlc.bunsys.entity.inventario.pk.TinvproductoPK;
@@ -330,5 +331,11 @@ public class BunsysServiceBean implements BunsysService {
 	@Override
 	public Collection<Tadmparamsri> parametroSri(Integer codTipoParametro) throws FacturacionException {
 		return parametrizacionService.parametroSri(codTipoParametro);
+	}
+
+	@Override
+	public List<Tfacformapago> tfacformapagos(Integer codigocompania,
+			String numerofactura)throws FacturacionException {
+		return facturacionService.tfacformapagos(codigocompania, numerofactura);
 	}
 }

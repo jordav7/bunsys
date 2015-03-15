@@ -22,6 +22,7 @@ import ec.com.dlc.bunsys.entity.facturacion.Tfaccliente;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccuentasxcobrar;
 import ec.com.dlc.bunsys.entity.facturacion.Tfacdetfactura;
 import ec.com.dlc.bunsys.entity.facturacion.Tfacdetproforma;
+import ec.com.dlc.bunsys.entity.facturacion.Tfacformapago;
 import ec.com.dlc.bunsys.entity.inventario.Tinvproducto;
 import ec.com.dlc.bunsys.entity.inventario.pk.TinvproductoPK;
 import ec.com.dlc.bunsys.entity.seguridad.Tsyspersona;
@@ -245,4 +246,11 @@ public interface BunsysService {
 	 * @throws FacturacionException
 	 */
 	Collection<Tadmparamsri> parametroSri(Integer codTipoParametro) throws FacturacionException ;
+	/**
+	 * listado de las formas de pago de la factura
+	 * @param codigocompania
+	 * @param numerofactura
+	 * @return List<Tfacformapago>
+	 */
+	List<Tfacformapago>tfacformapagos(Integer codigocompania,String numerofactura);
 }
