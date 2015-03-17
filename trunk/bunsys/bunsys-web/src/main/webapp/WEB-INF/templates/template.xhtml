@@ -9,10 +9,11 @@
 			<h:outputScript library="js" name="bunsys.js"/>
 			<h:outputStylesheet library="css" name="layout-default-latest.css" />
 			<h:outputStylesheet library="css" name="bunsys.css"/>
+			<h:outputStylesheet library="css" name="fonts.css"/>
 			<h:outputStylesheet library="css" name="theme.css"/>
 			<title>#{msg['lbl_tituto_aplicacion']}</title>
 		</h:head>
-		<h:body style="margin: 0px; padding: 0px; font-family: 'Trebuchet MS',verdana;">
+		<h:body>
 			<h:panelGroup id="layoutPrincipal" layout="block">
 				<h:outputText value="#{controller.htmlForm}" />
 				<h:form id="#{idForm}">
