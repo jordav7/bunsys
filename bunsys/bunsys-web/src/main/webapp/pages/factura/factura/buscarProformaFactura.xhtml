@@ -76,7 +76,7 @@
 									<p:outputLabel value="#{item.total}"/>
 								</p:column>
 								<p:column>
-									<p:commandButton icon="ui-icon-circle-check" title="#{msg['btn_seleccionar']}" rendered="#{item.estadosri!='FE'}"
+									<p:commandButton icon="ui-icon-circle-check" title="#{msg['btn_seleccionar']}" 
 									action="#{busquedaProformaFacturaController.selecionaFactura(item)}" process="@this tblproforma" immediate="true" >
 				  					</p:commandButton>
 				  				</p:column>
