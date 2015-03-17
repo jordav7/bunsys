@@ -118,8 +118,8 @@ public class FacturaController extends BaseController implements Serializable{
 	
 	@SuppressWarnings("deprecation")
 	private void pagoCredito(){
-		Double valorpagar=facturaDataManager.getTfaccabfactura().getTotal()/(facturaDataManager.getNumeropagos());
-		Double suma=0d;
+		BigDecimal valorpagar=facturaDataManager.getTfaccabfactura().getTotal().divide(new BigDecimal(facturaDataManager.getNumeropagos()));
+		BigDecimal suma=new BigDecimal(0);
 		for (int j = 1; j < facturaDataManager.getNumeropagos(); j++) {
 			Tfaccuentasxcobrar tfaccuentasxcobrar= new Tfaccuentasxcobrar();
 			//codigo compania
@@ -131,12 +131,12 @@ public class FacturaController extends BaseController implements Serializable{
 			//numero de pago
 			tfaccuentasxcobrar.setNumeropago(j);
 			//valor
-			tfaccuentasxcobrar.setValor(new BigDecimal(valorpagar));
+			tfaccuentasxcobrar.setValor(valorpagar);
 			//saldo
 			tfaccuentasxcobrar.setSaldo(tfaccuentasxcobrar.getValor());
-			suma=suma+valorpagar;
+			suma=suma.add(valorpagar);
 			//valor factura
-			tfaccuentasxcobrar.setValorfactura(new BigDecimal(facturaDataManager.getTfaccabfactura().getTotal()));
+			tfaccuentasxcobrar.setValorfactura(facturaDataManager.getTfaccabfactura().getTotal());
 			//estado
 			tfaccuentasxcobrar.setEstado("P");
 			tfaccuentasxcobrar.setEstadocodigo(ContenidoMessages.getInteger("cod_catalogo_estado_cuentaxcobrar"));//32
@@ -169,11 +169,11 @@ public class FacturaController extends BaseController implements Serializable{
 		//numero de pago
 		tfaccuentasxcobrar.setNumeropago(facturaDataManager.getNumeropagos());
 		//valor
-		tfaccuentasxcobrar.setValor(new BigDecimal(facturaDataManager.getTfaccabfactura().getTotal()-suma));
+		tfaccuentasxcobrar.setValor(facturaDataManager.getTfaccabfactura().getTotal().subtract(suma));
 		//saldo
 		tfaccuentasxcobrar.setSaldo(tfaccuentasxcobrar.getValor());
 		//valor factura
-		tfaccuentasxcobrar.setValorfactura(new BigDecimal(facturaDataManager.getTfaccabfactura().getTotal()));
+		tfaccuentasxcobrar.setValorfactura(facturaDataManager.getTfaccabfactura().getTotal());
 		//estado
 		tfaccuentasxcobrar.setEstado("P");
 		//tipo documento
@@ -374,7 +374,7 @@ public class FacturaController extends BaseController implements Serializable{
 		facturaDataManager.getTfaccabfactura().setTotaleqfullboxes(0d);
 		facturaDataManager.getTfaccabfactura().setTotalbunch(0d);
 		facturaDataManager.getTfaccabfactura().setTotalstems(0d);
-		facturaDataManager.getTfaccabfactura().setTotal(0d);
+		facturaDataManager.getTfaccabfactura().setTotal(new BigDecimal(0));
 		//
 		facturaDataManager.getTfaccabfactura().setSubtotalnoiva(new BigDecimal(0));
 		facturaDataManager.getTfaccabfactura().setSubtotaliva(new BigDecimal(0));
@@ -393,27 +393,27 @@ public class FacturaController extends BaseController implements Serializable{
 			//calculos
 			//--subtotal 0%
 			if(detalle.getIva().equals("0") && detalle.getIvacodigo().equals(9)){
-				facturaDataManager.getTfaccabfactura().setSubtotalnoiva(round(facturaDataManager.getTfaccabfactura().getSubtotalnoiva().add(new BigDecimal(detalle.getTotal()))));
+				facturaDataManager.getTfaccabfactura().setSubtotalnoiva(facturaDataManager.getTfaccabfactura().getSubtotalnoiva().add(new BigDecimal(detalle.getTotal())));
 			}
 			//--sbtotal iva 12%
 			if(detalle.getIva().equals("2") && detalle.getIvacodigo().equals(9)){
-				facturaDataManager.getTfaccabfactura().setSubtotaliva(round(facturaDataManager.getTfaccabfactura().getSubtotaliva().add(new BigDecimal(detalle.getTotal()))));
+				facturaDataManager.getTfaccabfactura().setSubtotaliva(facturaDataManager.getTfaccabfactura().getSubtotaliva().add(new BigDecimal(detalle.getTotal())));
 				//validamos si tiene descuento
 				if(facturaDataManager.getTfaccliente().getPorcentajedescuento()!=null && facturaDataManager.getTfaccliente().getPorcentajedescuento()>0){
 					//descuento subtotal * %descuento
-					BigDecimal descuento=facturaDataManager.getTfaccabfactura().getSubtotaliva().multiply(new BigDecimal(facturaDataManager.getTfaccliente().getPorcentajedescuento()/100));
+					Double descuento=detalle.getTotal()*(facturaDataManager.getTfaccliente().getPorcentajedescuento()/100);
 					//descuento
-					detalle.setDescuento(descuento);
+					detalle.setDescuento(new BigDecimal( descuento));
 					//total -descunto
-					BigDecimal descuentoMenTotal=facturaDataManager.getTfaccabfactura().getSubtotaliva().subtract(descuento);
+					Double descuentoMenTotal=detalle.getTotal()-descuento;
 					//descuentoMenTotal * iva 12%
-					BigDecimal iva=descuentoMenTotal.multiply(new BigDecimal(0.12));
+					Double iva=descuentoMenTotal* (12/100);
 					//se suma
-					facturaDataManager.getTfaccabfactura().setIva(round(facturaDataManager.getTfaccabfactura().getIva().add(iva)));
+					facturaDataManager.getTfaccabfactura().setIva(facturaDataManager.getTfaccabfactura().getIva().add(new BigDecimal(iva)));
 				}else{
 					//iva 12%
-					BigDecimal iva=facturaDataManager.getTfaccabfactura().getSubtotaliva().multiply(new BigDecimal(0.12));
-					facturaDataManager.getTfaccabfactura().setIva(round(facturaDataManager.getTfaccabfactura().getIva().add(iva)));
+					Double iva=detalle.getTotal()*(12/100);
+					facturaDataManager.getTfaccabfactura().setIva(facturaDataManager.getTfaccabfactura().getIva().add(new BigDecimal(iva)));
 				}
 			}
 			//--subtotal excento de iva
@@ -421,20 +421,20 @@ public class FacturaController extends BaseController implements Serializable{
 				facturaDataManager.getTfaccabfactura().setSubtotalexcentoiva(new BigDecimal(detalle.getTotal()));
 			}
 			//--subtotal neto
-			facturaDataManager.getTfaccabfactura().setSubtotalneto(round(facturaDataManager.getTfaccabfactura().getSubtotalneto().add(new BigDecimal(detalle.getTotal()))));
+			facturaDataManager.getTfaccabfactura().setSubtotalneto(facturaDataManager.getTfaccabfactura().getSubtotalneto().add(new BigDecimal(detalle.getTotal())));
 		}
 		//calculos finales
 		if(facturaDataManager.getTfaccliente().getPorcentajedescuento()!=null &&
 				facturaDataManager.getTfaccliente().getPorcentajedescuento()>0){
 			//-total descuento
-			facturaDataManager.getTfaccabfactura().setTotaldescuento(round(facturaDataManager.getTfaccabfactura().getSubtotalneto().multiply(
-					new BigDecimal(facturaDataManager.getTfaccliente().getPorcentajedescuento()/100))));
+			facturaDataManager.getTfaccabfactura().setTotaldescuento(facturaDataManager.getTfaccabfactura().getSubtotalneto().multiply(
+					new BigDecimal(facturaDataManager.getTfaccliente().getPorcentajedescuento()/100)));
 		}else{
 			facturaDataManager.getTfaccabfactura().setTotaldescuento(new BigDecimal(0));
 		}
 		//total=totalneto-descuentos+iva
 		BigDecimal total=facturaDataManager.getTfaccabfactura().getSubtotalneto().subtract(facturaDataManager.getTfaccabfactura().getTotaldescuento()).add(facturaDataManager.getTfaccabfactura().getIva());
-		facturaDataManager.getTfaccabfactura().setTotal(total.doubleValue());
+		facturaDataManager.getTfaccabfactura().setTotal(total);
 	}
 	
 	public void cambioPicesType(Tfacdetfactura detalle){
@@ -586,6 +586,7 @@ public class FacturaController extends BaseController implements Serializable{
 				facturaDataManager.getTfaccabfactura().setEstadosri("FE");
 				facturaDataManager.getTfaccabfactura().setEstadosricodigo(ContenidoMessages.getInteger("cod_catalogo_estado_factura_sri"));
 				bunsysService.grabarFactura(facturaDataManager.getTfaccabfactura());
+				
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, ContenidoMessages.getString("msg_info_factura"), ContenidoMessages.getString("msg_info_factura")));	
 			}
 		} catch(Throwable e){
@@ -595,6 +596,7 @@ public class FacturaController extends BaseController implements Serializable{
 	
 	public void firmarEnviar(){
 		System.out.println("Firmar Enviar");
+		//el
 	}
 	
 	
@@ -603,6 +605,8 @@ public class FacturaController extends BaseController implements Serializable{
 	public void buscarProforma(){
 		try {
 			System.out.println("numero proforma.."+facturaDataManager.getNumeroproforma());
+			facturaDataManager.setEditable(Boolean.FALSE);
+			facturaDataManager.setAccionAux("G");
 			if(facturaDataManager.getNumeroproforma()!=null && facturaDataManager.getNumeroproforma().trim().length()>0){
 				List<Tfaccabproforma> proformas=bunsysService.cabeceraProformas(facturaDataManager.getNumeroproforma());
 				if(proformas!=null && proformas.size()>0){
@@ -634,8 +638,6 @@ public class FacturaController extends BaseController implements Serializable{
 			tfaccabfactura.setTfacdetfacturas(new ArrayList<Tfacdetfactura>());
 			facturaDataManager.setTfaccabfactura(tfaccabfactura);
 			
-			facturaDataManager.setEditable(Boolean.TRUE);
-			facturaDataManager.setAccionAux("E");
 			//proforma
 			tfaccabproforma.setTfacdetproformas(new ArrayList<Tfacdetproforma>());
 			tfaccabproforma.setTfacdetproformas(bunsysService.detalleProformas(tfaccabproforma.getPk().getNumeroproforma()));
@@ -716,6 +718,7 @@ public class FacturaController extends BaseController implements Serializable{
 				detalleFactura.setTinvproducto(detproforma.getTinvproducto());
 				
 				detalleFactura.setCantidad(detproforma.getCantidad());
+				detalleFactura.getAditionalProperties().put("cantidadaux", detproforma.getCantidad());
 				detalleFactura.setPreciounitario(detproforma.getPreciounitario());
 				detalleFactura.setDescuento(detproforma.getDescuento());
 				detalleFactura.setNandina(detproforma.getNandina());
@@ -734,10 +737,10 @@ public class FacturaController extends BaseController implements Serializable{
 		}
 	}
 
-	public static BigDecimal round(BigDecimal d) {
-		  int mode = BigDecimal.ROUND_UP ;
-		  return d.setScale(2, mode);
-	}
+//	public static BigDecimal round(BigDecimal d) {
+//		  int mode = BigDecimal.ROUND_UP ;
+//		  return d.setScale(2, mode);
+//	}
 	
 	public FacturaDataManager getFacturaDataManager() {
 		return facturaDataManager;
