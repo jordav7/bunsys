@@ -275,7 +275,7 @@ public class FacturaController extends BaseController implements Serializable{
 			valor=valor+facturaDataManager.getTarjetaCredito();
 		}
 		//validamos si es igual al total
-		if(valor.equals(facturaDataManager.getTfaccabfactura().getTotal())){
+		if(valor.equals(facturaDataManager.getTfaccabfactura().getTotal().doubleValue())){
 			return true;
 		}
 		return false;
@@ -434,7 +434,7 @@ public class FacturaController extends BaseController implements Serializable{
 		}
 		//total=totalneto-descuentos+iva
 		BigDecimal total=facturaDataManager.getTfaccabfactura().getSubtotalneto().subtract(facturaDataManager.getTfaccabfactura().getTotaldescuento()).add(facturaDataManager.getTfaccabfactura().getIva());
-		facturaDataManager.getTfaccabfactura().setTotal(total);
+		facturaDataManager.getTfaccabfactura().setTotal(round(total));
 	}
 	
 	public void cambioPicesType(Tfacdetfactura detalle){
@@ -737,10 +737,10 @@ public class FacturaController extends BaseController implements Serializable{
 		}
 	}
 
-//	public static BigDecimal round(BigDecimal d) {
-//		  int mode = BigDecimal.ROUND_UP ;
-//		  return d.setScale(2, mode);
-//	}
+	public static BigDecimal round(BigDecimal d) {
+		  int mode = BigDecimal.ROUND_UP ;
+		  return d.setScale(2, mode);
+	}
 	
 	public FacturaDataManager getFacturaDataManager() {
 		return facturaDataManager;
