@@ -1,0 +1,5 @@
+@font-face {
+	font-family: 'Trebuchet MS';
+	src: url("#{resource['fonts:trebuc.eot']}");
+	src: local('Trebuchet MS'), url("#{resource['fonts:trebuc.woff']}") format('woff'), url("#{resource['trebuc.ttf']}") format('truetype');
+}
