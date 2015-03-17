@@ -76,7 +76,11 @@ public class BusquedaProformaController extends BaseController {
 	public String editar(Tfaccabproforma tfaccabproforma){
 		tfaccabproforma.setTfacdetproformas(bunsysService.detalleProformas(tfaccabproforma.getPk().getNumeroproforma()));
 		proformaDatamanager.setTfaccabproforma(tfaccabproforma);
+		//detalle
 		proformaDatamanager.getTfaccabproforma().setTfacdetproformas(bunsysService.detalleProformas(tfaccabproforma.getPk().getNumeroproforma()));
+		for(Tfacdetproforma detalle: proformaDatamanager.getTfaccabproforma().getTfacdetproformas()){
+			detalle.getAditionalProperties().put("cantidadaux",1d);
+		}
 		//cliente
 		proformaDatamanager.setTfaccliente(tfaccabproforma.getTfaccliente());
 		proformaDatamanager.setAccionAux("E");
