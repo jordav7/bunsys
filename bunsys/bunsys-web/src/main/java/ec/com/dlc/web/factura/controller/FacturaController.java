@@ -407,12 +407,12 @@ public class FacturaController extends BaseController implements Serializable{
 					//total -descunto
 					Double descuentoMenTotal=detalle.getTotal()-descuento;
 					//descuentoMenTotal * iva 12%
-					Double iva=descuentoMenTotal* (12/100);
+					Double iva=descuentoMenTotal* (0.12);
 					//se suma
 					facturaDataManager.getTfaccabfactura().setIva(facturaDataManager.getTfaccabfactura().getIva().add(new BigDecimal(iva)));
 				}else{
 					//iva 12%
-					Double iva=detalle.getTotal()*(12/100);
+					Double iva=detalle.getTotal()*(0.12);
 					facturaDataManager.getTfaccabfactura().setIva(facturaDataManager.getTfaccabfactura().getIva().add(new BigDecimal(iva)));
 				}
 			}
