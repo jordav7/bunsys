@@ -86,7 +86,7 @@ public class Tfaccabproforma extends BaseEntity<TfaccabproformaPK>  {
 	@Column
 	private BigDecimal iva;
 	@Column
-	private Double total;
+	private BigDecimal total;
 	@Column
 	private Double totalpices;
 	@Column
@@ -300,11 +300,11 @@ public class Tfaccabproforma extends BaseEntity<TfaccabproformaPK>  {
 	}
 
 
-	public Double getTotal() {
+	public BigDecimal getTotal() {
 		return total;
 	}
 
-	public void setTotal(Double total) {
+	public void setTotal(BigDecimal total) {
 		this.total = total;
 	}
 

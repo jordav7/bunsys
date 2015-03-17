@@ -76,7 +76,7 @@ public class Tfaccabfactura extends BaseEntity<TfaccabfacturaPK> {
 	@Column
 	private Double totalstems;
 	@Column
-	private Double total;
+	private BigDecimal total;
 	@Column
 	private BigDecimal subtotalneto;
 	@Column
@@ -323,11 +323,12 @@ public class Tfaccabfactura extends BaseEntity<TfaccabfacturaPK> {
 		this.totalstems = totalstems;
 	}
 
-	public Double getTotal() {
+
+	public BigDecimal getTotal() {
 		return total;
 	}
 
-	public void setTotal(Double total) {
+	public void setTotal(BigDecimal total) {
 		this.total = total;
 	}
 
