@@ -3,17 +3,23 @@ package ec.com.dlc.web.datamanager.factura.notacredito;
 import java.util.Collection;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 
 import ec.com.dlc.bunsys.entity.administracion.Tadmcatalogo;
+import ec.com.dlc.bunsys.entity.administracion.Tadmcompania;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccabdevolucione;
 import ec.com.dlc.bunsys.entity.facturacion.Tfacdetdevolucione;
 import ec.com.dlc.web.datamanager.base.BaseDatamanager;
+import ec.com.dlc.web.datamanager.login.LoginDatamanager;
 
 @ManagedBean(name="notaCreditoDatamanager")
 @SessionScoped
 public class NotaCreditoDatamanager extends BaseDatamanager {
-
+	
+	@ManagedProperty(value="#{loginDatamanager}")
+	private LoginDatamanager loginDatamanager;
+	
 	/**
 	 * Cabecera devoluci&oacute;n
 	 */
@@ -26,6 +32,8 @@ public class NotaCreditoDatamanager extends BaseDatamanager {
 	 * Estado de la nota de cr&eacute;dito
 	 */
 	private Collection<Tadmcatalogo> catalogoEstadoColl;
+	
+	private Tadmcompania compania;
 	
 	@Override
 	public String getIdDatamanager() {
@@ -57,4 +65,21 @@ public class NotaCreditoDatamanager extends BaseDatamanager {
 		this.catalogoEstadoColl = catalogoEstadoColl;
 	}
 
+	public Tadmcompania getCompania() {
+		return compania;
+	}
+
+	public void setCompania(Tadmcompania compania) {
+		this.compania = compania;
+	}
+
+	public LoginDatamanager getLoginDatamanager() {
+		return loginDatamanager;
+	}
+
+	public void setLoginDatamanager(LoginDatamanager loginDatamanager) {
+		this.loginDatamanager = loginDatamanager;
+	}
+
+	
 }
