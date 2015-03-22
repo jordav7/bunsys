@@ -10,33 +10,49 @@
     <ui:define name="contentBody">
 		<p:panel header="#{msg['lbl_notas_credito']}">
 			<p:fieldset legend="#{msg['lbl_datos_cabecera_nc']}">
+				 <h:panelGroup layout="block" id="pnlDatosRef" >
+					 <h:panelGrid columns="4">
+						<p:fieldset legend="Comprobante"  style="display:block;width: 400px; height: 60px; ">
+							<h:panelGrid columns="3">
+								<p:outputLabel for="txtNumeroNotaCredito" value="#{msg['lbl_numero_nc']}:" style="display:block;width: 100px;"/>
+								<h:panelGrid columns="3" style="border: collapse;" cellpadding="0" cellspacing="0">
+									<p:inputText value="#{notaCreditoDatamanager.compania.codigoestablecimiento}" style="width: 50px;" disabled="true"/>
+									<p:inputText value="#{notaCreditoDatamanager.compania.codigopuntoemision}" style="width: 50px;" disabled="true"/>
+									<p:inputText id="txtNumeroNotaCredito" value="#{notaCreditoDatamanager.cabdevoluciones.pk.numerodevoluciones}" required="true">
+										<pe:keyFilter mask="pint"/>
+									</p:inputText>
+								</h:panelGrid>
+								<p:message for="txtNumeroNotaCredito"/>
+							</h:panelGrid>
+						</p:fieldset>
+						<p:fieldset legend="Referencia" style="display:block;width: 450px; height: 60px; ">
+							<h:panelGrid columns="4">
+								<p:outputLabel for="txtNumeroFactura" value="#{msg['lbl_factura']}:" style="display:block;width: 100px; "/>
+								<p:panelGrid>
+									<p:inputText style="width: 50px;" disabled="true"/>
+									<p:inputText style="width: 50px;" disabled="true"/>
+									<p:inputText id="txtNumeroFactura" value="#{notaCreditoDatamanager.cabdevoluciones.numerofactura}" required="true"/>
+								</p:panelGrid>
+								<p:message for="txtNumeroFactura"/>
+								<p:commandButton icon="ui-icon-extlink" oncomplete="PF('dlgClienteBusqueda').show();"/>
+							</h:panelGrid>
+						</p:fieldset>
+					</h:panelGrid>
+				</h:panelGroup>
+				<br/>
 				<h:panelGroup layout="block" id="pnlDatosCabecera">
 					<p:panelGrid columns="1" style="width: 100%;">
 						<f:facet name="header">
 							<h:outputText value="#{msg['lbl_datos_generales']}"/>
 						</f:facet>
 						<h:panelGroup layout="block">
-							<h:panelGrid columns="3">
-								<p:outputLabel for="txtNumeroNotaCredito" value="#{msg['lbl_numero_nc']}:" style="display:block;width: 150px;"/>
-								<h:panelGrid columns="3" style="border: collapse;" cellpadding="0" cellspacing="0">
-									<p:inputText style="width: 50px;" disabled="true"/>
-									<p:inputText style="width: 50px;" disabled="true"/>
-									<p:inputText id="txtNumeroNotaCredito" value="#{notaCreditoDatamanager.cabdevoluciones.pk.numerodevoluciones}" required="true">
-										<pe:keyFilter mask="pint"/>
-									</p:inputText>
-								</h:panelGrid>
-								<p:message for="txtNumeroNotaCredito"/>
-								
+							<h:panelGrid columns="3">	
 								<p:outputLabel for="txtFechaDevolucion" value="#{msg.lbl_fecha}:" style="display:block;width: 150px;"/>
 								<p:calendar id="txtFechaDevolucion" value="#{notaCreditoDatamanager.cabdevoluciones.fechadevolucion}" mask="true" pattern="#{msg.pattern_date}" required="true"/>
 								<p:message for="txtFechaDevolucion"/>
 							</h:panelGrid>
-							<h:panelGrid columns="6">
-								<p:outputLabel for="txtNumeroFactura" value="#{msg['lbl_factura']}:" style="display:block;width: 150px;"/>
-								<p:inputText id="txtNumeroFactura" value="#{notaCreditoDatamanager.cabdevoluciones.numerofactura}" required="true"/>
-								<p:message for="txtNumeroFactura"/>
-								
-								<p:outputLabel for="selEstado" value="#{msg['lbl_estado']}:" />
+							<h:panelGrid columns="3">
+								<p:outputLabel for="selEstado" value="#{msg['lbl_estado']}:" style="display:block;width: 150px;"/>
 								<p:selectOneMenu id="selEstado" value="#{notaCreditoDatamanager.cabdevoluciones.estado}">
 									<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
 									<f:selectItems value="#{notaCreditoDatamanager.catalogoEstadoColl}" var="estado" itemLabel="#{estado.descripcion}" itemValue="#{estado.pk.codigocatalogo}"/>
@@ -45,7 +61,7 @@
 							</h:panelGrid>
 							<h:panelGrid columns="3">
 								<p:outputLabel for="txtObservacion" value="#{msg['lbl_obs']}:" style="display:block;width: 150px;"/>
-								<p:inputTextarea id="txtObservacion" value="#{notaCreditoDatamanager.cabdevoluciones.observacion}"/>
+								<p:inputTextarea id="txtObservacion" value="#{notaCreditoDatamanager.cabdevoluciones.observacion}" style="display:block;width: 700px;"/>
 								<p:message for="txtObservacion"/>
 							</h:panelGrid>
 						</h:panelGroup>
@@ -54,13 +70,14 @@
 						<f:facet name="header">
 							<h:outputText value="#{msg['lbl_datos_cliente']}" />
 						</f:facet>
-						<h:panelGrid columns="3">
+						<h:panelGrid columns="4" id="pnlCliente">
 							<p:outputLabel for="txtIdentificacion" value="#{msg['lbl_identificacion']}:" style="display:block;width: 150px;"/>
 							<p:inputText id="txtIdentificacion" value="#{notaCreditoDatamanager.cabdevoluciones.tfaccliente.tsyspersona.identificacion}">
 								<pe:keyFilter mask="pint"/>
 								<p:ajax event="blur" process="@this" update="txtNombrePersona" listener="#{notaCreditoController.busquedaCliente}"/>
 							</p:inputText>
 							<p:message for="txtIdentificacion"/>
+							<p:commandButton icon="ui-icon-extlink" oncomplete="PF('dlgClienteBusqueda').show();"/>
 							
 							<p:outputLabel for="txtNombrePersona" value="#{msg['lbl_nombres_razon_social']}:" style="display:block;width: 150px;"/>
 							<p:inputText id="txtNombrePersona"
@@ -141,5 +158,23 @@
 					icon="ui-icon-check"/>
 			</h:panelGrid>
 		</p:panel>
+	</ui:define>
+	
+	<ui:define name="dialogArea">
+		<p:dialog widgetVar="dialogFactura">
+			<f:facet name="header">
+				<h:outputText value="#{msg.lbl_factura}" />
+			</f:facet>
+			
+			<h:form id="frmBusquedaCliente">
+				<h:panelGroup id="pnlBusqCliente" appendTo="@(body)" modal="true" resizable="false" closeOnEscape="true">
+					<h:panelGrid columns="3">
+						<p:outputLabel for="txtNumFactura" value="#{msg.lbl_num_fac}:"/>
+						<p:inputText id="txtNumFactura"/>
+						<p:message for="txtNumFactura"/>
+					</h:panelGrid>
+				</h:panelGroup>
+			</h:form>
+		</p:dialog>
 	</ui:define>
 </ui:composition>
