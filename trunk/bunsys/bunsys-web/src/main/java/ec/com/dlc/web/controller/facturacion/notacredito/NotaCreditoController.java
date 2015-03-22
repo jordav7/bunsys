@@ -7,6 +7,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 
+import ec.com.dlc.bunsys.entity.administracion.pk.TadmcompaniaPK;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccliente;
 import ec.com.dlc.bunsys.entity.facturacion.Tfacdetdevolucione;
 import ec.com.dlc.bunsys.facade.BunsysService;
@@ -33,6 +34,9 @@ public class NotaCreditoController extends BaseController {
 	public void inicializar() {
 //		this.notaCreditoDatamanager.setCabdevoluciones(new Tfaccabdevolucione());
 		this.notaCreditoDatamanager.setDetdevolucionesColl(new ArrayList<Tfacdetdevolucione>());
+		TadmcompaniaPK compPk = new TadmcompaniaPK();
+		compPk.setCodigocompania(notaCreditoDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania());
+		this.notaCreditoDatamanager.setCompania(bunsysService.buscarCompania(compPk));
 	}
 	
 	public void crear() {
