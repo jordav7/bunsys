@@ -68,13 +68,13 @@ public class Tfaccabfactura extends BaseEntity<TfaccabfacturaPK> {
 	@Column
 	private String freightforwarder;
 	@Column
-	private Double totalpices;
+	private BigDecimal totalpices;
 	@Column
-	private Double totaleqfullboxes;
+	private BigDecimal totaleqfullboxes;
 	@Column
-	private Double totalbunch;
+	private BigDecimal totalbunch;
 	@Column
-	private Double totalstems;
+	private BigDecimal totalstems;
 	@Column
 	private BigDecimal total;
 	@Column
@@ -291,38 +291,37 @@ public class Tfaccabfactura extends BaseEntity<TfaccabfacturaPK> {
 		this.freightforwarder = freightforwarder;
 	}
 
-	public Double getTotalpices() {
+	public BigDecimal getTotalpices() {
 		return totalpices;
 	}
 
-	public void setTotalpices(Double totalpices) {
+	public void setTotalpices(BigDecimal totalpices) {
 		this.totalpices = totalpices;
 	}
 
-	public Double getTotaleqfullboxes() {
+	public BigDecimal getTotaleqfullboxes() {
 		return totaleqfullboxes;
 	}
 
-	public void setTotaleqfullboxes(Double totaleqfullboxes) {
+	public void setTotaleqfullboxes(BigDecimal totaleqfullboxes) {
 		this.totaleqfullboxes = totaleqfullboxes;
 	}
 
-	public Double getTotalbunch() {
+	public BigDecimal getTotalbunch() {
 		return totalbunch;
 	}
 
-	public void setTotalbunch(Double totalbunch) {
+	public void setTotalbunch(BigDecimal totalbunch) {
 		this.totalbunch = totalbunch;
 	}
 
-	public Double getTotalstems() {
+	public BigDecimal getTotalstems() {
 		return totalstems;
 	}
 
-	public void setTotalstems(Double totalstems) {
+	public void setTotalstems(BigDecimal totalstems) {
 		this.totalstems = totalstems;
 	}
-
 
 	public BigDecimal getTotal() {
 		return total;

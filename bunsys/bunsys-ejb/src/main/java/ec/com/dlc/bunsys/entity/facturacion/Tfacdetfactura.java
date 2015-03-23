@@ -54,23 +54,23 @@ public class Tfacdetfactura extends BaseEntity<TfacdetfacturaPK> {
 	@Column
 	private String codigoproductos;
 	@Column
-	private Double cantidad;
+	private BigDecimal cantidad;
 	@Column
-	private Double preciounitario;
+	private BigDecimal preciounitario;
 	@Column
 	private BigDecimal descuento;
 	@Column
 	private String nandina;
 	@Column
-	private Double eqfullboxes;
+	private BigDecimal eqfullboxes;
 	@Column
-	private Double stemsbunch;
+	private BigDecimal stemsbunch;
 	@Column
-	private Double totalbunch;
+	private BigDecimal totalbunch;
 	@Column
-	private Double totalstems;
+	private BigDecimal totalstems;
 	@Column
-	private Double total;
+	private BigDecimal total;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumns({
@@ -226,19 +226,19 @@ public class Tfacdetfactura extends BaseEntity<TfacdetfacturaPK> {
 		this.codigoproductos = codigoproductos;
 	}
 
-	public Double getCantidad() {
+	public BigDecimal getCantidad() {
 		return cantidad;
 	}
 
-	public void setCantidad(Double cantidad) {
+	public void setCantidad(BigDecimal cantidad) {
 		this.cantidad = cantidad;
 	}
 
-	public Double getPreciounitario() {
+	public BigDecimal getPreciounitario() {
 		return preciounitario;
 	}
 
-	public void setPreciounitario(Double preciounitario) {
+	public void setPreciounitario(BigDecimal preciounitario) {
 		this.preciounitario = preciounitario;
 	}
 
@@ -258,43 +258,43 @@ public class Tfacdetfactura extends BaseEntity<TfacdetfacturaPK> {
 		this.nandina = nandina;
 	}
 
-	public Double getEqfullboxes() {
+	public BigDecimal getEqfullboxes() {
 		return eqfullboxes;
 	}
 
-	public void setEqfullboxes(Double eqfullboxes) {
+	public void setEqfullboxes(BigDecimal eqfullboxes) {
 		this.eqfullboxes = eqfullboxes;
 	}
 
-	public Double getStemsbunch() {
+	public BigDecimal getStemsbunch() {
 		return stemsbunch;
 	}
 
-	public void setStemsbunch(Double stemsbunch) {
+	public void setStemsbunch(BigDecimal stemsbunch) {
 		this.stemsbunch = stemsbunch;
 	}
 
-	public Double getTotalbunch() {
+	public BigDecimal getTotalbunch() {
 		return totalbunch;
 	}
 
-	public void setTotalbunch(Double totalbunch) {
+	public void setTotalbunch(BigDecimal totalbunch) {
 		this.totalbunch = totalbunch;
 	}
 
-	public Double getTotalstems() {
+	public BigDecimal getTotalstems() {
 		return totalstems;
 	}
 
-	public void setTotalstems(Double totalstems) {
+	public void setTotalstems(BigDecimal totalstems) {
 		this.totalstems = totalstems;
 	}
 
-	public Double getTotal() {
+	public BigDecimal getTotal() {
 		return total;
 	}
 
-	public void setTotal(Double total) {
+	public void setTotal(BigDecimal total) {
 		this.total = total;
 	}
 
@@ -353,5 +353,5 @@ public class Tfacdetfactura extends BaseEntity<TfacdetfacturaPK> {
 	public void setTfaccabfactura(Tfaccabfactura tfaccabfactura) {
 		this.tfaccabfactura = tfaccabfactura;
 	}
-	
+
 }
