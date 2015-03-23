@@ -470,4 +470,19 @@ public class FacturaDao extends GeneralDao {
 				      .setParameter("numerofactura", numerofactura);
 		return query.getResultList();
 	}
+	
+	public Tfaccabfactura obtenerFacturaDetalles(Integer codigoCompania, String numeroFactura) throws FacturacionException{
+		try {
+			final StringBuilder sql = new StringBuilder("SELECT o FROM Tfaccabfactura o LEFT JOIN FETCH o.tfacdetfacturas WHERE o.pk.codigocompania=:codigocompania AND o.pk.numerofactura=:numerofactura");
+			Query query = entityManager.createQuery(sql.toString());
+			query.setParameter("codigocompania", codigoCompania);
+			query.setParameter("numerofactura", numeroFactura);
+			Tfaccabfactura factura = (Tfaccabfactura) query.getSingleResult();
+			return factura;
+		} catch (NoResultException e) {
+			return null;
+		} catch (Throwable e) {
+			throw new FacturacionException(e);
+		}
+	}
 }
