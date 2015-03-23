@@ -166,7 +166,7 @@ public interface BunsysService {
 	 * Graba la factura
 	 * @param tfaccabfactura
 	 */
-	public void grabarFactura(Tfaccabfactura tfaccabfactura);
+	public void grabarFactura(Tfaccabfactura tfaccabfactura,String accion,Collection<Tfacdetfactura>listaEliminar);
 	
 	/**
 	 * Crea o actualiza un nuevo cliente
@@ -236,7 +236,7 @@ public interface BunsysService {
 	
 	Integer obtenerSecuencias(Integer codCompania, String codComprobante) throws FacturacionException;
 	
-	List<Tfaccabfactura> cabeceraFacturas(String numerofactura,String estadosri)throws FacturacionException;
+	List<Tfaccabfactura> cabeceraFacturas(String numerofactura,String estadosri,Date fechainicio, Date fechafin)throws FacturacionException;
 	
 	List<Tfacdetfactura> detalleFacturas(String numerofactura)throws FacturacionException;
 	
