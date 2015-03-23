@@ -16,10 +16,9 @@ import ec.com.dlc.web.datamanager.login.LoginDatamanager;
 @ManagedBean(name="notaCreditoDatamanager")
 @SessionScoped
 public class NotaCreditoDatamanager extends BaseDatamanager {
-	
+
 	@ManagedProperty(value="#{loginDatamanager}")
 	private LoginDatamanager loginDatamanager;
-	
 	/**
 	 * Cabecera devoluci&oacute;n
 	 */
@@ -72,7 +71,7 @@ public class NotaCreditoDatamanager extends BaseDatamanager {
 	public void setCompania(Tadmcompania compania) {
 		this.compania = compania;
 	}
-
+	
 	public LoginDatamanager getLoginDatamanager() {
 		return loginDatamanager;
 	}
@@ -81,5 +80,4 @@ public class NotaCreditoDatamanager extends BaseDatamanager {
 		this.loginDatamanager = loginDatamanager;
 	}
 
-	
 }
