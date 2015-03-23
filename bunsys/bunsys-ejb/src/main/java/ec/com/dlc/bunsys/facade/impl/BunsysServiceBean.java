@@ -338,4 +338,11 @@ public class BunsysServiceBean implements BunsysService {
 			String numerofactura)throws FacturacionException {
 		return facturacionService.tfacformapagos(codigocompania, numerofactura);
 	}
+
+	@Override
+	public Tfaccabfactura obtenerFactura(Integer codigoCompania,
+			String numeroFactura) throws FacturacionException {
+		return facturacionService.obtenerFactura(codigoCompania, numeroFactura);
+	}
+	
 }
