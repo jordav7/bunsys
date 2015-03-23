@@ -20,6 +20,7 @@ import ec.com.dlc.bunsys.entity.facturacion.Tfaccabfactura;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccabproforma;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccliente;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccuentasxcobrar;
+import ec.com.dlc.bunsys.entity.facturacion.Tfacdetdevolucione;
 import ec.com.dlc.bunsys.entity.facturacion.Tfacdetfactura;
 import ec.com.dlc.bunsys.entity.facturacion.Tfacdetproforma;
 import ec.com.dlc.bunsys.entity.facturacion.Tfacformapago;
@@ -255,4 +256,6 @@ public interface BunsysService {
 	List<Tfacformapago>tfacformapagos(Integer codigocompania,String numerofactura);
 	
 	Tfaccabfactura obtenerFactura(Integer codigoCompania, String numeroFactura) throws FacturacionException;
+	
+	void guardarNotaCredito(Tfaccabdevolucione notaCredito, Collection<Tfacdetdevolucione> detallesNotaCreditoColl) throws FacturacionException;
 }
