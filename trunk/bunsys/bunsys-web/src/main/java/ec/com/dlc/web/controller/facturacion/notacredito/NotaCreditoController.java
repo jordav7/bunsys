@@ -8,6 +8,7 @@ import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 
 import ec.com.dlc.bunsys.entity.administracion.pk.TadmcompaniaPK;
+import ec.com.dlc.bunsys.entity.facturacion.Tfaccabfactura;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccliente;
 import ec.com.dlc.bunsys.entity.facturacion.Tfacdetdevolucione;
 import ec.com.dlc.bunsys.facade.BunsysService;
@@ -47,6 +48,10 @@ public class NotaCreditoController extends BaseController {
 		if(cliente != null){
 			this.notaCreditoDatamanager.getCabdevoluciones().setTfaccliente(cliente);
 		} 
+	}
+	
+	public void busquedaFactura() {
+		Tfaccabfactura cabTfaccabfactura = bunsysService.obtenerFactura(notaCreditoDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania(), notaCreditoDatamanager.getCabdevoluciones().getNumerofactura());
 	}
 
 	public NotaCreditoDatamanager getNotaCreditoDatamanager() {
