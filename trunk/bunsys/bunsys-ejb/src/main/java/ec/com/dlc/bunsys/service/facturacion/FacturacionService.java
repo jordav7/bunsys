@@ -110,18 +110,27 @@ public class FacturacionService {
 		}
 	}
 	
-	public void grabarFactura(Tfaccabfactura tfaccabfactura)throws FacturacionException{
+	public void grabarFactura(Tfaccabfactura tfaccabfactura,String accion,Collection<Tfacdetfactura>listaEliminar)throws FacturacionException{
 		try{
-			Integer sec=secuenciaService.obtenerSecuenciaComp(tfaccabfactura.getPk().getCodigocompania(), ConstantesSRI.COD_FACTURA);
-			tfaccabfactura.getPk().setNumerofactura(ComprobantesUtil.getInstancia().getsecuencia(sec.toString(), 9));
-			tfaccabfactura.setClaveacceso(
-					secuenciaService.generaClaveAcceso(tfaccabfactura.getFechafactura(),
-							                           tfaccabfactura.getPk().getCodigocompania(), tfaccabfactura.getPk().getNumerofactura()));
-			facturaDao.create(tfaccabfactura);
+			if(accion.equals("G")){
+				Integer sec=secuenciaService.obtenerSecuenciaComp(tfaccabfactura.getPk().getCodigocompania(), ConstantesSRI.COD_FACTURA);
+				tfaccabfactura.getPk().setNumerofactura(ComprobantesUtil.getInstancia().getsecuencia(sec.toString(), 9));
+				//clave de acceso
+				tfaccabfactura.setClaveacceso(
+						secuenciaService.generaClaveAcceso(tfaccabfactura.getFechafactura(),
+								                           tfaccabfactura.getPk().getCodigocompania(), tfaccabfactura.getPk().getNumerofactura()));
+				facturaDao.create(tfaccabfactura);
+			}
+			
 			for(Tfacdetfactura tfacdetfactura: tfaccabfactura.getTfacdetfacturas()){
-				tfacdetfactura.setNumerofactura(tfaccabfactura.getPk().getNumerofactura());
-				tfacdetfactura.setTinvproducto(null);
-				facturaDao.create(tfacdetfactura);
+				if(tfacdetfactura.getPk().getCodigodetfactura()!=null){
+					tfacdetfactura.setTinvproducto(null);
+					facturaDao.update(tfacdetfactura);
+				}else{
+					tfacdetfactura.setNumerofactura(tfaccabfactura.getPk().getNumerofactura());
+					tfacdetfactura.setTinvproducto(null);
+					facturaDao.create(tfacdetfactura);
+				}
 			}
 			//efectivo
 			for(Tfacformapago tfacformapago:tfaccabfactura.getTfacformapagos()){
@@ -135,6 +144,29 @@ public class FacturacionService {
 				tfaccuentasxcobrar.setReferencia(tfaccuentasxcobrar.getPk().getCodigocuenxcobr());
 				facturaDao.update(tfaccuentasxcobrar);
 			}
+			if(!accion.equals("G")){
+				//eliminar forma de pago efectivo anterior
+				List<Tfacformapago> tfacformapagos= tfacformapagos(tfaccabfactura.getPk().getCodigocompania(), tfaccabfactura.getPk().getNumerofactura());
+				for(Tfacformapago formpagoelim:tfacformapagos){
+					facturaDao.delete(formpagoelim);
+				}
+				//eliminar forma de pago efectivo credito
+				List<Tfaccuentasxcobrar> cuentasxcobrar= cuentasxcobrarxcompxnumfac(tfaccabfactura.getPk().getCodigocompania(), tfaccabfactura.getPk().getNumerofactura());
+				for(Tfaccuentasxcobrar cuentasxcobelim:cuentasxcobrar){
+					facturaDao.delete(cuentasxcobelim);
+				}
+				tfaccabfactura.setTfaccliente(null);
+				//clave de acceso
+				tfaccabfactura.setClaveacceso(
+						secuenciaService.generaClaveAcceso(tfaccabfactura.getFechafactura(),
+								                           tfaccabfactura.getPk().getCodigocompania(), tfaccabfactura.getPk().getNumerofactura()));
+				facturaDao.update(tfaccabfactura);
+			}
+			//elimar detalle
+			for(Tfacdetfactura eliminarItem:listaEliminar){
+				facturaDao.delete(eliminarItem);
+			}
+			
 		} catch (Throwable e) {
 			throw new FacturacionException(e);
 		}
@@ -172,8 +204,8 @@ public class FacturacionService {
 		facturaDao.update(cxc);
 	}
 	
-	public List<Tfaccabfactura> cabeceraFacturas(String numerofactura,String estadosri)throws FacturacionException{
-		return facturaDao.cabeceraFacturas(numerofactura,estadosri);
+	public List<Tfaccabfactura> cabeceraFacturas(String numerofactura,String estadosri,Date fechainicio, Date fechafin)throws FacturacionException{
+		return facturaDao.cabeceraFacturas(numerofactura,estadosri,fechainicio,fechafin);
 	}
 	
 	public List<Tfacdetfactura> detalleFacturas(String numerofactura)throws FacturacionException{
@@ -185,6 +217,12 @@ public class FacturacionService {
 		return facturaDao.tfacformapagos(codigocompania, numerofactura);
 	}
 	
+	public List<Tfaccuentasxcobrar> cuentasxcobrarxcompxnumfac(Integer codigocompania,
+			String numerofactura) throws FacturacionException{
+		return facturaDao.cuentasxcobrarxcompxnumfac(codigocompania, numerofactura);
+	}
+	
+	
 	public Tfaccabfactura obtenerFactura(Integer codigoCompania, String numeroFactura) throws FacturacionException{
 		return facturaDao.obtenerFacturaDetalles(codigoCompania, numeroFactura);
 	}
@@ -192,5 +230,5 @@ public class FacturacionService {
 	public void guardarEnviarNotaCredito(Tfaccabdevolucione notaCredito,
 			Collection<Tfacdetdevolucione> detallesNotaCreditoColl) throws FacturacionException {
 		
-	}
+	}	
 }
