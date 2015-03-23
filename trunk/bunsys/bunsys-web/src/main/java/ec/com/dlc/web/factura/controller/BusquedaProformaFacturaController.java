@@ -61,7 +61,8 @@ public class BusquedaProformaFacturaController extends BaseController {
 		try {
 			System.out.println("numero proforma.."+busquedaProformaFacturaDatamanager.getNumerofactura());
 			busquedaProformaFacturaDatamanager.setTfaccabfacturasList(
-					bunsysService.cabeceraFacturas(busquedaProformaFacturaDatamanager.getNumerofactura(),busquedaProformaFacturaDatamanager.getCodigoparamsri()));
+					bunsysService.cabeceraFacturas(busquedaProformaFacturaDatamanager.getNumerofactura(),busquedaProformaFacturaDatamanager.getCodigoparamsri(),
+							busquedaProformaFacturaDatamanager.getFechamin(),busquedaProformaFacturaDatamanager.getFechamax()));
 		} catch (FacturacionException e) {
 			e.printStackTrace();
 		}
@@ -99,7 +100,8 @@ public class BusquedaProformaFacturaController extends BaseController {
 		//numero de factura
 		facturaDataManager.getTfaccabfactura().getPk().setNumerofactura(ComprobantesUtil.getInstancia().getsecuencia(
 				Integer.parseInt(bunsysService.obtenerCatalogo(facturaDataManager.getLoginDatamanager().getLogin().getPk().getCodigocompania(),
-						ContenidoMessages.getInteger("cod_catalogo_codigo_sec"),"numerofactura").getValor())+1+"",9));
+						ContenidoMessages.getInteger("cod_catalogo_codigo_sec"),"01").getValor())+1+"",9));
+		facturaDataManager.setDetfacturaEliminar(new ArrayList<Tfacdetfactura>());
 		return "/pages/factura/factura/factura?faces-redirect=true";
 	}
 	
@@ -112,14 +114,22 @@ public class BusquedaProformaFacturaController extends BaseController {
 			numero=numero.replace(facturaDataManager.getTadmcompania().getCodigopuntoemision(), "");
 			facturaDataManager.getTfaccabfactura().getPk().setNumerofactura(numero);
 			
-			facturaDataManager.setEditable(Boolean.TRUE);
+			if(facturaDataManager.getTfaccabfactura().getEstadosri().equals("SF")){
+				facturaDataManager.setEditable(Boolean.TRUE);
+			}else{
+				facturaDataManager.setEditable(Boolean.FALSE);
+			}
+			
 			facturaDataManager.setAccionAux("E");
-			//proforma
-			tfaccabfactura.setTfacdetfacturas(bunsysService.detalleFacturas(tfaccabfactura.getPk().getNumerofactura()));
+			//detalle factura
+			facturaDataManager.getTfaccabfactura().setTfacdetfacturas(bunsysService.detalleFacturas(tfaccabfactura.getPk().getNumerofactura()));
+			for(Tfacdetfactura detalle: facturaDataManager.getTfaccabfactura().getTfacdetfacturas()){
+				detalle.getAditionalProperties().put("cantidadaux",1d);
+			}
 			//cliente
 			facturaDataManager.setTfaccliente(tfaccabfactura.getTfaccliente());
 			//variables adicionales
-			//consulta
+			//consulta la forma de pago
 			List<Tfacformapago> tfacformapagos =  bunsysService.tfacformapagos(facturaDataManager.getTfaccabfactura().getPk().getCodigocompania(), facturaDataManager.getTfaccabfactura().getPk().getNumerofactura());
 			//forma de pago
 				if(tfacformapagos!=null && tfacformapagos.size()>0){
@@ -127,15 +137,15 @@ public class BusquedaProformaFacturaController extends BaseController {
 					facturaDataManager.setFormaPago2(false);//credito
 					for(Tfacformapago formapago :tfacformapagos){
 						if("EF".equals(formapago.getTipoformapago())){
-							facturaDataManager.setEfectivo(formapago.getValor().doubleValue());
+							facturaDataManager.setEfectivo(formapago.getValor());
 						}else if ("CH".equals(formapago.getTipoformapago())){
-							facturaDataManager.setCheque(formapago.getValor().doubleValue());
+							facturaDataManager.setCheque(formapago.getValor());
 							facturaDataManager.setInstitucionCheque(formapago.getInstitucion());
 						}else if("TF".equals(formapago.getTipoformapago())){
-							facturaDataManager.setTransferencia(formapago.getValor().doubleValue());
+							facturaDataManager.setTransferencia(formapago.getValor());
 							facturaDataManager.setInstitucionTransferencia(formapago.getInstitucion());
 						}else{
-							facturaDataManager.setTarjetaCredito(formapago.getValor().doubleValue());
+							facturaDataManager.setTarjetaCredito(formapago.getValor());
 							facturaDataManager.setInstitucionTarjetaCredito(formapago.getInstitucion());
 						}
 					}
@@ -145,6 +155,7 @@ public class BusquedaProformaFacturaController extends BaseController {
 					facturaDataManager.setNumeropagos(null);
 				}
 			facturaDataManager.setNumeroproforma(null);
+			facturaDataManager.setDetfacturaEliminar(new ArrayList<Tfacdetfactura>());
 			return "/pages/factura/factura/factura?faces-redirect=true";
 		} catch (FacturacionException e) {
 			e.printStackTrace();
