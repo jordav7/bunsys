@@ -27,7 +27,7 @@ public class SecuenciaService {
 		Tadmcatalogo documento = parametrizacionService.obtenerCatalogo(codCompania, 19, codComprobante);
 		String secuencia = documento.getValor();
 		if(secuencia == null){
-			throw new FacturacionException("");
+			throw new FacturacionException("La secuencia no debe ser nula");
 		} 
 		Integer valorSecuencia = Integer.parseInt(secuencia) + 1;
 		documento.setValor(valorSecuencia.toString());
@@ -36,18 +36,21 @@ public class SecuenciaService {
 	}
 	
 	public String generaClaveAcceso(Date fecha, Integer codigocompania,String numerocmprobante)throws FacturacionException {
+		return generaClaveAcceso(fecha, codigocompania, ConstantesSRI.COD_FACTURA, numerocmprobante);
+	}
+	
+	public String generaClaveAcceso(Date fecha, Integer codigocompania, String tipoComprobante, String numerocmprobante) throws FacturacionException {
 		String claveacceso=null;
 		//fecha
-		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat format = new SimpleDateFormat("ddMMyyyy");
 		String fechaEmision = format.format(fecha);
-		fechaEmision = fechaEmision.replace("/", "");
 		TadmcompaniaPK companiaPk = new TadmcompaniaPK();
 		companiaPk.setCodigocompania(codigocompania);
 		Tadmcompania compania= parametrizacionService.buscarCompania(companiaPk);
 		String serie =compania.getCodigoestablecimiento()+compania.getCodigopuntoemision();//serie = codigoestablecimiento+codigopuntodeemision
 		String codigoNumerico="12345678";
 		
-		claveacceso=  fechaEmision + ConstantesSRI.COD_FACTURA + compania.getRuc() + compania.getTipoambiente() +
+		claveacceso=  fechaEmision + tipoComprobante + compania.getRuc() + compania.getTipoambiente() +
 				      serie + numerocmprobante + codigoNumerico + ConstantesSRI.COD_EMISION_NORMAL;
 		//verificador
 		int digitoVerificador = ModuleUtil.obtenerModulo11(claveacceso);
