@@ -168,8 +168,8 @@ public class BunsysServiceBean implements BunsysService {
 	//------------------------------------------
 
 	@Override
-	public void grabarFactura(Tfaccabfactura tfaccabfactura) {
-		facturacionService.grabarFactura(tfaccabfactura);
+	public void grabarFactura(Tfaccabfactura tfaccabfactura,String accion,Collection<Tfacdetfactura>listaEliminar) {
+		facturacionService.grabarFactura(tfaccabfactura,accion,listaEliminar);
 		
 	}
 
@@ -318,9 +318,9 @@ public class BunsysServiceBean implements BunsysService {
 	}
 
 	@Override
-	public List<Tfaccabfactura> cabeceraFacturas(String numerofactura,String estadosri)
+	public List<Tfaccabfactura> cabeceraFacturas(String numerofactura,String estadosri,Date fechainicio, Date fechafin)
 			throws FacturacionException {
-		return facturacionService.cabeceraFacturas(numerofactura, estadosri);
+		return facturacionService.cabeceraFacturas(numerofactura, estadosri,fechainicio,fechafin);
 	}
 
 	@Override
