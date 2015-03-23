@@ -11,16 +11,24 @@
 		<p:panel header="#{msg.lbl_factura}">
 				  	<p:fieldset legend="#{msg['lbl_busqueda']}">
 				  			<h:panelGrid columns="3" id="pnlfilter">
-				  				<p:outputLabel value="#{msg['lbl_numero_proforma']}:" for="numproforma"/>
-				  				<p:inputText id="numproforma" value="#{busquedaProformaFacturaDatamanager.numerofactura}" />
+				  				<p:outputLabel value="#{msg['lbl_numero_factura']}:" for="numproforma"/>
+				  				<p:inputText id="numproforma" value="#{busquedaProformaFacturaDatamanager.numerofactura}" style="display:block;width:180px"/>
 				  				<p:message for="numproforma"/>
 				  				
-				  				<p:outputLabel value="#{msg.lbl_aerolinea}:" for="estadosri" style="display:block;width:140px;"/>
+				  				<p:outputLabel value="#{msg.lbl_estado}:" for="estadosri" style="display:block;width:140px;"/>
 								<p:selectOneMenu id="estadosri" value="#{busquedaProformaFacturaDatamanager.codigoparamsri}"  var="p" style="width:180px" panelStyle="width:180px" >						
 									<f:selectItem itemLabel="Seleccione" itemValue="" />
 									<f:selectItems value="#{busquedaProformaFacturaDatamanager.tadmparamsriList}" var="item" itemValue="#{item.pk.codigoparamsri}" itemLabel="#{item.descripcion}" />
 								</p:selectOneMenu>	
 								<p:message for="estadosri" display="icon"/>
+				  			</h:panelGrid>
+				  			<h:panelGrid columns="3" id="pnlfilterfecha">
+				  				<p:outputLabel value="#{msg['lbl_fecha']} Desde:" for="fechainicio"/>
+				  				<p:calendar id="fechainicio" value="#{busquedaProformaFacturaDatamanager.fechamin}"  style="display:block;width:180px;" required="true" 
+										    	pattern="#{msg['pattern_date']}" mask="true"/>
+								<p:outputLabel value="Hasta:" for="fechafin"/>
+								<p:calendar id="fechafin" value="#{busquedaProformaFacturaDatamanager.fechamax}"  style="display:block;width:180px;" required="true" 
+										    	pattern="#{msg['pattern_date']}" mask="true"/>
 				  			</h:panelGrid>
 				  		<h:panelGroup layout="block" style="float:left">
 				  			<p:commandButton icon="ui-icon-search" value="#{msg['btn_buscar']}" action="#{busquedaProformaFacturaController.listarfacturas()}"
