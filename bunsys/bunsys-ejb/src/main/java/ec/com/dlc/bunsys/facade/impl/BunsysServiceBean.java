@@ -24,6 +24,7 @@ import ec.com.dlc.bunsys.entity.facturacion.Tfaccabfactura;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccabproforma;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccliente;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccuentasxcobrar;
+import ec.com.dlc.bunsys.entity.facturacion.Tfacdetdevolucione;
 import ec.com.dlc.bunsys.entity.facturacion.Tfacdetfactura;
 import ec.com.dlc.bunsys.entity.facturacion.Tfacdetproforma;
 import ec.com.dlc.bunsys.entity.facturacion.Tfacformapago;
@@ -343,6 +344,13 @@ public class BunsysServiceBean implements BunsysService {
 	public Tfaccabfactura obtenerFactura(Integer codigoCompania,
 			String numeroFactura) throws FacturacionException {
 		return facturacionService.obtenerFactura(codigoCompania, numeroFactura);
+	}
+
+	@Override
+	public void guardarNotaCredito(Tfaccabdevolucione notaCredito,
+			Collection<Tfacdetdevolucione> detallesNotaCreditoColl)
+			throws FacturacionException {
+		facturacionService.guardarEnviarNotaCredito(notaCredito, detallesNotaCreditoColl);
 	}
 	
 }
