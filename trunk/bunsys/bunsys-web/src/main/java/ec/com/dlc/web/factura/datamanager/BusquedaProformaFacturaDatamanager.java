@@ -1,6 +1,7 @@
 package ec.com.dlc.web.factura.datamanager;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -25,6 +26,10 @@ public class BusquedaProformaFacturaDatamanager extends BaseDatamanager {
 	private String numerofactura;
 	
 	private String codigoparamsri;
+	
+	private Date fechamin;
+	
+	private Date fechamax;
 	
 	/**
 	 * lista de facturas
@@ -78,6 +83,22 @@ public class BusquedaProformaFacturaDatamanager extends BaseDatamanager {
 
 	public void setNumerofactura(String numerofactura) {
 		this.numerofactura = numerofactura;
+	}
+
+	public Date getFechamin() {
+		return fechamin;
+	}
+
+	public void setFechamin(Date fechamin) {
+		this.fechamin = fechamin;
+	}
+
+	public Date getFechamax() {
+		return fechamax;
+	}
+
+	public void setFechamax(Date fechamax) {
+		this.fechamax = fechamax;
 	}
 
 

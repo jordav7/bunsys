@@ -1,5 +1,6 @@
 package ec.com.dlc.web.factura.datamanager;
 
+import java.math.BigDecimal;
 import java.util.Collection;
 
 import javax.faces.bean.ManagedBean;
@@ -11,6 +12,7 @@ import ec.com.dlc.bunsys.entity.administracion.Tadmcompania;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccabfactura;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccliente;
 import ec.com.dlc.bunsys.entity.facturacion.Tfacdetfactura;
+import ec.com.dlc.bunsys.entity.facturacion.Tfacdetproforma;
 import ec.com.dlc.bunsys.entity.inventario.Tinvproducto;
 import ec.com.dlc.web.datamanager.base.BaseDatamanager;
 import ec.com.dlc.web.datamanager.login.LoginDatamanager;
@@ -55,10 +57,10 @@ public class FacturaDataManager extends BaseDatamanager {
     /**
      * forma de pago en efectivo
      */
-    private Double cheque;
-    private Double efectivo;
-    private Double transferencia;
-    private Double tarjetaCredito;
+    private BigDecimal cheque;
+    private BigDecimal efectivo;
+    private BigDecimal transferencia;
+    private BigDecimal tarjetaCredito;
     /**
      * institucion bancaria
      */
@@ -77,6 +79,10 @@ public class FacturaDataManager extends BaseDatamanager {
     private Boolean editable;
     
     private String numeroproforma;
+    
+    private Collection<Tfacdetfactura>detfacturaEliminar;
+    
+    private String password;
     
 	public Tfaccabfactura getTfaccabfactura() {
 		return tfaccabfactura;
@@ -102,35 +108,35 @@ public class FacturaDataManager extends BaseDatamanager {
 		this.formaPago2 = formaPago2;
 	}
 
-	public Double getCheque() {
+	public BigDecimal getCheque() {
 		return cheque;
 	}
 
-	public void setCheque(Double cheque) {
+	public void setCheque(BigDecimal cheque) {
 		this.cheque = cheque;
 	}
 
-	public Double getEfectivo() {
+	public BigDecimal getEfectivo() {
 		return efectivo;
 	}
 
-	public void setEfectivo(Double efectivo) {
+	public void setEfectivo(BigDecimal efectivo) {
 		this.efectivo = efectivo;
 	}
 
-	public Double getTransferencia() {
+	public BigDecimal getTransferencia() {
 		return transferencia;
 	}
 
-	public void setTransferencia(Double transferencia) {
+	public void setTransferencia(BigDecimal transferencia) {
 		this.transferencia = transferencia;
 	}
 
-	public Double getTarjetaCredito() {
+	public BigDecimal getTarjetaCredito() {
 		return tarjetaCredito;
 	}
 
-	public void setTarjetaCredito(Double tarjetaCredito) {
+	public void setTarjetaCredito(BigDecimal tarjetaCredito) {
 		this.tarjetaCredito = tarjetaCredito;
 	}
 
@@ -252,6 +258,22 @@ public class FacturaDataManager extends BaseDatamanager {
 
 	public void setTadmcompania(Tadmcompania tadmcompania) {
 		this.tadmcompania = tadmcompania;
+	}
+
+	public Collection<Tfacdetfactura> getDetfacturaEliminar() {
+		return detfacturaEliminar;
+	}
+
+	public void setDetfacturaEliminar(Collection<Tfacdetfactura> detfacturaEliminar) {
+		this.detfacturaEliminar = detfacturaEliminar;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 
