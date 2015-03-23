@@ -19,6 +19,7 @@ import ec.com.dlc.bunsys.entity.facturacion.Tfaccabdevolucione;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccabfactura;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccabproforma;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccuentasxcobrar;
+import ec.com.dlc.bunsys.entity.facturacion.Tfacdetdevolucione;
 import ec.com.dlc.bunsys.entity.facturacion.Tfacdetfactura;
 import ec.com.dlc.bunsys.entity.facturacion.Tfacdetproforma;
 import ec.com.dlc.bunsys.entity.facturacion.Tfacformapago;
@@ -184,8 +185,12 @@ public class FacturacionService {
 		return facturaDao.tfacformapagos(codigocompania, numerofactura);
 	}
 	
-	public Tfaccabfactura obtenerFactura(Integer codigoCompania, String numeroFactura) {
+	public Tfaccabfactura obtenerFactura(Integer codigoCompania, String numeroFactura) throws FacturacionException{
 		return facturaDao.obtenerFacturaDetalles(codigoCompania, numeroFactura);
 	}
 		
+	public void guardarEnviarNotaCredito(Tfaccabdevolucione notaCredito,
+			Collection<Tfacdetdevolucione> detallesNotaCreditoColl) throws FacturacionException {
+		
+	}
 }
