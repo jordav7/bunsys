@@ -40,7 +40,7 @@
 										<h:panelGrid columns="6" style="border: collapse;">
 											<p:outputLabel value="#{msg.lbl_referendum}:" for="referendum" style="display:block;width:140px;"/>
 											<p:inputMask id="referendum" value="#{facturaDataManager.tfaccabfactura.referendo}" disabled="#{facturaDataManager.editable}"
-											 style="display:block;width:180px;" required="true" mask="999-9999-99-9999999" />
+											 style="display:block;width:180px;" required="true" mask="999-9999-99-99999999" />
 											<p:message for="referendum" display="icon"/>
 											
 											<p:outputLabel value="#{msg.lbl_farm_code}:" for="farmcode" style="display:block;width:130px;"/>
@@ -51,8 +51,8 @@
 										
 										<h:panelGrid columns="6" >
 											<p:outputLabel value="#{msg.lbl_master_awb}:" for="masterawb" style="display:block;width:140px;"/>
-											<p:inputText id="masterawb" value="#{facturaDataManager.tfaccabfactura.masterawb}" disabled="#{facturaDataManager.editable}"
-											 style="display:block;width:180px;" required="true" onkeyup="bunsys.toUppercase(event, this)" />
+											<p:inputMask id="masterawb" value="#{facturaDataManager.tfaccabfactura.masterawb}" disabled="#{facturaDataManager.editable}"
+											 style="display:block;width:180px;" required="true" mask="999-9999-9999" />
 											<p:message for="masterawb" display="icon"/>
 											
 											<p:outputLabel value="#{msg.lbl_house_awb}:" for="houseawb" style="display:block;width:130px;"/>
@@ -156,7 +156,7 @@
 								</p:column>
 								<p:column headerText="#{msg.lbl_eq_full_boxes}" style="width:100px">
 									<pe:inputNumber  id="eqfullboxes" value="#{item.eqfullboxes}" decimalPlaces="2" decimalSeparator="." thousandSeparator="" 
-										styleClass="b-input50" style="text-align:right" disabled="#{facturaDataManager.editable}">
+										styleClass="b-input50" style="text-align:right" disabled="true">
 										<p:ajax event="change"  listener="#{facturaController.cambioeqfullboxes(item)}" 
 											process="@this eqfullboxes" update="picestype eqfullboxes stemsbunch totalbunch totalstems priceunit totalprice :frm:total :frm:sinimpuestos :frm:subtotal12  :frm:noiva :frm:exiva :frm:descuento :frm:iva12"/>
 									</pe:inputNumber>
@@ -177,11 +177,16 @@
 											process="@this stemsbunch" update="picestype eqfullboxes stemsbunch totalbunch totalstems priceunit totalprice :frm:total :frm:sinimpuestos :frm:subtotal12  :frm:noiva :frm:exiva :frm:descuento :frm:iva12"/>
 									</pe:inputNumber>
 								</p:column>
-								<p:column headerText="#{msg.lbl_total_bunch}" style="width:100px">
-									<pe:inputNumber  id="totalbunch" value="#{item.totalbunch}"  decimalPlaces="2" decimalSeparator="." thousandSeparator="" 
+								<p:column headerText="#{msg.lbl_boxs}" style="width:100px">
+									<pe:inputNumber  id="cajas" value="#{item.aditionalProperties['cajas']}"  decimalPlaces="2" decimalSeparator="." thousandSeparator="" 
 										styleClass="b-input50" style="text-align:right" disabled="#{facturaDataManager.editable}">
 										<p:ajax event="change"  listener="#{facturaController.cambiototalBunch(item)}" 
-											process="@this totalbunch" update="picestype eqfullboxes stemsbunch totalbunch totalstems priceunit totalprice :frm:total :frm:sinimpuestos :frm:subtotal12  :frm:noiva :frm:exiva :frm:descuento :frm:iva12"/>
+											process="@this cajas" update="picestype eqfullboxes stemsbunch totalbunch totalstems priceunit totalprice :frm:total :frm:sinimpuestos :frm:subtotal12  :frm:noiva :frm:exiva :frm:descuento :frm:iva12"/>
+									</pe:inputNumber>
+								</p:column>
+								<p:column headerText="#{msg.lbl_total_bunch}" style="width:100px">
+									<pe:inputNumber  id="totalbunch" value="#{item.totalbunch}"  decimalPlaces="2" decimalSeparator="." thousandSeparator="" 
+										styleClass="b-input50" style="text-align:right" disabled="true">
 									</pe:inputNumber>
 								</p:column>
 								<p:column headerText="#{msg.lbl_total_stems}" style="width:100px">
@@ -319,9 +324,10 @@
 					process="@this detalleFactura pnldatoscab :frm:pnlformapago pnlcredito" disabled="#{facturaDataManager.accionAux != 'G'}"
 					update="pnldetalle, detalleFactura :frm:pnlDatos :frm:pnlformapago pnlcredito" />
 					
-				<p:commandButton id="btngrabarfirmeniviar" icon="ui-icon-disk" value="#{msg['btn_guardar_firmar_enviar']}" action="#{facturaController.grabarFirmarEnviar()}" 
+				<p:commandButton id="btngrabarfirmeniviar" icon="ui-icon-disk" value="#{msg['btn_guardar_firmar_enviar']}"  
 					process="@this detalleFactura pnldatoscab :frm:pnlformapago pnlcredito" disabled="#{facturaDataManager.accionAux != 'G'}"
-					update="pnldetalle, detalleFactura :frm:pnlDatos :frm:pnlformapago pnlcredito" />
+					update="pnldetalle, detalleFactura :frm:pnlDatos :frm:pnlformapago pnlcredito" 
+					onclick="PF('dialogPassword').show();" />
 				
 				<p:commandButton id="btnfirmarenviar" icon="ui-icon-disk" value="#{msg['btn_firmar_enviar']}" action="#{facturaController.firmarEnviar()}" 
 					process="@this detalleFactura pnldatoscab :frm:pnlformapago pnlcredito"  disabled="#{facturaDataManager.tfaccabfactura.estadosri != 'SF' or item.estadosri=='FE'}" 
@@ -499,6 +505,25 @@
 			<h:form id="frmArticulos">
 				<b:articuloComponent id="pnlArticulo" controller="#{articuloDatamanager.articuloComponente}" oncompleteCancel="PF('dlgArticulo').hide();"
 					processSave="@this" updateSave=":frmBusAr:pnlDataArticulosSel" oncompleteSave="PF('dlgArticulo').hide();"/>
+			</h:form>	  		
+	  	</p:dialog>
+	  	
+	  	<p:dialog widgetVar="dialogPassword" appendTo="@(body)" modal="true" resizable="false" closeOnEscape="true">
+	  		<f:facet name="header">
+	  			<h:outputText value="#{msg['lbl_password']}" />
+	  		</f:facet>
+			<h:form id="frmPassword">
+				<b:passwordComponent id="pnlArticulo" password="#{facturaDataManager.password}" iddialog="PF('dialogPassword').hide();"
+					controller="#{facturaController}" showgfe="true"/>
+			</h:form>	  		
+	  	</p:dialog>
+	  	<p:dialog widgetVar="dialogGrabar" appendTo="@(body)" modal="true" resizable="false" closeOnEscape="true">
+			<h:form id="frmGrabar">
+				<p:inputText value="No existe coneccion"></p:inputText>
+				<h:panelGrid>
+					<p:commandButton icon="ui-icon-disk" value="#{msg['btn_guardar_nofirma']}" action="#{facturaController.grabarSinFirma()}" 
+					process="@this" oncomplete="PF('dialogGrabar').hide();" />
+				</h:panelGrid>
 			</h:form>	  		
 	  	</p:dialog>
 	  </ui:define>
