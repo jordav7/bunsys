@@ -416,12 +416,13 @@ public class FacturaDao extends GeneralDao {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Tfaccabfactura> cabeceraFacturas(String numerofactura,String estadosri)throws FacturacionException{
+	public List<Tfaccabfactura> cabeceraFacturas(String numerofactura,String estadosri,Date fechainicio, Date fechafin)throws FacturacionException{
 		try{
 			StringBuilder sql = new StringBuilder("SELECT o FROM Tfaccabfactura o "
 												 + " LEFT JOIN FETCH o.tfaccliente cli"
 								                 + " LEFT JOIN FETCH cli.tsyspersona  "
 								                 + " LEFT JOIN FETCH o.tadmairline"
+								                 + " LEFT JOIN FETCH o.tadmestadosri"
 								                 + " where 1=1 ");
 			
 			if(StringUtils.isNotBlank(numerofactura)){
@@ -430,12 +431,24 @@ public class FacturaDao extends GeneralDao {
 			if(StringUtils.isNotBlank(estadosri)){
 				sql.append(" and o.estadosri=:estadosri ");
 			}
+			if(fechainicio!=null){
+				sql.append(" and o.fechafactura>=:fechainicio");
+			}
+			if(fechafin!=null){
+				sql.append(" and o.fechafactura<=:fechafin");
+			}
 			Query query = entityManager.createQuery(sql.toString());
 			if(StringUtils.isNotBlank(numerofactura)){
 				query.setParameter("numerofactura", numerofactura);
 			}
 			if(StringUtils.isNotBlank(estadosri)){
 				query.setParameter("estadosri",estadosri);
+			}
+			if(fechainicio!=null){
+				query.setParameter("fechainicio",fechainicio);
+			}
+			if(fechafin!=null){
+				query.setParameter("fechafin",fechafin);
 			}
 			return query.getResultList();
 		} catch (Throwable e) {
@@ -466,6 +479,15 @@ public class FacturaDao extends GeneralDao {
 	public List<Tfacformapago> tfacformapagos(Integer codigocompania,
 			String numerofactura) throws FacturacionException{
 		Query query = entityManager.createQuery("select o from Tfacformapago o where o.numerofactura=:numerofactura and o.pk.codigocompania=:codigocompania")
+				      .setParameter("codigocompania", codigocompania)
+				      .setParameter("numerofactura", numerofactura);
+		return query.getResultList();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Tfaccuentasxcobrar> cuentasxcobrarxcompxnumfac(Integer codigocompania,
+			String numerofactura) throws FacturacionException{
+		Query query = entityManager.createQuery("select o from Tfaccuentasxcobrar o where o.numerofactura=:numerofactura and o.pk.codigocompania=:codigocompania")
 				      .setParameter("codigocompania", codigocompania)
 				      .setParameter("numerofactura", numerofactura);
 		return query.getResultList();
