@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.ejb.Local;
 
+import ec.com.dlc.bunsys.common.util.ResponseServiceDto;
 import ec.com.dlc.bunsys.entity.administracion.Tadmcatalogo;
 import ec.com.dlc.bunsys.entity.administracion.Tadmcompania;
 import ec.com.dlc.bunsys.entity.administracion.Tadmconversionunidad;
@@ -260,5 +261,5 @@ public interface BunsysService {
 	
 	Tfaccabfactura obtenerFactura(Integer codigoCompania, String numeroFactura) throws FacturacionException;
 	
-	void guardarNotaCredito(Tfaccabdevolucione notaCredito, Collection<Tfacdetdevolucione> detallesNotaCreditoColl, Tadmcompania empresa, String numeroComprobante) throws FacturacionException;
+	ResponseServiceDto guardarNotaCredito(Tfaccabdevolucione notaCredito, Collection<Tfacdetdevolucione> detallesNotaCreditoColl, Tadmcompania empresa, String numeroComprobante) throws FacturacionException;
 }
