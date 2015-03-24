@@ -25,6 +25,13 @@ public interface GenericDao<T extends EntityCommonImpl> extends Serializable {
 	void create(T entity) throws DaoExcepcion;
 	
 	/**
+	 * Crea o actualiza una entidad
+	 * @param entity
+	 * @throws DaoExcepcion
+	 */
+	void saveOrUpdate(T entity) throws DaoExcepcion;
+	
+	/**
 	 * Actualiza una entidad
 	 * @param entity
 	 * @throws DaoExcepcion 
