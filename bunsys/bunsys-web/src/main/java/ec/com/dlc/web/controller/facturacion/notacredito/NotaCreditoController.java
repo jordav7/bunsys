@@ -128,7 +128,7 @@ public class NotaCreditoController extends BaseController {
 				Tfacdetdevolucione detalleDevolucion = new Tfacdetdevolucione();
 				detalleDevolucion.setApta(detalleFactura.getAtpa());
 				detalleDevolucion.setAptacodigo(detalleFactura.getAtpacodigo());
-				detalleDevolucion.setCantidad(new BigDecimal(detalleFactura.getCantidad()));
+				detalleDevolucion.setCantidad(detalleFactura.getCantidad());
 				detalleDevolucion.setCodigoproductos(detalleFactura.getCodigoproductos());
 				detalleDevolucion.setDescuento(detalleFactura.getDescuento());
 				detalleDevolucion.setIce(detalleFactura.getIce());
@@ -138,7 +138,7 @@ public class NotaCreditoController extends BaseController {
 				detalleDevolucion.setIrbpnr(detalleFactura.getIrbpnr());
 				detalleDevolucion.setIrbpnrcodigo(detalleFactura.getIrbpnrcodigo());
 				detalleDevolucion.setNandina(detalleFactura.getNandina());
-				detalleDevolucion.setPreciounitario(new BigDecimal(detalleFactura.getPreciounitario()));
+				detalleDevolucion.setPreciounitario(detalleFactura.getPreciounitario());
 				detalleDevolucion.setTadmatpa(detalleFactura.getTadmatpa());
 				detalleDevolucion.setTadmice(detalleFactura.getTadmice());
 				detalleDevolucion.setTadmirbpnr(detalleFactura.getTadmirbpnr());
