@@ -19,6 +19,11 @@ public class CommonDaoImpl implements CommonDao {
 	public <T extends EntityCommonImpl> void create(EntityCommonImpl entity) throws DaoExcepcion{
 		genericDao.create(entity);
 	}
+	
+	@Override
+	public <T extends EntityCommonImpl> void saveOrUpdate(EntityCommonImpl entity) throws DaoExcepcion {
+		genericDao.saveOrUpdate(entity);
+	}
 
 	@Override
 	public <T extends EntityCommonImpl> void update(EntityCommonImpl entity) throws DaoExcepcion{
