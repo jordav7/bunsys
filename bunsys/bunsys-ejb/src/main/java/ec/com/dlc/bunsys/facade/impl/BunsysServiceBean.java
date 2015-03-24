@@ -348,9 +348,9 @@ public class BunsysServiceBean implements BunsysService {
 
 	@Override
 	public void guardarNotaCredito(Tfaccabdevolucione notaCredito,
-			Collection<Tfacdetdevolucione> detallesNotaCreditoColl)
+			Collection<Tfacdetdevolucione> detallesNotaCreditoColl, Tadmcompania empresa, String numeroComprobante)
 			throws FacturacionException {
-		facturacionService.guardarEnviarNotaCredito(notaCredito, detallesNotaCreditoColl);
+		facturacionService.guardarEnviarNotaCredito(notaCredito, detallesNotaCreditoColl, empresa, numeroComprobante);
 	}
 
 	@Override
