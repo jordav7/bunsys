@@ -1,6 +1,5 @@
 package ec.com.dlc.web.controller.facturacion.notacredito;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import javax.annotation.PostConstruct;
