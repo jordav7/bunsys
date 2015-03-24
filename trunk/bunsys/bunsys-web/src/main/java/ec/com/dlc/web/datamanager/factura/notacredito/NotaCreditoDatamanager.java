@@ -34,6 +34,8 @@ public class NotaCreditoDatamanager extends BaseDatamanager {
 	
 	private Tadmcompania compania;
 	
+	private boolean edicion;
+	
 	@Override
 	public String getIdDatamanager() {
 		return "notaCreditoDatamanager";
@@ -78,6 +80,14 @@ public class NotaCreditoDatamanager extends BaseDatamanager {
 
 	public void setLoginDatamanager(LoginDatamanager loginDatamanager) {
 		this.loginDatamanager = loginDatamanager;
+	}
+
+	public boolean isEdicion() {
+		return edicion;
+	}
+
+	public void setEdicion(boolean edicion) {
+		this.edicion = edicion;
 	}
 
 }
