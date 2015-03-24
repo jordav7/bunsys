@@ -10,6 +10,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 
+import ec.com.dlc.bunsys.common.util.ResponseServiceDto;
 import ec.com.dlc.bunsys.entity.administracion.Tadmcatalogo;
 import ec.com.dlc.bunsys.entity.administracion.Tadmcompania;
 import ec.com.dlc.bunsys.entity.administracion.Tadmconversionunidad;
@@ -347,10 +348,10 @@ public class BunsysServiceBean implements BunsysService {
 	}
 
 	@Override
-	public void guardarNotaCredito(Tfaccabdevolucione notaCredito,
+	public ResponseServiceDto guardarNotaCredito(Tfaccabdevolucione notaCredito,
 			Collection<Tfacdetdevolucione> detallesNotaCreditoColl, Tadmcompania empresa, String numeroComprobante)
 			throws FacturacionException {
-		facturacionService.guardarEnviarNotaCredito(notaCredito, detallesNotaCreditoColl, empresa, numeroComprobante);
+		return facturacionService.guardarEnviarNotaCredito(notaCredito, detallesNotaCreditoColl, empresa, numeroComprobante);
 	}
 
 	@Override
