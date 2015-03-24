@@ -36,6 +36,17 @@ public class GenericDaoImpl<T extends EntityCommonImpl> implements GenericDao<T>
 			throw convertToDaoException(e);
 		}
 	}
+	
+	@Override
+	public void saveOrUpdate(T entity) throws DaoExcepcion{
+		try {
+			entityManager.clear();
+			entityManager.merge(entity);
+			entityManager.flush();
+		} catch (Exception e) {
+			throw convertToDaoException(e);
+		}
+	}
 
 	@Override
 	public void update(T entity) throws DaoExcepcion{
