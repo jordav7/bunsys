@@ -260,5 +260,5 @@ public interface BunsysService {
 	
 	Tfaccabfactura obtenerFactura(Integer codigoCompania, String numeroFactura) throws FacturacionException;
 	
-	void guardarNotaCredito(Tfaccabdevolucione notaCredito, Collection<Tfacdetdevolucione> detallesNotaCreditoColl) throws FacturacionException;
+	void guardarNotaCredito(Tfaccabdevolucione notaCredito, Collection<Tfacdetdevolucione> detallesNotaCreditoColl, Tadmcompania empresa, String numeroComprobante) throws FacturacionException;
 }
