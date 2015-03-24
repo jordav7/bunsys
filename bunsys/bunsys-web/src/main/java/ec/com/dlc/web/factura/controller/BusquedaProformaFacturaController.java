@@ -1,6 +1,7 @@
 package ec.com.dlc.web.factura.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -8,19 +9,18 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 
-import ec.com.dlc.bunsys.entity.administracion.Tadmcatalogo;
 import ec.com.dlc.bunsys.entity.administracion.pk.TadmcompaniaPK;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccabfactura;
-import ec.com.dlc.bunsys.entity.facturacion.Tfaccabproforma;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccliente;
+import ec.com.dlc.bunsys.entity.facturacion.Tfaccuentasxcobrar;
 import ec.com.dlc.bunsys.entity.facturacion.Tfacdetfactura;
-import ec.com.dlc.bunsys.entity.facturacion.Tfacdetproforma;
 import ec.com.dlc.bunsys.entity.facturacion.Tfacformapago;
 import ec.com.dlc.bunsys.entity.inventario.Tinvproducto;
 import ec.com.dlc.bunsys.entity.seguridad.Tsyspersona;
 import ec.com.dlc.bunsys.facade.BunsysService;
 import ec.com.dlc.bunsys.util.ComprobantesUtil;
 import ec.com.dlc.bunsys.util.FacturacionException;
+import ec.com.dlc.bunsys.util.sri.ConstantesSRI;
 import ec.com.dlc.web.commons.resource.ContenidoMessages;
 import ec.com.dlc.web.controller.base.BaseController;
 import ec.com.dlc.web.datamanager.base.BaseDatamanager;
@@ -51,10 +51,13 @@ public class BusquedaProformaFacturaController extends BaseController {
 		TadmcompaniaPK companiaPk= new TadmcompaniaPK();
 		companiaPk.setCodigocompania(facturaDataManager.getLoginDatamanager().getLogin().getPk().getCodigocompania());
 		facturaDataManager.setTadmcompania(bunsysService.buscarCompania(companiaPk));
-		
+		//inicializa la lista de cabecerafacturas
 		busquedaProformaFacturaDatamanager.setTfaccabfacturasList(new ArrayList<Tfaccabfactura>());
 		//catalogos
 		busquedaProformaFacturaDatamanager.setTadmparamsriList(bunsysService.parametroSri(ContenidoMessages.getInteger("cod_catalogo_estado_factura_sri")));
+		//inicializa las fechas
+		busquedaProformaFacturaDatamanager.setFechamin(new Date());
+		busquedaProformaFacturaDatamanager.setFechamax(new Date());
 	}
 	
 	public void listarfacturas(){
@@ -94,13 +97,13 @@ public class BusquedaProformaFacturaController extends BaseController {
 		facturaDataManager.setInstitucionTransferencia(null);
 		facturaDataManager.setInstitucionTarjetaCredito(null);
 		facturaDataManager.setNumeroproforma(null);
-	
+		facturaDataManager.getTfaccabfactura().setFarmcode("CFE");
 		facturaDataManager.setAccionAux("G");
 		facturaDataManager.setEditable(Boolean.FALSE);
 		//numero de factura
 		facturaDataManager.getTfaccabfactura().getPk().setNumerofactura(ComprobantesUtil.getInstancia().getsecuencia(
-				Integer.parseInt(bunsysService.obtenerCatalogo(facturaDataManager.getLoginDatamanager().getLogin().getPk().getCodigocompania(),
-						ContenidoMessages.getInteger("cod_catalogo_codigo_sec"),"01").getValor())+1+"",9));
+				bunsysService.obtenerCatalogo(facturaDataManager.getLoginDatamanager().getLogin().getPk().getCodigocompania(),
+						ContenidoMessages.getInteger("cod_catalogo_codigo_sec"),ConstantesSRI.COD_FACTURA).getValor(),9));
 		facturaDataManager.setDetfacturaEliminar(new ArrayList<Tfacdetfactura>());
 		return "/pages/factura/factura/factura?faces-redirect=true";
 	}
@@ -115,9 +118,9 @@ public class BusquedaProformaFacturaController extends BaseController {
 			facturaDataManager.getTfaccabfactura().getPk().setNumerofactura(numero);
 			
 			if(facturaDataManager.getTfaccabfactura().getEstadosri().equals("SF")){
-				facturaDataManager.setEditable(Boolean.TRUE);
-			}else{
 				facturaDataManager.setEditable(Boolean.FALSE);
+			}else{
+				facturaDataManager.setEditable(Boolean.TRUE);
 			}
 			
 			facturaDataManager.setAccionAux("E");
@@ -150,9 +153,12 @@ public class BusquedaProformaFacturaController extends BaseController {
 						}
 					}
 				}else{
+					List<Tfaccuentasxcobrar>pagocreditos= bunsysService.cuentasxcobrarxcompxnumfac(facturaDataManager.getTfaccabfactura().getPk().getCodigocompania(), facturaDataManager.getTfaccabfactura().getPk().getNumerofactura());
 					facturaDataManager.setFormaPago1(false);//efectivo
 					facturaDataManager.setFormaPago2(true);//credito
-					facturaDataManager.setNumeropagos(null);
+					if(pagocreditos!=null && pagocreditos.size()>0){
+						facturaDataManager.setNumeropagos(pagocreditos.size());
+					}
 				}
 			facturaDataManager.setNumeroproforma(null);
 			facturaDataManager.setDetfacturaEliminar(new ArrayList<Tfacdetfactura>());

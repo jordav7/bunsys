@@ -501,7 +501,7 @@ public class FacturaController extends BaseController implements Serializable{
 		//calculos
 		//total stems
 		detalle.setTotalstems(detalle.getStemsbunch().multiply(detalle.getTotalbunch()));
-		//total price
+		//total price = totalstems * preciounitario
 		detalle.setTotal(detalle.getTotalstems().multiply(detalle.getPreciounitario()));
 		calculos();
 		detalle.getAditionalProperties().put("cantidadaux",detalle.getCantidad());
@@ -510,24 +510,27 @@ public class FacturaController extends BaseController implements Serializable{
 	public void cambioeqfullboxes(Tfacdetfactura detalle){
 		calculos();
 	}
+	
 	public void cambioStemsBunch(Tfacdetfactura detalle){
-		//total stems
+		//total stems= stembunch * totalbunch
 		detalle.setTotalstems(detalle.getStemsbunch().multiply(detalle.getTotalbunch()));
-		//total price
+		//total price = totalstems * preciounitario
 		detalle.setTotal(detalle.getTotalstems().multiply(detalle.getPreciounitario()));
 		calculos();
 	}
 	
 	public void cambiototalBunch(Tfacdetfactura detalle){
-		detalle.setTotalbunch(detalle.getTotalbunch().multiply(new BigDecimal(detalle.getAditionalProperties().get("cajas").toString())));
-		//total stems
+		//totalbunch * cajas
+		detalle.setTotalbunch(detalle.getTotalbunch().multiply(detalle.getCajas()));
+		//total stems= stembunch * totalbunch
 		detalle.setTotalstems(detalle.getStemsbunch().multiply(detalle.getTotalbunch()));
-		//total price
+		//total price = totalstems * preciounitario
 		detalle.setTotal(detalle.getTotalstems().multiply(detalle.getPreciounitario()));
 		calculos();
 	}
 	
 	public void cambiototalSteams(Tfacdetfactura detalle){
+		//total price = totalstems * preciounitario
 		detalle.setTotal(detalle.getTotalstems().multiply(detalle.getPreciounitario()));
 		calculos();
 	}
@@ -641,10 +644,21 @@ public class FacturaController extends BaseController implements Serializable{
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR DE CONECCION", "ERROR DE CONECCION"));
 			return;
 		}
-		//el
 	}
 	
-	
+	public void grabarContingencia(){
+		try{
+			//verifica los datos y la forma de pago
+			if(validacionesGrabar()){
+				facturaDataManager.getTfaccabfactura().setEstadosri("CO");
+				facturaDataManager.getTfaccabfactura().setEstadosricodigo(ContenidoMessages.getInteger("cod_catalogo_estado_factura_sri"));
+				bunsysService.grabarFactura(facturaDataManager.getTfaccabfactura(),facturaDataManager.getAccionAux(),facturaDataManager.getDetfacturaEliminar());
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, ContenidoMessages.getString("msg_info_factura"), ContenidoMessages.getString("msg_info_factura")));	
+			}
+		} catch(Throwable e){
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ContenidoMessages.getString("msg_error_factura"), ContenidoMessages.getString("msg_error_factura")));
+		}
+	}	
 	
 	
 	public void buscarProforma(){
