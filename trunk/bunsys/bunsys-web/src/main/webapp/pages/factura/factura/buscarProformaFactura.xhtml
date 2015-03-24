@@ -22,17 +22,17 @@
 								</p:selectOneMenu>	
 								<p:message for="estadosri" display="icon"/>
 				  			</h:panelGrid>
-				  			<h:panelGrid columns="3" id="pnlfilterfecha">
-				  				<p:outputLabel value="#{msg['lbl_fecha']} Desde:" for="fechainicio"/>
+				  			<h:panelGrid columns="4"  id="pnlfilterFecha">
+				  				<p:outputLabel value="#{msg['lbl_fecha']} Desde:" for="fechainicio"  style="display:block;width:140px;"/>
 				  				<p:calendar id="fechainicio" value="#{busquedaProformaFacturaDatamanager.fechamin}"  style="display:block;width:180px;" required="true" 
 										    	pattern="#{msg['pattern_date']}" mask="true"/>
-								<p:outputLabel value="Hasta:" for="fechafin"/>
+								<p:outputLabel value="Hasta:" for="fechafin"  style="display:block;width:140px;"/>
 								<p:calendar id="fechafin" value="#{busquedaProformaFacturaDatamanager.fechamax}"  style="display:block;width:180px;" required="true" 
 										    	pattern="#{msg['pattern_date']}" mask="true"/>
 				  			</h:panelGrid>
 				  		<h:panelGroup layout="block" style="float:left">
 				  			<p:commandButton icon="ui-icon-search" value="#{msg['btn_buscar']}" action="#{busquedaProformaFacturaController.listarfacturas()}"
-				  			 update="pnlProformas" process="@this :frm:pnlfilter"/>
+				  			 update="pnlProformas" process="@this :frm:pnlfilter :frm:pnlfilterFecha"/>
 				  			 
 	      				<p:commandButton value="#{msg['btn_crear']}"
 	      					icon="ui-icon-plusthick" action="#{busquedaProformaFacturaController.crear}"
@@ -42,48 +42,58 @@
 				  	</p:fieldset>
 				  	<p:fieldset legend="#{msg['lbl_facturas']}">
 				  		<h:panelGroup layout="block" id="pnlProformas">
-				  			<p:dataTable id="tblproforma" value="#{busquedaProformaFacturaDatamanager.tfaccabfacturasList}" var="item"
-							 style="width:100%;font: bold 100% monospace; ">
+				  			<p:dataTable id="tblproforma" value="#{busquedaProformaFacturaDatamanager.tfaccabfacturasList}" var="item" scrollable="true"
+							 style="width:auto;font: bold 100% monospace; " scrollWidth="900" scrollRows="20"  rows="25" paginator="true">
 								<p:column headerText="#{msg.lbl_numero_factura}" style="width:90px">
 									<p:outputLabel value="#{item.pk.numerofactura}"/>
 								</p:column>
-								<p:column headerText="#{msg.lbl_cliente}">
+								<p:column headerText="#{msg.lbl_cliente}"  style="width:100px">
 									<p:outputLabel value="#{item.tfaccliente.tsyspersona.nombres} #{item.tfaccliente.tsyspersona.apellidos}"/>
 								</p:column>
-								<p:column headerText="#{msg.lbl_referendum}">
+								<p:column headerText="#{msg.lbl_dae}"  style="width:130px">
 									<p:outputLabel value="#{item.referendo}"/>
 								</p:column>
-								<p:column headerText="#{msg.lbl_farm_code}">
+								<p:column headerText="#{msg.lbl_farm_code}"  style="width:100px">
 									<p:outputLabel value="#{item.farmcode}"/>
 								</p:column>
-								<p:column headerText="#{msg.lbl_country_code}">
+								<p:column headerText="#{msg.lbl_country_code}"  style="width:100px">
 									<p:outputLabel value="#{item.countrycode}"/>
 								</p:column>
-								<p:column headerText="#{msg.lbl_area}">
+								<p:column headerText="#{msg.lbl_area}"  style="width:100px">
 									<p:outputLabel value="#{item.area}"/>
 								</p:column>
-								<p:column headerText="#{msg.lbl_fecha}">
-									<p:outputLabel value="#{item.fechafactura}"/>
+								<p:column headerText="#{msg.lbl_fecha_despacho}"  style="width:100px">
+									<p:outputLabel value="#{item.fechafactura}">
+										<f:convertDateTime type="date" pattern="#{msg.pattern_date}"/>
+									</p:outputLabel>
 								</p:column>
-								<p:column headerText="#{msg.lbl_master_awb}">
+								<p:column headerText="#{msg.lbl_fecha_vuelo}"  style="width:100px">
+									<p:outputLabel value="#{item.fechaembarque}">
+										<f:convertDateTime type="date" pattern="#{msg.pattern_date}"/>
+									</p:outputLabel>
+								</p:column>
+								<p:column headerText="#{msg.lbl_master_awb}"  style="width:100px">
 									<p:outputLabel value="#{item.masterawb}"/>
 								</p:column>
-								<p:column headerText="#{msg.lbl_house_awb}">
+								<p:column headerText="#{msg.lbl_house_awb}"  style="width:100px">
 									<p:outputLabel value="#{item.houseawb}"/>
 								</p:column>
-								<p:column headerText="#{msg.lbl_aerolinea}">
+								<p:column headerText="#{msg.lbl_aerolinea}"  style="width:100px">
 									<p:outputLabel value="#{item.tadmairline.descripcion}"/>
 								</p:column>
-								<p:column headerText="#{msg.lbl_total_pice}">
+								<p:column headerText="#{msg.lbl_total_pice}"  style="width:100px">
 									<p:outputLabel value="#{item.totalpices}"/>
 								</p:column>
-								<p:column headerText="#{msg.lbl_total_stems}">
+								<p:column headerText="#{msg.lbl_total_stems}"  style="width:100px">
 									<p:outputLabel value="#{item.totalstems}"/>
 								</p:column>
-								<p:column headerText="#{msg.lbl_total_price}">
+								<p:column headerText="#{msg.lbl_total_price}"  style="width:100px">
 									<p:outputLabel value="#{item.total}"/>
 								</p:column>
-								<p:column>
+								<p:column headerText="#{msg.lbl_estado}"  style="width:100px">
+									<p:outputLabel value="#{item.tadmestadosri.descripcion}"/>
+								</p:column>
+								<p:column  style="width:35px">
 									<p:commandButton icon="ui-icon-circle-check" title="#{msg['btn_seleccionar']}" 
 									action="#{busquedaProformaFacturaController.selecionaFactura(item)}" process="@this tblproforma" immediate="true" >
 				  					</p:commandButton>
