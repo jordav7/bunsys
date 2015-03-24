@@ -253,7 +253,10 @@ public interface BunsysService {
 	 * @param numerofactura
 	 * @return List<Tfacformapago>
 	 */
-	List<Tfacformapago>tfacformapagos(Integer codigocompania,String numerofactura);
+	List<Tfacformapago>tfacformapagos(Integer codigocompania,String numerofactura)throws FacturacionException;
+	
+	public List<Tfaccuentasxcobrar> cuentasxcobrarxcompxnumfac(Integer codigocompania,
+			String numerofactura) throws FacturacionException;
 	
 	Tfaccabfactura obtenerFactura(Integer codigoCompania, String numeroFactura) throws FacturacionException;
 	
