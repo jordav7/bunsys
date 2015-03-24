@@ -2,6 +2,7 @@ package ec.com.dlc.bunsys.service.facturacion;
 
 import static javax.ejb.TransactionAttributeType.MANDATORY;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import javax.ejb.TransactionAttribute;
 import javax.inject.Inject;
 
 import ec.com.dlc.bunsys.common.marshaller.MarshallerFactory;
+import ec.com.dlc.bunsys.common.sign.factory.XmlSignFactory;
 import ec.com.dlc.bunsys.common.util.Constants;
 import ec.com.dlc.bunsys.common.util.ResponseServiceDto;
 import ec.com.dlc.bunsys.dao.facturacion.FacturaDao;
@@ -267,6 +269,7 @@ public class FacturacionService {
 			completaDatosNC(notaCredito, detallesNotaCreditoColl, empresa, numeroComprobante, sriNotaCredito);
 			
 			String xmlNC = MarshallerFactory.getInstancia().marshal(sriNotaCredito);
+			xmlNC = XmlSignFactory.getXmlDataSign().signXML(xmlNC, new File(""), notaCredito.getAditionalProperty("passwordToken").toString());
 			RecepcionComprobantesService recepcionComprobantesService = new RecepcionComprobantesService();
 			RespuestaSolicitud respuestaSolicitud = recepcionComprobantesService.getRecepcionComprobantesPort().validarComprobante(xmlNC.getBytes());
 			if(respuestaSolicitud.getEstado().equals(Constants.STATE_RECEIVED)){
