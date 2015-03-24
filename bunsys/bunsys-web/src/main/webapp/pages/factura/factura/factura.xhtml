@@ -38,7 +38,7 @@
 											<p:message for="numeroproforma" display="icon"/>
 										</h:panelGrid>
 										<h:panelGrid columns="6" style="border: collapse;">
-											<p:outputLabel value="#{msg.lbl_referendum}:" for="referendum" style="display:block;width:140px;"/>
+											<p:outputLabel value="#{msg.lbl_dae}:" for="referendum" style="display:block;width:140px;"/>
 											<p:inputMask id="referendum" value="#{facturaDataManager.tfaccabfactura.referendo}" disabled="#{facturaDataManager.editable}"
 											 style="display:block;width:180px;" required="true" mask="999-9999-99-99999999" />
 											<p:message for="referendum" display="icon"/>
@@ -69,7 +69,7 @@
 											</p:selectOneMenu>	
 											<p:message for="txtaerolinea" display="icon"/>
 											
-											<p:outputLabel value="#{msg.lbl_dae}:" for="dae" style="display:block;width:130px;"/>
+											<p:outputLabel value="#{msg.lbl_aeropuerto}:" for="dae" style="display:block;width:130px;" />
 											<p:inputText id="dae" value="#{facturaDataManager.tfaccabfactura.dae}" style="display:block;width:180px;" disabled="#{facturaDataManager.editable}"
 												 required="true" onkeyup="bunsys.toUppercase(event, this)" />
 											<p:message for="dae" display="icon"/>
@@ -86,7 +86,7 @@
 												 style="display:block;width:180px;" required="false" onkeyup="bunsys.toUppercase(event, this)" />
 											<p:message for="fixedprice" display="icon"/>	
 										</h:panelGrid>
-										<h:panelGrid columns="12" >
+										<h:panelGrid columns="15" >
 										    <p:outputLabel value="#{msg.lbl_country_code}:" for="countrycode" style="display:block;width:140px;"/>
 											<p:inputText id="countrycode" value="#{facturaDataManager.tfaccabfactura.countrycode}" disabled="#{facturaDataManager.editable}"
 												 style="display:block;width:50px;" required="true" onkeyup="bunsys.toUppercase(event, this)" />
@@ -97,10 +97,15 @@
 												 style="display:block;width:80px;" required="true" onkeyup="bunsys.toUppercase(event, this)" />
 											<p:message for="area" display="icon"/>
 											
-											<p:outputLabel for="fecha" value="#{msg.lbl_fecha}:" style="display:block;width:80px;"/>
+											<p:outputLabel for="fecha" value="#{msg.lbl_fecha_despacho}:" style="display:block;width:80px;"/>
 										    <p:calendar id="fecha" value="#{facturaDataManager.tfaccabfactura.fechafactura}" disabled="#{facturaDataManager.editable}"
 										    	  style="display:block;width:180px;" required="true" pattern="#{msg['pattern_date']}" mask="true"/>
 										    <p:message for="fecha" display="icon"/>
+										    
+										    <p:outputLabel for="fechaVuelo" value="#{msg.lbl_fecha_vuelo}:" style="display:block;width:80px;"/>
+										    <p:calendar id="fechaVuelo" value="#{facturaDataManager.tfaccabfactura.fechaembarque}" disabled="#{facturaDataManager.editable}"
+										    	  style="display:block;width:180px;" required="true" pattern="#{msg['pattern_date']}" mask="true"/>
+										    <p:message for="fechaVuelo" display="icon"/>
 										</h:panelGrid>
 									</h:panelGroup>
 							</p:panelGrid>
@@ -138,7 +143,7 @@
 							</h:panelGrid>
 					</h:panelGroup>	
 					<p:dataTable id="detalleFactura" value="#{facturaDataManager.tfaccabfactura.tfacdetfacturas}" var="item" scrollable="true"
-							 		style="width:auto;font: bold 100% monospace; " scrollWidth="900" scrollRows="2">
+							 		style="width:auto;font: bold 100% monospace; " scrollWidth="900" scrollRows="5">
 								<p:column headerText="#{msg.lbl_pices_type}" style="width:100px" >
 									<p:selectOneMenu id="catpicestype" value="#{item.unidadventa}"  var="p" style="width:100px" panelStyle="width:100px" disabled="#{facturaDataManager.editable}">						
 										<p:ajax event="change"  listener="#{facturaController.cambioPicesType(item)}" 
@@ -178,20 +183,20 @@
 									</pe:inputNumber>
 								</p:column>
 								<p:column headerText="#{msg.lbl_boxs}" style="width:100px">
-									<pe:inputNumber  id="cajas" value="#{item.aditionalProperties['cajas']}"  decimalPlaces="2" decimalSeparator="." thousandSeparator="" 
+									<pe:inputNumber  id="cajas" value="#{item.cajas}"  decimalPlaces="2" decimalSeparator="." thousandSeparator="" 
 										styleClass="b-input50" style="text-align:right" disabled="#{facturaDataManager.editable}">
 										<p:ajax event="change"  listener="#{facturaController.cambiototalBunch(item)}" 
-											process="@this cajas" update="picestype eqfullboxes stemsbunch totalbunch totalstems priceunit totalprice :frm:total :frm:sinimpuestos :frm:subtotal12  :frm:noiva :frm:exiva :frm:descuento :frm:iva12"/>
+											process="@this" update="picestype eqfullboxes stemsbunch totalbunch totalstems priceunit totalprice :frm:total :frm:sinimpuestos :frm:subtotal12  :frm:noiva :frm:exiva :frm:descuento :frm:iva12"/>
 									</pe:inputNumber>
 								</p:column>
 								<p:column headerText="#{msg.lbl_total_bunch}" style="width:100px">
 									<pe:inputNumber  id="totalbunch" value="#{item.totalbunch}"  decimalPlaces="2" decimalSeparator="." thousandSeparator="" 
-										styleClass="b-input50" style="text-align:right" disabled="true">
+										styleClass="b-input100" style="text-align:right" disabled="true">
 									</pe:inputNumber>
 								</p:column>
 								<p:column headerText="#{msg.lbl_total_stems}" style="width:100px">
 									<pe:inputNumber   id="totalstems" value="#{item.totalstems}"   decimalPlaces="2" decimalSeparator="." thousandSeparator="" 
-										styleClass="b-input50" style="text-align:right" disabled="#{facturaDataManager.editable}">
+										styleClass="b-input100" style="text-align:right" disabled="#{facturaDataManager.editable}">
 										<p:ajax event="change"  listener="#{facturaController.cambiototalSteams(item)}" 
 											process="@this totalstems" update="picestype eqfullboxes stemsbunch totalbunch totalstems priceunit totalprice :frm:total :frm:sinimpuestos :frm:subtotal12  :frm:noiva :frm:exiva :frm:descuento :frm:iva12"/>
 									</pe:inputNumber>
@@ -205,12 +210,12 @@
 								</p:column>
 								<p:column headerText="#{msg.lbl_total_price}" style="width:100px">
 									<pe:inputNumber   id="totalprice" value="#{item.total}"   decimalPlaces="2" decimalSeparator="." thousandSeparator="" disabled="true" 
-										styleClass="b-input50" style="text-align:right" >
+										styleClass="b-input100" style="text-align:right" >
 										<p:ajax event="change"  listener="#{facturaController.cambiototal(item)}" 
 											process="@this totalprice" update="picestype eqfullboxes stemsbunch totalbunch totalstems priceunit totalprice :frm:total :frm:sinimpuestos :frm:subtotal12  :frm:noiva :frm:exiva :frm:descuento :frm:iva12"/>
 									</pe:inputNumber>
 								</p:column>
-								<p:column style="width:40px">
+								<p:column style="width:30px">
 									<p:commandButton id="btneliminar" icon="ui-icon-close" disabled="#{facturaDataManager.editable}"
 										action="#{facturaController.eliminarArticulo(item)}" process="@this detalleFactura" update="detalleFactura :frm:totales :frm:sinimpuestos :frm:subtotal12  :frm:noiva :frm:exiva :frm:descuento :frm:iva12" />
 								</p:column>
@@ -519,9 +524,9 @@
 	  	</p:dialog>
 	  	<p:dialog widgetVar="dialogGrabar" appendTo="@(body)" modal="true" resizable="false" closeOnEscape="true">
 			<h:form id="frmGrabar">
-				<p:inputText value="No existe coneccion"></p:inputText>
+				<p:outputLabel value="#{msg.msg_info_no_existe_coneccion}" />
 				<h:panelGrid>
-					<p:commandButton icon="ui-icon-disk" value="#{msg['btn_guardar_nofirma']}" action="#{facturaController.grabarSinFirma()}" 
+					<p:commandButton icon="ui-icon-disk" value="#{msg['btn_guardar_contingencia']}" action="#{facturaController.grabarContingencia()}" 
 					process="@this" oncomplete="PF('dialogGrabar').hide();" />
 				</h:panelGrid>
 			</h:form>	  		
