@@ -2,6 +2,9 @@ package ec.com.dlc.bunsys.service.facturacion;
 
 import static javax.ejb.TransactionAttributeType.MANDATORY;
 
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -10,8 +13,9 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.inject.Inject;
 
-import org.apache.commons.lang.StringUtils;
-
+import ec.com.dlc.bunsys.common.marshaller.MarshallerFactory;
+import ec.com.dlc.bunsys.common.util.Constants;
+import ec.com.dlc.bunsys.common.util.ResponseServiceDto;
 import ec.com.dlc.bunsys.dao.facturacion.FacturaDao;
 import ec.com.dlc.bunsys.entity.administracion.Tadmcompania;
 import ec.com.dlc.bunsys.entity.administracion.Tadmconversionunidad;
@@ -25,10 +29,27 @@ import ec.com.dlc.bunsys.entity.facturacion.Tfacdetproforma;
 import ec.com.dlc.bunsys.entity.facturacion.Tfacformapago;
 import ec.com.dlc.bunsys.entity.facturacion.pk.TfaccuentasxcobrarPK;
 import ec.com.dlc.bunsys.entity.seguridad.Tsyspersona;
+import ec.com.dlc.bunsys.schema.v110.notacredito.Impuesto;
+import ec.com.dlc.bunsys.schema.v110.notacredito.InfoTributaria;
+import ec.com.dlc.bunsys.schema.v110.notacredito.NotaCredito;
+import ec.com.dlc.bunsys.schema.v110.notacredito.NotaCredito.Detalles;
+import ec.com.dlc.bunsys.schema.v110.notacredito.NotaCredito.Detalles.Detalle;
+import ec.com.dlc.bunsys.schema.v110.notacredito.NotaCredito.Detalles.Detalle.Impuestos;
+import ec.com.dlc.bunsys.schema.v110.notacredito.NotaCredito.InfoAdicional;
+import ec.com.dlc.bunsys.schema.v110.notacredito.NotaCredito.InfoNotaCredito;
+import ec.com.dlc.bunsys.schema.v110.notacredito.ObligadoContabilidad;
+import ec.com.dlc.bunsys.schema.v110.notacredito.TotalConImpuestos;
+import ec.com.dlc.bunsys.schema.v110.notacredito.TotalConImpuestos.TotalImpuesto;
 import ec.com.dlc.bunsys.service.parametrizacion.SecuenciaService;
 import ec.com.dlc.bunsys.util.ComprobantesUtil;
 import ec.com.dlc.bunsys.util.FacturacionException;
 import ec.com.dlc.bunsys.util.sri.ConstantesSRI;
+import ec.com.dlc.bunsys.webservices.sri.autorizacion.Autorizacion;
+import ec.com.dlc.bunsys.webservices.sri.autorizacion.AutorizacionComprobantesService;
+import ec.com.dlc.bunsys.webservices.sri.autorizacion.Mensaje;
+import ec.com.dlc.bunsys.webservices.sri.autorizacion.RespuestaComprobante;
+import ec.com.dlc.bunsys.webservices.sri.recepcion.RecepcionComprobantesService;
+import ec.com.dlc.bunsys.webservices.sri.recepcion.RespuestaSolicitud;
 
 /**
  * Bean que contiene toda la l&oacute;gica del m&oacute;dulo de facturaci&oacute;n
@@ -227,8 +248,130 @@ public class FacturacionService {
 		return facturaDao.obtenerFacturaDetalles(codigoCompania, numeroFactura);
 	}
 		
-	public void guardarEnviarNotaCredito(Tfaccabdevolucione notaCredito,
-			Collection<Tfacdetdevolucione> detallesNotaCreditoColl) throws FacturacionException {
+	public ResponseServiceDto guardarEnviarNotaCredito(Tfaccabdevolucione notaCredito,
+			Collection<Tfacdetdevolucione> detallesNotaCreditoColl, Tadmcompania empresa, String numeroComprobante) throws FacturacionException {
+		try {
+			ResponseServiceDto responseService = null;
+			facturaDao.saveOrUpdate(notaCredito);
+			for (Tfacdetdevolucione tfacdetdevolucione : detallesNotaCreditoColl) {
+				facturaDao.saveOrUpdate(tfacdetdevolucione);
+			}
+			//una vez grabado genero los datos de la facturacion electronica
+			NotaCredito sriNotaCredito = new NotaCredito();
+			sriNotaCredito.setId("comprobante");
+			sriNotaCredito.setInfoAdicional(new InfoAdicional());
+			sriNotaCredito.setInfoNotaCredito(new InfoNotaCredito());
+			sriNotaCredito.setInfoTributaria(new InfoTributaria());
+			sriNotaCredito.setVersion("1.1.0");
+			
+			completaDatosNC(notaCredito, detallesNotaCreditoColl, empresa, numeroComprobante, sriNotaCredito);
+			
+			String xmlNC = MarshallerFactory.getInstancia().marshal(sriNotaCredito);
+			RecepcionComprobantesService recepcionComprobantesService = new RecepcionComprobantesService();
+			RespuestaSolicitud respuestaSolicitud = recepcionComprobantesService.getRecepcionComprobantesPort().validarComprobante(xmlNC.getBytes());
+			if(respuestaSolicitud.getEstado().equals(Constants.STATE_RECEIVED)){
+				AutorizacionComprobantesService autorizacionService = new AutorizacionComprobantesService();
+				RespuestaComprobante respuestaComprobante = autorizacionService.getAutorizacionComprobantesPort().autorizacionComprobante(sriNotaCredito.getInfoTributaria().getClaveAcceso());
+				if(respuestaComprobante != null && !respuestaComprobante.getAutorizaciones().getAutorizacion().isEmpty()){
+					for (Autorizacion autorizacion : respuestaComprobante.getAutorizaciones().getAutorizacion()) {
+						StringBuilder comprobante = new StringBuilder("<![CDATA[").append(autorizacion.getComprobante()).append("]]>");
+						autorizacion.setComprobante(comprobante.toString());
+						String finalXml = MarshallerFactory.getInstancia().marshal(autorizacion);
+						responseService = new ResponseServiceDto();
+						responseService.setEstado(autorizacion.getEstado());
+						responseService.setComprobante(finalXml);
+						completaDatosRetorno(responseService, autorizacion);
+						generaComprobantes(responseService, sriNotaCredito, notaCredito, detallesNotaCreditoColl);
+						break;
+					}
+				} else if(respuestaComprobante == null || respuestaComprobante.getAutorizaciones().getAutorizacion().isEmpty()) {
+					responseService = new ResponseServiceDto();
+					responseService.setEstado(Constants.STATE_NO_SUBMIT);
+					throw new FacturacionException("ERROR al consultar al servicio de autorizacion");
+				}
+			} else {
+				responseService = new ResponseServiceDto();
+				responseService.setEstado(respuestaSolicitud.getEstado());
+				throw new FacturacionException("El comprobante ha sido devuelto");
+			}
+			return responseService;
+		} catch (Throwable e) {
+			throw new FacturacionException(e);
+		}
+	}
+	
+	private void completaDatosNC(Tfaccabdevolucione notaCredito, Collection<Tfacdetdevolucione> detallesNotaCreditoColl, Tadmcompania empresa, String numeroComprobante, NotaCredito sriNotaCredito) throws FacturacionException{
+		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+		String fecha = format.format(notaCredito.getFechadevolucion());
+		sriNotaCredito.getInfoTributaria().setAmbiente(empresa.getTipoambiente());
+		sriNotaCredito.getInfoTributaria().setClaveAcceso(secuenciaService.generaClaveAcceso(notaCredito.getFechadevolucion(), empresa.getPk().getCodigocompania(), ConstantesSRI.COD_NOTA_CREDITO, numeroComprobante));
+		sriNotaCredito.getInfoTributaria().setCodDoc(ConstantesSRI.COD_NOTA_CREDITO);
+		sriNotaCredito.getInfoTributaria().setDirMatriz(empresa.getDireccionmatriz());
+		sriNotaCredito.getInfoTributaria().setEstab(empresa.getCodigoestablecimiento());
+		sriNotaCredito.getInfoTributaria().setPtoEmi(empresa.getCodigopuntoemision());
+		sriNotaCredito.getInfoTributaria().setNombreComercial(empresa.getNombrecomercial());
+		sriNotaCredito.getInfoTributaria().setRazonSocial(empresa.getRazonsocial());
+		sriNotaCredito.getInfoTributaria().setRuc(empresa.getRuc());
+		sriNotaCredito.getInfoTributaria().setSecuencial(numeroComprobante);
+		sriNotaCredito.getInfoTributaria().setTipoEmision(ConstantesSRI.COD_EMISION_NORMAL);
 		
-	}	
+		sriNotaCredito.getInfoNotaCredito().setCodDocModificado(ConstantesSRI.COD_FACTURA);
+		sriNotaCredito.getInfoNotaCredito().setNumDocModificado(empresa.getCodigoestablecimiento()  + empresa.getCodigopuntoemision() + numeroComprobante);
+		sriNotaCredito.getInfoNotaCredito().setContribuyenteEspecial(notaCredito.getCodigocliente());
+		sriNotaCredito.getInfoNotaCredito().setDirEstablecimiento(empresa.getDireccionestablecimiento());
+		sriNotaCredito.getInfoNotaCredito().setFechaEmision(fecha);
+//		sriNotaCredito.getInfoNotaCredito().setFechaEmisionDocSustento(value);
+		sriNotaCredito.getInfoNotaCredito().setIdentificacionComprador(notaCredito.getTfaccliente().getTsyspersona().getIdentificacion());
+		sriNotaCredito.getInfoNotaCredito().setMoneda("DOLAR");
+		sriNotaCredito.getInfoNotaCredito().setMotivo(notaCredito.getObservacion());
+		sriNotaCredito.getInfoNotaCredito().setObligadoContabilidad(ObligadoContabilidad.SI);
+		sriNotaCredito.getInfoNotaCredito().setRazonSocialComprador(notaCredito.getTfaccliente().getTsyspersona().getNombres());
+		sriNotaCredito.getInfoNotaCredito().setTipoIdentificacionComprador(notaCredito.getTfaccliente().getTsyspersona().getTipoid());
+		sriNotaCredito.getInfoNotaCredito().setTotalSinImpuestos(notaCredito.getSubtotalneto());
+		sriNotaCredito.getInfoNotaCredito().setValorModificacion(BigDecimal.ZERO);
+		sriNotaCredito.getInfoNotaCredito().setTotalConImpuestos(new TotalConImpuestos());
+		TotalImpuesto totalImpuestoIVA = new TotalImpuesto();
+		totalImpuestoIVA.setCodigo("2");
+		totalImpuestoIVA.setCodigoPorcentaje("7");
+		totalImpuestoIVA.setBaseImponible(sriNotaCredito.getInfoNotaCredito().getTotalSinImpuestos());
+		totalImpuestoIVA.setValor(BigDecimal.ZERO);
+		sriNotaCredito.getInfoNotaCredito().getTotalConImpuestos().getTotalImpuesto().add(totalImpuestoIVA);
+		
+		sriNotaCredito.setDetalles(new Detalles());
+		for (Tfacdetdevolucione detdevolucione : detallesNotaCreditoColl) {
+			Detalle detalle = new Detalle();
+			detalle.setCantidad(detdevolucione.getCantidad());
+			detalle.setCodigoAdicional(detdevolucione.getTinvproducto().getCodigoauxiliar());
+			detalle.setCodigoInterno(detdevolucione.getTinvproducto().getPk().getCodigoproductos());
+			detalle.setDescripcion(detdevolucione.getTinvproducto().getNombre());
+			detalle.setDescuento(detdevolucione.getDescuento());
+			detalle.setPrecioUnitario(detdevolucione.getPreciounitario());
+			detalle.setPrecioTotalSinImpuesto(detalle.getPrecioUnitario().multiply(detalle.getCantidad()).subtract(detalle.getDescuento()));
+			detalle.setImpuestos(new Impuestos());
+			Impuesto impuestoIVA = new Impuesto();
+			impuestoIVA.setBaseImponible(detalle.getPrecioTotalSinImpuesto());
+			impuestoIVA.setValor(BigDecimal.ZERO);
+//			impuestoIVA.setTarifa(new BigDecimal(12));
+			impuestoIVA.setCodigo("2");
+			impuestoIVA.setCodigoPorcentaje("7");
+			sriNotaCredito.getDetalles().getDetalle().add(detalle);
+		}
+	}
+	
+	private void generaComprobantes(ResponseServiceDto responseService, NotaCredito notaCredito, Tfaccabdevolucione devolucion, Collection<Tfacdetdevolucione> detallesDevolucion) throws FacturacionException{
+		try {
+			//Genero xml
+		} catch (Throwable e) {
+			throw new FacturacionException("ERROR al generar los comprobantes electronicos", e);
+		}
+	}
+	
+	private void completaDatosRetorno(ResponseServiceDto responseServiceDto, Autorizacion autorizacion) throws FacturacionException{
+		if(autorizacion.getMensajes() != null && !autorizacion.getMensajes().getMensaje().isEmpty()){
+			responseServiceDto.setMensajes(new ArrayList<String>());
+			for (Mensaje mensaje : autorizacion.getMensajes().getMensaje()) {
+				responseServiceDto.getMensajes().add(mensaje.getIdentificador()+"-"+mensaje.getInformacionAdicional());
+			}
+		}
+	}
 }
