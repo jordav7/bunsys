@@ -17,8 +17,16 @@ public interface CommonDao {
 	/**
 	 * Persiste una entidad 
 	 * @param entity
+	 * @throws DaoExcepcion
 	 */
 	<T extends EntityCommonImpl> void create(EntityCommonImpl entity) throws DaoExcepcion;
+	
+	/**
+	 * Crea o actualiza una entidad
+	 * @param entity
+	 * @throws DaoExcepcion
+	 */
+	<T extends EntityCommonImpl> void saveOrUpdate(EntityCommonImpl entity) throws DaoExcepcion;
 	
 	/**
 	 * Actualiza una entidad
