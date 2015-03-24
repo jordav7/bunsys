@@ -71,6 +71,8 @@ public class Tfacdetfactura extends BaseEntity<TfacdetfacturaPK> {
 	private BigDecimal totalstems;
 	@Column
 	private BigDecimal total;
+	@Transient
+	private BigDecimal cajas;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumns({
@@ -352,6 +354,14 @@ public class Tfacdetfactura extends BaseEntity<TfacdetfacturaPK> {
 
 	public void setTfaccabfactura(Tfaccabfactura tfaccabfactura) {
 		this.tfaccabfactura = tfaccabfactura;
+	}
+
+	public BigDecimal getCajas() {
+		return cajas;
+	}
+
+	public void setCajas(BigDecimal cajas) {
+		this.cajas = cajas;
 	}
 
 }
