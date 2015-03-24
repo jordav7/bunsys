@@ -352,5 +352,12 @@ public class BunsysServiceBean implements BunsysService {
 			throws FacturacionException {
 		facturacionService.guardarEnviarNotaCredito(notaCredito, detallesNotaCreditoColl);
 	}
+
+	@Override
+	public List<Tfaccuentasxcobrar> cuentasxcobrarxcompxnumfac(
+			Integer codigocompania, String numerofactura)
+			throws FacturacionException {
+		return facturacionService.cuentasxcobrarxcompxnumfac(codigocompania, numerofactura);
+	}
 	
 }
