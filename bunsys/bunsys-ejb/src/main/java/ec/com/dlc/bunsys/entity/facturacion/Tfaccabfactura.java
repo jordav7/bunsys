@@ -16,6 +16,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import ec.com.dlc.bunsys.entity.administracion.Tadmcatalogo;
+import ec.com.dlc.bunsys.entity.administracion.Tadmparamsri;
 import ec.com.dlc.bunsys.entity.base.BaseEntity;
 import ec.com.dlc.bunsys.entity.facturacion.pk.TfaccabfacturaPK;
 
@@ -151,11 +152,10 @@ public class Tfaccabfactura extends BaseEntity<TfaccabfacturaPK> {
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumns({
-		@JoinColumn(name="estadosri", referencedColumnName="codigocatalogo", insertable=false, updatable=false),
-		@JoinColumn(name="estadosricodigo", referencedColumnName="codigotipocatalogo", insertable=false, updatable=false),
-		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania", insertable=false, updatable=false)
+		@JoinColumn(name="estadosri", referencedColumnName="codigoparamsri", insertable=false, updatable=false),
+		@JoinColumn(name="estadosricodigo", referencedColumnName="codigotipoparamsri", insertable=false, updatable=false),
 	})
-	private Tadmcatalogo tadmestadosri;
+	private Tadmparamsri tadmestadosri;
 
 	//bi-directional many-to-one association to Tfacdetdevolucione
 	@OneToMany(mappedBy="tfaccabfactura")
@@ -517,11 +517,11 @@ public class Tfaccabfactura extends BaseEntity<TfaccabfacturaPK> {
 		this.estadosricodigo = estadosricodigo;
 	}
 
-	public Tadmcatalogo getTadmestadosri() {
+	public Tadmparamsri getTadmestadosri() {
 		return tadmestadosri;
 	}
 
-	public void setTadmestadosri(Tadmcatalogo tadmestadosri) {
+	public void setTadmestadosri(Tadmparamsri tadmestadosri) {
 		this.tadmestadosri = tadmestadosri;
 	}
 
