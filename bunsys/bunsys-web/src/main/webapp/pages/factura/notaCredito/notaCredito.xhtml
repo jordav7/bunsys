@@ -4,6 +4,7 @@
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:pe="http://primefaces.org/ui/extensions"
+                xmlns:b="http://xmlns.jcp.org/jsf/composite/bunsysComponents"
                 template="/WEB-INF/templates/template.xhtml">
     <ui:param name="idForm" value="frmNotaCredito"/>
     <ui:param name="controller" value="#{notaCreditoController}"/>
@@ -18,7 +19,7 @@
 								<h:panelGrid columns="3" style="border: collapse;" cellpadding="0" cellspacing="0">
 									<p:inputText value="#{notaCreditoDatamanager.compania.codigoestablecimiento}" style="width: 50px;" disabled="true"/>
 									<p:inputText value="#{notaCreditoDatamanager.compania.codigopuntoemision}" style="width: 50px;" disabled="true"/>
-									<p:inputText id="txtNumeroNotaCredito" value="#{notaCreditoDatamanager.cabdevoluciones.pk.numerodevoluciones}" required="true">
+									<p:inputText id="txtNumeroNotaCredito" value="#{notaCreditoDatamanager.cabdevoluciones.pk.numerodevoluciones}" required="true" disabled="true">
 										<pe:keyFilter mask="pint"/>
 									</p:inputText>
 								</h:panelGrid>
@@ -29,12 +30,15 @@
 							<h:panelGrid columns="4">
 								<p:outputLabel for="txtNumeroFactura" value="#{msg['lbl_factura']}:" style="display:block;width: 100px; "/>
 								<p:panelGrid>
-									<p:inputText style="width: 50px;" disabled="true"/>
-									<p:inputText style="width: 50px;" disabled="true"/>
-									<p:inputText id="txtNumeroFactura" value="#{notaCreditoDatamanager.cabdevoluciones.numerofactura}" required="true"/>
+									<p:inputText value="#{notaCreditoDatamanager.compania.codigoestablecimiento}" style="width: 50px;" disabled="true"/>
+									<p:inputText value="#{notaCreditoDatamanager.compania.codigopuntoemision}" style="width: 50px;" disabled="true"/>
+									<p:inputMask id="txtNumeroFactura" value="#{notaCreditoDatamanager.cabdevoluciones.numerofactura}" mask="999999999" required="true"/>
 								</p:panelGrid>
 								<p:message for="txtNumeroFactura"/>
-								<p:commandButton icon="ui-icon-extlink" oncomplete="PF('dlgClienteBusqueda').show();"/>
+								<p:commandButton icon="ui-icon-search"
+									action="#{notaCreditoController.busquedaFactura}" 
+									process="@this txtNumeroFactura" 
+									update="pnlDatosCabecera pnlDetallesNC pnlTotales"/>
 							</h:panelGrid>
 						</p:fieldset>
 					</h:panelGrid>
@@ -72,9 +76,8 @@
 						</f:facet>
 						<h:panelGrid columns="4" id="pnlCliente">
 							<p:outputLabel for="txtIdentificacion" value="#{msg['lbl_identificacion']}:" style="display:block;width: 150px;"/>
-							<p:inputText id="txtIdentificacion" value="#{notaCreditoDatamanager.cabdevoluciones.tfaccliente.tsyspersona.identificacion}">
+							<p:inputText id="txtIdentificacion" value="#{notaCreditoDatamanager.cabdevoluciones.tfaccliente.tsyspersona.identificacion}" disabled="true">
 								<pe:keyFilter mask="pint"/>
-								<p:ajax event="blur" process="@this" update="txtNombrePersona" listener="#{notaCreditoController.busquedaCliente}"/>
 							</p:inputText>
 							<p:message for="txtIdentificacion"/>
 							<p:commandButton icon="ui-icon-extlink" oncomplete="PF('dlgClienteBusqueda').show();"/>
@@ -91,7 +94,7 @@
 					</p:panelGrid>
 				</h:panelGroup>
 			</p:fieldset>
-			<p:fieldset legend="#{msg['lbl_datos_detalle_nc']}">
+			<p:fieldset legend="#{msg['lbl_datos_detalle_nc']}" id="pnlDetallesNC">
 				<p:commandButton value="#{msg['btn_anadir']}" icon="ui-icon-plusthick"/>
 				<p:dataTable value="#{notaCreditoDatamanager.detdevolucionesColl}" var="detDevolucion">
 					<p:column headerText="#{msg['lbl_codigo']}">
@@ -122,32 +125,32 @@
 						<h:outputText value="#{detDevolucion.tadmirbpnr.descripcion}" />
 					</p:column>
 					<p:column headerText="#{msg['lbl_total']}">
-						<h:outputText value="#{detDevolucion.aditionalProperty['total']}" />
+						<h:outputText value="#{detDevolucion.aditionalProperties['total']}" />
 					</p:column>
 				</p:dataTable>
 			</p:fieldset>
-			<p:fieldset legend="#{msg['lbl_totales']}">
+			<p:fieldset legend="#{msg['lbl_totales']}" id="pnlTotales">
 				<h:panelGrid columns="6">
 					<p:outputLabel value="#{msg['lbl_subtotal_sin_impuestos']}:" style="display:block;width: 150px;"/>
-					<h:outputText value="" />
+					<h:outputText value="#{notaCreditoDatamanager.cabdevoluciones.subtotalneto}" style="display:block;width: 100px;"/>
 					<p:outputLabel value="#{msg['lbl_subtotal12']}:"/>
-					<h:outputText value="" />
+					<h:outputText value="#{notaCreditoDatamanager.cabdevoluciones.subtotaliva}" style="display:block;width: 100px;"/>
 					<p:outputLabel value="#{msg['lbl_subtotal0']}:" style="display:block;width: 150px;"/>
-					<h:outputText value="" />
+					<h:outputText value="#{notaCreditoDatamanager.cabdevoluciones.subtotalbase}" style="display:block;width: 100px;"/>
 					<p:outputLabel value="#{msg['lbl_subtotal_noiva']}:"/>
-					<h:outputText value="" />
+					<h:outputText value="#{notaCreditoDatamanager.cabdevoluciones.subtotalnoiva}" style="display:block;width: 100px;"/>
 					<p:outputLabel value="#{msg['lbl_subtotal_exiva']}:" style="display:block;width: 150px;"/>
-					<h:outputText value="" />
+					<h:outputText value="#{notaCreditoDatamanager.cabdevoluciones.subtotalexcentoiva}" style="display:block;width: 100px;"/>
 					<p:outputLabel value="#{msg['lbl_total_descuento']}:"/>
-					<h:outputText value="" />
+					<h:outputText value="#{notaCreditoDatamanager.cabdevoluciones.totaldescuento}" style="display:block;width: 100px;"/>
 					<p:outputLabel value="#{msg['lbl_valorice']}:" style="display:block;width: 150px;"/>
-					<h:outputText value="" />
+					<h:outputText value="#{notaCreditoDatamanager.cabdevoluciones.valorice}" style="display:block;width: 100px;"/>
 					<p:outputLabel value="#{msg['lbl_valorirbpnr']}:"/>
-					<h:outputText value="" />
+					<h:outputText value="#{notaCreditoDatamanager.cabdevoluciones.valorirbpnr}" style="display:block;width: 100px;"/>
 					<p:outputLabel value="#{msg['lbl_iva12']}:" style="display:block;width: 150px;"/>
-					<h:outputText value="" />
+					<h:outputText value="#{notaCreditoDatamanager.cabdevoluciones.iva}" style="display:block;width: 100px;"/>
 					<p:outputLabel value="#{msg['lbl_total_factura']}:"/>
-					<h:outputText value="" />
+					<h:outputText value="#{notaCreditoDatamanager.cabdevoluciones.total}" style="display:block;width: 100px;"/>
 				</h:panelGrid>
 			</p:fieldset>
 			<h:panelGrid columns="3">
@@ -161,6 +164,83 @@
 	</ui:define>
 	
 	<ui:define name="dialogArea">
+		<p:dialog widgetVar="dlgClienteBusqueda" appendTo="@(body)" modal="true" resizable="false" closeOnEscape="true">
+		<h:form id="frmClis">
+			<p:panel header="#{msg.lbl_clientes}" style="width:900px !important">
+				  	<p:fieldset legend="#{msg['lbl_busqueda']}">
+				  		<h:panelGroup layout="block" id="pnlBusquedacliente">
+				  			<h:panelGrid columns="3">
+				  				<p:outputLabel value="#{msg['lbl_nombre']}:" for="txtNombre"/>
+				  				<p:inputText id="txtNombre" value="#{clienteDatamanager.clienteserch.tsyspersona.nombres}"/>
+				  				<p:message for="txtNombre" display="icon"/>
+				  				<p:outputLabel value="#{msg['lbl_apellidos']}:" for="txtApellidos"/>
+				  				<p:inputText id="txtApellidos" value="#{clienteDatamanager.clienteserch.tsyspersona.apellidos}"/>
+				  				<p:message for="txtApellidos" display="icon"/>
+				  				<p:outputLabel value="#{msg['lbl_tipo_id']}:" for="selTipoIdentificacion"/>
+				  				<p:selectOneMenu id="selTipoIdentificacion" value="#{clienteDatamanager.clienteserch.tsyspersona.tipoid}">
+				  					<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+				  					<f:selectItems value="#{clienteDatamanager.tiposCatalogo}" var="item" itemLabel="#{item.descripcion}" itemValue="#{item.pk.codigocatalogo}"/>
+				  				</p:selectOneMenu>
+				  				<p:message for="selTipoIdentificacion" display="icon"/>
+				  				<p:outputLabel value="#{msg['lbl_identificacion']}:" for="txtIdentificacion"/>
+				  				<p:inputText id="txtIdentificacion" value="#{clienteDatamanager.clienteserch.tsyspersona.identificacion}"/>
+				  				<p:message for="txtIdentificacion" display="icon"/>
+				  			</h:panelGrid>
+				  		</h:panelGroup>
+				  		<h:panelGroup layout="block" style="float:left">
+				  			<p:commandButton icon="ui-icon-search" value="#{msg['btn_buscar']}" action="#{clienteController.buscar()}" update="pnlDataArticulos" process="@this :frmClis:pnlBusquedacliente"/>
+				  			<p:commandButton icon="ui-icon-plusthick" value="#{msg['btn_crear']}" oncomplete="PF('dlgCliente').show()" 
+				  				action="#{clienteController.crearArticulo()}" update=":frmCreacionArticulos:pnlArticulo"/>
+				  		</h:panelGroup>
+				  	</p:fieldset>
+				  	<p:fieldset legend="#{msg['lbl_listado_clientes']}">
+				  		<h:panelGroup layout="block" id="pnlDataArticulos">
+				  			<p:dataTable value="#{clienteDatamanager.clientesCol}" var="item" id="tblaDatos">
+				  				<p:column headerText="#{msg['lbl_codigo_principal']}">
+				  					<h:outputText value="#{item.pk.codigocliente}" />
+				  				</p:column>
+				  				<p:column headerText="#{msg['lbl_nombre']}">
+				  					<h:outputText value="#{item.tsyspersona.nombres}" />
+				  				</p:column>
+				  				<p:column headerText="#{msg['lbl_apellidos']}">
+				  					<h:outputText value="#{item.tsyspersona.apellidos}" />
+				  				</p:column>
+				  				<p:column headerText="#{msg['lbl_tipo_id']}">
+				  					<h:outputText value="#{item.tsyspersona.tadmtipopersona.descripcion}" />
+				  				</p:column>
+				  				<p:column headerText="#{msg['lbl_identificacion']}">
+				  					<h:outputText value="#{item.tsyspersona.identificacion}" />
+				  				</p:column>
+				  				<p:column headerText="#{msg['lbl_estado']}">
+				  					<h:outputText value="#{item.tsyspersona.tadmestado.descripcion}" />
+				  				</p:column>
+				  				<p:column styleClass="bun-action" style="text-align:center">
+				  					<p:commandButton icon="ui-icon-pencil" title="#{msg['btn_actualizar']}" oncomplete="PF('dlgCliente').show();" update=":frmCreacionArticulos:pnlArticulo" process="@this" immediate="true">
+				  						<f:setPropertyActionListener target="#{clienteDatamanager.clienteComponente.tfaccliente}" value="#{item}"/>
+				  					</p:commandButton>
+				  				</p:column>
+				  				<p:column styleClass="bun-action" style="text-align:center">
+				  					<p:commandButton icon="ui-icon-trash" title="#{msg['btn_eliminar']}" action="#{clienteController.eliminar(item.tsyspersona.pk.codigopersona)}" update=":frmClis:pnlDataArticulos" process="@this"/>
+				  				</p:column>
+				  				<p:column styleClass="bun-action" style="text-align:center">
+				  					<p:commandButton icon="ui-icon-circle-check" title="#{msg['btn_seleccionar']}" oncomplete="PF('dlgClienteBusqueda').hide();" update=":frmNotaCredito:pnlCliente" process="@this" immediate="true">
+				  						<f:setPropertyActionListener target="#{notaCreditoDatamanager.cabdevoluciones.tfaccliente}" value="#{item}"/>
+				  					</p:commandButton>
+				  				</p:column>
+				  			</p:dataTable>
+				  		</h:panelGroup>
+				  	</p:fieldset>
+		  </p:panel>
+		</h:form>	
+		</p:dialog>
+	  	<p:dialog widgetVar="dlgCliente" appendTo="@(body)" modal="true" resizable="false" closeOnEscape="true">
+	  		<f:facet name="header">
+	  			<h:outputText value="#{msg['lbl_clientes']}" />
+	  		</f:facet>
+			<h:form id="frmCreacionArticulos">
+				<b:clienteComponent id="pnlArticulo" controller="#{clienteDatamanager.clienteComponente}" processSave="@this" updateSave=":frmClis:pnlDataArticulos" oncompleteSave="PF('dlgCliente').hide();" oncompleteCancel="PF('dlgCliente').hide();"/>
+			</h:form>	  		
+	  	</p:dialog>
 		<p:dialog widgetVar="dialogFactura">
 			<f:facet name="header">
 				<h:outputText value="#{msg.lbl_factura}" />
