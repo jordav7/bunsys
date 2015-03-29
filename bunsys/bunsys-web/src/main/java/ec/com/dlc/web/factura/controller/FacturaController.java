@@ -16,6 +16,7 @@ import javax.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.primefaces.context.RequestContext;
 
+import ec.com.dlc.bunsys.common.util.ResponseServiceDto;
 import ec.com.dlc.bunsys.entity.administracion.Tadmcatalogo;
 import ec.com.dlc.bunsys.entity.administracion.Tadmconversionunidad;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccabfactura;
@@ -81,17 +82,18 @@ public class FacturaController extends BaseController implements Serializable{
 			             ContenidoMessages.getInteger("cod_catalogo_grupo_cliente")));
 			clienteDatamanager.setTiposCatalogo(bunsysService.buscarObtenerCatalogos(clienteDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania(),
 			             ContenidoMessages.getInteger("cod_catalogo_tipo_cliente")));
-			
 			clienteDatamanager.setClienteComponente(new ClienteComponent(clienteDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania()));
 			
 			articuloDatamanager.setColorCatalogoColl(bunsysService.buscarObtenerCatalogos(articuloDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania(), ContenidoMessages.getInteger("cod_catalogo_color_articulo")));
 			articuloDatamanager.setEstadoCatalogoColl(bunsysService.buscarObtenerCatalogos(articuloDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania(), ContenidoMessages.getInteger("cod_catalogo_estado_articulo")));
 			articuloDatamanager.setArticuloComponente(new ArticuloComponent(articuloDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania()));
 			
-			
+			//catalogo factura
 			facturaDataManager.setAerolineasCatalogo(bunsysService.buscarObtenerCatalogos(facturaDataManager.getLoginDatamanager().getLogin().getPk().getCodigocompania(), ContenidoMessages.getInteger("cod_catalogo_aerolineas")));
 			facturaDataManager.setCatalogoPicesType(bunsysService.buscarObtenerCatalogos(facturaDataManager.getLoginDatamanager().getLogin().getPk().getCodigocompania(), ContenidoMessages.getInteger("cod_catalogo_pices_type")));
-			
+			facturaDataManager.setCatalogofob(bunsysService.buscarObtenerCatalogos(facturaDataManager.getLoginDatamanager().getLogin().getPk().getCodigocompania(), ContenidoMessages.getInteger("cod_catalogo_tipo_fob")));
+			facturaDataManager.setCatalogocarguera(bunsysService.buscarObtenerCatalogos(facturaDataManager.getLoginDatamanager().getLogin().getPk().getCodigocompania(), ContenidoMessages.getInteger("cod_catalogo_cargueras")));
+			facturaDataManager.setCatalogodistritovuelo(bunsysService.buscarObtenerCatalogos(facturaDataManager.getLoginDatamanager().getLogin().getPk().getCodigocompania(), ContenidoMessages.getInteger("cod_catalogo_distrito_vuelo")));
 			facturaDataManager.setInstitucion(bunsysService.buscarObtenerCatalogos(facturaDataManager.getLoginDatamanager().getLogin().getPk().getCodigocompania(),
                     ContenidoMessages.getInteger("cod_catalogo_institucion_bancaria")));
 		} catch (Throwable e) {
@@ -122,7 +124,7 @@ public class FacturaController extends BaseController implements Serializable{
 	 */
 	@SuppressWarnings("deprecation")
 	private void pagoCredito(){
-		BigDecimal valorpagar=facturaDataManager.getTfaccabfactura().getTotal().divide(new BigDecimal(facturaDataManager.getNumeropagos()));
+		BigDecimal valorpagar=facturaDataManager.getTfaccabfactura().getTotal().divide(new BigDecimal(facturaDataManager.getNumeropagos()),6, BigDecimal.ROUND_HALF_UP);
 		BigDecimal suma=new BigDecimal(0);
 		for (int j = 1; j < facturaDataManager.getNumeropagos(); j++) {
 			Tfaccuentasxcobrar tfaccuentasxcobrar= new Tfaccuentasxcobrar();
@@ -572,6 +574,16 @@ public class FacturaController extends BaseController implements Serializable{
 		if(StringUtils.isNotBlank(facturaDataManager.getTfaccabfactura().getAirline())){
 			facturaDataManager.getTfaccabfactura().setAirlinecodigo(ContenidoMessages.getInteger("cod_catalogo_aerolineas"));
 		}
+		if(StringUtils.isNotBlank(facturaDataManager.getTfaccabfactura().getFob())){
+			facturaDataManager.getTfaccabfactura().setFobcodigo(ContenidoMessages.getInteger("cod_catalogo_tipo_fob"));
+		}
+		if(StringUtils.isNotBlank(facturaDataManager.getTfaccabfactura().getCarguera())){
+			facturaDataManager.getTfaccabfactura().setCargueracodigo(ContenidoMessages.getInteger("cod_catalogo_cargueras"));
+		}
+		if(StringUtils.isNotBlank(facturaDataManager.getTfaccabfactura().getDistritovuelo())){
+			facturaDataManager.getTfaccabfactura().setDistritovuelocodigo(ContenidoMessages.getInteger("cod_catalogo_distrito_vuelo"));
+		}
+		
 		//compania
 		facturaDataManager.getTfaccabfactura().getPk().setCodigocompania(facturaDataManager.getLoginDatamanager().getLogin().getPk().getCodigocompania());
 		//cliente
@@ -607,7 +619,7 @@ public class FacturaController extends BaseController implements Serializable{
 			if(validacionesGrabar()){
 				facturaDataManager.getTfaccabfactura().setEstadosri("SF");
 				facturaDataManager.getTfaccabfactura().setEstadosricodigo(ContenidoMessages.getInteger("cod_catalogo_estado_factura_sri"));
-				bunsysService.grabarFactura(facturaDataManager.getTfaccabfactura(),facturaDataManager.getAccionAux(),facturaDataManager.getDetfacturaEliminar());
+				bunsysService.grabarFactura(facturaDataManager.getTfaccabfactura(),facturaDataManager.getAccionAux(),facturaDataManager.getDetfacturaEliminar(),facturaDataManager.getTadmcompania(),facturaDataManager.getTfaccliente());
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, ContenidoMessages.getString("msg_info_factura"), ContenidoMessages.getString("msg_info_factura")));	
 			}
 		} catch(Throwable e){
@@ -617,7 +629,7 @@ public class FacturaController extends BaseController implements Serializable{
 	
 	public void grabarFirmarEnviar(){
 		try{
-			if(Boolean.TRUE){
+			if(Boolean.FALSE){
 				FacesContext.getCurrentInstance().addMessage(null, 
 						new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR DE CONECCION", "ERROR DE CONECCION"));
 				RequestContext context = RequestContext.getCurrentInstance();
@@ -628,9 +640,12 @@ public class FacturaController extends BaseController implements Serializable{
 			if(validacionesGrabar()){
 				facturaDataManager.getTfaccabfactura().setEstadosri("FE");
 				facturaDataManager.getTfaccabfactura().setEstadosricodigo(ContenidoMessages.getInteger("cod_catalogo_estado_factura_sri"));
-				bunsysService.grabarFactura(facturaDataManager.getTfaccabfactura(),facturaDataManager.getAccionAux(),facturaDataManager.getDetfacturaEliminar());
-				
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, ContenidoMessages.getString("msg_info_factura"), ContenidoMessages.getString("msg_info_factura")));	
+				ResponseServiceDto responseServiceDto=bunsysService.grabarFactura(facturaDataManager.getTfaccabfactura(),facturaDataManager.getAccionAux(),facturaDataManager.getDetfacturaEliminar(),facturaDataManager.getTadmcompania(),facturaDataManager.getTfaccliente());
+				StringBuilder mensajes=new StringBuilder();
+				for(String mensaje:responseServiceDto.getMensajes()){
+					mensajes.append(mensaje);
+				}
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,mensajes.toString(), mensajes.toString()));	
 			}
 		} catch(Throwable e){
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ContenidoMessages.getString("msg_error_factura"), ContenidoMessages.getString("msg_error_factura")));
@@ -652,8 +667,12 @@ public class FacturaController extends BaseController implements Serializable{
 			if(validacionesGrabar()){
 				facturaDataManager.getTfaccabfactura().setEstadosri("CO");
 				facturaDataManager.getTfaccabfactura().setEstadosricodigo(ContenidoMessages.getInteger("cod_catalogo_estado_factura_sri"));
-				bunsysService.grabarFactura(facturaDataManager.getTfaccabfactura(),facturaDataManager.getAccionAux(),facturaDataManager.getDetfacturaEliminar());
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, ContenidoMessages.getString("msg_info_factura"), ContenidoMessages.getString("msg_info_factura")));	
+				ResponseServiceDto responseServiceDto=  bunsysService.grabarFactura(facturaDataManager.getTfaccabfactura(),facturaDataManager.getAccionAux(),facturaDataManager.getDetfacturaEliminar(),facturaDataManager.getTadmcompania(),facturaDataManager.getTfaccliente());
+				StringBuilder mensajes=new StringBuilder();
+				for(String mensaje:responseServiceDto.getMensajes()){
+					mensajes.append(mensaje);
+				}
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,mensajes.toString(), mensajes.toString()));	
 			}
 		} catch(Throwable e){
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ContenidoMessages.getString("msg_error_factura"), ContenidoMessages.getString("msg_error_factura")));
