@@ -60,6 +60,34 @@
 												style="display:block;width:180px;" required="true" onkeyup="bunsys.toUppercase(event, this)" />
 											<p:message for="houseawb" display="icon"/>
 										</h:panelGrid>
+										
+										<h:panelGrid columns="6" >
+											<p:outputLabel value="#{msg.lbl_carguera}:" for="carguera" style="display:block;width:140px;"/>
+											<p:selectOneMenu id="carguera" value="#{facturaDataManager.tfaccabfactura.carguera}" disabled="#{facturaDataManager.editable}"
+												  var="p" style="width:180px" panelStyle="width:180px" >						
+												<f:selectItem itemLabel="Seleccione" itemValue="" />
+												<f:selectItems value="#{facturaDataManager.catalogocarguera}" var="item" itemValue="#{item.pk.codigocatalogo}" itemLabel="#{item.descripcion}" />
+											</p:selectOneMenu>
+											<p:message for="carguera" display="icon"/>
+											
+											<p:outputLabel value="#{msg.lbl_distrito_vuelo}:" for="distritovuelo" style="display:block;width:140px;"/>
+											<p:selectOneMenu id="distritovuelo" value="#{facturaDataManager.tfaccabfactura.distritovuelo}" disabled="#{facturaDataManager.editable}"
+												  var="p" style="width:180px" panelStyle="width:180px" >						
+												<f:selectItem itemLabel="Seleccione" itemValue="" />
+												<f:selectItems value="#{facturaDataManager.catalogodistritovuelo}" var="item" itemValue="#{item.pk.codigocatalogo}" itemLabel="#{item.descripcion}" />
+											</p:selectOneMenu>
+											<p:message for="distritovuelo" display="icon"/>
+										</h:panelGrid>
+										
+										<h:panelGrid columns="6" >
+											<p:outputLabel value="#{msg.lbl_fob}:" for="fob" style="display:block;width:140px;"/>
+											<p:selectOneMenu id="fob" value="#{facturaDataManager.tfaccabfactura.fob}" disabled="#{facturaDataManager.editable}"
+												  var="p" style="width:180px" panelStyle="width:180px" >						
+												<f:selectItem itemLabel="Seleccione" itemValue="" />
+												<f:selectItems value="#{facturaDataManager.catalogofob}" var="item" itemValue="#{item.pk.codigocatalogo}" itemLabel="#{item.descripcion}" />
+											</p:selectOneMenu>
+											<p:message for="fob" display="icon"/>
+										</h:panelGrid>
 										<h:panelGrid columns="6" >
 											<p:outputLabel value="#{msg.lbl_aerolinea}:" for="txtaerolinea" style="display:block;width:140px;"/>
 											<p:selectOneMenu id="txtaerolinea" value="#{facturaDataManager.tfaccabfactura.airline}" disabled="#{facturaDataManager.editable}"
