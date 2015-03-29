@@ -51,6 +51,19 @@ public class FacturaDataManager extends BaseDatamanager {
 	 */
 	private Collection<Tadmcatalogo> catalogoPicesType;
 	
+	/**
+	 * fob
+	 */
+	private Collection<Tadmcatalogo> catalogofob;
+	/**
+	 * carguera
+	 */
+	private Collection<Tadmcatalogo> catalogocarguera;
+	/**
+	 * distriti vuelo
+	 */
+	private Collection<Tadmcatalogo> catalogodistritovuelo;
+	
 	private boolean formaPago1;
 	
     private boolean formaPago2;
@@ -274,6 +287,31 @@ public class FacturaDataManager extends BaseDatamanager {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public Collection<Tadmcatalogo> getCatalogofob() {
+		return catalogofob;
+	}
+
+	public void setCatalogofob(Collection<Tadmcatalogo> catalogofob) {
+		this.catalogofob = catalogofob;
+	}
+
+	public Collection<Tadmcatalogo> getCatalogocarguera() {
+		return catalogocarguera;
+	}
+
+	public void setCatalogocarguera(Collection<Tadmcatalogo> catalogocarguera) {
+		this.catalogocarguera = catalogocarguera;
+	}
+
+	public Collection<Tadmcatalogo> getCatalogodistritovuelo() {
+		return catalogodistritovuelo;
+	}
+
+	public void setCatalogodistritovuelo(
+			Collection<Tadmcatalogo> catalogodistritovuelo) {
+		this.catalogodistritovuelo = catalogodistritovuelo;
 	}
 
 
