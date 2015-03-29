@@ -169,8 +169,8 @@ public class BunsysServiceBean implements BunsysService {
 	//------------------------------------------
 
 	@Override
-	public void grabarFactura(Tfaccabfactura tfaccabfactura,String accion,Collection<Tfacdetfactura>listaEliminar) {
-		facturacionService.grabarFactura(tfaccabfactura,accion,listaEliminar);
+	public ResponseServiceDto grabarFactura(Tfaccabfactura tfaccabfactura,String accion,Collection<Tfacdetfactura>listaEliminar,Tadmcompania tadmcompania,Tfaccliente cliente) {
+		return facturacionService.grabarFactura(tfaccabfactura,accion,listaEliminar,tadmcompania,cliente);
 		
 	}
 

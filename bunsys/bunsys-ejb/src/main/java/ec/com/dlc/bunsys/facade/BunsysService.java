@@ -167,7 +167,7 @@ public interface BunsysService {
 	 * Graba la factura
 	 * @param tfaccabfactura
 	 */
-	public void grabarFactura(Tfaccabfactura tfaccabfactura,String accion,Collection<Tfacdetfactura>listaEliminar);
+	public ResponseServiceDto grabarFactura(Tfaccabfactura tfaccabfactura,String accion,Collection<Tfacdetfactura>listaEliminar,Tadmcompania tadmcompania,Tfaccliente cliente);
 	
 	/**
 	 * Crea o actualiza un nuevo cliente
