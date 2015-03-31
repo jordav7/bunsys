@@ -677,13 +677,13 @@ public class FacturaController extends BaseController implements Serializable{
 			if(validacionesGrabar()){
 				facturaDataManager.getTfaccabfactura().setEstadosri("FE");
 				facturaDataManager.getTfaccabfactura().setEstadosricodigo(ContenidoMessages.getInteger("cod_catalogo_estado_factura_sri"));
-				ResponseServiceDto responseServiceDto=bunsysService.grabarFactura(facturaDataManager.getTfaccabfactura(),facturaDataManager.getAccionAux(),facturaDataManager.getDetfacturaEliminar(),facturaDataManager.getTadmcompania(),facturaDataManager.getTfaccliente());
-				StringBuilder mensajes=new StringBuilder(responseServiceDto.getEstado()+"  ");
+			//	ResponseServiceDto responseServiceDto=bunsysService.grabarFactura(facturaDataManager.getTfaccabfactura(),facturaDataManager.getAccionAux(),facturaDataManager.getDetfacturaEliminar(),facturaDataManager.getTadmcompania(),facturaDataManager.getTfaccliente());
+//				StringBuilder mensajes=new StringBuilder(responseServiceDto.getEstado()+"  ");
 				this.pdf(facturaDataManager.getTfaccabfactura(),facturaDataManager.getTfaccliente());
-				for(String mensaje:responseServiceDto.getMensajes()){
-					mensajes.append(mensaje);
-				}
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,mensajes.toString(), mensajes.toString()));	
+//				for(String mensaje:responseServiceDto.getMensajes()){
+//					mensajes.append(mensaje);
+//				}
+//				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,mensajes.toString(), mensajes.toString()));	
 			}
 		} catch(Throwable e){
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ContenidoMessages.getString("msg_error_factura"), ContenidoMessages.getString("msg_error_factura")));
@@ -922,12 +922,14 @@ public class FacturaController extends BaseController implements Serializable{
 		
 		Collection<Object[]> c = new ArrayList<Object[]>();
 		for(Tfacdetfactura item:detalleList){
-			c.add(new Object[]{item.getTinvproducto().getPk().getCodigoproductos(), item.getTinvproducto().getNombre(),item.getCantidad(),item.getTinvproducto().getPreciounitario(),item.getTotal()});
+			c.add(new Object[]{ Integer.parseInt(item.getCantidad().toString()),
+					item.getTinvproducto().getNombre(),
+					round(new BigDecimal(item.getTinvproducto().getPreciounitario())),
+					round(item.getTotal()),
+					Integer.parseInt(item.getTinvproducto().getPk().getCodigoproductos())});
 		}
-		
 //		c.add(new Object[]{new Integer(2), "DES PRODUCTO 1",new BigDecimal(0.06),new BigDecimal(3.00),new Integer(200)});
 //		c.add(new Object[]{new Integer(5), "DES PRODUCTO 2",new BigDecimal(0.06),new BigDecimal(3.00),new Integer(200)});
-
 		JRDataSource dt = new JRArrayDataSource(c);
 		return dt;
 	}
