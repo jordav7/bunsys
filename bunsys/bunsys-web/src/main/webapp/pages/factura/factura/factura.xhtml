@@ -374,7 +374,7 @@
 				<p:commandButton id="btngrabarfirmeniviar" icon="ui-icon-disk" value="#{msg['btn_guardar_firmar_enviar']}"  
 					process="@this detalleFactura pnldatoscab :frm:pnlformapago pnlcredito" disabled="#{facturaDataManager.tfaccabfactura.estadosri=='FE'}" 
 					update="pnldetalle, detalleFactura :frm:pnlDatos :frm:pnlformapago pnlcredito" 
-					onclick="PF('dialogPassword').show();" />
+					oncomplete="if (!args.validationFailed){ PF('dialogPassword').show();}" />
 				
 				<p:commandButton id="btnfirmarenviar" icon="ui-icon-disk" value="#{msg['btn_firmar_enviar']}" action="#{facturaController.firmarEnviar()}" 
 					process="@this detalleFactura pnldatoscab :frm:pnlformapago pnlcredito"  disabled="#{facturaDataManager.tfaccabfactura.estadosri=='FE'}" 
