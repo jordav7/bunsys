@@ -677,13 +677,13 @@ public class FacturaController extends BaseController implements Serializable{
 			if(validacionesGrabar()){
 				facturaDataManager.getTfaccabfactura().setEstadosri("FE");
 				facturaDataManager.getTfaccabfactura().setEstadosricodigo(ContenidoMessages.getInteger("cod_catalogo_estado_factura_sri"));
-			//	ResponseServiceDto responseServiceDto=bunsysService.grabarFactura(facturaDataManager.getTfaccabfactura(),facturaDataManager.getAccionAux(),facturaDataManager.getDetfacturaEliminar(),facturaDataManager.getTadmcompania(),facturaDataManager.getTfaccliente());
-//				StringBuilder mensajes=new StringBuilder(responseServiceDto.getEstado()+"  ");
+				ResponseServiceDto responseServiceDto=bunsysService.grabarFactura(facturaDataManager.getTfaccabfactura(),facturaDataManager.getAccionAux(),facturaDataManager.getDetfacturaEliminar(),facturaDataManager.getTadmcompania(),facturaDataManager.getTfaccliente());
+				StringBuilder mensajes=new StringBuilder(responseServiceDto.getEstado()+"  ");
 				this.pdf(facturaDataManager.getTfaccabfactura(),facturaDataManager.getTfaccliente());
-//				for(String mensaje:responseServiceDto.getMensajes()){
-//					mensajes.append(mensaje);
-//				}
-//				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,mensajes.toString(), mensajes.toString()));	
+				for(String mensaje:responseServiceDto.getMensajes()){
+					mensajes.append(mensaje);
+				}
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,mensajes.toString(), mensajes.toString()));	
 			}
 		} catch(Throwable e){
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ContenidoMessages.getString("msg_error_factura"), ContenidoMessages.getString("msg_error_factura")));
