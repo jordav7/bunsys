@@ -14,6 +14,8 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.inject.Inject;
 
+import org.apache.commons.lang.StringEscapeUtils;
+
 import ec.com.dlc.bunsys.common.marshaller.MarshallerFactory;
 import ec.com.dlc.bunsys.common.sign.factory.XmlSignFactory;
 import ec.com.dlc.bunsys.common.util.Constants;
@@ -276,95 +278,125 @@ public class FacturacionService {
 		factura.setInfoTributaria(new ec.com.dlc.bunsys.schema.v110.factura.InfoTributaria());
 		factura.getInfoTributaria().setAmbiente("1");
 		factura.getInfoTributaria().setClaveAcceso(tfaccabfactura.getClaveacceso());//"1803201501050240757000110010010000000011234567817"
-		factura.getInfoTributaria().setCodDoc("01");
-		factura.getInfoTributaria().setDirMatriz(tadmcompania.getDireccionmatriz());//"NORTE"
-		factura.getInfoTributaria().setEstab("001");
-		factura.getInfoTributaria().setNombreComercial(tadmcompania.getNombrecomercial());//"PEPITO PEREZ"
-		factura.getInfoTributaria().setPtoEmi("001");
-		factura.getInfoTributaria().setRazonSocial(tadmcompania.getRazonsocial());//"PEPITO PEREZ"
+		factura.getInfoTributaria().setCodDoc("01");//segun la tabla 4 01 es para factura
+		factura.getInfoTributaria().setDirMatriz( StringEscapeUtils.escapeJava(tadmcompania.getDireccionmatriz()));//"NORTE"
+		factura.getInfoTributaria().setEstab(tadmcompania.getCodigoestablecimiento());//"001"
+		factura.getInfoTributaria().setNombreComercial(StringEscapeUtils.escapeJava(tadmcompania.getNombrecomercial()));//"PEPITO PEREZ"
+		factura.getInfoTributaria().setPtoEmi(tadmcompania.getCodigopuntoemision());//"001"
+		factura.getInfoTributaria().setRazonSocial(StringEscapeUtils.escapeJava(tadmcompania.getRazonsocial()));//"PEPITO PEREZ"
 		factura.getInfoTributaria().setRuc(tadmcompania.getRuc());//"0502407570001"
-		factura.getInfoTributaria().setSecuencial("000000001");
-		factura.getInfoTributaria().setTipoEmision("1");
+		factura.getInfoTributaria().setSecuencial(tfaccabfactura.getPk().getNumerofactura());//"000000001"
+		factura.getInfoTributaria().setTipoEmision("1");//tabla 2 (Emision Normal 1 -Emision por Indisponibilidad del Sistema 2)
 		
 		factura.setInfoFactura(new Factura.InfoFactura());
 		factura.getInfoFactura().setComercioExterior("EXPORTADOR");
-		factura.getInfoFactura().setContribuyenteEspecial("5368");
-		factura.getInfoFactura().setDireccionComprador(cliente.getTsyspersona().getDireccion());//"NORTE"
-		factura.getInfoFactura().setDirEstablecimiento("NORTE");
+		factura.getInfoFactura().setContribuyenteEspecial(cliente.getPk().getCodigocliente());///"5368"
+		factura.getInfoFactura().setDireccionComprador(StringEscapeUtils.escapeJava(cliente.getTsyspersona().getDireccion()));//"NORTE"
+		factura.getInfoFactura().setDirEstablecimiento(tadmcompania.getDireccionestablecimiento());//"NORTE"
 		SimpleDateFormat fromat= new SimpleDateFormat("dd/MM/yyyy");
 		factura.getInfoFactura().setFechaEmision(fromat.format(tfaccabfactura.getFechafactura()));//"18/03/2015"
+		
 		factura.getInfoFactura().setFleteInternacional(BigDecimal.ZERO);
 		factura.getInfoFactura().setGastosAduaneros(BigDecimal.ZERO);
 		factura.getInfoFactura().setGastosTransporteOtros(BigDecimal.ZERO);
 //		factura.getInfoFactura().setGuiaRemision("00000001");
-		factura.getInfoFactura().setIdentificacionComprador("12554");
-		factura.getInfoFactura().setImporteTotal(new BigDecimal(1200.0));
+		factura.getInfoFactura().setIdentificacionComprador(cliente.getTsyspersona().getIdentificacion());//"12554"
+		factura.getInfoFactura().setImporteTotal(tfaccabfactura.getTotal());//(new BigDecimal(1200.0)
 		factura.getInfoFactura().setIncoTermFactura(tfaccabfactura.getFob());//**"FOB"
 		factura.getInfoFactura().setIncoTermTotalSinImpuestos(tfaccabfactura.getFob());//"FOB"
+		
 		factura.getInfoFactura().setLugarIncoTerm("QUITO");
 		factura.getInfoFactura().setMoneda("USD");
 		factura.getInfoFactura().setObligadoContabilidad(ec.com.dlc.bunsys.schema.v110.factura.ObligadoContabilidad.NO);
-		factura.getInfoFactura().setPaisAdquisicion("593");
+		
+		factura.getInfoFactura().setPaisAdquisicion(tfaccabfactura.getArea());//"593"
+		
 		factura.getInfoFactura().setPaisDestino("593");
-		factura.getInfoFactura().setPaisOrigen("593");
+		factura.getInfoFactura().setPaisOrigen(tfaccabfactura.getArea());//593
 		factura.getInfoFactura().setPropina(BigDecimal.ZERO);
 		factura.getInfoFactura().setPuertoDestino("GYE");
 		factura.getInfoFactura().setPuertoEmbarque("GYE");
-		factura.getInfoFactura().setRazonSocialComprador(cliente.getTsyspersona().getNombres()+cliente.getTsyspersona().getApellidos());//"COMPRADOR"
+		
+		factura.getInfoFactura().setRazonSocialComprador(StringEscapeUtils.escapeJava(cliente.getTsyspersona().getNombres()+cliente.getTsyspersona().getApellidos()));//"COMPRADOR"
 		factura.getInfoFactura().setSeguroInternacional(BigDecimal.ZERO);
-		factura.getInfoFactura().setTipoIdentificacionComprador("08");
+
+		TadmcatalogoPK pk1 = new TadmcatalogoPK();
+		pk1.setCodigocatalogo(cliente.getTsyspersona().getTipoid());
+		pk1.setCodigocompania(tfaccabfactura.getPk().getCodigocompania());
+		pk1.setCodigotipocatalogo(cliente.getTsyspersona().getTipoidcodigo());
+		Tadmcatalogo tipoIndentificacion =facturaDao.findById(Tadmcatalogo.class,pk1);
+		
+		factura.getInfoFactura().setTipoIdentificacionComprador(tipoIndentificacion.getValor());//"08"(IDENTIFICACION DELEXTERIOR* 08 - RUC 04 - CEDULA 05 -PASAPORTE 06 -VENTA A CONSUMIDOR FINAL* 07)
+		
 		factura.getInfoFactura().setTotalBaseImponibleReembolso(BigDecimal.ZERO);
 		factura.getInfoFactura().setTotalComprobantesReembolso(BigDecimal.ZERO);
 		factura.getInfoFactura().setTotalConImpuestos(new Factura.InfoFactura.TotalConImpuestos());
 		factura.getInfoFactura().getTotalConImpuestos().getTotalImpuesto().add(new Factura.InfoFactura.TotalConImpuestos.TotalImpuesto());
-		factura.getInfoFactura().getTotalConImpuestos().getTotalImpuesto().get(0).setBaseImponible(BigDecimal.ZERO);
+		factura.getInfoFactura().getTotalConImpuestos().getTotalImpuesto().get(0).setBaseImponible(round(tfaccabfactura.getSubtotalneto()));// BigDecimal.ZERO
 		factura.getInfoFactura().getTotalConImpuestos().getTotalImpuesto().get(0).setCodigo("1");
-		factura.getInfoFactura().getTotalConImpuestos().getTotalImpuesto().get(0).setCodigoPorcentaje("12");
+		factura.getInfoFactura().getTotalConImpuestos().getTotalImpuesto().get(0).setCodigoPorcentaje("12");//(12 Denominación del comprobante de venta Numérico 2 Opcional)
 		factura.getInfoFactura().getTotalConImpuestos().getTotalImpuesto().get(0).setDescuentoAdicional(BigDecimal.ZERO);
 		factura.getInfoFactura().getTotalConImpuestos().getTotalImpuesto().get(0).setTarifa(BigDecimal.ZERO);
 		factura.getInfoFactura().getTotalConImpuestos().getTotalImpuesto().get(0).setValor(BigDecimal.ZERO);
 		factura.getInfoFactura().getTotalConImpuestos().getTotalImpuesto().get(0).setValorDevolucionIva(BigDecimal.ZERO);
-		factura.getInfoFactura().setTotalDescuento(BigDecimal.ZERO);
+		if(tfaccabfactura.getTotaldescuento()!=null && tfaccabfactura.getTotaldescuento().compareTo(new BigDecimal(0))>0){
+			factura.getInfoFactura().setTotalDescuento(round(tfaccabfactura.getTotaldescuento()));//BigDecimal.ZERO
+		}else{
+			factura.getInfoFactura().setTotalDescuento(BigDecimal.ZERO);//
+		}
+		
 		factura.getInfoFactura().setTotalImpuestoReembolso(BigDecimal.ZERO);
-		factura.getInfoFactura().setTotalSinImpuestos(new BigDecimal(1200.0));
-		factura.getInfoFactura().setValorRetIva(BigDecimal.ZERO);
+		
+		factura.getInfoFactura().setTotalSinImpuestos(tfaccabfactura.getSubtotalneto());
+		if(tfaccabfactura.getIva()!=null && tfaccabfactura.getIva().compareTo(new BigDecimal(0))>0){
+			factura.getInfoFactura().setValorRetIva(round(tfaccabfactura.getIva()));
+		}else{
+			factura.getInfoFactura().setValorRetIva(BigDecimal.ZERO);
+		}
+		
 		factura.getInfoFactura().setValorRetRenta(BigDecimal.ZERO);
 		
 		factura.setDetalles(new Factura.Detalles());
 		int i=0;
 		for(Tfacdetfactura detallefactura: tfaccabfactura.getTfacdetfacturas()){
-			factura.getDetalles().getDetalle().add(new Factura.Detalles.Detalle());
-			factura.getDetalles().getDetalle().get(i).setCantidad(detallefactura.getCantidad());
-			factura.getDetalles().getDetalle().get(i).setCodigoAuxiliar(detallefactura.getTinvproducto().getCodigoauxiliar());//"ART1"
-			factura.getDetalles().getDetalle().get(i).setCodigoPrincipal("PRINC1");////detallefactura.getTinvproducto().getPk().toString()
-			factura.getDetalles().getDetalle().get(i).setDescripcion(detallefactura.getTinvproducto().getNombre());//"DESC"
+			Factura.Detalles.Detalle detalle=new Factura.Detalles.Detalle();
+			//factura.getDetalles().getDetalle().add(new Factura.Detalles.Detalle());
+			detalle.setCantidad(round(detallefactura.getCantidad()));
+			detalle.setCodigoAuxiliar(detallefactura.getTinvproducto().getCodigoauxiliar());//"ART1"
+			detalle.setCodigoPrincipal("PRINC1");////detallefactura.getTinvproducto().getPk().toString()
+			detalle.setDescripcion(StringEscapeUtils.escapeJava(detallefactura.getTinvproducto().getNombre()));//"DESC"
 			if(detallefactura.getDescuento()!=null && detallefactura.getDescuento().compareTo(new BigDecimal(0))>0){
-				factura.getDetalles().getDetalle().get(i).setDescuento(round(detallefactura.getDescuento()));
+				detalle.setDescuento(round(detallefactura.getDescuento()));
 			}else{
-				factura.getDetalles().getDetalle().get(i).setDescuento(new BigDecimal(0));
+				detalle.setDescuento(new BigDecimal(0));
 			}
 			
-			factura.getDetalles().getDetalle().get(i).setDetallesAdicionales(new DetallesAdicionales());
-			factura.getDetalles().getDetalle().get(i).getDetallesAdicionales().getDetAdicional().add(new DetAdicional());
-			factura.getDetalles().getDetalle().get(i).getDetallesAdicionales().getDetAdicional().get(0).setNombre("Email");
-			factura.getDetalles().getDetalle().get(i).getDetallesAdicionales().getDetAdicional().get(0).setValor(cliente.getTsyspersona().getCorreo());//"dcruz@bupartech.com"
-			factura.getDetalles().getDetalle().get(i).setImpuestos(new Factura.Detalles.Detalle.Impuestos());
-			factura.getDetalles().getDetalle().get(i).setPrecioTotalSinImpuesto(detallefactura.getTotal());
-			factura.getDetalles().getDetalle().get(i).setPrecioUnitario(detallefactura.getPreciounitario());
+			detalle.setDetallesAdicionales(new DetallesAdicionales());
+			detalle.getDetallesAdicionales().getDetAdicional().add(new DetAdicional());
+			detalle.getDetallesAdicionales().getDetAdicional().get(0).setNombre("Email");
+			detalle.getDetallesAdicionales().getDetAdicional().get(0).setValor(StringEscapeUtils.escapeJava(cliente.getTsyspersona().getCorreo()));//"dcruz@bupartech.com"
+			detalle.setImpuestos(new Factura.Detalles.Detalle.Impuestos());
+			detalle.setPrecioTotalSinImpuesto(round(detallefactura.getTotal()));
+			detalle.setPrecioUnitario(round(detallefactura.getPreciounitario()));
 			TadmcatalogoPK pk = new TadmcatalogoPK();
 			pk.setCodigocatalogo(detallefactura.getUnidadventa());
 			pk.setCodigocompania(detallefactura.getPk().getCodigocompania());
 			pk.setCodigotipocatalogo(detallefactura.getUnidadventacodigo());
 			Tadmcatalogo unidad =facturaDao.findById(Tadmcatalogo.class,pk);
-			factura.getDetalles().getDetalle().get(i).setUnidadMedida(unidad.getDescripcion());//"UND"
-			factura.getDetalles().getDetalle().get(i).setImpuestos(new Factura.Detalles.Detalle.Impuestos());
-			factura.getDetalles().getDetalle().get(i).getImpuestos().getImpuesto().add(new ec.com.dlc.bunsys.schema.v110.factura.Impuesto());
-			factura.getDetalles().getDetalle().get(i).getImpuestos().getImpuesto().get(0).setBaseImponible(new BigDecimal(1200.0));//**
-			factura.getDetalles().getDetalle().get(i).getImpuestos().getImpuesto().get(0).setCodigo("2");
-			factura.getDetalles().getDetalle().get(i).getImpuestos().getImpuesto().get(0).setCodigoPorcentaje("0");
-			factura.getDetalles().getDetalle().get(i).getImpuestos().getImpuesto().get(0).setTarifa(BigDecimal.ZERO);
-			factura.getDetalles().getDetalle().get(i).getImpuestos().getImpuesto().get(0).setValor(BigDecimal.ZERO);
+			detalle.setUnidadMedida(StringEscapeUtils.escapeJava(unidad.getDescripcion()));//"UND"
+			detalle.setImpuestos(new Factura.Detalles.Detalle.Impuestos());
+			detalle.getImpuestos().getImpuesto().add(new ec.com.dlc.bunsys.schema.v110.factura.Impuesto());
+			
+			detalle.getImpuestos().getImpuesto().get(0).setBaseImponible(detallefactura.getTotal());//**  new BigDecimal(1200.0)
+			
+			detalle.getImpuestos().getImpuesto().get(0).setCodigo("2");
+			detalle.getImpuestos().getImpuesto().get(0).setCodigoPorcentaje("0");
+			
+			detalle.getImpuestos().getImpuesto().get(0).setTarifa(BigDecimal.ZERO);
+			detalle.getImpuestos().getImpuesto().get(0).setValor(BigDecimal.ZERO);
 			i++;
+			
+			factura.getDetalles().getDetalle().add(detalle);
 		}
 	}
 	/**
