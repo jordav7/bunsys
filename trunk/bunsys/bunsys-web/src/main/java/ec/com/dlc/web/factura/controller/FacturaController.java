@@ -656,6 +656,9 @@ public class FacturaController extends BaseController implements Serializable{
 				context.execute("PF('dialogGrabar').show();");
 				return;
 			}
+			if(facturaDataManager.getPassword()!=null && facturaDataManager.getPassword().trim().length()>0){
+				facturaDataManager.getTfaccabfactura().addAditionalProperty("passwordToken", facturaDataManager.getPassword());
+			}
 			//verifica los datos y la forma de pago
 			if(validacionesGrabar()){
 				facturaDataManager.getTfaccabfactura().setEstadosri("FE");
