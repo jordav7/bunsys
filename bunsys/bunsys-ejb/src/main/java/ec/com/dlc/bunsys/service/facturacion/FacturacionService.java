@@ -146,6 +146,8 @@ public class FacturacionService {
 			//solo graba en estado sin firma
 			if(tfaccabfactura.getEstadosri().equals("SF")){
 				responseService = new ResponseServiceDto();
+				responseService.setMensajes(new ArrayList<String>());
+				responseService.getMensajes().add("SE GUARDO LA FACTURA");
 				return responseService;
 			}
 			//guarda en estado de contingencia, genera el archivo y lo firma
@@ -198,12 +200,17 @@ public class FacturacionService {
 	}
 	
 	private void guardaFactuar(Tfaccabfactura tfaccabfactura,String accion,Collection<Tfacdetfactura>listaEliminar){
+		List<Tfacformapago> tfacformapagos=null;
+		List<Tfaccuentasxcobrar> cuentasxcobrar=null;
 		if(accion.equals("G")){
 			Integer sec=secuenciaService.obtenerSecuenciaComp(tfaccabfactura.getPk().getCodigocompania(), ConstantesSRI.COD_FACTURA);
 			tfaccabfactura.getPk().setNumerofactura(ComprobantesUtil.getInstancia().getsecuencia(sec.toString(), 9));
 			//clave de acceso
 			tfaccabfactura.setClaveacceso(secuenciaService.generaClaveAcceso(tfaccabfactura.getFechafactura(),tfaccabfactura.getPk().getCodigocompania(), tfaccabfactura.getPk().getNumerofactura()));
 			facturaDao.create(tfaccabfactura);
+		}else{
+			tfacformapagos= tfacformapagos(tfaccabfactura.getPk().getCodigocompania(), tfaccabfactura.getPk().getNumerofactura());
+			cuentasxcobrar= cuentasxcobrarxcompxnumfac(tfaccabfactura.getPk().getCodigocompania(), tfaccabfactura.getPk().getNumerofactura());
 		}
 		for(Tfacdetfactura tfacdetfactura: tfaccabfactura.getTfacdetfacturas()){
 			if(tfacdetfactura.getPk().getCodigodetfactura()!=null){
@@ -214,7 +221,7 @@ public class FacturacionService {
 				//tfacdetfactura.setTinvproducto(null);
 				facturaDao.create(tfacdetfactura);
 			}
-		}
+		}	
 		//efectivo
 		for(Tfacformapago tfacformapago:tfaccabfactura.getTfacformapagos()){
 			tfacformapago.setNumerofactura(tfaccabfactura.getPk().getNumerofactura());
@@ -228,21 +235,19 @@ public class FacturacionService {
 			facturaDao.update(tfaccuentasxcobrar);
 		}
 		if(!accion.equals("G")){
+			//clave de acceso
+			tfaccabfactura.setClaveacceso(secuenciaService.generaClaveAcceso(tfaccabfactura.getFechafactura(),tfaccabfactura.getPk().getCodigocompania(), tfaccabfactura.getPk().getNumerofactura()));
+			facturaDao.update(tfaccabfactura);
 			//eliminar forma de pago efectivo anterior
-			List<Tfacformapago> tfacformapagos= tfacformapagos(tfaccabfactura.getPk().getCodigocompania(), tfaccabfactura.getPk().getNumerofactura());
 			for(Tfacformapago formpagoelim:tfacformapagos){
 				facturaDao.delete(formpagoelim);
 			}
 			//eliminar forma de pago efectivo credito
-			List<Tfaccuentasxcobrar> cuentasxcobrar= cuentasxcobrarxcompxnumfac(tfaccabfactura.getPk().getCodigocompania(), tfaccabfactura.getPk().getNumerofactura());
 			for(Tfaccuentasxcobrar cuentasxcobelim:cuentasxcobrar){
 				facturaDao.delete(cuentasxcobelim);
 			}
-			tfaccabfactura.setTfaccliente(null);
-			//clave de acceso
-			tfaccabfactura.setClaveacceso(secuenciaService.generaClaveAcceso(tfaccabfactura.getFechafactura(),tfaccabfactura.getPk().getCodigocompania(), tfaccabfactura.getPk().getNumerofactura()));
-			facturaDao.update(tfaccabfactura);
 		}
+		
 		//elimar detalle
 		for(Tfacdetfactura eliminarItem:listaEliminar){
 			facturaDao.delete(eliminarItem);
