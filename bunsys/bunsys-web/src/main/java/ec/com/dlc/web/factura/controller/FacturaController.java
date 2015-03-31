@@ -285,7 +285,7 @@ public class FacturaController extends BaseController implements Serializable{
 			valor=valor.add(facturaDataManager.getTarjetaCredito());
 		}
 		//validamos si es igual al total
-		if(valor.equals(facturaDataManager.getTfaccabfactura().getTotal())){
+		if(round(valor).equals(facturaDataManager.getTfaccabfactura().getTotal())){
 			return true;
 		}
 		return false;
@@ -522,6 +522,16 @@ public class FacturaController extends BaseController implements Serializable{
 	}
 	
 	public void cambiototalBunch(Tfacdetfactura detalle){
+		if(detalle.getAditionalProperty("aux")==null){
+			detalle.addAditionalProperty("aux", 1);
+			detalle.addAditionalProperty("totalbunchaux", detalle.getTotalbunch());
+			detalle.addAditionalProperty("totalstemsaux", detalle.getTotalstems());
+			detalle.addAditionalProperty("totalaux", detalle.getTotal());
+		}else{
+			detalle.setTotalbunch(new BigDecimal(detalle.getAditionalProperty("totalbunchaux").toString()));
+			detalle.setTotalstems(new BigDecimal(detalle.getAditionalProperty("totalstemsaux").toString()));
+			detalle.setTotal(new BigDecimal(detalle.getAditionalProperty("totalaux").toString()));
+		}
 		//totalbunch * cajas
 		detalle.setTotalbunch(detalle.getTotalbunch().multiply(detalle.getCajas()));
 		//total stems= stembunch * totalbunch
@@ -544,6 +554,15 @@ public class FacturaController extends BaseController implements Serializable{
 	
 	public void cambiototal(Tfacdetfactura detalle){
 		calculos();
+	}
+	
+	public void seleccionarAerolinea(){
+		facturaDataManager.getTfaccabfactura().addAditionalProperty("codaerolinea", "");
+		for(Tadmcatalogo item:facturaDataManager.getCatalogodistritovuelo()){
+			if(item.getPk().getCodigocatalogo().equals(facturaDataManager.getTfaccabfactura().getDistritovuelo())){
+				facturaDataManager.getTfaccabfactura().addAditionalProperty("codaerolinea", item.getValor()+"-");
+			}
+		}
 	}
 	/**
 	 * Metodo para eliminar un registro del detalle de la factura
@@ -584,6 +603,7 @@ public class FacturaController extends BaseController implements Serializable{
 			facturaDataManager.getTfaccabfactura().setDistritovuelocodigo(ContenidoMessages.getInteger("cod_catalogo_distrito_vuelo"));
 		}
 		
+		facturaDataManager.getTfaccabfactura().setReferendo(facturaDataManager.getTfaccabfactura().getAditionalProperty("codaerolinea")+facturaDataManager.getTfaccabfactura().getReferendo());
 		//compania
 		facturaDataManager.getTfaccabfactura().getPk().setCodigocompania(facturaDataManager.getLoginDatamanager().getLogin().getPk().getCodigocompania());
 		//cliente

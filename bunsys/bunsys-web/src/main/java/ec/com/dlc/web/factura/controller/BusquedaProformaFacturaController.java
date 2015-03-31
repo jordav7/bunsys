@@ -101,9 +101,9 @@ public class BusquedaProformaFacturaController extends BaseController {
 		facturaDataManager.setAccionAux("G");
 		facturaDataManager.setEditable(Boolean.FALSE);
 		//numero de factura
-		facturaDataManager.getTfaccabfactura().getPk().setNumerofactura(ComprobantesUtil.getInstancia().getsecuencia(
+		facturaDataManager.getTfaccabfactura().getPk().setNumerofactura(ComprobantesUtil.getInstancia().getsecuencia(Integer.parseInt(
 				bunsysService.obtenerCatalogo(facturaDataManager.getLoginDatamanager().getLogin().getPk().getCodigocompania(),
-						ContenidoMessages.getInteger("cod_catalogo_codigo_sec"),ConstantesSRI.COD_FACTURA).getValor(),9));
+						ContenidoMessages.getInteger("cod_catalogo_codigo_sec"),ConstantesSRI.COD_FACTURA).getValor())+1+"",9));
 		facturaDataManager.setDetfacturaEliminar(new ArrayList<Tfacdetfactura>());
 		return "/pages/factura/factura/factura?faces-redirect=true";
 	}
@@ -122,6 +122,10 @@ public class BusquedaProformaFacturaController extends BaseController {
 			}else{
 				facturaDataManager.setEditable(Boolean.TRUE);
 			}
+			if(facturaDataManager.getTfaccabfactura().getReferendo()!=null && facturaDataManager.getTfaccabfactura().getReferendo().length()>17){
+				facturaDataManager.getTfaccabfactura().addAditionalProperty("codaerolinea",facturaDataManager.getTfaccabfactura().getReferendo().substring(0, 3));
+			}
+			
 			
 			facturaDataManager.setAccionAux("E");
 			//detalle factura
