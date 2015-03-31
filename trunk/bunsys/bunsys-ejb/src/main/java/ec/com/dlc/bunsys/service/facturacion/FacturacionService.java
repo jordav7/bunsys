@@ -159,7 +159,7 @@ public class FacturacionService {
 			//convierte
 			String xml = MarshallerFactory.getInstancia().marshal(factura);
 			//firma password y certificado
-		//*	xml = XmlSignFactory.getXmlDataSign().signXML(xml, new File(""), tfaccabfactura.getAditionalProperty("passwordToken").toString());
+			xml = XmlSignFactory.getXmlDataSign().signXML(xml, new File("C:/Users/LuisH/Desktop/RESPALDO FACTURAEL/firmas"), tfaccabfactura.getAditionalProperty("passwordToken").toString());
 			RecepcionComprobantesService recepcionComprobantesService = new RecepcionComprobantesService();
 			
 			if(tfaccabfactura.getEstadosri().equals("FE")){
@@ -282,8 +282,8 @@ public class FacturacionService {
 //		factura.getInfoFactura().setGuiaRemision("00000001");
 		factura.getInfoFactura().setIdentificacionComprador("12554");
 		factura.getInfoFactura().setImporteTotal(new BigDecimal(1200.0));
-		factura.getInfoFactura().setIncoTermFactura("FOB");//**
-		factura.getInfoFactura().setIncoTermTotalSinImpuestos("FOB");
+		factura.getInfoFactura().setIncoTermFactura(tfaccabfactura.getFob());//**"FOB"
+		factura.getInfoFactura().setIncoTermTotalSinImpuestos(tfaccabfactura.getFob());//"FOB"
 		factura.getInfoFactura().setLugarIncoTerm("QUITO");
 		factura.getInfoFactura().setMoneda("USD");
 		factura.getInfoFactura().setObligadoContabilidad(ec.com.dlc.bunsys.schema.v110.factura.ObligadoContabilidad.NO);
@@ -325,7 +325,7 @@ public class FacturacionService {
 			factura.getDetalles().getDetalle().get(i).setDetallesAdicionales(new DetallesAdicionales());
 			factura.getDetalles().getDetalle().get(i).getDetallesAdicionales().getDetAdicional().add(new DetAdicional());
 			factura.getDetalles().getDetalle().get(i).getDetallesAdicionales().getDetAdicional().get(0).setNombre("Email");
-			factura.getDetalles().getDetalle().get(i).getDetallesAdicionales().getDetAdicional().get(0).setValor("dcruz@bupartech.com");
+			factura.getDetalles().getDetalle().get(i).getDetallesAdicionales().getDetAdicional().get(0).setValor(cliente.getTsyspersona().getCorreo());//"dcruz@bupartech.com"
 			factura.getDetalles().getDetalle().get(i).setImpuestos(new Factura.Detalles.Detalle.Impuestos());
 			factura.getDetalles().getDetalle().get(i).setPrecioTotalSinImpuesto(detallefactura.getTotal());
 			factura.getDetalles().getDetalle().get(i).setPrecioUnitario(detallefactura.getPreciounitario());
