@@ -105,6 +105,19 @@ public class Tfaccabdevolucione extends BaseEntity<TfaccabdevolucionePK>  {
 
 	@Column
 	private BigDecimal valorirbpnr;
+	
+	@Column
+	private String fob ;
+	@Column
+	private Integer  fobcodigo ;
+	@Column
+	private String  carguera;
+	@Column
+	private Integer  cargueracodigo;
+    @Column
+	private String distritovuelo ;
+    @Column
+	private Integer  distritovuelocodigo;
 
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumns({
@@ -153,6 +166,31 @@ public class Tfaccabdevolucione extends BaseEntity<TfaccabdevolucionePK>  {
 	@OneToMany(mappedBy="tfaccabdevolucione")
 	private Collection<Tfacformapagodev> tfacformapagodevs;
 
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumns({
+		@JoinColumn(name="fob", referencedColumnName="codigocatalogo", insertable=false, updatable=false),
+		@JoinColumn(name="fobcodigo", referencedColumnName="codigotipocatalogo", insertable=false, updatable=false),
+		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania", insertable=false, updatable=false)
+	})
+	private Tadmcatalogo tadmfob;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumns({
+		@JoinColumn(name="carguera", referencedColumnName="codigocatalogo", insertable=false, updatable=false),
+		@JoinColumn(name="cargueracodigo", referencedColumnName="codigotipocatalogo", insertable=false, updatable=false),
+		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania", insertable=false, updatable=false)
+	})
+	private Tadmcatalogo tadmcarguera;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumns({
+		@JoinColumn(name="distritovuelo", referencedColumnName="codigocatalogo", insertable=false, updatable=false),
+		@JoinColumn(name="distritovuelocodigo", referencedColumnName="codigotipocatalogo", insertable=false, updatable=false),
+		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania", insertable=false, updatable=false)
+	})
+	private Tadmcatalogo tadmdistritovuelo;
+	
 	public Tfaccabdevolucione() {
 		this.pk = new TfaccabdevolucionePK();
 	}
@@ -442,6 +480,96 @@ public class Tfaccabdevolucione extends BaseEntity<TfaccabdevolucionePK>  {
 
 	public void setTfaccliente(Tfaccliente tfaccliente) {
 		this.tfaccliente = tfaccliente;
+	}
+
+
+	public String getFob() {
+		return fob;
+	}
+
+
+	public void setFob(String fob) {
+		this.fob = fob;
+	}
+
+
+	public Integer getFobcodigo() {
+		return fobcodigo;
+	}
+
+
+	public void setFobcodigo(Integer fobcodigo) {
+		this.fobcodigo = fobcodigo;
+	}
+
+
+	public String getCarguera() {
+		return carguera;
+	}
+
+
+	public void setCarguera(String carguera) {
+		this.carguera = carguera;
+	}
+
+
+	public Integer getCargueracodigo() {
+		return cargueracodigo;
+	}
+
+
+	public void setCargueracodigo(Integer cargueracodigo) {
+		this.cargueracodigo = cargueracodigo;
+	}
+
+
+	public String getDistritovuelo() {
+		return distritovuelo;
+	}
+
+
+	public void setDistritovuelo(String distritovuelo) {
+		this.distritovuelo = distritovuelo;
+	}
+
+
+	public Integer getDistritovuelocodigo() {
+		return distritovuelocodigo;
+	}
+
+
+	public void setDistritovuelocodigo(Integer distritovuelocodigo) {
+		this.distritovuelocodigo = distritovuelocodigo;
+	}
+
+
+	public Tadmcatalogo getTadmfob() {
+		return tadmfob;
+	}
+
+
+	public void setTadmfob(Tadmcatalogo tadmfob) {
+		this.tadmfob = tadmfob;
+	}
+
+
+	public Tadmcatalogo getTadmcarguera() {
+		return tadmcarguera;
+	}
+
+
+	public void setTadmcarguera(Tadmcatalogo tadmcarguera) {
+		this.tadmcarguera = tadmcarguera;
+	}
+
+
+	public Tadmcatalogo getTadmdistritovuelo() {
+		return tadmdistritovuelo;
+	}
+
+
+	public void setTadmdistritovuelo(Tadmcatalogo tadmdistritovuelo) {
+		this.tadmdistritovuelo = tadmdistritovuelo;
 	}
 
 }
