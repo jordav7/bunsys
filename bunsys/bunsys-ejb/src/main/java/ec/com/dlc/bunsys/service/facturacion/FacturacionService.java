@@ -56,6 +56,7 @@ import ec.com.dlc.bunsys.webservices.sri.autorizacion.Autorizacion;
 import ec.com.dlc.bunsys.webservices.sri.autorizacion.AutorizacionComprobantesService;
 import ec.com.dlc.bunsys.webservices.sri.autorizacion.Mensaje;
 import ec.com.dlc.bunsys.webservices.sri.autorizacion.RespuestaComprobante;
+import ec.com.dlc.bunsys.webservices.sri.recepcion.Comprobante;
 import ec.com.dlc.bunsys.webservices.sri.recepcion.RecepcionComprobantesService;
 import ec.com.dlc.bunsys.webservices.sri.recepcion.RespuestaSolicitud;
 
@@ -159,14 +160,15 @@ public class FacturacionService {
 			//convierte
 			String xml = MarshallerFactory.getInstancia().marshal(factura);
 			//firma password y certificado
-			xml = XmlSignFactory.getXmlDataSign().signXML(xml, new File("C:/Users/LuisH/Desktop/RESPALDO FACTURAEL/firmas"), tfaccabfactura.getAditionalProperty("passwordToken").toString());
+			xml = XmlSignFactory.getXmlDataSign().signXML(xml, new File("C:/Users/LuisH/Desktop/RESPALDO FACTURAEL/firmas/diana_karina_toscano_acosta.p12"), tfaccabfactura.getAditionalProperty("passwordToken").toString());
 			RecepcionComprobantesService recepcionComprobantesService = new RecepcionComprobantesService();
 			
 			if(tfaccabfactura.getEstadosri().equals("FE")){
 				//web service valida el comprobante
 				RespuestaSolicitud respuestaSolicitud = recepcionComprobantesService.getRecepcionComprobantesPort().validarComprobante(xml.getBytes());
 				//estado recivido
-				if(respuestaSolicitud.getEstado().equals(Constants.STATE_RECEIVED)){
+				System.out.println(respuestaSolicitud.getEstado());
+				if(respuestaSolicitud.getEstado().equals("RECIBIDA")){//Constants.STATE_RECEIVED
 					AutorizacionComprobantesService autorizacionService = new AutorizacionComprobantesService();
 					RespuestaComprobante respuestaComprobante = autorizacionService.getAutorizacionComprobantesPort().autorizacionComprobante(factura.getInfoTributaria().getClaveAcceso());
 					if(respuestaComprobante != null && !respuestaComprobante.getAutorizaciones().getAutorizacion().isEmpty()){
@@ -183,13 +185,27 @@ public class FacturacionService {
 						}
 					} else if(respuestaComprobante == null || respuestaComprobante.getAutorizaciones().getAutorizacion().isEmpty()) {
 						responseService = new ResponseServiceDto();
-						responseService.setEstado(Constants.STATE_NO_SUBMIT);
-						throw new FacturacionException("ERROR al consultar al servicio de autorizacion");
+						responseService.setEstado("NO ENVIADO SRI");
+						responseService.setMensajes(new ArrayList<String>());
+						for(Comprobante mensaje:respuestaSolicitud.getComprobantes().getComprobante()){
+							for(ec.com.dlc.bunsys.webservices.sri.recepcion.Mensaje men: mensaje.getMensajes().getMensaje()){
+								System.out.println(men.getMensaje());
+								responseService.getMensajes().add(men.getMensaje());
+							}
+						}
+						//throw new FacturacionException("ERROR al consultar al servicio de autorizacion");
 					}
 				} else {
 					responseService = new ResponseServiceDto();
 					responseService.setEstado(respuestaSolicitud.getEstado());
-					throw new FacturacionException("El comprobante ha sido devuelto");
+					responseService.setMensajes(new ArrayList<String>());
+					for(Comprobante mensaje:respuestaSolicitud.getComprobantes().getComprobante()){
+						for(ec.com.dlc.bunsys.webservices.sri.recepcion.Mensaje men: mensaje.getMensajes().getMensaje()){
+							System.out.println(men.getMensaje());
+							responseService.getMensajes().add(men.getMensaje());
+						}
+					}
+					//throw new FacturacionException("El comprobante ha sido devuelto");
 				}
 			}
 			
@@ -275,7 +291,8 @@ public class FacturacionService {
 		factura.getInfoFactura().setContribuyenteEspecial("5368");
 		factura.getInfoFactura().setDireccionComprador(cliente.getTsyspersona().getDireccion());//"NORTE"
 		factura.getInfoFactura().setDirEstablecimiento("NORTE");
-		factura.getInfoFactura().setFechaEmision(tfaccabfactura.getFechafactura().toString());//"18/03/2015"
+		SimpleDateFormat fromat= new SimpleDateFormat("dd/MM/yyyy");
+		factura.getInfoFactura().setFechaEmision(fromat.format(tfaccabfactura.getFechafactura()));//"18/03/2015"
 		factura.getInfoFactura().setFleteInternacional(BigDecimal.ZERO);
 		factura.getInfoFactura().setGastosAduaneros(BigDecimal.ZERO);
 		factura.getInfoFactura().setGastosTransporteOtros(BigDecimal.ZERO);
@@ -314,14 +331,19 @@ public class FacturacionService {
 		factura.getInfoFactura().setValorRetRenta(BigDecimal.ZERO);
 		
 		factura.setDetalles(new Factura.Detalles());
-		factura.getDetalles().getDetalle().add(new Factura.Detalles.Detalle());
 		int i=0;
 		for(Tfacdetfactura detallefactura: tfaccabfactura.getTfacdetfacturas()){
+			factura.getDetalles().getDetalle().add(new Factura.Detalles.Detalle());
 			factura.getDetalles().getDetalle().get(i).setCantidad(detallefactura.getCantidad());
 			factura.getDetalles().getDetalle().get(i).setCodigoAuxiliar(detallefactura.getTinvproducto().getCodigoauxiliar());//"ART1"
-			factura.getDetalles().getDetalle().get(i).setCodigoPrincipal(detallefactura.getTinvproducto().getPk().toString());//"PRINC1"
+			factura.getDetalles().getDetalle().get(i).setCodigoPrincipal("PRINC1");////detallefactura.getTinvproducto().getPk().toString()
 			factura.getDetalles().getDetalle().get(i).setDescripcion(detallefactura.getTinvproducto().getNombre());//"DESC"
-			factura.getDetalles().getDetalle().get(i).setDescuento(detallefactura.getDescuento());
+			if(detallefactura.getDescuento()!=null && detallefactura.getDescuento().compareTo(new BigDecimal(0))>0){
+				factura.getDetalles().getDetalle().get(i).setDescuento(round(detallefactura.getDescuento()));
+			}else{
+				factura.getDetalles().getDetalle().get(i).setDescuento(new BigDecimal(0));
+			}
+			
 			factura.getDetalles().getDetalle().get(i).setDetallesAdicionales(new DetallesAdicionales());
 			factura.getDetalles().getDetalle().get(i).getDetallesAdicionales().getDetAdicional().add(new DetAdicional());
 			factura.getDetalles().getDetalle().get(i).getDetallesAdicionales().getDetAdicional().get(0).setNombre("Email");
@@ -526,5 +548,10 @@ public class FacturacionService {
 				responseServiceDto.getMensajes().add(mensaje.getIdentificador()+"-"+mensaje.getInformacionAdicional());
 			}
 		}
+	}
+	
+	public static BigDecimal round(BigDecimal d) {
+		  int mode = BigDecimal.ROUND_UP ;
+		  return d.setScale(2, mode);
 	}
 }
