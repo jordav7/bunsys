@@ -71,6 +71,18 @@ public class Tfacdetdevolucione extends BaseEntity<TfacdetdevolucionePK>  {
 
 	@Column
 	private Integer unidadventacodigo;
+	
+	@Column
+	private BigDecimal eqfullboxes;
+	
+	@Column
+	private BigDecimal stemsbunch;
+	
+	@Column
+	private BigDecimal totalbunch;
+	
+	@Column
+	private BigDecimal total;
 
 	//bi-directional many-to-one association to Tfaccabdevolucione
 	@ManyToOne(fetch=FetchType.LAZY)
