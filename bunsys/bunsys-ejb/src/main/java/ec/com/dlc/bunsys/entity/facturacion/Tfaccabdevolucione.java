@@ -3,7 +3,6 @@ package ec.com.dlc.bunsys.entity.facturacion;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,6 +29,58 @@ import ec.com.dlc.bunsys.entity.facturacion.pk.TfaccabdevolucionePK;
 public class Tfaccabdevolucione extends BaseEntity<TfaccabdevolucionePK>  {
 	private static final long serialVersionUID = 1L;
 
+	@Column
+	private String airline;
+	
+	@Column
+	private Integer airlinecodigo;
+	
+	@Column
+	private String referendo;
+	
+	@Column
+	private String farmcode;
+	
+	@Column
+	@Temporal(TemporalType.DATE)
+	private Date fechaembarque;
+	
+	@Column
+	private String masterawb;
+	
+	@Column
+	private String houseawb;
+	
+	@Column
+	private String dae;
+	
+	@Column
+	private String consignee;
+	
+	@Column
+	private String fixedprice;
+	
+	@Column
+	private String freightforwarder;
+	
+	@Column
+	private BigDecimal totalpices;
+	
+	@Column
+	private BigDecimal totaleqfullboxes;
+	
+	@Column
+	private BigDecimal totalbunch;
+	
+	@Column
+	private BigDecimal totalstems;
+	
+	@Column
+	private String countrycode;
+	
+	@Column
+	private String area;
+	
 	@Column
 	private String codigocliente;
 
@@ -119,6 +170,14 @@ public class Tfaccabdevolucione extends BaseEntity<TfaccabdevolucionePK>  {
     @Column
 	private Integer  distritovuelocodigo;
 
+    @ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumns({
+		@JoinColumn(name="airline", referencedColumnName="codigocatalogo", insertable=false, updatable=false),
+		@JoinColumn(name="airlinecodigo", referencedColumnName="codigotipocatalogo", insertable=false, updatable=false),
+		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania", insertable=false, updatable=false)
+	})
+    private Tadmcatalogo tadmairline;
+    
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumns({
 		@JoinColumn(name="formapago", referencedColumnName="codigocatalogo", insertable=false, updatable=false),
@@ -570,6 +629,186 @@ public class Tfaccabdevolucione extends BaseEntity<TfaccabdevolucionePK>  {
 
 	public void setTadmdistritovuelo(Tadmcatalogo tadmdistritovuelo) {
 		this.tadmdistritovuelo = tadmdistritovuelo;
+	}
+
+
+	public String getAirline() {
+		return airline;
+	}
+
+
+	public void setAirline(String airline) {
+		this.airline = airline;
+	}
+
+
+	public Integer getAirlinecodigo() {
+		return airlinecodigo;
+	}
+
+
+	public void setAirlinecodigo(Integer airlinecodigo) {
+		this.airlinecodigo = airlinecodigo;
+	}
+
+
+	public String getReferendo() {
+		return referendo;
+	}
+
+
+	public void setReferendo(String referendo) {
+		this.referendo = referendo;
+	}
+
+
+	public String getFarmcode() {
+		return farmcode;
+	}
+
+
+	public void setFarmcode(String farmcode) {
+		this.farmcode = farmcode;
+	}
+
+
+	public Date getFechaembarque() {
+		return fechaembarque;
+	}
+
+
+	public void setFechaembarque(Date fechaembarque) {
+		this.fechaembarque = fechaembarque;
+	}
+
+
+	public String getMasterawb() {
+		return masterawb;
+	}
+
+
+	public void setMasterawb(String masterawb) {
+		this.masterawb = masterawb;
+	}
+
+
+	public String getHouseawb() {
+		return houseawb;
+	}
+
+
+	public void setHouseawb(String houseawb) {
+		this.houseawb = houseawb;
+	}
+
+
+	public String getDae() {
+		return dae;
+	}
+
+
+	public void setDae(String dae) {
+		this.dae = dae;
+	}
+
+
+	public String getConsignee() {
+		return consignee;
+	}
+
+
+	public void setConsignee(String consignee) {
+		this.consignee = consignee;
+	}
+
+
+	public String getFixedprice() {
+		return fixedprice;
+	}
+
+
+	public void setFixedprice(String fixedprice) {
+		this.fixedprice = fixedprice;
+	}
+
+
+	public String getFreightforwarder() {
+		return freightforwarder;
+	}
+
+
+	public void setFreightforwarder(String freightforwarder) {
+		this.freightforwarder = freightforwarder;
+	}
+
+
+	public BigDecimal getTotalpices() {
+		return totalpices;
+	}
+
+
+	public void setTotalpices(BigDecimal totalpices) {
+		this.totalpices = totalpices;
+	}
+
+
+	public BigDecimal getTotaleqfullboxes() {
+		return totaleqfullboxes;
+	}
+
+
+	public void setTotaleqfullboxes(BigDecimal totaleqfullboxes) {
+		this.totaleqfullboxes = totaleqfullboxes;
+	}
+
+
+	public BigDecimal getTotalbunch() {
+		return totalbunch;
+	}
+
+
+	public void setTotalbunch(BigDecimal totalbunch) {
+		this.totalbunch = totalbunch;
+	}
+
+
+	public BigDecimal getTotalstems() {
+		return totalstems;
+	}
+
+
+	public void setTotalstems(BigDecimal totalstems) {
+		this.totalstems = totalstems;
+	}
+
+
+	public String getCountrycode() {
+		return countrycode;
+	}
+
+
+	public void setCountrycode(String countrycode) {
+		this.countrycode = countrycode;
+	}
+
+
+	public String getArea() {
+		return area;
+	}
+
+
+	public void setArea(String area) {
+		this.area = area;
+	}
+
+
+	public Tadmcatalogo getTadmairline() {
+		return tadmairline;
+	}
+
+
+	public void setTadmairline(Tadmcatalogo tadmairline) {
+		this.tadmairline = tadmairline;
 	}
 
 }
