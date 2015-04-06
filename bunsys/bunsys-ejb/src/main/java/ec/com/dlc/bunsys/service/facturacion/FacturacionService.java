@@ -4,8 +4,8 @@ import static javax.ejb.TransactionAttributeType.MANDATORY;
 
 import java.io.File;
 import java.math.BigDecimal;
+import java.net.URL;
 import java.nio.file.Files;
-import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
@@ -13,11 +13,20 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.inject.Inject;
+
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.util.JRLoader;
 
 import org.apache.commons.lang.StringEscapeUtils;
 
@@ -58,6 +67,8 @@ import ec.com.dlc.bunsys.schema.v110.notacredito.TotalConImpuestos.TotalImpuesto
 import ec.com.dlc.bunsys.service.parametrizacion.SecuenciaService;
 import ec.com.dlc.bunsys.util.ComprobantesUtil;
 import ec.com.dlc.bunsys.util.FacturacionException;
+import ec.com.dlc.bunsys.util.JRArrayDataSource;
+import ec.com.dlc.bunsys.util.log.FacturacionLogger;
 import ec.com.dlc.bunsys.util.sri.ConstantesSRI;
 import ec.com.dlc.bunsys.webservices.sri.autorizacion.Autorizacion;
 import ec.com.dlc.bunsys.webservices.sri.autorizacion.AutorizacionComprobantesService;
@@ -576,11 +587,81 @@ public class FacturacionService {
 			String rutaComprobante = "";
 			rutaComprobante = new StringBuilder(File.separator).append(responseService.getEstado()).toString();
 			Path dirComprobante = Paths.get(ComprobantesUtil.getInstancia().obtenerDirectorioNotaCredito(empresa.getPk().getCodigocompania()) + rutaComprobante);
-			Files.createDirectories(dirComprobante);
-			Files.write(Paths.get(dirComprobante.toAbsolutePath() + File.separator + notaCredito.getInfoTributaria().getClaveAcceso() + ".xml"), responseService.getComprobante().getBytes(), StandardOpenOption.WRITE);
+			generaNotaCreditoXML(responseService, notaCredito, devolucion, empresa, dirComprobante);
+			generaNotaCreditoPDF(responseService, notaCredito, devolucion, detallesDevolucion, dirComprobante, empresa);
 		} catch (Throwable e) {
 			throw new FacturacionException("ERROR al generar los comprobantes electronicos", e);
 		}
+	}
+	
+	private void generaNotaCreditoXML(ResponseServiceDto responseService, NotaCredito notaCredito, Tfaccabdevolucione devolucion, Tadmcompania empresa, Path dirComprobante) throws FacturacionException{
+		try{
+			Files.createDirectories(dirComprobante);
+			Files.write(Paths.get(dirComprobante.toAbsolutePath() + File.separator + notaCredito.getInfoTributaria().getClaveAcceso() + ".xml"), responseService.getComprobante().getBytes(), StandardOpenOption.WRITE);
+		} catch (Throwable e){
+			FacturacionLogger.log.error(e.getMessage(), e);
+		}
+	}
+	
+	private void generaNotaCreditoPDF(ResponseServiceDto responseService, NotaCredito notaCredito, Tfaccabdevolucione devolucion, Collection<Tfacdetdevolucione> detallesDevolucio, Path dirComprobante, Tadmcompania empresa) {
+		JasperReport jasperReport;
+		JasperPrint jasperPrint;
+		try {
+		  SimpleDateFormat formatDates = new SimpleDateFormat("");
+		  URL  in=this.getClass().getResource( "/ec/com/dlc/bunsys/commons/reports/NotaCreditoB.jasper" );
+          jasperReport=(JasperReport)JRLoader.loadObject(in);
+          
+          Map<String, Object> param = new HashMap<String, Object>();
+          param.put("dirProvee", empresa.getDireccionmatriz());
+          param.put("rucProvee", empresa.getRuc());
+          param.put("numDocumento", notaCredito.getInfoTributaria().getEstab()+"-"+notaCredito.getInfoTributaria().getPtoEmi()+"-"+notaCredito.getInfoTributaria().getSecuencial());
+          param.put("numAutoriza", notaCredito.getInfoTributaria().getClaveAcceso());
+          param.put("fechaAutoriza", notaCredito.getInfoNotaCredito().getFechaEmision());
+          param.put("ambiente", empresa.getTipoambiente());
+          param.put("emision", formatDates.format(new Date()));
+          param.put("claveAcceso", notaCredito.getInfoTributaria().getClaveAcceso());
+          param.put("razonProvee", notaCredito.getInfoTributaria().getRazonSocial());
+          param.put("razonCliente", notaCredito.getInfoNotaCredito().getRazonSocialComprador());
+          param.put("rucCliente", notaCredito.getInfoNotaCredito().getIdentificacionComprador());
+          param.put("fechaEmision", formatDates.format(new Date()));
+          param.put("fechaEmiComp", formatDates.format(new Date()));
+          param.put("motivo", notaCredito.getInfoNotaCredito().getMotivo());
+          param.put("numComprobante", notaCredito.getInfoTributaria().getEstab()+"-"+notaCredito.getInfoTributaria().getPtoEmi()+"-"+devolucion.getNumerofactura());
+          param.put("imgLogo", "");
+          param.put("totalGravCero", notaCredito.getInfoNotaCredito().getTotalSinImpuestos());
+          param.put("totalGravDoce", BigDecimal.ZERO);
+          param.put("importeIva", BigDecimal.ZERO);
+          param.put("total", notaCredito.getInfoNotaCredito().getTotalSinImpuestos());
+          param.put("numContribuyente", "");
+          param.put("master", devolucion.getMasterawb());
+          param.put("house", devolucion.getHouseawb());
+          param.put("airline", devolucion.getAirline());
+          param.put("dae", devolucion.getReferendo());
+          param.put("marcacion", devolucion.getConsignee());
+          param.put("consignatario", devolucion.getFixedprice());
+          
+          
+          //se procesa el archivo jasper
+          jasperPrint = JasperFillManager.fillReport(jasperReport, param, createDatasourceNC(detallesDevolucio) );
+          //se crea el archivo PDF
+          JasperExportManager.exportReportToPdfFile(jasperPrint, dirComprobante.toAbsolutePath() + File.separator + responseService.getEstado() + File.separator + notaCredito.getInfoTributaria().getClaveAcceso() +".pdf");
+		} catch (Throwable e) {
+			FacturacionLogger.log.error(e.getMessage(), e);
+		}
+	}
+	
+	private JRDataSource createDatasourceNC(Collection<Tfacdetdevolucione> detalleDevolucionesColl){
+		Collection<Object[]> c = new ArrayList<Object[]>();
+		for (Tfacdetdevolucione detalleDevolucion : detalleDevolucionesColl) {
+			c.add(new Object[]{detalleDevolucion.getCodigoproductos(), 
+					detalleDevolucion.getTinvproducto().getNombre(), 
+					round(detalleDevolucion.getTotalstems()), 
+					round(detalleDevolucion.getPreciounitario()), 
+					round(detalleDevolucion.getTotal())});
+		}
+
+		JRDataSource datasource = new JRArrayDataSource(c);
+		return datasource;
 	}
 	
 	private void completaDatosRetorno(ResponseServiceDto responseServiceDto, Autorizacion autorizacion) throws FacturacionException{
