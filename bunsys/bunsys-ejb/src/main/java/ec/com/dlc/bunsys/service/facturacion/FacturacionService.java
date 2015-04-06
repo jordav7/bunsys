@@ -474,8 +474,11 @@ public class FacturacionService {
 			Collection<Tfacdetdevolucione> detallesNotaCreditoColl, Tadmcompania empresa, String numeroComprobante) throws FacturacionException {
 		try {
 			ResponseServiceDto responseService = null;
+			notaCredito.getPk().setCodigocompania(empresa.getPk().getCodigocompania());
 			facturaDao.saveOrUpdate(notaCredito);
 			for (Tfacdetdevolucione tfacdetdevolucione : detallesNotaCreditoColl) {
+				tfacdetdevolucione.getPk().setCodigocompania(empresa.getPk().getCodigocompania());
+				tfacdetdevolucione.getPk().setNumerodevoluciones(notaCredito.getPk().getNumerodevoluciones());
 				facturaDao.saveOrUpdate(tfacdetdevolucione);
 			}
 			//una vez grabado genero los datos de la facturacion electronica

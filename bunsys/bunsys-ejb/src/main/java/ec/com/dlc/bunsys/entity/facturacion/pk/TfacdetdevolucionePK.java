@@ -3,6 +3,8 @@ package ec.com.dlc.bunsys.entity.facturacion.pk;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
+import ec.com.dlc.bunsys.commons.annotations.SequenceDatabase;
+import ec.com.dlc.bunsys.commons.enumeration.TypeGenerator;
 import ec.com.dlc.bunsys.entity.base.BasePK;
 
 /**
@@ -20,6 +22,7 @@ public class TfacdetdevolucionePK extends BasePK {
 	@Column
 	private Integer codigocompania;
 
+	@SequenceDatabase(sequenceName = "tfacdetdevolucione_renglondetdevoluciones_seq", typeGenerator = TypeGenerator.SEQUENCE)
 	@Column
 	private Integer renglondetdevoluciones;
 
