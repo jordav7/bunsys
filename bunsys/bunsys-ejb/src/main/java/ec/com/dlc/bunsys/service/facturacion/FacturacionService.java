@@ -607,7 +607,7 @@ public class FacturacionService {
 		JasperReport jasperReport;
 		JasperPrint jasperPrint;
 		try {
-		  SimpleDateFormat formatDates = new SimpleDateFormat("");
+		  SimpleDateFormat formatDates = new SimpleDateFormat("dd/MM/yyyy");
 		  URL  in=this.getClass().getResource( "/ec/com/dlc/bunsys/commons/reports/NotaCreditoB.jasper" );
           jasperReport=(JasperReport)JRLoader.loadObject(in);
           
