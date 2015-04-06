@@ -48,4 +48,40 @@ public class ComprobantesUtil {
 	public String getsecuencia(String secuencia,int tamanio){
 		return StringUtils.leftPad(secuencia, tamanio, '0');
     }
+	
+	public String obtenerDirectorioFacturas(Integer codcompania) {
+		BunsysService bunsysService = (BunsysService) new BeanLocator.GlobalJNDIName().withAppName(BunsysMessages.getString("application.name")).withModuleName(BunsysMessages.getString("module.name")).withBeanName("BunsysServiceBean").withBusinessInterface(BunsysService.class).locate();
+		Tadmcatalogo factura = bunsysService.obtenerCatalogo(codcompania, 18, ConstantesSRI.COD_FACTURA);
+		return factura.getValor();
+	}
+	
+	public String obtenerDirectorioNotaCredito(Integer codcompania) {
+		BunsysService bunsysService = (BunsysService) new BeanLocator.GlobalJNDIName().withAppName(BunsysMessages.getString("application.name")).withModuleName(BunsysMessages.getString("module.name")).withBeanName("BunsysServiceBean").withBusinessInterface(BunsysService.class).locate();
+		Tadmcatalogo notacredito = bunsysService.obtenerCatalogo(codcompania, 18, ConstantesSRI.COD_NOTA_CREDITO);
+		return notacredito.getValor();
+	}
+	
+	public String obtenerDirectorioGuiaRemision(Integer codcompania) {
+		BunsysService bunsysService = (BunsysService) new BeanLocator.GlobalJNDIName().withAppName(BunsysMessages.getString("application.name")).withModuleName(BunsysMessages.getString("module.name")).withBeanName("BunsysServiceBean").withBusinessInterface(BunsysService.class).locate();
+		Tadmcatalogo guiaremision = bunsysService.obtenerCatalogo(codcompania, 18, ConstantesSRI.COD_GUIA_REMISION);
+		return guiaremision.getValor();
+	}
+	
+	public String obtenerDirectorioNotaDebito(Integer codcompania) {
+		BunsysService bunsysService = (BunsysService) new BeanLocator.GlobalJNDIName().withAppName(BunsysMessages.getString("application.name")).withModuleName(BunsysMessages.getString("module.name")).withBeanName("BunsysServiceBean").withBusinessInterface(BunsysService.class).locate();
+		Tadmcatalogo notadebito = bunsysService.obtenerCatalogo(codcompania, 18, ConstantesSRI.COD_NOTA_DEBITO);
+		return notadebito.getValor();
+	}
+	
+	public String obtenerDirectorioComprobanteRet(Integer codcompania) {
+		BunsysService bunsysService = (BunsysService) new BeanLocator.GlobalJNDIName().withAppName(BunsysMessages.getString("application.name")).withModuleName(BunsysMessages.getString("module.name")).withBeanName("BunsysServiceBean").withBusinessInterface(BunsysService.class).locate();
+		Tadmcatalogo comprobanteRet = bunsysService.obtenerCatalogo(codcompania, 18, ConstantesSRI.COD_COMPROBANTE_RET);
+		return comprobanteRet.getValor();
+	}
+	
+	public String obtenerRutaCertificado(Integer codcompania) {
+		BunsysService bunsysService = (BunsysService) new BeanLocator.GlobalJNDIName().withAppName(BunsysMessages.getString("application.name")).withModuleName(BunsysMessages.getString("module.name")).withBeanName("BunsysServiceBean").withBusinessInterface(BunsysService.class).locate();
+		Tadmcatalogo rutaCertificado = bunsysService.obtenerCatalogo(codcompania, 37, "RUTACERTIFICADO");
+		return rutaCertificado.getValor();
+	}
 }
