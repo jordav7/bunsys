@@ -252,11 +252,10 @@
 				</h:panelGrid>
 			</p:fieldset>
 			<h:panelGrid columns="3">
-				<p:commandButton
-					process="pnlDatosRef pnlDatosCabecera pnlDetallesNC"
-					update="pnlDatosRef pnlDatosCabecera pnlDetallesNC"
-					icon="ui-icon-disk" 
-					action="#{notaCreditoController.guardarFirmarEnviar}"
+				<p:commandButton icon="ui-icon-disk" 
+					process="@this :frmNotaCredito:txtNumeroFactura :frmNotaCredito:pnlDatosCabecera :frmNotaCredito:dtDevolucion"
+					update=":frmPassword:pnlPassword :frmNotaCredito:txtNumeroFactura :frmNotaCredito:pnlDatosCabecera :frmNotaCredito:dtDevolucion"
+					oncomplete="if(!args.validationFailed){ PF('dialogPassword').show();}"
 					value="#{msg['btn_guardar_completo']}"/>
 				<p:commandButton value="#{msg['btn_guardar_nofirma']}"
 					process="pnlDatosRef pnlDatosCabecera pnlDetallesNC"
@@ -433,6 +432,31 @@
 				<b:clienteComponent id="pnlCliente" controller="#{clienteDatamanager.clienteComponente}" processSave="@this" updateSave=":frmClis:pnlDataArticulos" oncompleteSave="PF('dlgCliente').hide();" oncompleteCancel="PF('dlgCliente').hide();"/>
 			</h:form>	  		
 	  	</p:dialog>
+	  	
+	  	<p:dialog widgetVar="dialogPassword" appendTo="@(body)" modal="true" resizable="false" closeOnEscape="true">
+	  		<f:facet name="header">
+	  			<h:outputText value="#{msg['lbl_password']}" />
+	  		</f:facet>
+			<h:form id="frmPassword">
+				<h:panelGroup layout="block" id="pnlPassword">
+					<h:panelGrid style="width: 100%; margin:auto;" columns="3">
+						<p:outputLabel for="txtPassword" value="#{msg.lbl_password}:"/>
+						<p:password id="txtPassword" value="#{notaCreditoDatamanager.cabdevoluciones.aditionalProperties['passwordToken']}" required="true"/>
+						<p:message for="txtPassword"/>
+					</h:panelGrid>
+					<h:panelGrid columns="3" style="width: 100%; margin:auto;">
+						<p:commandButton value="#{msg.btn_aceptar}" 
+							action="#{notaCreditoController.guardarFirmarEnviar}"
+							oncomplete="if(!args.validationFailed) {PF('dialogPassword').hide();}"
+							process="@this :frmPassword:pnlPassword" 
+							update="pnlPassword"/>
+						<p:commandButton value="#{msg.btn_cancelar}"
+							oncomplete="PF('dialogPassword').hide();"/>
+					</h:panelGrid>
+				</h:panelGroup>
+			</h:form>	  		
+	  	</p:dialog>
+	  	
 		<p:dialog widgetVar="dialogFactura">
 			<f:facet name="header">
 				<h:outputText value="#{msg.lbl_factura}" />
