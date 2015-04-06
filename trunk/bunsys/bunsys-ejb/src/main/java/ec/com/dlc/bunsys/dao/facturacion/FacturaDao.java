@@ -495,7 +495,7 @@ public class FacturaDao extends GeneralDao {
 	
 	public Tfaccabfactura obtenerFacturaDetalles(Integer codigoCompania, String numeroFactura) throws FacturacionException{
 		try {
-			final StringBuilder sql = new StringBuilder("SELECT o FROM Tfaccabfactura o LEFT JOIN FETCH o.tfacdetfacturas d LEFT JOIN FETCH d.tinvproducto p LEFT JOIN FETCH p.tadmunidadventa LEFT JOIN FETCH d.tadmiva LEFT JOIN FETCH d.tadmice LEFT JOIN FETCH d.tadmirbpnr WHERE o.pk.codigocompania=:codigocompania AND o.pk.numerofactura=:numerofactura");
+			final StringBuilder sql = new StringBuilder("SELECT o FROM Tfaccabfactura o LEFT JOIN FETCH o.tfacdetfacturas d LEFT JOIN FETCH d.tinvproducto p LEFT JOIN FETCH p.tadmunidadventa LEFT JOIN FETCH d.tadmiva LEFT JOIN FETCH d.tadmice LEFT JOIN FETCH d.tadmirbpnr LEFT JOIN FETCH o.tadmdistritovuelo WHERE o.pk.codigocompania=:codigocompania AND o.pk.numerofactura=:numerofactura");
 			Query query = entityManager.createQuery(sql.toString());
 			query.setParameter("codigocompania", codigoCompania);
 			query.setParameter("numerofactura", numeroFactura);
