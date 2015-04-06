@@ -4,6 +4,7 @@
         <dependencies>
             <module name="ec.com.dlc.dao" meta-inf="import" export="true"/>
             <module name="org.apache.commons.lang" export="true"/>
+            <module name="org.apache.httpcomponents" export="true" slot="4.3.1"/>
         </dependencies>
     </deployment>
 </jboss-deployment-structure>
