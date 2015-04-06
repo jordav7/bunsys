@@ -481,7 +481,7 @@ public class FacturacionService {
 				RespuestaComprobante respuestaComprobante = autorizacionService.getAutorizacionComprobantesPort().autorizacionComprobante(sriNotaCredito.getInfoTributaria().getClaveAcceso());
 				if(respuestaComprobante != null && !respuestaComprobante.getAutorizaciones().getAutorizacion().isEmpty()){
 					for (Autorizacion autorizacion : respuestaComprobante.getAutorizaciones().getAutorizacion()) {
-						StringBuilder comprobante = new StringBuilder("<![CDATA[").append(autorizacion.getComprobante()).append("]]>");
+						StringBuilder comprobante = new StringBuilder("<![CDATA[").append(xmlNC).append("]]>");
 						autorizacion.setComprobante(comprobante.toString());
 						String finalXml = MarshallerFactory.getInstancia().marshal(autorizacion);
 						responseService = new ResponseServiceDto();
@@ -511,7 +511,7 @@ public class FacturacionService {
 		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 		String fecha = format.format(notaCredito.getFechadevolucion());
 		sriNotaCredito.getInfoTributaria().setAmbiente(empresa.getTipoambiente());
-		sriNotaCredito.getInfoTributaria().setClaveAcceso(secuenciaService.generaClaveAcceso(notaCredito.getFechadevolucion(), empresa.getPk().getCodigocompania(), ConstantesSRI.COD_NOTA_CREDITO, numeroComprobante));
+		sriNotaCredito.getInfoTributaria().setClaveAcceso(secuenciaService.generaClaveAcceso(notaCredito.getFechadevolucion(), empresa.getPk().getCodigocompania(), ConstantesSRI.COD_NOTA_CREDITO, notaCredito.getPk().getNumerodevoluciones()));
 		sriNotaCredito.getInfoTributaria().setCodDoc(ConstantesSRI.COD_NOTA_CREDITO);
 		sriNotaCredito.getInfoTributaria().setDirMatriz(empresa.getDireccionmatriz());
 		sriNotaCredito.getInfoTributaria().setEstab(empresa.getCodigoestablecimiento());
@@ -519,7 +519,7 @@ public class FacturacionService {
 		sriNotaCredito.getInfoTributaria().setNombreComercial(empresa.getNombrecomercial());
 		sriNotaCredito.getInfoTributaria().setRazonSocial(empresa.getRazonsocial());
 		sriNotaCredito.getInfoTributaria().setRuc(empresa.getRuc());
-		sriNotaCredito.getInfoTributaria().setSecuencial(numeroComprobante);
+		sriNotaCredito.getInfoTributaria().setSecuencial(notaCredito.getPk().getNumerodevoluciones());
 		sriNotaCredito.getInfoTributaria().setTipoEmision(ConstantesSRI.COD_EMISION_NORMAL);
 		
 		sriNotaCredito.getInfoNotaCredito().setCodDocModificado(ConstantesSRI.COD_FACTURA);
