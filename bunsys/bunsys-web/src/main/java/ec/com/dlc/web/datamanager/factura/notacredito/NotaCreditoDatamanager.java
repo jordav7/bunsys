@@ -10,6 +10,7 @@ import ec.com.dlc.bunsys.entity.administracion.Tadmcatalogo;
 import ec.com.dlc.bunsys.entity.administracion.Tadmcompania;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccabdevolucione;
 import ec.com.dlc.bunsys.entity.facturacion.Tfacdetdevolucione;
+import ec.com.dlc.bunsys.entity.inventario.Tinvproducto;
 import ec.com.dlc.web.datamanager.base.BaseDatamanager;
 import ec.com.dlc.web.datamanager.login.LoginDatamanager;
 
@@ -31,8 +32,15 @@ public class NotaCreditoDatamanager extends BaseDatamanager {
 	 * Estado de la nota de cr&eacute;dito
 	 */
 	private Collection<Tadmcatalogo> catalogoEstadoColl;
+	private Collection<Tadmcatalogo> distritoVueloColl;
+	private Collection<Tadmcatalogo> cargueraColl;
+	private Collection<Tadmcatalogo> fobColl;
+	private Collection<Tadmcatalogo> aerolineaColl;
+	private Collection<Tadmcatalogo> picesTypeColl;
 	
 	private Tadmcompania compania;
+	
+	private Tinvproducto tinvproducto;
 	
 	private boolean edicion;
 	
@@ -88,6 +96,54 @@ public class NotaCreditoDatamanager extends BaseDatamanager {
 
 	public void setEdicion(boolean edicion) {
 		this.edicion = edicion;
+	}
+
+	public Tinvproducto getTinvproducto() {
+		return tinvproducto;
+	}
+
+	public void setTinvproducto(Tinvproducto tinvproducto) {
+		this.tinvproducto = tinvproducto;
+	}
+
+	public Collection<Tadmcatalogo> getDistritoVueloColl() {
+		return distritoVueloColl;
+	}
+
+	public void setDistritoVueloColl(Collection<Tadmcatalogo> distritoVueloColl) {
+		this.distritoVueloColl = distritoVueloColl;
+	}
+
+	public Collection<Tadmcatalogo> getCargueraColl() {
+		return cargueraColl;
+	}
+
+	public void setCargueraColl(Collection<Tadmcatalogo> cargueraColl) {
+		this.cargueraColl = cargueraColl;
+	}
+
+	public Collection<Tadmcatalogo> getFobColl() {
+		return fobColl;
+	}
+
+	public void setFobColl(Collection<Tadmcatalogo> fobColl) {
+		this.fobColl = fobColl;
+	}
+
+	public Collection<Tadmcatalogo> getAerolineaColl() {
+		return aerolineaColl;
+	}
+
+	public void setAerolineaColl(Collection<Tadmcatalogo> aerolineaColl) {
+		this.aerolineaColl = aerolineaColl;
+	}
+
+	public Collection<Tadmcatalogo> getPicesTypeColl() {
+		return picesTypeColl;
+	}
+
+	public void setPicesTypeColl(Collection<Tadmcatalogo> picesTypeColl) {
+		this.picesTypeColl = picesTypeColl;
 	}
 
 }
