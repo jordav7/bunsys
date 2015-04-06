@@ -82,7 +82,13 @@ public class Tfacdetdevolucione extends BaseEntity<TfacdetdevolucionePK>  {
 	private BigDecimal totalbunch;
 	
 	@Column
+	private BigDecimal totalstems;
+	
+	@Column
 	private BigDecimal total;
+	
+	@Column
+	private BigDecimal cajas;
 
 	//bi-directional many-to-one association to Tfaccabdevolucione
 	@ManyToOne(fetch=FetchType.LAZY)
@@ -317,6 +323,54 @@ public class Tfacdetdevolucione extends BaseEntity<TfacdetdevolucionePK>  {
 
 	public void setTinvproducto(Tinvproducto tinvproducto) {
 		this.tinvproducto = tinvproducto;
+	}
+
+	public BigDecimal getEqfullboxes() {
+		return eqfullboxes;
+	}
+
+	public void setEqfullboxes(BigDecimal eqfullboxes) {
+		this.eqfullboxes = eqfullboxes;
+	}
+
+	public BigDecimal getStemsbunch() {
+		return stemsbunch;
+	}
+
+	public void setStemsbunch(BigDecimal stemsbunch) {
+		this.stemsbunch = stemsbunch;
+	}
+
+	public BigDecimal getTotalbunch() {
+		return totalbunch;
+	}
+
+	public void setTotalbunch(BigDecimal totalbunch) {
+		this.totalbunch = totalbunch;
+	}
+
+	public BigDecimal getTotal() {
+		return total;
+	}
+
+	public void setTotal(BigDecimal total) {
+		this.total = total;
+	}
+
+	public BigDecimal getTotalstems() {
+		return totalstems;
+	}
+
+	public void setTotalstems(BigDecimal totalstems) {
+		this.totalstems = totalstems;
+	}
+
+	public BigDecimal getCajas() {
+		return cajas;
+	}
+
+	public void setCajas(BigDecimal cajas) {
+		this.cajas = cajas;
 	}
 
 }
