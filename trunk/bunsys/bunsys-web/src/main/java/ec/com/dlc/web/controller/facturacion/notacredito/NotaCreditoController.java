@@ -153,7 +153,7 @@ public class NotaCreditoController extends BaseController {
 		if(factura.getDistritovuelo() != null){
 			notaCreditoDatamanager.getCabdevoluciones().setDistritovuelo(factura.getDistritovuelo());
 			notaCreditoDatamanager.getCabdevoluciones().setDistritovuelocodigo(factura.getDistritovuelocodigo());
-			notaCreditoDatamanager.getCabdevoluciones().addAditionalProperty("codigoaerolinea", factura.getTadmdistritovuelo().getValor());
+			notaCreditoDatamanager.getCabdevoluciones().addAditionalProperty("codigoaerolinea", factura.getTadmdistritovuelo().getValor() + "-");
 		}
 		if(factura.getFarmcode() != null){
 			notaCreditoDatamanager.getCabdevoluciones().setFarmcode(factura.getFarmcode());
