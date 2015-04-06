@@ -115,6 +115,7 @@
 			<scope>provided</scope>
 		</dependency>
 		
+		
 		<dependency>
 			<groupId>net.sf.jasperreports</groupId>
 			<artifactId>jasperreports</artifactId>
@@ -126,9 +127,29 @@
 			<artifactId>barbecue</artifactId>
 			<version>1.5-beta1</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>ar.com.fdvs</groupId>
+			<artifactId>DynamicJasper-core-fonts</artifactId>
+			<version>1.0</version>
+		</dependency>
 			
-
+		<dependency>
+			<groupId>ec.com.dlc.bunsys</groupId>
+			<artifactId>digital-sign</artifactId>
+			<version>1.0</version>
+		</dependency>
     </dependencies>
+    
+    <repositories>
+    	<repository>
+    		<id>dynamic-jasper</id>
+    		<name>DynamicJasperFonts</name>
+    		<releases><enabled>true</enabled></releases>
+    		<snapshots><enabled>true</enabled></snapshots>
+    		<url>http://archiva.fdvs.com.ar/repository/public1/</url>
+    	</repository>
+    </repositories>
 
     <build>
         <finalName>${project.artifactId}</finalName>
