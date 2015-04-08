@@ -184,7 +184,7 @@
 							</h:panelGrid>
 					</h:panelGroup>	
 					<p:dataTable id="detalleFactura" value="#{facturaDataManager.tfaccabfactura.tfacdetfacturas}" var="item" scrollable="true"
-							 		style="width:auto;font: bold 100% monospace; " scrollWidth="900" scrollRows="5">
+							 		style="width:auto;font: bold 100% monospace; " scrollWidth="900" scrollRows="5" >
 								<p:column headerText="#{msg.lbl_pices_type}" style="width:100px" >
 									<p:selectOneMenu id="catpicestype" value="#{item.unidadventa}"  var="p" style="width:100px" panelStyle="width:100px" disabled="#{facturaDataManager.editable}">						
 										<p:ajax event="change"  listener="#{facturaController.cambioPicesType(item)}" 
@@ -376,9 +376,10 @@
 					update="pnldetalle, detalleFactura :frm:pnlDatos :frm:pnlformapago pnlcredito" 
 					oncomplete="if (!args.validationFailed){ PF('dialogPassword').show();}" />
 				
-				<p:commandButton id="btnfirmarenviar" icon="ui-icon-disk" value="#{msg['btn_firmar_enviar']}" action="#{facturaController.firmarEnviar()}" 
+				<p:commandButton id="btnfirmarenviar" icon="ui-icon-disk" value="#{msg['btn_firmar_enviar']}"  
 					process="@this detalleFactura pnldatoscab :frm:pnlformapago pnlcredito"  disabled="#{facturaDataManager.tfaccabfactura.estadosri=='FE'}" 
-					update="pnldetalle, detalleFactura :frm:pnlDatos :frm:pnlformapago pnlcredito" />
+					update="pnldetalle, detalleFactura :frm:pnlDatos :frm:pnlformapago pnlcredito" 
+					oncomplete="if (!args.validationFailed){ PF('dialogPassword').show();}"/>
 						
 				<p:commandButton id="btncancelar" icon="ui-icon-close" value="#{msg.btn_cancelar}" action="#{facturaController.cancelar()}" 
 					process="@this detalleFactura :frm:pnlDatos" update="pnldetalle, detalleFactura, pnldatoscab, pnlDetallefactura" immediate="true"/>
@@ -393,18 +394,12 @@
 				  	<p:fieldset legend="#{msg['lbl_busqueda']}">
 				  		<h:panelGroup layout="block" id="pnlBusquedacliente">
 				  			<h:panelGrid columns="3">
-				  				<p:outputLabel value="#{msg['lbl_nombre']}:" for="txtNombre"/>
+				  				<p:outputLabel value="#{msg['lbl_marcacion']}:" for="txtNombre"/>
 				  				<p:inputText id="txtNombre" value="#{clienteDatamanager.clienteserch.tsyspersona.nombres}"/>
 				  				<p:message for="txtNombre" display="icon"/>
-				  				<p:outputLabel value="#{msg['lbl_apellidos']}:" for="txtApellidos"/>
+				  				<p:outputLabel value="#{msg['lbl_cliente']}:" for="txtApellidos"/>
 				  				<p:inputText id="txtApellidos" value="#{clienteDatamanager.clienteserch.tsyspersona.apellidos}"/>
 				  				<p:message for="txtApellidos" display="icon"/>
-				  				<p:outputLabel value="#{msg['lbl_tipo_id']}:" for="selTipoIdentificacion"/>
-				  				<p:selectOneMenu id="selTipoIdentificacion" value="#{clienteDatamanager.clienteserch.tsyspersona.tipoid}">
-				  					<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
-				  					<f:selectItems value="#{clienteDatamanager.tiposCatalogo}" var="item" itemLabel="#{item.descripcion}" itemValue="#{item.pk.codigocatalogo}"/>
-				  				</p:selectOneMenu>
-				  				<p:message for="selTipoIdentificacion" display="icon"/>
 				  				<p:outputLabel value="#{msg['lbl_identificacion']}:" for="txtIdentificacion"/>
 				  				<p:inputText id="txtIdentificacion" value="#{clienteDatamanager.clienteserch.tsyspersona.identificacion}"/>
 				  				<p:message for="txtIdentificacion" display="icon"/>
@@ -422,10 +417,10 @@
 				  				<p:column headerText="#{msg['lbl_codigo_principal']}">
 				  					<h:outputText value="#{item.pk.codigocliente}" />
 				  				</p:column>
-				  				<p:column headerText="#{msg['lbl_nombre']}">
+				  				<p:column headerText="#{msg['lbl_marcacion']} ">
 				  					<h:outputText value="#{item.tsyspersona.nombres}" />
 				  				</p:column>
-				  				<p:column headerText="#{msg['lbl_apellidos']}">
+				  				<p:column headerText="#{msg['lbl_cliente']}">
 				  					<h:outputText value="#{item.tsyspersona.apellidos}" />
 				  				</p:column>
 				  				<p:column headerText="#{msg['lbl_tipo_id']}">
@@ -564,6 +559,7 @@
 					controller="#{facturaController}" showgfe="true"/>
 			</h:form>	  		
 	  	</p:dialog>
+	  	
 	  	<p:dialog widgetVar="dialogGrabar" appendTo="@(body)" modal="true" resizable="false" closeOnEscape="true">
 			<h:form id="frmGrabar">
 				<p:outputLabel value="#{msg.msg_info_no_existe_coneccion}" />
