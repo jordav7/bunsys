@@ -40,6 +40,11 @@
 			<p:menuitem value="#{msg.lbl_proveedores}" action="/pages/cuentasPorPagar/proveedores?faces-redirect=true" ajax="false" immediate="true"/>
         </p:submenu>
         
+        <p:submenu label="#{msg['lbl_contingencia']}" icon="ui-icon-document">
+			<p:menuitem value="#{msg.lbl_contingencia}" action="/pages/factura/contingencia/contingencia?faces-redirect=true" ajax="false" immediate="true"/>
+			<p:separator />
+        </p:submenu>
+        
         <f:facet name="options">
             <p:commandButton  value="#{msg.lbl_salir}" icon="ui-icon-extlink" action="#{menu.salir()}" ajax="false" immediate="true"/>
         </f:facet>
