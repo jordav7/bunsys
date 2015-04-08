@@ -267,6 +267,9 @@ public class FacturaDao extends GeneralDao {
 			if(StringUtils.isNotBlank(tsyspersona.getApellidos())){
 				sqlNotaCredito.append(" AND UPPER(p.apellidos) LIKE :apellidos");
 			}
+			if(StringUtils.isNotBlank(tfaccabdevolucione.getEstadosri())){
+				sqlNotaCredito.append(" AND o.estadosri =:estadosri");
+			}
 			Query query = this.entityManager.createQuery(sqlNotaCredito.toString());
 			query.setParameter("codcompania", codcompania);
 			if(StringUtils.isNotBlank(tfaccabdevolucione.getPk().getNumerodevoluciones())){
@@ -287,6 +290,9 @@ public class FacturaDao extends GeneralDao {
 			if(StringUtils.isNotBlank(tsyspersona.getApellidos())){
 				sqlNotaCredito.append(" AND o.apellidos=:apellidos");
 				query.setParameter("apellidos", tsyspersona.getApellidos());
+			}
+			if(StringUtils.isNotBlank(tfaccabdevolucione.getEstadosri())){
+				query.setParameter("estadosri",tfaccabdevolucione.getEstadosri());
 			}
 			notasCreditoColl = query.getResultList();
 			return notasCreditoColl;
