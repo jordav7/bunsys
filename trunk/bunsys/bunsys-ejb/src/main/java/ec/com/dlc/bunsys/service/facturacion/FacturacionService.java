@@ -22,6 +22,7 @@ import javax.ejb.TransactionAttribute;
 import javax.inject.Inject;
 
 import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -159,29 +160,35 @@ public class FacturacionService {
 	}
 	
 	public ResponseServiceDto grabarFactura(Tfaccabfactura tfaccabfactura,String accion,Collection<Tfacdetfactura>listaEliminar,Tadmcompania tadmcompania,Tfaccliente cliente)throws FacturacionException{
-		ResponseServiceDto responseService = null;
+		ResponseServiceDto responseService = new ResponseServiceDto();
 		try{
 			guardaFactuar(tfaccabfactura, accion, listaEliminar);
 			//solo graba en estado sin firma
 			if(tfaccabfactura.getEstadosri().equals("SF")){
-				responseService = new ResponseServiceDto();
+				//responseService = new ResponseServiceDto();
 				responseService.setMensajes(new ArrayList<String>());
 				responseService.getMensajes().add("SE GUARDO LA FACTURA");
 				return responseService;
 			}
-			//guarda en estado de contingencia, genera el archivo y lo firma
-//			if(tfaccabfactura.getEstadosri().equals("CO")){
+			
 				
 			//guarad firma y envia  en estado firma y envia
 			Factura factura= new Factura();
 			completarDatosFactura(factura, tfaccabfactura, tadmcompania, cliente);
 			//convierte
-			String xml = MarshallerFactory.getInstancia().marshal(factura);
+			String xml = MarshallerFactory.getInstancia().marshal(factura);//C:/Users/LuisH/Desktop/RESPALDO FACTURAEL/firmas/diana_karina_toscano_acosta.p12
+																		//"C:/Users/LuisH/Desktop/RESPALDO FACTURAEL/firmas/diana_karina_toscano_acosta.p12"), tfaccabfactura.getAditionalProperty("passwordToken"
 			//firma password y certificado
-			xml = XmlSignFactory.getXmlDataSign().signXML(xml, new File("C:/Users/LuisH/Desktop/RESPALDO FACTURAEL/firmas/diana_karina_toscano_acosta.p12"), tfaccabfactura.getAditionalProperty("passwordToken").toString());
-			RecepcionComprobantesService recepcionComprobantesService = new RecepcionComprobantesService();
-			
+			String rutafirma=ComprobantesUtil.getInstancia().obtenerRutaCertificado(tfaccabfactura.getPk().getCodigocompania());
+		    xml = XmlSignFactory.getXmlDataSign().signXML(xml, new File(rutafirma), tfaccabfactura.getAditionalProperty("passwordToken").toString());
+			//guarda en estado de contingencia, genera el archivo y lo firma
+			if(tfaccabfactura.getEstadosri().equals("CO")){
+				responseService.setEstado(tfaccabfactura.getEstadosri());
+				responseService.setComprobante(xml);
+				generaComprobantesPDF(responseService, factura, tfaccabfactura, cliente, tadmcompania);
+			}
 			if(tfaccabfactura.getEstadosri().equals("FE")){
+				RecepcionComprobantesService recepcionComprobantesService = new RecepcionComprobantesService();
 				//web service valida el comprobante
 				RespuestaSolicitud respuestaSolicitud = recepcionComprobantesService.getRecepcionComprobantesPort().validarComprobante(xml.getBytes());
 				//estado recivido
@@ -194,11 +201,11 @@ public class FacturacionService {
 							StringBuilder comprobante = new StringBuilder("<![CDATA[").append(autorizacion.getComprobante()).append("]]>");
 							autorizacion.setComprobante(comprobante.toString());
 							String finalXml = MarshallerFactory.getInstancia().marshal(autorizacion);
-							responseService = new ResponseServiceDto();
+							//responseService = new ResponseServiceDto();
 							responseService.setEstado(autorizacion.getEstado());
 							responseService.setComprobante(finalXml);
 							completaDatosRetorno(responseService, autorizacion);
-							//generaComprobantes(responseService, sriNotaCredito, notaCredito, detallesNotaCreditoColl);
+							generaComprobantesPDF(responseService, factura, tfaccabfactura, cliente, tadmcompania);
 							break;
 						}
 					} else if(respuestaComprobante == null || respuestaComprobante.getAutorizaciones().getAutorizacion().isEmpty()) {
@@ -211,7 +218,7 @@ public class FacturacionService {
 								responseService.getMensajes().add(men.getMensaje());
 							}
 						}
-						//throw new FacturacionException("ERROR al consultar al servicio de autorizacion");
+						throw new FacturacionException("ERROR al consultar al servicio de autorizacion");
 					}
 				} else {
 					responseService = new ResponseServiceDto();
@@ -223,10 +230,9 @@ public class FacturacionService {
 							responseService.getMensajes().add(men.getMensaje());
 						}
 					}
-					//throw new FacturacionException("El comprobante ha sido devuelto");
+					throw new FacturacionException("El comprobante ha sido devuelto");
 				}
 			}
-			
 			return responseService;
 		} catch (Throwable e) {
 			throw new FacturacionException(e);
@@ -281,7 +287,6 @@ public class FacturacionService {
 				facturaDao.delete(cuentasxcobelim);
 			}
 		}
-		
 		//elimar detalle
 		for(Tfacdetfactura eliminarItem:listaEliminar){
 			facturaDao.delete(eliminarItem);
@@ -292,9 +297,9 @@ public class FacturacionService {
 		factura.setId("comprobante");
 		factura.setVersion("1.1.0");
 		factura.setInfoTributaria(new ec.com.dlc.bunsys.schema.v110.factura.InfoTributaria());
-		factura.getInfoTributaria().setAmbiente("1");
+		factura.getInfoTributaria().setAmbiente(tadmcompania.getTipoambiente());
 		factura.getInfoTributaria().setClaveAcceso(tfaccabfactura.getClaveacceso());//"1803201501050240757000110010010000000011234567817"
-		factura.getInfoTributaria().setCodDoc("01");//segun la tabla 4 01 es para factura
+		factura.getInfoTributaria().setCodDoc(ConstantesSRI.COD_FACTURA);//segun la tabla 4 01 es para factura
 		factura.getInfoTributaria().setDirMatriz( StringEscapeUtils.escapeJava(tadmcompania.getDireccionmatriz()));//"NORTE"
 		factura.getInfoTributaria().setEstab(tadmcompania.getCodigoestablecimiento());//"001"
 		factura.getInfoTributaria().setNombreComercial(StringEscapeUtils.escapeJava(tadmcompania.getNombrecomercial()));//"PEPITO PEREZ"
@@ -302,7 +307,7 @@ public class FacturacionService {
 		factura.getInfoTributaria().setRazonSocial(StringEscapeUtils.escapeJava(tadmcompania.getRazonsocial()));//"PEPITO PEREZ"
 		factura.getInfoTributaria().setRuc(tadmcompania.getRuc());//"0502407570001"
 		factura.getInfoTributaria().setSecuencial(tfaccabfactura.getPk().getNumerofactura());//"000000001"
-		factura.getInfoTributaria().setTipoEmision("1");//tabla 2 (Emision Normal 1 -Emision por Indisponibilidad del Sistema 2)
+		factura.getInfoTributaria().setTipoEmision(ConstantesSRI.COD_EMISION_NORMAL);//tabla 2 (Emision Normal 1 -Emision por Indisponibilidad del Sistema 2)
 		
 		factura.setInfoFactura(new Factura.InfoFactura());
 		factura.getInfoFactura().setComercioExterior("EXPORTADOR");
@@ -333,7 +338,7 @@ public class FacturacionService {
 		factura.getInfoFactura().setPuertoDestino("GYE");
 		factura.getInfoFactura().setPuertoEmbarque("GYE");
 		
-		factura.getInfoFactura().setRazonSocialComprador(StringEscapeUtils.escapeJava(cliente.getTsyspersona().getNombres()+cliente.getTsyspersona().getApellidos()));//"COMPRADOR"
+		factura.getInfoFactura().setRazonSocialComprador(StringEscapeUtils.escapeJava(cliente.getTsyspersona().getApellidos()));//"COMPRADOR"
 		factura.getInfoFactura().setSeguroInternacional(BigDecimal.ZERO);
 
 		TadmcatalogoPK pk1 = new TadmcatalogoPK();
@@ -373,7 +378,6 @@ public class FacturacionService {
 		factura.getInfoFactura().setValorRetRenta(BigDecimal.ZERO);
 		
 		factura.setDetalles(new Factura.Detalles());
-		int i=0;
 		for(Tfacdetfactura detallefactura: tfaccabfactura.getTfacdetfacturas()){
 			Factura.Detalles.Detalle detalle=new Factura.Detalles.Detalle();
 			//factura.getDetalles().getDetalle().add(new Factura.Detalles.Detalle());
@@ -410,7 +414,6 @@ public class FacturacionService {
 			
 			detalle.getImpuestos().getImpuesto().get(0).setTarifa(BigDecimal.ZERO);
 			detalle.getImpuestos().getImpuesto().get(0).setValor(BigDecimal.ZERO);
-			i++;
 			
 			factura.getDetalles().getDetalle().add(detalle);
 		}
@@ -679,5 +682,107 @@ public class FacturacionService {
 	public static BigDecimal round(BigDecimal d) {
 		  int mode = BigDecimal.ROUND_UP ;
 		  return d.setScale(2, mode);
+	}
+	
+	
+	private void generaComprobantesPDF(ResponseServiceDto responseService, Factura factura, Tfaccabfactura tfaccabfactura, Tfaccliente cliente,Tadmcompania compania) throws FacturacionException{
+		try {
+			//Genero xml y pdf
+			String rutaComprobante = "";
+			rutaComprobante = new StringBuilder(File.separator).append(responseService.getEstado()).toString();
+			Path dirComprobante = Paths.get(ComprobantesUtil.getInstancia().obtenerDirectorioFacturas(tfaccabfactura.getPk().getCodigocompania()) + rutaComprobante);
+			generaPDFXML(responseService, factura, compania, dirComprobante);
+			pdf(responseService, factura, tfaccabfactura, cliente, compania, dirComprobante);//tfaccabfactura, cliente, compania, rutaPdf
+		} catch (Throwable e) {
+			throw new FacturacionException("ERROR al generar los comprobantes electronicos", e);
+		}
+	}
+	
+	private void generaPDFXML(ResponseServiceDto responseService, Factura factura, Tadmcompania empresa, Path dirComprobante) throws FacturacionException{
+		try{
+			Files.createDirectories(dirComprobante);
+			Files.write(Paths.get(dirComprobante.toAbsolutePath() + File.separator + factura.getInfoTributaria().getClaveAcceso() + ".xml"), responseService.getComprobante().getBytes(), StandardOpenOption.CREATE);
+		} catch (Throwable e){
+			FacturacionLogger.log.error(e.getMessage(), e);
+		}
+	}
+	
+	@SuppressWarnings("static-access")
+	private void pdf(ResponseServiceDto responseService,Factura factura,Tfaccabfactura tfaccabfactura, Tfaccliente cliente,Tadmcompania compania,Path dirComprobante){
+        JasperReport jasperReport;
+        JasperPrint jasperPrint;                
+        try
+        {
+          //se carga el reporte
+          URL  in=this.getClass().getResource( "/ec/com/dlc/bunsys/commons/reports/factura.jasper" );
+          System.out.println("url :::: "+in.getPath());
+          jasperReport=(JasperReport)JRLoader.loadObject(in);
+          
+          Map<String, Object> param = new HashMap<String, Object>();
+          param.put("dirProvee", compania.getDireccionestablecimiento());//"test direccion prov"
+          param.put("rucProvee", compania.getRuc());//"1721087524"
+          param.put("numDocumento",tfaccabfactura.getPk().getNumerofactura());// "0010010002525"
+          param.put("numAutoriza", tfaccabfactura.getClaveacceso());
+          param.put("fechaAutoriza", "");
+          param.put("ambiente",compania.getTipoambiente());
+          SimpleDateFormat format= new SimpleDateFormat("dd/MM/yyyy");
+          param.put("emision", format.format(tfaccabfactura.getFechafactura()));
+          param.put("claveAcceso", tfaccabfactura.getClaveacceso());
+          param.put("razonProvee", compania.getRazonsocial());
+          param.put("razonCliente", cliente.getTsyspersona().getNombres()+" "+cliente.getTsyspersona().getApellidos());
+          param.put("rucCliente", cliente.getTsyspersona().getIdentificacion());
+          param.put("fechaEmision", format.format(tfaccabfactura.getFechafactura()));
+          param.put("fechaEmiComp", format.format(tfaccabfactura.getFechafactura()));
+          param.put("motivo", "");
+          param.put("numComprobante", "");
+          param.put("imgLogo", "");
+          if(tfaccabfactura.getSubtotalnoiva()!=null){
+        	  param.put("totalGravCero", tfaccabfactura.getSubtotalnoiva());
+          }else{
+        	  param.put("totalGravCero", new BigDecimal(0));
+          }
+          if(tfaccabfactura.getSubtotaliva()!=null){
+        	  param.put("totalGravDoce",tfaccabfactura.getSubtotaliva());// 
+          }else{
+        	  param.put("totalGravDoce",new BigDecimal(0));// new BigDecimal(0)
+          }
+          param.put("importeIva", new BigDecimal(0));
+          param.put("total", tfaccabfactura.getTotal());
+          //param.put("totalGravCero", new BigDecimal(0));
+          param.put("numContribuyente", compania.getNombrecomercial());
+          param.put("master", tfaccabfactura.getMasterawb());
+          param.put("house", tfaccabfactura.getHouseawb());
+          TadmcatalogoPK pk = new TadmcatalogoPK();
+		  pk.setCodigocatalogo(tfaccabfactura.getAirline());
+		  pk.setCodigocompania(tfaccabfactura.getPk().getCodigocompania());
+		  pk.setCodigotipocatalogo(tfaccabfactura.getAirlinecodigo());
+		  Tadmcatalogo aerolinea =facturaDao.findById(Tadmcatalogo.class,pk);
+          param.put("airline", aerolinea.getDescripcion());
+          param.put("dae", tfaccabfactura.getReferendo());
+          param.put("marcacion", "");
+          param.put("consignatario", tfaccabfactura.getConsignee());
+          //se procesa el archivo jasper
+          jasperPrint = JasperFillManager.fillReport(jasperReport, param, this.createDatasourceDet(tfaccabfactura.getTfacdetfacturas()) );
+          //se crea el archivo PDF
+          JasperExportManager.exportReportToPdfFile(jasperPrint, dirComprobante.toAbsolutePath() + File.separator + responseService.getEstado() + File.separator + factura.getInfoTributaria().getClaveAcceso() +".pdf");
+        }
+        catch (JRException ex)
+        {
+          System.err.println( "Error iReport: " + ex.getMessage() );
+        }
+	}
+	
+	private static JRDataSource createDatasourceDet(Collection<Tfacdetfactura> detalleList){
+		Collection<Object[]> c = new ArrayList<Object[]>();
+		for(Tfacdetfactura item:detalleList){
+			c.add(new Object[]{ Integer.parseInt(item.getCantidad().toString()),
+					item.getTinvproducto().getNombre(),
+					round(new BigDecimal(item.getTinvproducto().getPreciounitario())),
+					round(item.getTotal()),
+					Integer.parseInt(item.getTinvproducto().getPk().getCodigoproductos())});
+		}
+//		c.add(new Object[]{new Integer(2), "DES PRODUCTO 1",new BigDecimal(0.06),new BigDecimal(3.00),new Integer(200)});
+		JRDataSource dt = new JRArrayDataSource(c);
+		return dt;
 	}
 }
