@@ -43,7 +43,7 @@
 				  	<p:fieldset legend="#{msg['lbl_facturas']}">
 				  		<h:panelGroup layout="block" id="pnlProformas">
 				  			<p:dataTable id="tblproforma" value="#{busquedaProformaFacturaDatamanager.tfaccabfacturasList}" var="item" scrollable="true"
-							 style="width:auto;font: bold 100% monospace; " scrollWidth="900" scrollRows="20"  rows="25" paginator="true">
+							 style="width:auto;font: bold 100% monospace; " scrollWidth="900" scrollRows="20"  rows="25" paginator="true" paginatorPosition="top">
 								<p:column headerText="#{msg.lbl_numero_factura}" style="width:90px">
 									<p:outputLabel value="#{item.pk.numerofactura}"/>
 								</p:column>
