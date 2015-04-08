@@ -14,20 +14,20 @@
 		  		<h:panelGroup layout="block">
 		  			<h:panelGrid columns="3">
 		  				
-		  				<p:outputLabel value="#{msg['lbl_nombre']}:" for="txtNombre"/>
+		  				<p:outputLabel value="#{msg['lbl_marcacion']}:" for="txtNombre"/>
 		  				<p:inputText id="txtNombre" value="#{clienteDatamanager.clienteserch.tsyspersona.nombres}"/>
 		  				<p:message for="txtNombre"/>
 		  				
-		  				<p:outputLabel value="#{msg['lbl_apellidos']}:" for="txtApellidos"/>
+		  				<p:outputLabel value="#{msg['lbl_cliente']}:" for="txtApellidos"/>
 		  				<p:inputText id="txtApellidos" value="#{clienteDatamanager.clienteserch.tsyspersona.apellidos}"/>
 		  				<p:message for="txtApellidos"/>
 		  				
-		  				<p:outputLabel value="#{msg['lbl_tipo_id']}:" for="selTipoIdentificacion"/>
+		  				<!-- <p:outputLabel value="#{msg['lbl_tipo_id']}:" for="selTipoIdentificacion"/>
 		  				<p:selectOneMenu id="selTipoIdentificacion" value="#{clienteDatamanager.clienteserch.tsyspersona.tipoid}">
 		  					<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
 		  					<f:selectItems value="#{clienteDatamanager.tiposCatalogo}" var="item" itemLabel="#{item.descripcion}" itemValue="#{item.pk.codigocatalogo}"/>
 		  				</p:selectOneMenu>
-		  				<p:message for="selTipoIdentificacion"/>
+		  				<p:message for="selTipoIdentificacion"/> -->
 		  				
 		  				<p:outputLabel value="#{msg['lbl_identificacion']}:" for="txtIdentificacion"/>
 		  				<p:inputText id="txtIdentificacion" value="#{clienteDatamanager.clienteserch.tsyspersona.identificacion}"/>
@@ -50,10 +50,10 @@
 		  				<p:column headerText="#{msg['lbl_codigo_principal']}">
 		  					<h:outputText value="#{item.pk.codigocliente}" />
 		  				</p:column>
-		  				<p:column headerText="#{msg['lbl_nombre']}">
+		  				<p:column headerText="#{msg['lbl_marcacion']}">
 		  					<h:outputText value="#{item.tsyspersona.nombres}" />
 		  				</p:column>
-		  				<p:column headerText="#{msg['lbl_apellidos']}">
+		  				<p:column headerText="#{msg['lbl_cliente']}">
 		  					<h:outputText value="#{item.tsyspersona.apellidos}" />
 		  				</p:column>
 		  				<p:column headerText="#{msg['lbl_tipo_id']}">
