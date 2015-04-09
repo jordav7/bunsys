@@ -1,10 +1,16 @@
 package ec.com.dlc.web.factura.controller;
 
+import java.io.File;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -13,12 +19,21 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.util.JRLoader;
+
 import org.apache.commons.lang3.StringUtils;
 import org.primefaces.context.RequestContext;
 
 import ec.com.dlc.bunsys.common.util.HttpUtils;
 import ec.com.dlc.bunsys.common.util.ResponseServiceDto;
 import ec.com.dlc.bunsys.entity.administracion.Tadmcatalogo;
+import ec.com.dlc.bunsys.entity.administracion.Tadmcompania;
 import ec.com.dlc.bunsys.entity.administracion.Tadmconversionunidad;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccabfactura;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccabproforma;
@@ -31,6 +46,7 @@ import ec.com.dlc.bunsys.entity.inventario.Tinvproducto;
 import ec.com.dlc.bunsys.entity.seguridad.Tsyspersona;
 import ec.com.dlc.bunsys.facade.BunsysService;
 import ec.com.dlc.bunsys.util.FacturacionException;
+import ec.com.dlc.bunsys.util.JRArrayDataSource;
 import ec.com.dlc.web.commons.resource.ContenidoMessages;
 import ec.com.dlc.web.componentes.ArticuloComponent;
 import ec.com.dlc.web.componentes.ClienteComponent;
@@ -678,6 +694,8 @@ public class FacturaController extends BaseController implements Serializable{
 		} catch(Throwable e){
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ContenidoMessages.getString("msg_error_factura"), ContenidoMessages.getString("msg_error_factura")));
 		}
+		//reporte
+		//this.pdf( facturaDataManager.getTfaccabfactura(), facturaDataManager.getTfaccliente(), facturaDataManager.getTadmcompania(), "C:/Users/LuisH/Desktop/RESPALDO FACTURAEL/facturas/CO");
 	}
 	
 	public void firmarEnviar(){
@@ -912,5 +930,83 @@ public class FacturaController extends BaseController implements Serializable{
 	public void setArticuloDatamanager(ArticuloDatamanager articuloDatamanager) {
 		this.articuloDatamanager = articuloDatamanager;
 	}
+
+	@SuppressWarnings("static-access")
+	private void pdf1(Tfaccabfactura tfaccabfactura, Tfaccliente cliente,Tadmcompania compania,String dirComprobante){
+        JasperReport jasperReport;
+        JasperPrint jasperPrint;                
+        try
+        {
+          //se carga el reporte
+          URL  in=this.getClass().getResource( "/ec/com/dlc/bunsys/commons/reports/factura.jasper" );
+          System.out.println("url :::: "+in.getPath());
+          jasperReport=(JasperReport)JRLoader.loadObject(in);
+          
+          Map<String, Object> param = new HashMap<String, Object>();
+          param.put("dirProvee", compania.getDireccionestablecimiento());//"test direccion prov"
+          param.put("rucProvee", compania.getRuc());//"1721087524"
+          param.put("numDocumento",tfaccabfactura.getPk().getNumerofactura());// "0010010002525"
+          param.put("numAutoriza", tfaccabfactura.getClaveacceso());
+          param.put("fechaAutoriza", "");
+          param.put("ambiente",compania.getTipoambiente());
+          SimpleDateFormat format= new SimpleDateFormat("dd/MM/yyyy");
+          param.put("emision", format.format(tfaccabfactura.getFechafactura()));
+          param.put("claveAcceso", tfaccabfactura.getClaveacceso());
+          param.put("razonProvee", compania.getRazonsocial());
+          param.put("razonCliente", cliente.getTsyspersona().getNombres()+" "+cliente.getTsyspersona().getApellidos());
+          param.put("rucCliente", cliente.getTsyspersona().getIdentificacion());
+          param.put("fechaEmision", format.format(tfaccabfactura.getFechafactura()));
+          param.put("fechaEmiComp", format.format(tfaccabfactura.getFechafactura()));
+          param.put("motivo", "");
+          param.put("numComprobante", "");
+          param.put("imgLogo", "");
+          if(tfaccabfactura.getSubtotalnoiva()!=null){
+        	  param.put("totalGravCero", tfaccabfactura.getSubtotalnoiva());
+          }else{
+        	  param.put("totalGravCero", new BigDecimal(0));
+          }
+          if(tfaccabfactura.getSubtotaliva()!=null){
+        	  param.put("totalGravDoce",tfaccabfactura.getSubtotaliva());// 
+          }else{
+        	  param.put("totalGravDoce",new BigDecimal(0));// new BigDecimal(0)
+          }
+          param.put("importeIva", new BigDecimal(0));
+          param.put("total", tfaccabfactura.getTotal());
+          //param.put("totalGravCero", new BigDecimal(0));
+          param.put("numContribuyente", compania.getNombrecomercial());
+          param.put("master", tfaccabfactura.getMasterawb());
+          param.put("house", tfaccabfactura.getHouseawb());
+//          TadmcatalogoPK pk = new TadmcatalogoPK();
+//		  pk.setCodigocatalogo(tfaccabfactura.getAirline());
+//		  pk.setCodigocompania(tfaccabfactura.getPk().getCodigocompania());
+//		  pk.setCodigotipocatalogo(tfaccabfactura.getAirlinecodigo());
+//		  Tadmcatalogo aerolinea =facturaDao.findById(Tadmcatalogo.class,pk);
+          param.put("airline", "");//aerolinea.getDescripcion()
+          param.put("dae", tfaccabfactura.getReferendo());
+          param.put("marcacion", "");
+          param.put("consignatario", tfaccabfactura.getConsignee());
+          //se procesa el archivo jasper
+          jasperPrint = JasperFillManager.fillReport(jasperReport, param, this.createDatasourceDet(tfaccabfactura.getTfacdetfacturas()) );
+          //se crea el archivo PDF
+          JasperExportManager.exportReportToPdfFile(jasperPrint, dirComprobante + File.separator +  tfaccabfactura.getClaveacceso() +".pdf");
+        }
+        catch (JRException ex)
+        {
+          System.err.println( "Error iReport: " + ex.getMessage() );
+        }
+	}
 	
+	private static JRDataSource createDatasourceDet(Collection<Tfacdetfactura> detalleList){
+		Collection<Object[]> c = new ArrayList<Object[]>();
+		for(Tfacdetfactura item:detalleList){
+			c.add(new Object[]{ Integer.parseInt(item.getCantidad().toString()),
+					item.getTinvproducto().getNombre(),
+					round(new BigDecimal(item.getTinvproducto().getPreciounitario())),
+					round(item.getTotal()),
+					Integer.parseInt(item.getTinvproducto().getPk().getCodigoproductos())});
+		}
+//		c.add(new Object[]{new Integer(2), "DES PRODUCTO 1",new BigDecimal(0.06),new BigDecimal(3.00),new Integer(200)});
+		JRDataSource dt = new JRArrayDataSource(c);
+		return dt;
+	}
 }
