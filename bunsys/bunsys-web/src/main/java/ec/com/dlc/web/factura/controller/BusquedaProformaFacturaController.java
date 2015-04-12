@@ -98,6 +98,8 @@ public class BusquedaProformaFacturaController extends BaseController {
 		facturaDataManager.setInstitucionTarjetaCredito(null);
 		facturaDataManager.setNumeroproforma(null);
 		facturaDataManager.getTfaccabfactura().setFarmcode("CFE");
+		facturaDataManager.getTfaccabfactura().setCountrycode("ECU");
+		facturaDataManager.getTfaccabfactura().setArea("593");
 		facturaDataManager.setAccionAux("G");
 		facturaDataManager.setEditable(Boolean.FALSE);
 		//numero de factura
