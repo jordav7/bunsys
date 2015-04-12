@@ -549,10 +549,16 @@ public class FacturaController extends BaseController implements Serializable{
 			detalle.setTotalstems(new BigDecimal(detalle.getAditionalProperty("totalstemsaux").toString()));
 			detalle.setTotal(new BigDecimal(detalle.getAditionalProperty("totalaux").toString()));
 		}
-		//totalbunch * cajas
-		detalle.setTotalbunch(detalle.getTotalbunch().multiply(detalle.getCajas()));
-		//total stems= stembunch * totalbunch
-		detalle.setTotalstems(detalle.getStemsbunch().multiply(detalle.getTotalbunch()));
+		//	Bunch box * Total pices * Steam bunch= Total Steams
+		detalle.setTotalstems(detalle.getCajas().multiply(detalle.getCantidad()).multiply(detalle.getStemsbunch()));
+		//total bunch = bunchbox * total pices
+		detalle.setTotalbunch(detalle.getCajas().multiply(detalle.getCantidad()));
+				
+//		//totalbunch * cajas
+//		detalle.setTotalbunch(detalle.getTotalbunch().multiply(detalle.getCajas()));
+//		//total stems= stembunch * totalbunch
+//		detalle.setTotalstems(detalle.getStemsbunch().multiply(detalle.getTotalbunch()));
+		
 		//total price = totalstems * preciounitario
 		detalle.setTotal(detalle.getTotalstems().multiply(detalle.getPreciounitario()));
 		calculos();
@@ -896,7 +902,10 @@ public class FacturaController extends BaseController implements Serializable{
 	
 	public Boolean coneccionsri(){
 		try {
-			HttpUtils.connectToServer("https://celcer.sri.gob.ec/comprobantes-electronicos-ws/RecepcionComprobantes?wsdl", 10000);
+			String coneccion=HttpUtils.connectToServer("https://celcer.sri.gob.ec/comprobantes-electronicos-ws/RecepcionComprobantes?wsdl", 10000);
+			if(coneccion==null){
+				return false;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
