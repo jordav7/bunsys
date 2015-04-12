@@ -217,7 +217,7 @@
 									<p:outputLabel value="#{item.nandina}"/>
 								</p:column>
 								<p:column headerText="#{msg.lbl_stems_bunch}" style="width:100px">
-									<pe:inputNumber  id="stemsbunch" value="#{item.stemsbunch}" decimalPlaces="2" decimalSeparator="." thousandSeparator="" disabled="true"
+									<pe:inputNumber  id="stemsbunch" value="#{item.stemsbunch}" decimalPlaces="2" decimalSeparator="." thousandSeparator="" disabled="#{facturaDataManager.editable}"
 										 styleClass="b-input50" style="text-align:right">
 										<p:ajax event="change"  listener="#{facturaController.cambioStemsBunch(item)}" 
 											process="@this stemsbunch" update="picestype eqfullboxes stemsbunch totalbunch totalstems priceunit totalprice :frm:total :frm:sinimpuestos :frm:subtotal12  :frm:noiva :frm:exiva :frm:descuento :frm:iva12 :frm:pnlformapago"/>
@@ -237,7 +237,7 @@
 								</p:column>
 								<p:column headerText="#{msg.lbl_total_stems}" style="width:100px">
 									<pe:inputNumber   id="totalstems" value="#{item.totalstems}"   decimalPlaces="2" decimalSeparator="." thousandSeparator="" 
-										styleClass="b-input100" style="text-align:right" disabled="#{facturaDataManager.editable}">
+										styleClass="b-input100" style="text-align:right" disabled="true">
 										<p:ajax event="change"  listener="#{facturaController.cambiototalSteams(item)}" 
 											process="@this totalstems" update="picestype eqfullboxes stemsbunch totalbunch totalstems priceunit totalprice :frm:total :frm:sinimpuestos :frm:subtotal12  :frm:noiva :frm:exiva :frm:descuento :frm:iva12 :frm:pnlformapago"/>
 									</pe:inputNumber>
