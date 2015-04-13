@@ -224,7 +224,7 @@
 									</pe:inputNumber>
 								</p:column>
 								<p:column headerText="#{msg.lbl_boxs}" style="width:100px">
-									<pe:inputNumber  id="cajas" value="#{item.cajas}"  decimalPlaces="2" decimalSeparator="." thousandSeparator="" minValue="1" maxValue="9999"
+									<pe:inputNumber  id="cajas" value="#{item.cajas}"  decimalPlaces="2" decimalSeparator="." thousandSeparator=""  maxValue="9999"
 										styleClass="b-input50" style="text-align:right" disabled="#{facturaDataManager.editable}">
 										<p:ajax event="change"  listener="#{facturaController.cambiototalBunch(item)}" 
 											process="@this" update="picestype eqfullboxes stemsbunch totalbunch totalstems priceunit totalprice :frm:total :frm:sinimpuestos :frm:subtotal12  :frm:noiva :frm:exiva :frm:descuento :frm:iva12 :frm:pnlformapago"/>
