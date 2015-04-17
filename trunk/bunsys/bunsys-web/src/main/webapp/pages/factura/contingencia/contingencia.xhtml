@@ -15,7 +15,7 @@
 				  			 update=":frm:pnlfacturas :frm:pnlnotascredito" process="@this"/>
 				  			 
 	      					<p:commandButton value="#{msg['lbl_enviar_lote']}"
-	      						icon="ui-icon-plusthick" action="#{contingenciaController.enviarporlote()}" process="@this"/>
+	      						icon="ui-icon-plusthick" action="#{contingenciaController.enviarporlote()}" process="@this" update=":frm:pnlfacturas :frm:pnlnotascredito"/>
 				  		</h:panelGroup>
 				  	</p:fieldset>
 				  	<p:fieldset legend="#{msg['lbl_facturas']}">
