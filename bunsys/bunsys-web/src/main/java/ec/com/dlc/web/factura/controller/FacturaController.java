@@ -701,7 +701,7 @@ public class FacturaController extends BaseController implements Serializable{
 				return;
 			}
 		} catch(Throwable e){
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ContenidoMessages.getString("msg_error_factura"), ContenidoMessages.getString("msg_error_factura")));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ContenidoMessages.getString("msg_error_factura")+"  "+e.getMessage(), ContenidoMessages.getString("msg_error_factura")+"  "+e.getMessage()));
 		}
 		//reporte
 		//this.pdf( facturaDataManager.getTfaccabfactura(), facturaDataManager.getTfaccliente(), facturaDataManager.getTadmcompania(), "C:/Users/LuisH/Desktop/RESPALDO FACTURAEL/facturas/CO");
@@ -905,11 +905,11 @@ public class FacturaController extends BaseController implements Serializable{
 	
 	public Boolean coneccionsri(){
 		try {
-			String coneccion=HttpUtils.connectToServer("https://celcer.sri.gob.ec/comprobantes-electronicos-ws/AutorizacionComprobantes?wsdl", 10000);
+			String coneccion=HttpUtils.connectToServer("https://celcer.sri.gob.ec/comprobantes-electronicos-ws/AutorizacionComprobantes?wsdl", 1000);
 			if(coneccion==null){
 				return false;
 			}
-			String coneccionrecepcion=HttpUtils.connectToServer("https://celcer.sri.gob.ec/comprobantes-electronicos-ws/RecepcionComprobantes?wsdl", 10000);
+			String coneccionrecepcion=HttpUtils.connectToServer("https://celcer.sri.gob.ec/comprobantes-electronicos-ws/RecepcionComprobantes?wsdl", 1000);
 			if(coneccionrecepcion==null){
 				return false;
 			}
