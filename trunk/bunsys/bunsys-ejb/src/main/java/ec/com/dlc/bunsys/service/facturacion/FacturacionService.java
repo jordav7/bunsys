@@ -199,25 +199,22 @@ public class FacturacionService {
 			if (tfaccabfactura.getEstadosri().equals("CO")) {
 				responseService.setEstado(tfaccabfactura.getEstadosri());
 				responseService.setComprobante(xml);
-				generaComprobantesPDF(responseService, factura, tfaccabfactura,
-						cliente, tadmcompania);
+				generaComprobantesPDF(responseService, factura, tfaccabfactura,	cliente, tadmcompania);
 			}
 			if (tfaccabfactura.getEstadosri().equals("FE")) {
+				System.out.println("clave acceso......."+factura.getInfoTributaria().getClaveAcceso());
 				RecepcionComprobantesService recepcionComprobantesService = new RecepcionComprobantesService();
 				// web service valida el comprobante
-				RespuestaSolicitud respuestaSolicitud = recepcionComprobantesService
-						.getRecepcionComprobantesPort().validarComprobante(
-								xml.getBytes());
+				RespuestaSolicitud respuestaSolicitud = recepcionComprobantesService.getRecepcionComprobantesPort().validarComprobante(	xml.getBytes());
 				// estado recivido
 				System.out.println(respuestaSolicitud.getEstado());
 				if (respuestaSolicitud.getEstado().equals("RECIBIDA")) {// Constants.STATE_RECEIVED
 					AutorizacionComprobantesService autorizacionService = new AutorizacionComprobantesService();
 					//respuesta de autorizacion
-					RespuestaComprobante respuestaComprobante = autorizacionService.getAutorizacionComprobantesPort()
-															   .autorizacionComprobante(factura.getInfoTributaria().getClaveAcceso());
+					RespuestaComprobante respuestaComprobante = autorizacionService.getAutorizacionComprobantesPort().autorizacionComprobante(factura.getInfoTributaria().getClaveAcceso());
 					if (respuestaComprobante != null && !respuestaComprobante.getAutorizaciones().getAutorizacion().isEmpty()) {
 						for (Autorizacion autorizacion : respuestaComprobante.getAutorizaciones().getAutorizacion()) {
-							StringBuilder comprobante = new StringBuilder("<![CDATA[").append(autorizacion.getComprobante()).append("]]>");
+							StringBuilder comprobante = new StringBuilder("<![CDATA[").append(xml).append("]]>");
 							autorizacion.setComprobante(comprobante.toString());
 							String finalXml = MarshallerFactory.getInstancia().marshal(autorizacion);
 							responseService.setEstado(autorizacion.getEstado());
@@ -422,7 +419,7 @@ public class FacturacionService {
 			detalle.setDetallesAdicionales(new DetallesAdicionales());
 			detalle.getDetallesAdicionales().getDetAdicional().add(new DetAdicional());
 			detalle.getDetallesAdicionales().getDetAdicional().get(0).setNombre("Email");
-			if(cliente!=null && cliente.getTsyspersona()!=null && cliente.getTsyspersona().getCorreo()!=null){
+			if(cliente!=null && cliente.getTsyspersona()!=null && cliente.getTsyspersona().getCorreo()!=null && cliente.getTsyspersona().getCorreo().trim().length()>2){
 				detalle.getDetallesAdicionales().getDetAdicional().get(0).setValor(StringEscapeUtils.escapeJava(cliente.getTsyspersona().getCorreo()));// "dcruz@bupartech.com"
 			}else{
 				detalle.getDetallesAdicionales().getDetAdicional().get(0).setValor("dcruz@bupartech.com");// "dcruz@bupartech.com"
@@ -965,5 +962,16 @@ public class FacturacionService {
 		}
 		JRDataSource dt = new JRArrayDataSource(c);
 		return dt;
+	}
+	
+	public void envioPorLote(List<Tfaccabfactura> facturas,	Collection<Tfaccabdevolucione> devoluciones)throws FacturacionException {
+		for(Tfaccabfactura factura:facturas){
+			factura.setEstado("FE");
+			facturaDao.update(factura);
+		}
+		for(Tfaccabdevolucione devolucion:devoluciones){
+			devolucion.setEstado("FE");
+			facturaDao.update(devolucion);
+		}
 	}
 }
