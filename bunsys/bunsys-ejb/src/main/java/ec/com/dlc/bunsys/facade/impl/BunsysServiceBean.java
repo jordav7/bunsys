@@ -360,5 +360,10 @@ public class BunsysServiceBean implements BunsysService {
 			throws FacturacionException {
 		return facturacionService.cuentasxcobrarxcompxnumfac(codigocompania, numerofactura);
 	}
+
+	@Override
+	public void envioPorLote(List<Tfaccabfactura> facturas,	Collection<Tfaccabdevolucione> devoluciones)throws FacturacionException {
+		facturacionService.envioPorLote(facturas, devoluciones);
+	}
 	
 }
