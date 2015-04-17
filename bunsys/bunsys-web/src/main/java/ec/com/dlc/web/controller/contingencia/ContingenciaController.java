@@ -1,6 +1,7 @@
 package ec.com.dlc.web.controller.contingencia;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -73,6 +74,29 @@ public class ContingenciaController extends BaseController  {
 	}
 	
 	public void enviarporlote(){
-		System.out.println("Envio por lote");
+		try {
+			System.out.println("Envio por lote");
+			List<Tfaccabfactura>facturasEliminar=new ArrayList<Tfaccabfactura>();
+			List<Tfaccabdevolucione>devolucionesEliminar=new ArrayList<Tfaccabdevolucione>();
+			bunsysService.envioPorLote(contingenciaDatamanager.getCabfacturasList(), contingenciaDatamanager.getCabdevoluciones());
+			for(Tfaccabfactura factura:contingenciaDatamanager.getCabfacturasList()){
+				if(factura.getEstado().equals("FE")){
+					facturasEliminar.add(factura);
+				}
+			}
+			for(Tfaccabdevolucione devolucion:contingenciaDatamanager.getCabdevoluciones()){
+				if(devolucion.getEstado().equals("FE")){
+					devolucionesEliminar.add(devolucion);
+				}
+			}
+			for(Tfaccabfactura factura:facturasEliminar){
+				contingenciaDatamanager.getCabfacturasList().remove(factura);
+			}
+			for(Tfaccabdevolucione devolucion:devolucionesEliminar){
+				contingenciaDatamanager.getCabdevoluciones().remove(devolucion);
+			}
+		} catch (FacturacionException e) {
+			e.printStackTrace();
+		}
 	}
 }
