@@ -187,7 +187,10 @@
 						<h:outputText value="#{detDevolucion.tinvproducto.nandina}" />
 					</p:column>
 					<p:column headerText="#{msg['lbl_stems_bunch']}" style="width: 100px;">
-						<pe:inputNumber id="txtStemsBunch" value="#{detDevolucion.stemsbunch}" styleClass="b-input100" disabled="true" decimalPlaces="2" decimalSeparator="." thousandSeparator=""/>
+						<pe:inputNumber id="txtStemsBunch" value="#{detDevolucion.stemsbunch}" styleClass="b-input100" disabled="true" decimalPlaces="2" decimalSeparator="." thousandSeparator="">
+								<p:ajax event="change"  listener="#{notaCreditoController.cambioStemsBunch(item)}" 
+											process="@this txtStemsBunch" update="txtTotalBunch txtCantidad txtPrecioUnitario txtTotal :frmNotaCredito:pnlTotales"/>
+						</pe:inputNumber>
 					</p:column>
 					<p:column headerText="#{msg['lbl_boxs']}" style="width: 100px;">
 						<pe:inputNumber id="txtCajas" value="#{detDevolucion.cajas}" styleClass="b-input100" decimalPlaces="2" decimalSeparator="." thousandSeparator="">
@@ -200,7 +203,7 @@
 						</pe:inputNumber>
 					</p:column>
 					<p:column headerText="#{msg['lbl_total_stems']}" style="width: 100px;">
-						<pe:inputNumber id="txtCantidad" value="#{detDevolucion.totalstems}" styleClass="b-input100" decimalPlaces="2" decimalSeparator="." thousandSeparator="">
+						<pe:inputNumber id="txtCantidad" value="#{detDevolucion.totalstems}" styleClass="b-input100" decimalPlaces="2" decimalSeparator="." thousandSeparator="" disabled="true">
 							<p:ajax event="change" listener="#{notaCreditoController.cambiototalSteams(detDevolucion)}" process="@this" update="txtPrecioUnitario txtTotal :frmNotaCredito:pnlTotales"/>
 						</pe:inputNumber>
 					</p:column>
