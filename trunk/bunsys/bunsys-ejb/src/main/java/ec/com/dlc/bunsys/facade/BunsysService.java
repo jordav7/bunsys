@@ -262,4 +262,11 @@ public interface BunsysService {
 	Tfaccabfactura obtenerFactura(Integer codigoCompania, String numeroFactura) throws FacturacionException;
 	
 	ResponseServiceDto guardarNotaCredito(Tfaccabdevolucione notaCredito, Collection<Tfacdetdevolucione> detallesNotaCreditoColl, Tadmcompania empresa, String numeroComprobante) throws FacturacionException;
-}
+	/**
+	 * Metodo para enviar por lote las facturas al sri
+	 * @param facturas
+	 * @param devoluciones
+	 * @throws FacturacionException
+	 */
+	void envioPorLote(List<Tfaccabfactura> facturas,Collection<Tfaccabdevolucione> devoluciones)throws FacturacionException;
+	}
