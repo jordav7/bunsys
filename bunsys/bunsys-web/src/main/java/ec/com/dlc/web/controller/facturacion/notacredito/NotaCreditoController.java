@@ -449,13 +449,22 @@ public class NotaCreditoController extends BaseController {
 			detalle.setTotalstems(new BigDecimal(detalle.getAditionalProperty("totalstemsaux").toString()));
 			detalle.setTotal(new BigDecimal(detalle.getAditionalProperty("totalaux").toString()));
 		}
-		//totalbunch * cajas
-		detalle.setTotalbunch(detalle.getTotalbunch().multiply(detalle.getCajas()));
-		//total stems= stembunch * totalbunch
-		detalle.setTotalstems(detalle.getStemsbunch().multiply(detalle.getTotalbunch()));
-		//total price = totalstems * preciounitario
-		detalle.setTotal(detalle.getTotalstems().multiply(detalle.getPreciounitario()));
+		if(detalle.getCajas()!=null && detalle.getCajas().compareTo(new BigDecimal(0))>0){
+			//	Bunch box * Total pices * Steam bunch= Total Steams
+			detalle.setTotalstems(detalle.getCajas().multiply(detalle.getCantidad()).multiply(detalle.getStemsbunch()));
+			//total bunch = bunchbox * total pices
+			detalle.setTotalbunch(detalle.getCajas().multiply(detalle.getCantidad()));
+			//total price = totalstems * preciounitario
+			detalle.setTotal(detalle.getTotalstems().multiply(detalle.getPreciounitario()));
+		}
 		calculos();
+//		//totalbunch * cajas
+//		detalle.setTotalbunch(detalle.getTotalbunch().multiply(detalle.getCajas()));
+//		//total stems= stembunch * totalbunch
+//		detalle.setTotalstems(detalle.getStemsbunch().multiply(detalle.getTotalbunch()));
+//		//total price = totalstems * preciounitario
+//		detalle.setTotal(detalle.getTotalstems().multiply(detalle.getPreciounitario()));
+//		calculos();
 	}
 	
 	public void cambiototalSteams(Tfacdetdevolucione detalle){
