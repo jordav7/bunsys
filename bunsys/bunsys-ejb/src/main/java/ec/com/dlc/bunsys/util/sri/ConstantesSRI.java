@@ -11,5 +11,11 @@ public class ConstantesSRI {
 	public static final String COD_GUIA_REMISION = BunsysMessages.getString("cod_guia_remision");
 	public static final String COD_EMISION_NORMAL = BunsysMessages.getString("cod_emision_normal");
 	public static final String COD_EMISION_INDISPONIBILIDAD = BunsysMessages.getString("cod_emision_idisponibilidad");
+	public static final String COD_AMBIENTE_PRUEBAS = BunsysMessages.getString("cod_ambiente_pruebas");
+	public static final String COD_AMBIENTE_PRODUCCION = BunsysMessages.getString("cod_ambiente_produccion");
+	public static final String COD_URL_RECEP_PRUEBAS = BunsysMessages.getString("cod_url_recep_pru");
+	public static final String COD_URL_RECEP_PRODUCCION = BunsysMessages.getString("cod_url_recep_prod");
+	public static final String COD_URL_AUT_PRUEBAS = BunsysMessages.getString("cod_url_aut_pru");
+	public static final String COD_URL_AUT_PRODUCCION = BunsysMessages.getString("cod_url_aut_prod");
 	
 }
