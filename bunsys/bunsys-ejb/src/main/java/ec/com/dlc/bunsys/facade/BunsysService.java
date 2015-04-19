@@ -268,5 +268,5 @@ public interface BunsysService {
 	 * @param devoluciones
 	 * @throws FacturacionException
 	 */
-	void envioPorLote(List<Tfaccabfactura> facturas,Collection<Tfaccabdevolucione> devoluciones)throws FacturacionException;
+	void envioPorLote(List<Tfaccabfactura> facturas,Collection<Tfaccabdevolucione> devoluciones,Integer codigocompania)throws FacturacionException;
 	}
