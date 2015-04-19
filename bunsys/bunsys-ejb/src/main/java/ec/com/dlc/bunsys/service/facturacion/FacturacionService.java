@@ -964,13 +964,35 @@ public class FacturacionService {
 		return dt;
 	}
 	
-	public void envioPorLote(List<Tfaccabfactura> facturas,	Collection<Tfaccabdevolucione> devoluciones)throws FacturacionException {
+	public void envioPorLote(List<Tfaccabfactura> facturas,	Collection<Tfaccabdevolucione> devoluciones,Integer codigocompania)throws FacturacionException {
+		String rutafirma = ComprobantesUtil.getInstancia().obtenerRutaCertificado(codigocompania);
+		Path dirComprobante = Paths.get(ComprobantesUtil.getInstancia()	.obtenerDirectorioFacturas(codigocompania));
 		for(Tfaccabfactura factura:facturas){
-			factura.setEstado("FE");
+			File archivo = new File(Paths.get(dirComprobante.toAbsolutePath()+ File.separator+factura.getEstadosri()+File.separator+factura.getClaveacceso()+".xml").toString());
+			//BufferedWriter bw;
+			if(archivo.exists()) {
+				System.out.println("ARCHIVO SI EXISTE");
+			} else{
+				System.out.println("ARCHIVO NO EXISTE");
+			}
+			
+			factura.setEstadosri("FE");
 			facturaDao.update(factura);
 		}
 		for(Tfaccabdevolucione devolucion:devoluciones){
-			devolucion.setEstado("FE");
+			String codigoacceso=secuenciaService.generaClaveAcceso(devolucion
+					.getFechadevolucion(), devolucion.getPk()
+					.getCodigocompania(), ConstantesSRI.COD_NOTA_CREDITO,
+					devolucion.getPk().getNumerodevoluciones());
+			File archivo = new File(rutafirma+File.separator+devolucion.getEstadosri()+File.separator+codigoacceso+".xml");
+			//BufferedWriter bw;
+			if(archivo.exists()) {
+				System.out.println("ARCHIVO SI EXISTE");
+			} else{
+				System.out.println("ARCHIVO NO EXISTE");
+			}
+			
+			devolucion.setEstadosri("FE");
 			facturaDao.update(devolucion);
 		}
 	}
