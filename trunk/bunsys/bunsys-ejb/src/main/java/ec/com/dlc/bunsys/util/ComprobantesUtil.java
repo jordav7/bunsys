@@ -1,5 +1,8 @@
 package ec.com.dlc.bunsys.util;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import org.apache.commons.lang.StringUtils;
 
 import ec.com.dlc.bunsys.commons.locator.BeanLocator;
@@ -83,5 +86,13 @@ public class ComprobantesUtil {
 		BunsysService bunsysService = (BunsysService) new BeanLocator.GlobalJNDIName().withAppName(BunsysMessages.getString("application.name")).withModuleName(BunsysMessages.getString("module.name")).withBeanName("BunsysServiceBean").withBusinessInterface(BunsysService.class).locate();
 		Tadmcatalogo rutaCertificado = bunsysService.obtenerCatalogo(codcompania, 37, "RUTACERTIFICADO");
 		return rutaCertificado.getValor();
+	}
+	
+	public URL obtenerURLWS(String ambiente, String servicioWeb, Integer codigoCompania) throws MalformedURLException {
+		BunsysService bunsysService = (BunsysService) new BeanLocator.GlobalJNDIName().withAppName(BunsysMessages.getString("application.name")).withModuleName(BunsysMessages.getString("module.name")).withBeanName("BunsysServiceBean").withBusinessInterface(BunsysService.class).locate();
+		URL urlWS = null;
+		Tadmcatalogo urlAmbiente = bunsysService.obtenerCatalogo(codigoCompania, 37, servicioWeb);
+		urlWS = new URL(urlAmbiente.getValor());
+		return urlWS;
 	}
 }
