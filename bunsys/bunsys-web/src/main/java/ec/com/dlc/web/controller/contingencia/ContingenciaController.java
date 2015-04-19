@@ -78,14 +78,14 @@ public class ContingenciaController extends BaseController  {
 			System.out.println("Envio por lote");
 			List<Tfaccabfactura>facturasEliminar=new ArrayList<Tfaccabfactura>();
 			List<Tfaccabdevolucione>devolucionesEliminar=new ArrayList<Tfaccabdevolucione>();
-			bunsysService.envioPorLote(contingenciaDatamanager.getCabfacturasList(), contingenciaDatamanager.getCabdevoluciones());
+			bunsysService.envioPorLote(contingenciaDatamanager.getCabfacturasList(), contingenciaDatamanager.getCabdevoluciones(),contingenciaDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania());
 			for(Tfaccabfactura factura:contingenciaDatamanager.getCabfacturasList()){
-				if(factura.getEstado().equals("FE")){
+				if(factura.getEstadosri().equals("FE")){
 					facturasEliminar.add(factura);
 				}
 			}
 			for(Tfaccabdevolucione devolucion:contingenciaDatamanager.getCabdevoluciones()){
-				if(devolucion.getEstado().equals("FE")){
+				if(devolucion.getEstadosri().equals("FE")){
 					devolucionesEliminar.add(devolucion);
 				}
 			}
