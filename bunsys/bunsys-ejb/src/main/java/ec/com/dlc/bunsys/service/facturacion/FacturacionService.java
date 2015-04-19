@@ -555,12 +555,12 @@ public class FacturacionService {
 									empresa.getPk().getCodigocompania())),
 					notaCredito.getAditionalProperty("passwordToken")
 							.toString());
-			RecepcionComprobantesService recepcionComprobantesService = new RecepcionComprobantesService();
+			RecepcionComprobantesService recepcionComprobantesService = new RecepcionComprobantesService(ComprobantesUtil.getInstancia().obtenerURLWSRecep(empresa.getTipoambiente(), empresa.getPk().getCodigocompania()));
 			RespuestaSolicitud respuestaSolicitud = recepcionComprobantesService
 					.getRecepcionComprobantesPort().validarComprobante(
 							xmlNC.getBytes());
 			if (respuestaSolicitud.getEstado().equals(Constants.STATE_RECEIVED)) {
-				AutorizacionComprobantesService autorizacionService = new AutorizacionComprobantesService();
+				AutorizacionComprobantesService autorizacionService = new AutorizacionComprobantesService(ComprobantesUtil.getInstancia().obtenerURLWSAutorizacion(empresa.getTipoambiente(), empresa.getPk().getCodigocompania()));
 				RespuestaComprobante respuestaComprobante = autorizacionService
 						.getAutorizacionComprobantesPort()
 						.autorizacionComprobante(
