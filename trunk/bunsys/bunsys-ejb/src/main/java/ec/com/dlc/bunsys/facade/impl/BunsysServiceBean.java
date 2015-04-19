@@ -362,8 +362,8 @@ public class BunsysServiceBean implements BunsysService {
 	}
 
 	@Override
-	public void envioPorLote(List<Tfaccabfactura> facturas,	Collection<Tfaccabdevolucione> devoluciones)throws FacturacionException {
-		facturacionService.envioPorLote(facturas, devoluciones);
+	public void envioPorLote(List<Tfaccabfactura> facturas,	Collection<Tfaccabdevolucione> devoluciones,Integer codigocompania)throws FacturacionException {
+		facturacionService.envioPorLote(facturas, devoluciones,codigocompania);
 	}
 	
 }
