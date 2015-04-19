@@ -88,10 +88,28 @@ public class ComprobantesUtil {
 		return rutaCertificado.getValor();
 	}
 	
-	public URL obtenerURLWS(String ambiente, String servicioWeb, Integer codigoCompania) throws MalformedURLException {
+	public URL obtenerURLWSRecep(String ambiente, Integer codigoCompania) throws MalformedURLException {
 		BunsysService bunsysService = (BunsysService) new BeanLocator.GlobalJNDIName().withAppName(BunsysMessages.getString("application.name")).withModuleName(BunsysMessages.getString("module.name")).withBeanName("BunsysServiceBean").withBusinessInterface(BunsysService.class).locate();
 		URL urlWS = null;
-		Tadmcatalogo urlAmbiente = bunsysService.obtenerCatalogo(codigoCompania, 37, servicioWeb);
+		Tadmcatalogo urlAmbiente = null;
+		if(ambiente.equals(ConstantesSRI.COD_AMBIENTE_PRUEBAS)){
+			urlAmbiente	= bunsysService.obtenerCatalogo(codigoCompania, 37, ConstantesSRI.COD_URL_RECEP_PRUEBAS);
+		} else if (ambiente.equals(ConstantesSRI.COD_AMBIENTE_PRODUCCION)) {
+			urlAmbiente = bunsysService.obtenerCatalogo(codigoCompania, 37, ConstantesSRI.COD_URL_RECEP_PRODUCCION);
+		}
+		urlWS = new URL(urlAmbiente.getValor());
+		return urlWS;
+	}
+	
+	public URL obtenerURLWSAutorizacion(String ambiente, Integer codigoCompania) throws MalformedURLException {
+		BunsysService bunsysService = (BunsysService) new BeanLocator.GlobalJNDIName().withAppName(BunsysMessages.getString("application.name")).withModuleName(BunsysMessages.getString("module.name")).withBeanName("BunsysServiceBean").withBusinessInterface(BunsysService.class).locate();
+		URL urlWS = null;
+		Tadmcatalogo urlAmbiente = null;
+		if(ambiente.equals(ConstantesSRI.COD_AMBIENTE_PRUEBAS)){
+			urlAmbiente	= bunsysService.obtenerCatalogo(codigoCompania, 37, ConstantesSRI.COD_URL_AUT_PRUEBAS);
+		} else if (ambiente.equals(ConstantesSRI.COD_AMBIENTE_PRODUCCION)) {
+			urlAmbiente = bunsysService.obtenerCatalogo(codigoCompania, 37, ConstantesSRI.COD_URL_AUT_PRODUCCION);
+		}
 		urlWS = new URL(urlAmbiente.getValor());
 		return urlWS;
 	}
