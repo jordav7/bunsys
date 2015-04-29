@@ -50,7 +50,7 @@ public class BusquedaNotaCreditoController extends BaseController {
 	}
 	
 	public String crearNotaCredito() {
-		Integer valorSecuencia = ComprobantesUtil.getInstancia().obtenerSecuenciaActualNC(notaCreditoDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania());
+		Integer valorSecuencia = ComprobantesUtil.getInstancia().obtenerSecuenciaActualNC(notaCreditoDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania())+1;
 		notaCreditoDatamanager.setCabdevoluciones(new Tfaccabdevolucione());
 		notaCreditoDatamanager.getCabdevoluciones().setFechadevolucion(new Date());
 		notaCreditoDatamanager.getCabdevoluciones().setTfaccliente(new Tfaccliente());
