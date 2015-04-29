@@ -61,7 +61,7 @@ public class CatalogoController extends BaseController {
 	public void guardar() {
 		try{
 			catalogoDatamanager.getCatalogo().getPk().setCodigocompania(catalogoDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania());
-			catalogoDatamanager.getCatalogo().setEstado(ContenidoMessages.getString("A"));
+			catalogoDatamanager.getCatalogo().setEstado("A");
 			bunsysService.guardarCatalogo(catalogoDatamanager.getCatalogo());
 			MessagesUtil.showInfoMessage(ContenidoMessages.getString("msg_info_catalogo_guardado"));
 		} catch (Throwable e) {
