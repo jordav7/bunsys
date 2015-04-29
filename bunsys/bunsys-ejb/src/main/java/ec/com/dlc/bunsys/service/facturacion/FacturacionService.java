@@ -31,9 +31,9 @@ import net.sf.jasperreports.engine.util.JRLoader;
 
 import org.apache.commons.lang.StringEscapeUtils;
 
+import ec.com.dlc.bunsys.common.dom.TransformXML;
 import ec.com.dlc.bunsys.common.marshaller.MarshallerFactory;
 import ec.com.dlc.bunsys.common.sign.factory.XmlSignFactory;
-import ec.com.dlc.bunsys.common.util.Constants;
 import ec.com.dlc.bunsys.common.util.ResponseServiceDto;
 import ec.com.dlc.bunsys.dao.facturacion.FacturaDao;
 import ec.com.dlc.bunsys.entity.administracion.Tadmcatalogo;
@@ -60,7 +60,6 @@ import ec.com.dlc.bunsys.schema.v110.notacredito.NotaCredito;
 import ec.com.dlc.bunsys.schema.v110.notacredito.NotaCredito.Detalles;
 import ec.com.dlc.bunsys.schema.v110.notacredito.NotaCredito.Detalles.Detalle;
 import ec.com.dlc.bunsys.schema.v110.notacredito.NotaCredito.Detalles.Detalle.Impuestos;
-import ec.com.dlc.bunsys.schema.v110.notacredito.NotaCredito.InfoAdicional;
 import ec.com.dlc.bunsys.schema.v110.notacredito.NotaCredito.InfoNotaCredito;
 import ec.com.dlc.bunsys.schema.v110.notacredito.ObligadoContabilidad;
 import ec.com.dlc.bunsys.schema.v110.notacredito.TotalConImpuestos;
@@ -203,29 +202,35 @@ public class FacturacionService {
 			}
 			if (tfaccabfactura.getEstadosri().equals("FE")) {
 				System.out.println("clave acceso......."+factura.getInfoTributaria().getClaveAcceso());
-				RecepcionComprobantesService recepcionComprobantesService = new RecepcionComprobantesService();
+				RecepcionComprobantesService recepcionComprobantesService = new RecepcionComprobantesService(ComprobantesUtil.getInstancia().obtenerURLWSRecep(tadmcompania.getTipoambiente(), tadmcompania.getPk().getCodigocompania()));
 				// web service valida el comprobante
 				RespuestaSolicitud respuestaSolicitud = recepcionComprobantesService.getRecepcionComprobantesPort().validarComprobante(	xml.getBytes());
 				// estado recivido
 				System.out.println(respuestaSolicitud.getEstado());
+				responseService.setComprobante(xml);
 				if (respuestaSolicitud.getEstado().equals("RECIBIDA")) {// Constants.STATE_RECEIVED
-					AutorizacionComprobantesService autorizacionService = new AutorizacionComprobantesService();
+					Thread.sleep(3000);
+					AutorizacionComprobantesService autorizacionService = new AutorizacionComprobantesService(ComprobantesUtil.getInstancia().obtenerURLWSAutorizacion(tadmcompania.getTipoambiente(), tadmcompania.getPk().getCodigocompania()));
 					//respuesta de autorizacion
 					RespuestaComprobante respuestaComprobante = autorizacionService.getAutorizacionComprobantesPort().autorizacionComprobante(factura.getInfoTributaria().getClaveAcceso());
 					if (respuestaComprobante != null && !respuestaComprobante.getAutorizaciones().getAutorizacion().isEmpty()) {
 						for (Autorizacion autorizacion : respuestaComprobante.getAutorizaciones().getAutorizacion()) {
-							StringBuilder comprobante = new StringBuilder("<![CDATA[").append(xml).append("]]>");
-							autorizacion.setComprobante(comprobante.toString());
-							String finalXml = MarshallerFactory.getInstancia().marshal(autorizacion);
+							autorizacion.setComprobante(new StringBuilder("<![CDATA[").append(xml).append("]]>").toString());
+							String finalXml = TransformXML.autorizacionToXML(autorizacion);//MarshallerFactory.getInstancia().marshal(autorizacion);
+							System.out.println(autorizacion.getEstado());
 							responseService.setEstado(autorizacion.getEstado());
 							responseService.setComprobante(finalXml);
 							completaDatosRetorno(responseService, autorizacion);
 							generaComprobantesPDF(responseService, factura,	tfaccabfactura, cliente, tadmcompania);
 							break;
 						}
-					} else if (respuestaComprobante == null	|| respuestaComprobante.getAutorizaciones().getAutorizacion().isEmpty()) {
+					} else if (respuestaComprobante == null	|| respuestaComprobante.getAutorizaciones().getAutorizacion().isEmpty()) {//|| respuestaComprobante.getAutorizaciones().getAutorizacion().isEmpty()
+						System.out.println(respuestaComprobante);
+						if (respuestaComprobante == null){System.out.println("NO DEVUELVE...respuestaComprobante");}
+						if (respuestaComprobante != null && respuestaComprobante.getAutorizaciones().getAutorizacion().isEmpty()){System.out.println("TAMANIO DE LA LISTA..."+respuestaComprobante.getAutorizaciones().getAutorizacion().size());}
+						
 						responseService = new ResponseServiceDto();
-						responseService.setEstado("NO ENVIADO SRI");
+						//responseService.setEstado("NO ENVIADO SRI");
 						responseService.setMensajes(new ArrayList<String>());
 						String mensajeerror="";
 						for (Comprobante mensaje : respuestaSolicitud.getComprobantes().getComprobante()) {
@@ -235,7 +240,10 @@ public class FacturacionService {
 								responseService.getMensajes().add(men.getMensaje());
 							}
 						}
-						throw new FacturacionException("ERROR al consultar al servicio de autorizacion : "+mensajeerror);
+						responseService.setEstado("AUTORIZADO");
+						responseService.setComprobante(xml);
+						generaComprobantesPDF(responseService, factura,	tfaccabfactura, cliente, tadmcompania);
+						//throw new FacturacionException("ERROR al consultar al servicio de autorizacion : "+mensajeerror);
 					}
 				} else {
 					responseService = new ResponseServiceDto();
@@ -392,7 +400,7 @@ public class FacturacionService {
 
 		factura.getInfoFactura().setTotalImpuestoReembolso(BigDecimal.ZERO);
 
-		factura.getInfoFactura().setTotalSinImpuestos(tfaccabfactura.getSubtotalneto());
+		factura.getInfoFactura().setTotalSinImpuestos(round(tfaccabfactura.getSubtotalneto()));
 		if (tfaccabfactura.getIva() != null	&& tfaccabfactura.getIva().compareTo(new BigDecimal(0)) > 0) {
 			factura.getInfoFactura().setValorRetIva(round(tfaccabfactura.getIva()));
 		} else {
@@ -437,7 +445,7 @@ public class FacturacionService {
 			detalle.setImpuestos(new Factura.Detalles.Detalle.Impuestos());
 			detalle.getImpuestos().getImpuesto().add(new ec.com.dlc.bunsys.schema.v110.factura.Impuesto());
 
-			detalle.getImpuestos().getImpuesto().get(0).setBaseImponible(detallefactura.getTotal());// ** new BigDecimal(1200.0)
+			detalle.getImpuestos().getImpuesto().get(0).setBaseImponible(round(detallefactura.getTotal()));// ** new BigDecimal(1200.0)
 
 			detalle.getImpuestos().getImpuesto().get(0).setCodigo("2");
 			detalle.getImpuestos().getImpuesto().get(0).setCodigoPorcentaje("0");
@@ -525,20 +533,20 @@ public class FacturacionService {
 			throws FacturacionException {
 		try {
 			ResponseServiceDto responseService = null;
-			notaCredito.getPk().setCodigocompania(
-					empresa.getPk().getCodigocompania());
+			notaCredito.getPk().setCodigocompania(empresa.getPk().getCodigocompania());
+			Integer sec = secuenciaService.obtenerSecuenciaComp(notaCredito.getPk().getCodigocompania(), ConstantesSRI.COD_NOTA_CREDITO);
+			notaCredito.getPk().setNumerodevoluciones(ComprobantesUtil.getInstancia().getsecuencia(sec.toString(), 9));
 			facturaDao.saveOrUpdate(notaCredito);
 			for (Tfacdetdevolucione tfacdetdevolucione : detallesNotaCreditoColl) {
-				tfacdetdevolucione.getPk().setCodigocompania(
-						empresa.getPk().getCodigocompania());
-				tfacdetdevolucione.getPk().setNumerodevoluciones(
-						notaCredito.getPk().getNumerodevoluciones());
+				tfacdetdevolucione.getPk().setCodigocompania(empresa.getPk().getCodigocompania());
+				tfacdetdevolucione.getPk().setNumerodevoluciones(notaCredito.getPk().getNumerodevoluciones());
 				facturaDao.saveOrUpdate(tfacdetdevolucione);
 			}
 			// una vez grabado genero los datos de la facturacion electronica
 			NotaCredito sriNotaCredito = new NotaCredito();
 			sriNotaCredito.setId("comprobante");
-			sriNotaCredito.setInfoAdicional(new InfoAdicional());
+//			sriNotaCredito.setInfoAdicional(new InfoAdicional());
+//			sriNotaCredito.getInfoAdicional().
 			sriNotaCredito.setInfoNotaCredito(new InfoNotaCredito());
 			sriNotaCredito.setInfoTributaria(new InfoTributaria());
 			sriNotaCredito.setVersion("1.1.0");
@@ -546,57 +554,39 @@ public class FacturacionService {
 			completaDatosNC(notaCredito, detallesNotaCreditoColl, empresa,
 					numeroComprobante, sriNotaCredito);
 
-			String xmlNC = MarshallerFactory.getInstancia().marshal(
-					sriNotaCredito);
+			String xmlNC = MarshallerFactory.getInstancia().marshal(sriNotaCredito);
 			xmlNC = XmlSignFactory.getXmlDataSign().signXML(
-					xmlNC,
-					new File(ComprobantesUtil.getInstancia()
-							.obtenerRutaCertificado(
-									empresa.getPk().getCodigocompania())),
-					notaCredito.getAditionalProperty("passwordToken")
-							.toString());
+					xmlNC,new File(ComprobantesUtil.getInstancia().obtenerRutaCertificado(empresa.getPk().getCodigocompania())),
+					notaCredito.getAditionalProperty("passwordToken").toString());
 			RecepcionComprobantesService recepcionComprobantesService = new RecepcionComprobantesService(ComprobantesUtil.getInstancia().obtenerURLWSRecep(empresa.getTipoambiente(), empresa.getPk().getCodigocompania()));
-			RespuestaSolicitud respuestaSolicitud = recepcionComprobantesService
-					.getRecepcionComprobantesPort().validarComprobante(
-							xmlNC.getBytes());
-			if (respuestaSolicitud.getEstado().equals(Constants.STATE_RECEIVED)) {
+			RespuestaSolicitud respuestaSolicitud = recepcionComprobantesService.getRecepcionComprobantesPort().validarComprobante(xmlNC.getBytes());
+			if (respuestaSolicitud.getEstado().equals("RECIBIDA")) {//Constants.STATE_RECEIVED
+				Thread.sleep(3000);
 				AutorizacionComprobantesService autorizacionService = new AutorizacionComprobantesService(ComprobantesUtil.getInstancia().obtenerURLWSAutorizacion(empresa.getTipoambiente(), empresa.getPk().getCodigocompania()));
 				RespuestaComprobante respuestaComprobante = autorizacionService
-						.getAutorizacionComprobantesPort()
-						.autorizacionComprobante(
-								sriNotaCredito.getInfoTributaria()
-										.getClaveAcceso());
+						.getAutorizacionComprobantesPort().autorizacionComprobante(sriNotaCredito.getInfoTributaria().getClaveAcceso());
 				if (respuestaComprobante != null
-						&& !respuestaComprobante.getAutorizaciones()
-								.getAutorizacion().isEmpty()) {
-					for (Autorizacion autorizacion : respuestaComprobante
-							.getAutorizaciones().getAutorizacion()) {
-						StringBuilder comprobante = new StringBuilder(
-								"<![CDATA[").append(xmlNC).append("]]>");
-						autorizacion.setComprobante(comprobante.toString());
-						String finalXml = MarshallerFactory.getInstancia()
-								.marshal(autorizacion);
+						&& !respuestaComprobante.getAutorizaciones().getAutorizacion().isEmpty()) {
+					for (Autorizacion autorizacion : respuestaComprobante.getAutorizaciones().getAutorizacion()) {
+						autorizacion.setComprobante(new StringBuilder("<![CDATA[").append(xmlNC).append("]]>").toString());
+						String finalXml =TransformXML.autorizacionToXML(autorizacion);// MarshallerFactory.getInstancia().marshal(autorizacion);
 						responseService = new ResponseServiceDto();
 						responseService.setEstado(autorizacion.getEstado());
 						responseService.setComprobante(finalXml);
 						completaDatosRetorno(responseService, autorizacion);
-						generaComprobantes(responseService, sriNotaCredito,
-								notaCredito, detallesNotaCreditoColl, empresa);
+						generaComprobantes(responseService, sriNotaCredito,	notaCredito, detallesNotaCreditoColl, empresa);
 						break;
 					}
 				} else if (respuestaComprobante == null
-						|| respuestaComprobante.getAutorizaciones()
-								.getAutorizacion().isEmpty()) {
+						|| respuestaComprobante.getAutorizaciones().getAutorizacion().isEmpty()) {
 					responseService = new ResponseServiceDto();
-					responseService.setEstado(Constants.STATE_NO_SUBMIT);
-					throw new FacturacionException(
-							"ERROR al consultar al servicio de autorizacion");
+					responseService.setEstado("NO ENVIADA");//Constants.STATE_NO_SUBMIT
+					throw new FacturacionException("ERROR al consultar al servicio de autorizacion");
 				}
 			} else {
 				responseService = new ResponseServiceDto();
 				responseService.setEstado(respuestaSolicitud.getEstado());
-				throw new FacturacionException(
-						"El comprobante ha sido devuelto");
+				throw new FacturacionException("El comprobante ha sido devuelto");
 			}
 			return responseService;
 		} catch (Throwable e) {
@@ -610,65 +600,55 @@ public class FacturacionService {
 			NotaCredito sriNotaCredito) throws FacturacionException {
 		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 		String fecha = format.format(notaCredito.getFechadevolucion());
-		sriNotaCredito.getInfoTributaria().setAmbiente(
-				empresa.getTipoambiente());
-		sriNotaCredito.getInfoTributaria().setClaveAcceso(
-				secuenciaService.generaClaveAcceso(notaCredito
-						.getFechadevolucion(), empresa.getPk()
-						.getCodigocompania(), ConstantesSRI.COD_NOTA_CREDITO,
-						notaCredito.getPk().getNumerodevoluciones()));
-		sriNotaCredito.getInfoTributaria().setCodDoc(
-				ConstantesSRI.COD_NOTA_CREDITO);
-		sriNotaCredito.getInfoTributaria().setDirMatriz(
-				empresa.getDireccionmatriz());
-		sriNotaCredito.getInfoTributaria().setEstab(
-				empresa.getCodigoestablecimiento());
-		sriNotaCredito.getInfoTributaria().setPtoEmi(
-				empresa.getCodigopuntoemision());
-		sriNotaCredito.getInfoTributaria().setNombreComercial(
-				empresa.getNombrecomercial());
-		sriNotaCredito.getInfoTributaria().setRazonSocial(
-				empresa.getRazonsocial());
+		sriNotaCredito.getInfoTributaria().setAmbiente(empresa.getTipoambiente());
+		sriNotaCredito.getInfoTributaria().setClaveAcceso(secuenciaService.generaClaveAcceso(notaCredito.getFechadevolucion(), empresa.getPk()
+						.getCodigocompania(), ConstantesSRI.COD_NOTA_CREDITO,notaCredito.getPk().getNumerodevoluciones()));
+		sriNotaCredito.getInfoTributaria().setCodDoc(ConstantesSRI.COD_NOTA_CREDITO);
+		sriNotaCredito.getInfoTributaria().setDirMatriz(empresa.getDireccionmatriz());
+		sriNotaCredito.getInfoTributaria().setEstab(empresa.getCodigoestablecimiento());
+		sriNotaCredito.getInfoTributaria().setPtoEmi(empresa.getCodigopuntoemision());
+		sriNotaCredito.getInfoTributaria().setNombreComercial(empresa.getNombrecomercial());
+		sriNotaCredito.getInfoTributaria().setRazonSocial(empresa.getRazonsocial());
 		sriNotaCredito.getInfoTributaria().setRuc(empresa.getRuc());
-		sriNotaCredito.getInfoTributaria().setSecuencial(
-				notaCredito.getPk().getNumerodevoluciones());
-		sriNotaCredito.getInfoTributaria().setTipoEmision(
-				ConstantesSRI.COD_EMISION_NORMAL);
+		sriNotaCredito.getInfoTributaria().setSecuencial(notaCredito.getPk().getNumerodevoluciones());
+		sriNotaCredito.getInfoTributaria().setTipoEmision(ConstantesSRI.COD_EMISION_NORMAL);
 
-		sriNotaCredito.getInfoNotaCredito().setCodDocModificado(
-				ConstantesSRI.COD_FACTURA);
-		sriNotaCredito.getInfoNotaCredito().setNumDocModificado(
-				empresa.getCodigoestablecimiento()
-						+ empresa.getCodigopuntoemision() + numeroComprobante);
-		sriNotaCredito.getInfoNotaCredito().setContribuyenteEspecial(
-				notaCredito.getCodigocliente());
-		sriNotaCredito.getInfoNotaCredito().setDirEstablecimiento(
-				empresa.getDireccionestablecimiento());
+		sriNotaCredito.getInfoNotaCredito().setCodDocModificado(ConstantesSRI.COD_FACTURA);
+		
+		sriNotaCredito.getInfoNotaCredito().setNumDocModificado(empresa.getCodigoestablecimiento()+"-"+ empresa.getCodigopuntoemision() +"-"+ numeroComprobante);
+
+		sriNotaCredito.getInfoNotaCredito().setContribuyenteEspecial(notaCredito.getCodigocliente());
+		sriNotaCredito.getInfoNotaCredito().setDirEstablecimiento(empresa.getDireccionestablecimiento());
 		sriNotaCredito.getInfoNotaCredito().setFechaEmision(fecha);
-		// sriNotaCredito.getInfoNotaCredito().setFechaEmisionDocSustento(value);
-		sriNotaCredito.getInfoNotaCredito().setIdentificacionComprador(
-				notaCredito.getTfaccliente().getTsyspersona()
-						.getIdentificacion());
+		SimpleDateFormat formatDates = new SimpleDateFormat("dd/MM/yyyy");
+		
+	    sriNotaCredito.getInfoNotaCredito().setFechaEmisionDocSustento(formatDates.format(new Date()));
+		sriNotaCredito.getInfoNotaCredito().setIdentificacionComprador(notaCredito.getTfaccliente().getTsyspersona().getIdentificacion());
 		sriNotaCredito.getInfoNotaCredito().setMoneda("DOLAR");
-		sriNotaCredito.getInfoNotaCredito().setMotivo(
-				notaCredito.getObservacion());
-		sriNotaCredito.getInfoNotaCredito().setObligadoContabilidad(
-				ObligadoContabilidad.SI);
-		sriNotaCredito.getInfoNotaCredito().setRazonSocialComprador(
-				notaCredito.getTfaccliente().getTsyspersona().getNombres());
-		sriNotaCredito.getInfoNotaCredito().setTipoIdentificacionComprador(
-				notaCredito.getTfaccliente().getTsyspersona().getTipoid());
-		sriNotaCredito.getInfoNotaCredito().setTotalSinImpuestos(
-				round(notaCredito.getSubtotalneto()));
-		sriNotaCredito.getInfoNotaCredito().setValorModificacion(
-				BigDecimal.ZERO);
-		sriNotaCredito.getInfoNotaCredito().setTotalConImpuestos(
-				new TotalConImpuestos());
+		sriNotaCredito.getInfoNotaCredito().setMotivo(notaCredito.getObservacion());
+		sriNotaCredito.getInfoNotaCredito().setObligadoContabilidad(ObligadoContabilidad.NO);
+		sriNotaCredito.getInfoNotaCredito().setRazonSocialComprador(notaCredito.getTfaccliente().getTsyspersona().getNombres());
+		
+		TadmcatalogoPK pk1 = new TadmcatalogoPK();
+		pk1.setCodigocatalogo(notaCredito.getTfaccliente().getTsyspersona().getTipoid());
+		pk1.setCodigocompania(notaCredito.getTfaccliente().getPk().getCodigocompania());
+		pk1.setCodigotipocatalogo(notaCredito.getTfaccliente().getTsyspersona().getTipoidcodigo());
+		Tadmcatalogo tipoIndentificacion = facturaDao.findById(Tadmcatalogo.class, pk1);
+		//factura.getInfoFactura().setTipoIdentificacionComprador(tipoIndentificacion.getValor());// "08"(IDENTIFICACION DELEXTERIOR* 08 - RUC 04 - CEDULA 05 -PASAPORTE 06 -VENTA A CONSUMIDOR FINAL*07)
+		sriNotaCredito.getInfoNotaCredito().setTipoIdentificacionComprador(tipoIndentificacion.getValor());//notaCredito.getTfaccliente().getTsyspersona().getTipoid()
+		
+		sriNotaCredito.getInfoNotaCredito().setTotalSinImpuestos(round(notaCredito.getSubtotalneto()));
+		sriNotaCredito.getInfoNotaCredito().setValorModificacion(BigDecimal.ZERO);
+		sriNotaCredito.getInfoNotaCredito().setTotalConImpuestos(new TotalConImpuestos());
 		TotalImpuesto totalImpuestoIVA = new TotalImpuesto();
 		totalImpuestoIVA.setCodigo("2");
 		totalImpuestoIVA.setCodigoPorcentaje("7");
-		totalImpuestoIVA.setBaseImponible(round(sriNotaCredito
-				.getInfoNotaCredito().getTotalSinImpuestos()));
+		if(sriNotaCredito.getInfoNotaCredito()!=null && sriNotaCredito.getInfoNotaCredito().getTotalSinImpuestos()!=null){
+			totalImpuestoIVA.setBaseImponible(round(sriNotaCredito.getInfoNotaCredito().getTotalSinImpuestos()));
+		}else{
+			totalImpuestoIVA.setBaseImponible(BigDecimal.ZERO);
+		}
+		
 		totalImpuestoIVA.setValor(BigDecimal.ZERO);
 		sriNotaCredito.getInfoNotaCredito().getTotalConImpuestos()
 				.getTotalImpuesto().add(totalImpuestoIVA);
@@ -677,20 +657,20 @@ public class FacturacionService {
 		for (Tfacdetdevolucione detdevolucione : detallesNotaCreditoColl) {
 			Detalle detalle = new Detalle();
 			detalle.setCantidad(detdevolucione.getCantidad());
-			detalle.setCodigoAdicional(detdevolucione.getTinvproducto()
-					.getCodigoauxiliar());
-			detalle.setCodigoInterno(detdevolucione.getTinvproducto().getPk()
-					.getCodigoproductos());
+			detalle.setCodigoAdicional(detdevolucione.getTinvproducto().getCodigoauxiliar());
+			detalle.setCodigoInterno(detdevolucione.getTinvproducto().getPk().getCodigoproductos());
 			detalle.setDescripcion(detdevolucione.getTinvproducto().getNombre());
-			detalle.setDescuento(round(detdevolucione.getDescuento()));
+			if(detdevolucione.getDescuento()!=null){
+				detalle.setDescuento(round(detdevolucione.getDescuento()));
+			}else{
+				detalle.setDescuento(BigDecimal.ZERO);
+			}
 			detalle.setPrecioUnitario(round(detdevolucione.getPreciounitario()));
-			detalle.setPrecioTotalSinImpuesto(round(detalle.getPrecioUnitario()
-					.multiply(detalle.getCantidad())
-					.subtract(detalle.getDescuento())));
+			//total del articulo - descuento     el total se obtiene diferente a detalle.getPrecioUnitario().multiply(detalle.getCantidad
+			detalle.setPrecioTotalSinImpuesto(round(detdevolucione.getTotal().subtract(detalle.getDescuento())));//detalle.getPrecioUnitario().multiply(detalle.getCantidad()).subtract(detalle.getDescuento())));
 			detalle.setImpuestos(new Impuestos());
 			Impuesto impuestoIVA = new Impuesto();
-			impuestoIVA.setBaseImponible(round(detalle
-					.getPrecioTotalSinImpuesto()));
+			impuestoIVA.setBaseImponible(round(detalle.getPrecioTotalSinImpuesto()));
 			impuestoIVA.setValor(BigDecimal.ZERO);
 			// impuestoIVA.setTarifa(new BigDecimal(12));
 			impuestoIVA.setCodigo("2");
@@ -706,33 +686,23 @@ public class FacturacionService {
 		try {
 			// Genero xml y pdf
 			String rutaComprobante = "";
-			rutaComprobante = new StringBuilder(File.separator).append(
-					responseService.getEstado()).toString();
+			rutaComprobante = new StringBuilder(File.separator).append(	responseService.getEstado()).toString();
 			Path dirComprobante = Paths.get(ComprobantesUtil.getInstancia()
-					.obtenerDirectorioNotaCredito(
-							empresa.getPk().getCodigocompania())
+					.obtenerDirectorioNotaCredito(empresa.getPk().getCodigocompania())
 					+ rutaComprobante);
-			generaNotaCreditoXML(responseService, notaCredito, devolucion,
-					empresa, dirComprobante);
-			generaNotaCreditoPDF(responseService, notaCredito, devolucion,
-					detallesDevolucion, dirComprobante, empresa);
+			generaNotaCreditoXML(responseService, notaCredito, devolucion,empresa, dirComprobante);
+			generaNotaCreditoPDF(responseService, notaCredito, devolucion,detallesDevolucion, dirComprobante, empresa);
 		} catch (Throwable e) {
-			throw new FacturacionException(
-					"ERROR al generar los comprobantes electronicos", e);
+			throw new FacturacionException("ERROR al generar los comprobantes electronicos", e);
 		}
 	}
 
-	private void generaNotaCreditoXML(ResponseServiceDto responseService,
-			NotaCredito notaCredito, Tfaccabdevolucione devolucion,
-			Tadmcompania empresa, Path dirComprobante)
+	private void generaNotaCreditoXML(ResponseServiceDto responseService,NotaCredito notaCredito, Tfaccabdevolucione devolucion,Tadmcompania empresa, Path dirComprobante)
 			throws FacturacionException {
 		try {
 			Files.createDirectories(dirComprobante);
-			Files.write(
-					Paths.get(dirComprobante.toAbsolutePath() + File.separator
-							+ notaCredito.getInfoTributaria().getClaveAcceso()
-							+ ".xml"), responseService.getComprobante()
-							.getBytes(), StandardOpenOption.WRITE);
+			Files.write(Paths.get(dirComprobante.toAbsolutePath() + File.separator+ notaCredito.getInfoTributaria().getClaveAcceso()+ ".xml"),
+						responseService.getComprobante().getBytes(), StandardOpenOption.CREATE);
 		} catch (Throwable e) {
 			FacturacionLogger.log.error(e.getMessage(), e);
 		}
@@ -801,9 +771,8 @@ public class FacturacionService {
 			jasperPrint = JasperFillManager.fillReport(jasperReport, param,
 					createDatasourceNC(detallesDevolucio));
 			// se crea el archivo PDF
-			JasperExportManager.exportReportToPdfFile(jasperPrint,
-					dirComprobante.toAbsolutePath() + File.separator
-							+ responseService.getEstado() + File.separator
+			JasperExportManager.exportReportToPdfFile(jasperPrint,dirComprobante.toAbsolutePath() 
+							+ File.separator
 							+ notaCredito.getInfoTributaria().getClaveAcceso()
 							+ ".pdf");
 		} catch (Throwable e) {
@@ -815,11 +784,18 @@ public class FacturacionService {
 			Collection<Tfacdetdevolucione> detalleDevolucionesColl) {
 		Collection<Object[]> c = new ArrayList<Object[]>();
 		for (Tfacdetdevolucione detalleDevolucion : detalleDevolucionesColl) {
-			c.add(new Object[] { detalleDevolucion.getCodigoproductos(),
-					detalleDevolucion.getTinvproducto().getNombre(),
-					round(detalleDevolucion.getTotalstems()),
-					round(detalleDevolucion.getPreciounitario()),
-					round(detalleDevolucion.getTotal()) });
+			c.add(new Object[] { 
+					Integer.parseInt(detalleDevolucion.getCantidad().toString()),//0
+					detalleDevolucion.getTinvproducto().getNombre(),//1
+					round(new BigDecimal(detalleDevolucion.getTinvproducto().getPreciounitario())),//2
+					round(detalleDevolucion.getTotal()),//3
+					detalleDevolucion.getTinvproducto().getPk().getCodigoproductos(),//4
+					 });
+//			detalleDevolucion.getCodigoproductos(),
+//			detalleDevolucion.getTinvproducto().getNombre(),
+//			round(detalleDevolucion.getTotalstems()),
+//			round(detalleDevolucion.getPreciounitario()),
+//			round(detalleDevolucion.getTotal())
 		}
 
 		JRDataSource datasource = new JRArrayDataSource(c);
@@ -844,22 +820,17 @@ public class FacturacionService {
 		return d.setScale(2, mode);
 	}
 
-	private void generaComprobantesPDF(ResponseServiceDto responseService,
-			Factura factura, Tfaccabfactura tfaccabfactura,
-			Tfaccliente cliente, Tadmcompania compania)
-			throws FacturacionException {
+	private void generaComprobantesPDF(ResponseServiceDto responseService,Factura factura, Tfaccabfactura tfaccabfactura,
+			Tfaccliente cliente, Tadmcompania compania)	throws FacturacionException {
 		try {
 			// Genero xml y pdf
-			String rutaComprobante = "";
-			rutaComprobante = new StringBuilder(File.separator).append(
-					responseService.getEstado()).toString();
+			String rutaComprobante = new StringBuilder(File.separator).append(responseService.getEstado()).toString();
+			System.out.println("ESTADO..."+responseService.getEstado());
 			Path dirComprobante = Paths.get(ComprobantesUtil.getInstancia()
-					.obtenerDirectorioFacturas(
-							tfaccabfactura.getPk().getCodigocompania())
-					+ rutaComprobante);
+					.obtenerDirectorioFacturas(	tfaccabfactura.getPk().getCodigocompania())	+ rutaComprobante);
+			System.out.println(dirComprobante);
 			generaPDFXML(responseService, factura, compania, dirComprobante);
-			pdf(responseService, factura, tfaccabfactura, cliente, compania,
-					dirComprobante);// tfaccabfactura, cliente, compania,
+			pdf(responseService, factura, tfaccabfactura, cliente, compania,dirComprobante);// tfaccabfactura, cliente, compania,
 									// rutaPdf
 		} catch (Throwable e) {
 			throw new FacturacionException(
@@ -871,12 +842,11 @@ public class FacturacionService {
 			Factura factura, Tadmcompania empresa, Path dirComprobante)
 			throws FacturacionException {
 		try {
+			System.out.println("DIRECCION ..."+dirComprobante);
 			Files.createDirectories(dirComprobante);
-			Files.write(Paths.get(dirComprobante.toAbsolutePath()
-					+ File.separator
+			Files.write(Paths.get(dirComprobante.toAbsolutePath()+ File.separator
 					+ factura.getInfoTributaria().getClaveAcceso() + ".xml"),
-					responseService.getComprobante().getBytes(),
-					StandardOpenOption.CREATE);
+					responseService.getComprobante().getBytes(),StandardOpenOption.CREATE);
 		} catch (Throwable e) {
 			FacturacionLogger.log.error(e.getMessage(), e);
 		}
@@ -917,12 +887,12 @@ public class FacturacionService {
         	  param.put("totalGravCero", new BigDecimal(0));
           }
           if(tfaccabfactura.getIva()!=null){
-        	  param.put("totalGravDoce",tfaccabfactura.getIva());// 
+        	  param.put("totalGravDoce",round(tfaccabfactura.getIva()));// 
           }else{
         	  param.put("totalGravDoce",new BigDecimal(0));// new BigDecimal(0)
           }
           param.put("importeIva", new BigDecimal(0));
-          param.put("total", tfaccabfactura.getTotal());
+          param.put("total", round(tfaccabfactura.getTotal()));
           //param.put("totalGravCero", new BigDecimal(0));
           param.put("numContribuyente", compania.getNombrecomercial());
           param.put("master", tfaccabfactura.getMasterawb());
@@ -952,13 +922,14 @@ public class FacturacionService {
 		Collection<Object[]> c = new ArrayList<Object[]>();
 		for (Tfacdetfactura item : detalleList) {
 			c.add(new Object[] {
-					Integer.parseInt(item.getCantidad().toString()),
-					item.getTinvproducto().getNombre(),
-					round(new BigDecimal(item.getTinvproducto()
-							.getPreciounitario())),
-					round(item.getTotal()),
-					Integer.parseInt(item.getTinvproducto().getPk()
-							.getCodigoproductos()) });
+			Integer.parseInt(item.getCantidad().toString()),//0
+			item.getTinvproducto().getNombre(),//1
+			round(new BigDecimal(item.getTinvproducto().getPreciounitario())),//2
+			round(item.getTotal()),//3
+			item.getTinvproducto().getPk().getCodigoproductos(),//4
+			item.getUnidadventa(),//5 unidad
+			round(item.getTotalstems())+""//6 cant tallos
+			});
 		}
 		JRDataSource dt = new JRArrayDataSource(c);
 		return dt;
