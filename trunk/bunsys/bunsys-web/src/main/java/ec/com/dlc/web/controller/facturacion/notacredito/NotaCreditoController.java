@@ -5,11 +5,14 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 
+import ec.com.dlc.bunsys.common.util.ResponseServiceDto;
 import ec.com.dlc.bunsys.entity.administracion.Tadmcatalogo;
 import ec.com.dlc.bunsys.entity.administracion.Tadmconversionunidad;
 import ec.com.dlc.bunsys.entity.administracion.pk.TadmcompaniaPK;
@@ -113,7 +116,7 @@ public class NotaCreditoController extends BaseController {
 		try{
 			Tfaccabfactura factura = bunsysService.obtenerFactura(notaCreditoDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania(), notaCreditoDatamanager.getCabdevoluciones().getNumerofactura());
 			if(factura == null){
-				Integer valorSecuencia = ComprobantesUtil.getInstancia().obtenerSecuenciaActualNC(notaCreditoDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania());
+				Integer valorSecuencia = ComprobantesUtil.getInstancia().obtenerSecuenciaActualNC(notaCreditoDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania())+1;
 				notaCreditoDatamanager.setCabdevoluciones(new Tfaccabdevolucione());
 				notaCreditoDatamanager.getCabdevoluciones().setFechadevolucion(new Date());
 				notaCreditoDatamanager.getCabdevoluciones().setTfaccliente(new Tfaccliente());
@@ -234,9 +237,15 @@ public class NotaCreditoController extends BaseController {
 	
 	public void guardarFirmarEnviar() {
 		try {
-			bunsysService.guardarNotaCredito(notaCreditoDatamanager.getCabdevoluciones(), notaCreditoDatamanager.getDetdevolucionesColl(), notaCreditoDatamanager.getCompania(), notaCreditoDatamanager.getCabdevoluciones().getNumerofactura());
+			ResponseServiceDto responseServiceDto =bunsysService.guardarNotaCredito(notaCreditoDatamanager.getCabdevoluciones(), notaCreditoDatamanager.getDetdevolucionesColl(), notaCreditoDatamanager.getCompania(), notaCreditoDatamanager.getCabdevoluciones().getNumerofactura());
+			StringBuilder mensajes=new StringBuilder(responseServiceDto.getEstado()+"  ");
+			for(String mensaje:responseServiceDto.getMensajes()){
+				mensajes.append(mensaje);
+			}
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,mensajes.toString(), mensajes.toString()));	
 		} catch (Throwable e) {
 			MessagesUtil.showErrorMessage(e.getMessage());
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ContenidoMessages.getString("msg_error_notacredito")+"  "+e.getMessage(), ContenidoMessages.getString("msg_error_notacredito")+"  "+e.getMessage()));
 		}
 	}
 	
