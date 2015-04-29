@@ -47,6 +47,7 @@ import ec.com.dlc.bunsys.entity.seguridad.Tsyspersona;
 import ec.com.dlc.bunsys.facade.BunsysService;
 import ec.com.dlc.bunsys.util.FacturacionException;
 import ec.com.dlc.bunsys.util.JRArrayDataSource;
+import ec.com.dlc.bunsys.util.sri.ConstantesSRI;
 import ec.com.dlc.web.commons.resource.ContenidoMessages;
 import ec.com.dlc.web.componentes.ArticuloComponent;
 import ec.com.dlc.web.componentes.ClienteComponent;
@@ -905,11 +906,29 @@ public class FacturaController extends BaseController implements Serializable{
 	
 	public Boolean coneccionsri(){
 		try {
-			String coneccion=HttpUtils.connectToServer("https://celcer.sri.gob.ec/comprobantes-electronicos-ws/AutorizacionComprobantes?wsdl", 1000);
+			//URL urlWS = null;
+			Tadmcatalogo urlAmbienterecepcion = null;
+			
+			if(facturaDataManager.getTadmcompania().getTipoambiente().equals(ConstantesSRI.COD_AMBIENTE_PRUEBAS)){
+				System.out.println("Ambiente de PRUEBA");
+				urlAmbienterecepcion	= bunsysService.obtenerCatalogo(facturaDataManager.getLoginDatamanager().getLogin().getPk().getCodigocompania(), 37, ConstantesSRI.COD_URL_RECEP_PRUEBAS);
+			} else if (facturaDataManager.getTadmcompania().getTipoambiente().equals(ConstantesSRI.COD_AMBIENTE_PRODUCCION)) {
+				System.out.println("Ambiente de PRODUCCION");
+				urlAmbienterecepcion = bunsysService.obtenerCatalogo(facturaDataManager.getLoginDatamanager().getLogin().getPk().getCodigocompania(), 37, ConstantesSRI.COD_URL_RECEP_PRODUCCION);
+			}
+			//urlWS = new URL(urlAmbienterecepcion.getValor());
+			Tadmcatalogo urlAmbiente = null;
+			if(facturaDataManager.getTadmcompania().getTipoambiente().equals(ConstantesSRI.COD_AMBIENTE_PRUEBAS)){
+				urlAmbiente	= bunsysService.obtenerCatalogo(facturaDataManager.getLoginDatamanager().getLogin().getPk().getCodigocompania(), 37, ConstantesSRI.COD_URL_AUT_PRUEBAS);
+			} else if (facturaDataManager.getTadmcompania().getTipoambiente().equals(ConstantesSRI.COD_AMBIENTE_PRODUCCION)) {
+				urlAmbiente = bunsysService.obtenerCatalogo(facturaDataManager.getLoginDatamanager().getLogin().getPk().getCodigocompania(), 37, ConstantesSRI.COD_URL_AUT_PRODUCCION);
+			}
+			//urlWS = new URL(urlAmbiente.getValor());
+			String coneccion=HttpUtils.connectToServer(urlAmbiente.getValor(), 1000);//"https://celcer.sri.gob.ec/comprobantes-electronicos-ws/AutorizacionComprobantes?wsdl"
 			if(coneccion==null){
 				return false;
 			}
-			String coneccionrecepcion=HttpUtils.connectToServer("https://celcer.sri.gob.ec/comprobantes-electronicos-ws/RecepcionComprobantes?wsdl", 1000);
+			String coneccionrecepcion=HttpUtils.connectToServer(urlAmbienterecepcion.getValor(), 1000);//"https://celcer.sri.gob.ec/comprobantes-electronicos-ws/RecepcionComprobantes?wsdl"
 			if(coneccionrecepcion==null){
 				return false;
 			}
