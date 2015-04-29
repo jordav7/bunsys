@@ -17,12 +17,13 @@
 						<p:message for="txtCod"/>
 					
 						<p:outputLabel value="#{msg['lbl_ruc_comp']}:" for="txtRuc" style="display: block; width:150px;"/>
-						<p:inputText id="txtRuc" value="#{companiaDatamanager.compania.ruc}" required="true"/>
+						<p:inputText id="txtRuc" value="#{companiaDatamanager.compania.ruc}" required="true" disabled="#{companiaDatamanager.compania.pk.codigocompania!=null}"/>
 						<p:message for="txtRuc"/>
 					</h:panelGrid>
 					<h:panelGrid columns="3">
 						<p:outputLabel value="#{msg['lbl_razon_comp']}:" for="txtRazon" style="display: block; width:150px;"/>
-						<p:inputTextarea id="txtRazon" value="#{companiaDatamanager.compania.razonsocial}" style="display: block; width:542px; height:50px;" rows="10" counter="displayRazon" maxlength="250" counterTemplate="{0} caracteres restantes." onkeyup="bunsys.toUppercase(event, this)" required="true"/>
+						<p:inputTextarea id="txtRazon" value="#{companiaDatamanager.compania.razonsocial}" style="display: block; width:542px; height:50px;" disabled="#{companiaDatamanager.compania.pk.codigocompania!=null}"
+						  rows="10" counter="displayRazon" maxlength="250" counterTemplate="{0} caracteres restantes." onkeyup="bunsys.toUppercase(event, this)" required="true"/>
 						<p:message for="txtRazon"/>
 						<h:outputText id="space1" />
 						<h:outputText id="displayRazon" />
