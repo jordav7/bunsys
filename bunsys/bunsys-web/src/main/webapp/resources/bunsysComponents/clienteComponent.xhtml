@@ -1,0 +1,131 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:comp="http://xmlns.jcp.org/jsf/composite"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+	<comp:interface>
+		<comp:attribute name="controller"/>
+		<comp:attribute name="oncompleteSave" default=""/>
+		<comp:attribute name="processSave"/>
+		<comp:attribute name="updateSave"/>
+		<comp:attribute name="oncompleteCancel" default=""/>
+		<comp:attribute name="updateCancel"/>
+	</comp:interface>
+	<comp:implementation>
+		<div id="#{cc.clientId}">
+			<h:panelGroup layout="block" id="pnlArticulo">
+				<h:panelGrid columns="3">
+					<p:outputLabel value="#{msg['lbl_codigo_cliente']}:" for="codigocliente" style="display:block;width:145px;"/>
+					<p:inputText id="codigocliente" value="#{cc.attrs.controller.tfaccliente.pk.codigocliente}" required="true"
+					 disabled="#{cc.attrs.controller.tfaccliente.pk.codigocliente != null}" onkeyup="bunsys.toUppercase(event, this)" />
+					<p:message for="codigocliente" display="icon"/>
+				</h:panelGrid>
+				<h:panelGrid columns="6">
+					<p:outputLabel value="#{msg['lbl_tipo_id']}" for="seltipoid"/>
+					<p:selectOneMenu id="seltipoid" value="#{cc.attrs.controller.tfaccliente.tsyspersona.tipoid}" required="true">
+						<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+						<f:selectItems value="#{cc.attrs.controller.tipoCatalogoColl}" var="item" itemLabel="#{item.descripcion}" itemValue="#{item.pk.codigocatalogo}" />
+					</p:selectOneMenu>
+					<p:message for="seltipoid" display="icon"/>
+					
+					<p:outputLabel value="#{msg['lbl_identificacion']}:" for="txtIdentifiacion"/>
+					<p:inputText id="txtIdentifiacion" value="#{cc.attrs.controller.tfaccliente.tsyspersona.identificacion}" required="true" onkeyup="bunsys.toUppercase(event, this)" />
+					<p:message for="txtIdentifiacion" display="icon"/>
+					
+					
+					
+					<p:outputLabel value="#{msg['lbl_marcacion']}:" for="txtNombre"/>
+					<p:inputText id="txtNombre" value="#{cc.attrs.controller.tfaccliente.tsyspersona.nombres}" required="true" onkeyup="bunsys.toUppercase(event, this)" />
+					<p:message for="txtNombre" display="icon"/>
+					
+					<p:outputLabel value="#{msg['lbl_cliente']}:" for="txtApellidos"/>
+					<p:inputText id="txtApellidos" value="#{cc.attrs.controller.tfaccliente.tsyspersona.apellidos}"  onkeyup="bunsys.toUppercase(event, this)" />
+					<p:message for="txtApellidos" display="icon"/>
+					
+					<p:outputLabel value="#{msg['lbl_direccion']}:" for="txtDireccion"/>
+					<p:inputText id="txtDireccion" value="#{cc.attrs.controller.tfaccliente.tsyspersona.direccion}" required="true" onkeyup="bunsys.toUppercase(event, this)" />
+					<p:message for="txtDireccion" display="icon"/>
+					
+					<p:outputLabel value="#{msg['lbl_telefono_convencional']}:" for="txtTelefonocon"/>
+					<p:inputMask id="txtTelefonocon" value="#{cc.attrs.controller.tfaccliente.tsyspersona.telefonoconvencional}" mask="#{msg['pattern_telf']}" required="false" />
+					<p:message for="txtTelefonocon" display="icon"/>
+					
+					<p:outputLabel value="#{msg['lbl_telefono_trabajo']}:" for="txtTelefonotra"/>
+					<p:inputText id="txtTelefonotra" value="#{cc.attrs.controller.tfaccliente.tsyspersona.telefonotrabajo}" required="false" maxlength="10">
+						<pe:keyFilter regEx="/[\d\s,]/"/>
+					</p:inputText>
+					<p:message for="txtTelefonotra" display="icon"/>
+					
+					<p:outputLabel value="#{msg['lbl_extension']}:" for="txtExtencion"/>
+					<p:inputText id="txtExtencion" value="#{cc.attrs.controller.tfaccliente.tsyspersona.extension}" required="false" maxlength="5">
+						<pe:keyFilter regEx="/[\d\s,]/"/>
+					</p:inputText>
+					<p:message for="txtExtencion" display="icon"/>
+					
+					<p:outputLabel value="#{msg['lbl_celular']}:" for="txtCelular"/>
+					 <p:inputMask id="txtCelular" value="#{cc.attrs.controller.tfaccliente.tsyspersona.telefonocelular}" mask="#{msg['pattern_telf_cel']}"/>
+					<p:message for="txtCelular" display="icon"/>
+					
+					<p:outputLabel value="#{msg['lbl_correo']}:" for="txtCorreo"/>
+					<p:inputText id="txtCorreo" value="#{cc.attrs.controller.tfaccliente.tsyspersona.correo}" required="false" maxlength="50">
+                        	<pe:keyFilter mask="email" for="txtCorreo"/>
+                     </p:inputText>
+					<p:message for="txtCorreo" display="icon"/>
+					
+					<p:outputLabel value="#{msg['lbl_estado']}" for="selEstado"/>
+					<p:selectOneMenu id="selEstado" value="#{cc.attrs.controller.tfaccliente.tsyspersona.estado}">
+						<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+						<f:selectItems value="#{cc.attrs.controller.estadoCatalogoColl}" var="estado" itemLabel="#{estado.descripcion}" itemValue="#{estado.pk.codigocatalogo}" />
+					</p:selectOneMenu>
+					<p:message for="selEstado" display="icon"/>
+					
+					<p:outputLabel value="#{msg['lbl_forma_pago']}" for="selFormapago"/>
+					<p:selectOneMenu id="selFormapago" value="#{cc.attrs.controller.tfaccliente.formapago}">
+						<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+						<f:selectItems value="#{cc.attrs.controller.formaPagoCatalogoColl}" var="item" itemLabel="#{item.descripcion}" itemValue="#{item.pk.codigocatalogo}" />
+					</p:selectOneMenu>
+					<p:message for="selFormapago" display="icon"/>
+					
+					<p:outputLabel value="#{msg['lbl_grupo_cliente']}" for="selGrupocli"/>
+					<p:selectOneMenu id="selGrupocli" value="#{cc.attrs.controller.tfaccliente.grupocliente}">
+						<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+						<f:selectItems value="#{cc.attrs.controller.grupoCatalogoColl}" var="item" itemLabel="#{item.descripcion}" itemValue="#{item.pk.codigocatalogo}" />
+					</p:selectOneMenu>
+					<p:message for="selGrupocli" display="icon"/>
+					
+					<p:outputLabel value="#{msg['lbl_limite_credito']}:" for="limitecredito"/>
+					<pe:inputNumber id="limitecredito" value="#{cc.attrs.controller.tfaccliente.limitecredito}" decimalPlaces="2" decimalSeparator="." thousandSeparator="," />
+					<p:message for="limitecredito"/>
+					
+					<p:outputLabel value="#{msg['lbl_porcentaje_desc']}:" for="porcendesc"/>
+					<pe:inputNumber id="porcendesc" value="#{cc.attrs.controller.tfaccliente.porcentajedescuento}" decimalPlaces="0" decimalSeparator="." thousandSeparator="," />
+					<p:message for="porcendesc" display="icon"/>
+					
+					<p:outputLabel value="#{msg['lbl_contacto']}:" for="txtContacto"/>
+					<p:inputTextarea id="txtContacto" value="#{cc.attrs.controller.tfaccliente.tsyspersona.contacto}" required="false" maxlength="100" cols="5" rows="2" autoResize="false" onkeyup="bunsys.toUppercase(event, this)"/>
+					<p:message for="txtContacto" display="icon"/>
+					
+					<p:outputLabel value="#{msg['lbl_obs']}:" for="txtObservacion"/>
+					<p:inputTextarea id="txtObservacion" value="#{cc.attrs.controller.tfaccliente.tsyspersona.observacion}" required="false" maxlength="200" cols="5" rows="2" autoResize="false" onkeyup="bunsys.toUppercase(event, this)"/>
+					<p:message for="txtObservacion" display="icon"/>
+				</h:panelGrid>
+				<h:panelGroup layout="block">
+					<p:commandButton value="#{msg['btn_guardar']}" 
+						icon="ui-icon-disk"
+						action="#{cc.attrs.controller.guardarCambios}"
+						oncomplete="if (!args.validationFailed) {#{cc.attrs.oncompleteSave}}" 
+						update="@this pnlArticulo #{cc.attrs.updateSave}" 
+						process="@this pnlArticulo #{cc.attrs.processSave}"/>
+					<p:commandButton value="#{msg['btn_cancelar']}"
+						icon="ui-icon-close" 
+						action="#{cc.attrs.controller.cancelar}" 
+						oncomplete="#{cc.attrs.oncompleteCancel}"
+						update="@this #{cc.attrs.updateCancel}" 
+						immediate="true"/>
+				</h:panelGroup>
+			</h:panelGroup>
+		</div>
+	</comp:implementation>
+</ui:composition>

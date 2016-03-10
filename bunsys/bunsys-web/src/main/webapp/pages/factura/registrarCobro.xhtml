@@ -1,0 +1,97 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"      
+      xmlns:b="http://xmlns.jcp.org/jsf/composite/bunsysComponents"
+      template="/WEB-INF/templates/template.xhtml">
+      <ui:param name="idForm" value="frmRegCobro" />
+      <ui:param name="controller" value="#{registrarCobroController}" />
+      <ui:define name="contentBody">
+      	<p:panel header="#{msg['lbl_registro_cobro']}">
+      		<p:fieldset legend="#{msg['lbl_cabecera_cobro']}">
+      			<h:panelGroup>
+      				<h:panelGrid columns="3">
+      					<p:outputLabel value="#{msg['lbl_num_doc']}:" for="txtNumDoc"/>
+      					<p:inputText id="txtNumDoc" value="#{registroCobroDatamanager.cxcRegistro.numdoc}"/>
+      					<p:message for="txtNumDoc"/>
+      					
+      					<p:outputLabel value="#{msg['lbl_fec_emi_cob']}:" for="txtFecPago"/>
+      					<p:calendar id="txtFecPago" value="#{registroCobroDatamanager.cxcRegistro.fechapago}" pattern="#{msg['pattern_date']}" mask="true"/>
+      					<p:message for="txtFecPago"/>
+      					
+      					<p:outputLabel value="#{msg['lbl_concepto']}:"/>
+      					<p:inputTextarea id="txtConcepto" value="#{registroCobroDatamanager.cxcRegistro.concepto}" style="display: block; width:542px; height:75px;" required="true" rows="10" counter="displayConcepto" maxlength="250" counterTemplate="{0} caracteres restantes." onkeyup="bunsys.toUppercase(event, this)"/>
+      					<p:message for="txtConcepto"/>
+						<h:outputText id="spaceConcepto" />
+						<h:outputText id="displayConcepto" />
+      				</h:panelGrid>
+      			</h:panelGroup>
+      		</p:fieldset>
+      		<p:fieldset legend="#{msg['lbl_deudor_cob']}:">
+      			<h:panelGroup layout="block" id="pnlDeudor">
+      				<h:panelGrid columns="4">
+      					<p:outputLabel value="#{msg['lbl_identificacion']}:" for="txtId"/>
+      					<p:inputText id="txtId" value="#{registroCobroDatamanager.cxcRegistro.tfaccliente.tsyspersona.identificacion}"/>
+      					<p:commandButton icon="ui-icon-search" value="#{msg['btn_buscar']}" action="#{registrarCobroController.buscar()}" process="@this txtId" update=":frmRegCobro:txtNombres :frmRegCobro:pnlDataCobros :frmRegCobro:pnlTotales"/>
+      					<p:message for="txtId"/>
+      					
+      					<p:outputLabel value="#{msg['lbl_nombres_apellidos']}:" for="txtNombres"/>
+      					<p:inputText id="txtNombres" value="#{registroCobroDatamanager.cxcRegistro.tfaccliente.tsyspersona.apellidos} #{registroCobroDatamanager.cxcRegistro.tfaccliente.tsyspersona.nombres}" disabled="true"/>
+      					<p:message for="txtNombres"/>
+      				</h:panelGrid>
+      			</h:panelGroup>
+      		</p:fieldset>
+      		<p:fieldset legend="#{msg['lbl_cobros']}">
+      			<h:panelGroup layout="block" id="pnlDataCobros">
+      				<p:dataTable id="dataCxc" value="#{registroCobroDatamanager.cxcPendientesColl}" var="cxcPend">
+      					<p:column headerText="#{msg['lbl_tipo_id']}">
+      						<h:outputText value="#{cxcPend.tadmtipodoc.descripcion}" />
+      					</p:column>
+						<p:column headerText="#{msg['lbl_num_fac']}">
+							<h:outputText value="#{cxcPend.numerofactura}" />
+						</p:column>      					
+      					<p:column headerText="#{msg['lbl_fec_ven']}">
+      						<h:outputText value="#{cxcPend.fechavence}" />
+      					</p:column>
+ 						<p:column headerText="#{msg['lbl_val_cobro']}" >
+ 							<p:inputText id="txtValor" value="#{cxcPend.valor}" style="text-align:right;" disabled="#{cxcPend.aditionalProperties['editCxc']}">
+ 								<p:ajax event="blur" listener="#{registrarCobroController.editValor(cxcPend)}" process="@this" update="@this  :frmRegCobro:dataCxc:txtSaldo :frmRegCobro:pnlTotales"/>
+ 							</p:inputText>
+ 						</p:column>	
+ 						<p:column headerText="#{msg['lbl_saldo_total']}">
+ 							<h:outputText id="txtSaldo" value="#{cxcPend.aditionalProperties['saldoCxc']}" style="text-align:right;"/>
+ 						</p:column>
+ 						<p:column>
+ 							<f:facet name="header">
+ 								Seleccionar Todos 
+ 								<p:selectBooleanCheckbox id="selCheckHeader" value="#{registroCobroDatamanager.selCxc}">
+ 									<p:ajax listener="#{registrarCobroController.seleccionarTodos()}" process=":frmRegCobro:pnlDataCobros" update=":frmRegCobro:pnlDataCobros :frmRegCobro:pnlTotales"/>
+ 								</p:selectBooleanCheckbox>
+ 							</f:facet>
+ 							<p:selectBooleanCheckbox value="#{cxcPend.aditionalProperties['seleccionado']}" >
+ 								<p:ajax listener="#{registrarCobroController.selectedRegCxc(cxcPend)}" update=":frmRegCobro:dataCxc:txtValor  :frmRegCobro:dataCxc:txtSaldo :frmRegCobro:pnlTotales"/>
+ 							</p:selectBooleanCheckbox>
+ 						</p:column>				
+      				</p:dataTable>
+      			</h:panelGroup>
+      		</p:fieldset>
+      		<p:fieldset legend="#{msg['lbl_total']}">
+      			<h:panelGroup id="pnlTotales">
+      				<h:panelGrid columns="3">
+	      				<p:outputLabel value="#{msg['lbl_valtot_cobro']}:" for="txtValTot"/>
+	   					<p:inputText id="txtValTot" value="#{registroCobroDatamanager.total}" disabled="true"/>
+	   					<p:message for="txtValTot"/>
+	   				</h:panelGrid>
+      			</h:panelGroup>
+      		</p:fieldset>
+      		<h:panelGroup layout="block">
+				<p:commandButton value="#{msg['btn_guardar']}" 
+					icon="ui-icon-disk" action="#{registrarCobroController.guardar()}"/>
+				<p:commandButton value="#{msg['btn_cancelar']}"
+					icon="ui-icon-close"/> 
+			</h:panelGroup>
+      	</p:panel>
+      </ui:define>
+</ui:composition>

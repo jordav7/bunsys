@@ -1,0 +1,178 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                template="/WEB-INF/templates/template.xhtml">
+    <ui:param name="idForm" value="frmUsuarios"/>
+    <ui:param name="controller" value="#{usuariosController}"/>
+    <ui:define name="contentBody">
+        <p:panel header="#{msg.lbl_usuario}">
+            <p:fieldset legend="#{msg.lbl_busqueda}" id="pnlUsuario">
+                <h:panelGroup layout="block">
+                    <h:panelGrid columns="3">
+                        <p:outputLabel for="txtNombreUsuario" value="#{msg.lbl_usuario}:"/>
+                        <p:inputText value="#{usuariosDatamanager.usuarioSearch.usuario}" id="txtNombreUsuario" onkeyup="bunsys.toUppercase(event, this);"/>
+                        <p:message for="txtNombreUsuario" />
+                        
+                        <p:outputLabel for="txtIdentificacion" value="#{msg.lbl_identificacion}:"/>
+                        <p:inputText value="#{usuariosDatamanager.usuarioSearch.tsyspersona.identificacion}" id="txtIdentificacion" >
+                        	<pe:keyFilter for="txtIdentificacion" mask="pint"/>
+                        </p:inputText>
+                        <p:message for="txtIdentificacion" />
+                        
+                        <p:outputLabel for="txtNombrePersona" value="#{msg.lbl_nombre_persona}:"/>
+                        <p:inputText value="#{usuariosDatamanager.usuarioSearch.tsyspersona.nombres}" id="txtNombrePersona" onkeyup="bunsys.toUppercase(event, this);" style="width: 350px;"/>
+                        <p:message for="txtNombrePersona" />
+                        
+                        <p:outputLabel for="txtApellidoPersona" value="#{msg.lbl_apellido_persona}:"/>
+                        <p:inputText value="#{usuariosDatamanager.usuarioSearch.tsyspersona.apellidos}" id="txtApellidoPersona" onkeyup="bunsys.toUppercase(event, this);" style="width: 350px;"/>
+                        <p:message for="txtApellidoPersona" />
+                    </h:panelGrid>
+                </h:panelGroup>
+                <h:panelGroup layout="block">
+                    <p:commandButton icon="ui-icon-search" 
+                    				 value="#{msg.btn_buscar}" 
+                    				 action="#{usuariosController.buscar}"
+                    				 update=":frmUsuarios:pnlDataUsuarios" process=":frmUsuarios:pnlUsuario"/>
+                    <p:commandButton icon="ui-icon-plusthick" 
+                                     action="#{usuariosController.crear}"
+                                     immediate="true"
+                                     update=":frmGuardarUsuarios:pnlUsuario"
+                                     oncomplete="PF('dialogUsuario').show();"
+                                     value="#{msg.btn_crear}"/>
+                </h:panelGroup>
+            </p:fieldset>
+            <p:fieldset legend="#{msg.lbl_usuario}" id="pnlDataUsuarios">
+            	<p:dataTable value="#{usuariosDatamanager.usuariosColl}" var="usuario" scrollable="true" scrollWidth="900" style="min-width: 200px; width: auto;">
+            		<p:column headerText="#{msg.lbl_usuario}">
+            			<h:outputText value="#{usuario.usuario}" />
+            		</p:column>
+            		<p:column headerText="#{msg.lbl_identificacion}">
+            			<h:outputText value="#{usuario.tsyspersona.identificacion}" />
+            		</p:column>
+            		<p:column headerText="#{msg.lbl_nombre_persona}">
+            			<h:outputText value="#{usuario.tsyspersona.nombres}" />
+            		</p:column>
+            		<p:column headerText="#{msg.lbl_apellido_persona}">
+            			<h:outputText value="#{usuario.tsyspersona.apellidos}" />
+            		</p:column>
+            		<p:column headerText="#{msg.lbl_direccion}">
+            			<h:outputText value="#{usuario.tsyspersona.direccion}" />
+            		</p:column>
+            		<p:column headerText="#{msg.lbl_correo}">
+            			<h:outputText value="#{usuario.tsyspersona.correo}" />
+            		</p:column>
+            		<p:column headerText="#{msg.lbl_telefono_convencional}">
+            			<h:outputText value="#{usuario.tsyspersona.telefonoconvencional}" />
+            		</p:column>
+            		<p:column headerText="#{msg.lbl_telefono_trabajo}">
+            			<h:outputText value="#{usuario.tsyspersona.telefonotrabajo}" />
+            		</p:column>
+            		<p:column headerText="#{msg.lbl_telefono_celular}">
+            			<h:outputText value="#{usuario.tsyspersona.telefonocelular}" />
+            		</p:column>
+            		<p:column headerText="#{msg.lbl_correo}">
+            			<h:outputText value="#{usuario.tsyspersona.telefonocelular}" />
+            		</p:column>
+            		<p:column headerText="#{msg.lbl_estado}">
+            			<h:outputText value="#{usuario.tadmcatalogo.descripcion}" />
+            		</p:column>
+            		<p:column styleClass="bun-action">
+            			<p:commandButton icon="ui-icon-pencil" 
+            				title="#{msg['btn_editar']}" 
+            				action="#{usuariosController.editar}"
+            				oncomplete="PF('dialogUsuario').show();" 
+            				update=":frmGuardarUsuarios:pnlUsuario">
+            				<f:setPropertyActionListener target="#{usuariosDatamanager.usuario}" value="#{usuario}"/>
+            			</p:commandButton>
+            		</p:column>
+            		<p:column styleClass="bun-action">
+            			<p:commandButton icon="ui-icon-trash"
+            				update=":frmUsuarios:pnlDataUsuarios" 
+            				title="#{msg['btn_eliminar']}" 
+            				action="#{usuariosController.eliminar}">
+            				<f:setPropertyActionListener target="#{usuariosDatamanager.usuario}" value="#{usuario}"/>
+            				<p:confirm header="#{msg['lbl_confirmacion']}" message="#{msg['lbl_mensaje_alerta']}" icon="ui-icon-alert" />
+            			</p:commandButton>
+            		</p:column>
+            	</p:dataTable>
+            </p:fieldset>
+        </p:panel>
+    </ui:define>
+    <ui:define name="dialogArea">
+        <p:dialog closeOnEscape="true" resizable="false" appendTo="@(body)" modal="true" widgetVar="dialogUsuario">
+            <f:facet name="header">
+                <h:outputText value="#{msg['lbl_usuario']}" />
+            </f:facet>
+            <h:form id="frmGuardarUsuarios">
+            	<p:messages autoUpdate="true" globalOnly="true"/>
+                <h:panelGroup layout="block">
+                    <h:panelGrid columns="3" id="pnlUsuario">
+                        <p:outputLabel for="txtUsuario" value="#{msg['lbl_usuario']}:"/>
+                        <p:inputText id="txtUsuario" value="#{usuariosDatamanager.usuario.usuario}" required="true" onkeyup="bunsys.toUppercase(event, this);"/>
+                        <p:message for="txtUsuario"/>
+                        
+                        <p:outputLabel for="txtPassword" value="#{msg['lbl_password']}:"/>
+                        <p:password id="txtPassword" value="#{usuariosDatamanager.usuario.password}" match="txtRepeatPassword" redisplay="true" required="true"/>
+                        <p:message for="txtPassword"/>
+                        
+                        <p:outputLabel for="txtRepeatPassword" value="#{msg['lbl_repetir_password']}:"/>
+                        <p:password id="txtRepeatPassword" value="#{usuariosDatamanager.usuario.aditionalProperties['repeatpassword']}" redisplay="true" required="true"/>
+                        <p:message for="txtRepeatPassword"/>
+                        
+                        <p:outputLabel for="txtIdentificacion" value="#{msg['lbl_identificacion']}:"/>
+                        <p:inputText id="txtIdentificacion" value="#{usuariosDatamanager.usuario.tsyspersona.identificacion}" required="true">
+                        	<pe:keyFilter mask="pint" for="txtIdentificacion"/>
+                        </p:inputText>
+                        <p:message for="txtIdentificacion"/>
+                        
+                        <p:outputLabel for="txtNombrePersona" value="#{msg['lbl_nombre_persona']}:"/>
+                        <p:inputText id="txtNombrePersona" value="#{usuariosDatamanager.usuario.tsyspersona.nombres}" required="true" style="width: 250px;" onkeyup="bunsys.toUppercase(event, this);"/>
+                        <p:message for="txtNombrePersona"/>
+                        
+                        <p:outputLabel for="txtApellidoPersona" value="#{msg['lbl_apellido_persona']}:"/>
+                        <p:inputText id="txtApellidoPersona" value="#{usuariosDatamanager.usuario.tsyspersona.apellidos}" required="true" style="width: 250px;" onkeyup="bunsys.toUppercase(event, this);"/>
+                        <p:message for="txtApellidoPersona"/>
+                        
+                        <p:outputLabel for="txtDireccion" value="#{msg['lbl_direccion']}:"/>
+                        <p:inputText id="txtDireccion" value="#{usuariosDatamanager.usuario.tsyspersona.direccion}" style="width: 450px;" onkeyup="bunsys.toUppercase(event, this);"/>
+                        <p:message for="txtDireccion"/>
+                        
+                        <p:outputLabel for="txtEmail" value="#{msg['lbl_correo']}:"/>
+                        <p:inputText id="txtEmail" value="#{usuariosDatamanager.usuario.tsyspersona.correo}">
+                        	<pe:keyFilter mask="email" for="txtEmail"/>
+                        </p:inputText>
+                        <p:message for="txtEmail"/>
+                        
+                        <p:outputLabel for="txtTelefonoConv" value="#{msg['lbl_telefono_convencional']}:"/>
+                        <p:inputMask id="txtTelefonoConv" value="#{usuariosDatamanager.usuario.tsyspersona.telefonoconvencional}" mask="#{msg['pattern_telf']}" />
+                        <p:message for="txtTelefonoConv"/>
+                        
+                        <p:outputLabel for="txtTelefonoOficina" value="#{msg['lbl_telefono_convencional']}:"/>
+                        <p:inputMask id="txtTelefonoOficina" value="#{usuariosDatamanager.usuario.tsyspersona.telefonotrabajo}" mask="#{msg['pattern_telf']}"/>
+                        <p:message for="txtTelefonoOficina"/>
+                        
+                        <p:outputLabel for="txtTelefonoCelular" value="#{msg['lbl_telefono_convencional']}:"/>
+                        <p:inputMask id="txtTelefonoCelular" value="#{usuariosDatamanager.usuario.tsyspersona.telefonocelular}" mask="#{msg['pattern_telf_cel']}"/>
+                        <p:message for="txtTelefonoCelular"/>
+                    </h:panelGrid>
+                    
+                    <h:panelGroup layout="block">
+                    	<p:commandButton value="#{msg['btn_guardar']}"
+                    		icon="ui-icon-disk" 
+                    		process="@this :frmGuardarUsuarios:pnlUsuario"
+                    		update=":frmGuardarUsuarios:pnlUsuario :frmUsuarios:pnlDataUsuarios"
+                    		oncomplete="if(args.validationFailed){return false;} PF('dialogUsuario').hide();"
+                    		action="#{usuariosController.guardar()}"/>
+                    	<p:commandButton value="#{msg['btn_cancelar']}"
+                    		icon="ui-icon-close"
+                    		immediate="true"
+                    		actionListener="#{usuariosController.cerrar}"/>
+                    </h:panelGroup>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+    </ui:define>
+</ui:composition>

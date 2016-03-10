@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+     
+    <h:head>
+        <title>#{msg.tlt_clientes}</title>
+        <style type="text/css">
+            .ui-widget {
+                font-size: 90%;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <h:form id="formCliente">
+        	<p:panel style="width:100%; heigth:100%">
+	            <p:dataTable var="row" value="#{clienteLovController.clientes}" style="height:100%">
+	                <p:column headerText="#{msg.lbl_codigo}">
+	                    <h:outputText value="#{row.pk.codigocliente}" />
+	                </p:column>
+	                <p:column headerText="#{msg.lbl_contacto}">
+	                    <h:outputText value="#{row.tsyspersona.contacto}" />
+	                </p:column>
+	                <p:column headerText="#{msg.lbl_correo}">
+	                    <h:outputText value="#{row.tsyspersona.correo}" />
+	                </p:column>
+	                <p:column headerText="#{msg.lbl_direccion}">
+	                    <h:outputText value="#{row.tsyspersona.direccion}" />
+	                </p:column>
+	                <p:column headerText="#{msg.lbl_celular}">
+	                    <h:outputText value="#{row.tsyspersona.telefonocelular}" />
+	                </p:column>
+	                <p:column headerText="#{msg.lbl_seleccione}">
+	                    <p:commandButton icon="ui-icon-search" actionListener="#{clienteLovController.selectObjwctFromDialog(row)}" />
+	                </p:column>
+	            </p:dataTable>
+            </p:panel>
+        </h:form>
+ </h:body>
+     
+</html>

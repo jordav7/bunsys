@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+     
+    <h:head>
+    	<h:outputScript library="js" name="jquery.layout-latest.js" />
+		<h:outputStylesheet library="css" name="layout-default-latest.css" />
+		<h:outputStylesheet library="css" name="bunsys.css"/>
+        <title>#{msg.tlt_productos}</title>
+        <style type="text/css">
+            .ui-widget {
+                font-size: 90%;
+            }
+        </style>
+    </h:head>
+     
+    <h:body>
+     
+        <h:form id="formProducto">
+        	<p:panel style="height:300px;width:100%">
+	            <p:dataTable var="row" value="#{productoLovController.productos}" style="height:100%">
+	                <p:column headerText="#{msg.lbl_codigo}">
+	                    <h:outputText value="#{row.pk.codigoproductos}" />
+	                </p:column>
+	                <p:column headerText="#{msg.lbl_producto}">
+	                    <h:outputText value="#{row.nombre}" />
+	                </p:column>
+	               <p:column headerText="#{msg.lbl_ice}">
+	                    <h:outputText value="#{row.tadmice.descripcion}" />
+	                </p:column>
+	                <p:column headerText="#{msg.lbl_iva}">
+	                    <h:outputText value="#{row.tadmiva.descripcion}" />
+	                </p:column>
+	                 <p:column headerText="#{msg.lbl_irbpnr}">
+	                    <h:outputText value="#{row.tadmirbpnr.descripcion}" />
+	                </p:column>
+	                 <p:column headerText="#{msg.lbl_tipo_producto}">
+	                    <h:outputText value="#{row.tadmtipoproducto.descripcion}" />
+	                </p:column>
+	                 <p:column headerText="#{msg.lbl_unidad_compra}">
+	                    <h:outputText value="#{row.tadmunidadcompra.descripcion}" />
+	                </p:column>
+	                <p:column headerText="#{msg.lbl_unidad_venta}">
+	                    <h:outputText value="#{row.tadmunidadventa.descripcion}" />
+	                </p:column>
+	                 <p:column headerText="#{msg.lbl_color}">
+	                    <h:outputText value="#{row.tadmcolor.descripcion}" />
+	                </p:column>
+	                 <p:column headerText="#{msg.lbl_estado}">
+	                    <h:outputText value="#{row.tadmestado.descripcion}" />
+	                </p:column>
+	                 <p:column headerText="#{msg.lbl_peso}">
+	                    <h:outputText value="#{row.peso}" />
+	                </p:column>
+	                 <p:column headerText="#{msg.lbl_precio_unitario}">
+	                    <h:outputText value="#{row.preciounitario}" />
+	                </p:column>
+	                <p:column headerText="#{msg.lbl_seleccione}">
+	                    <p:commandButton icon="ui-icon-search" actionListener="#{productoLovController.selectProductFromDialog(row)}" />
+	                </p:column>
+	            </p:dataTable>
+	          </p:panel>
+        </h:form>
+ </h:body>
+     
+</html>

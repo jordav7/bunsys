@@ -1,0 +1,10 @@
+<jboss-deployment-structure xmlns="urn:jboss:deployment-structure:1.2">
+	<ear-subdeployments-isolated>false</ear-subdeployments-isolated>
+    <deployment>
+        <dependencies>
+            <module name="ec.com.dlc.dao" meta-inf="import" export="true"/>
+            <module name="org.apache.commons.lang" export="true"/>
+            <module name="org.apache.httpcomponents" export="true" slot="4.3.1"/>
+        </dependencies>
+    </deployment>
+</jboss-deployment-structure>

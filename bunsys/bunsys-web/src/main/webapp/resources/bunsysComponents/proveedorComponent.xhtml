@@ -1,0 +1,145 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:comp="http://xmlns.jcp.org/jsf/composite"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+	<comp:interface>
+		<comp:attribute name="controller"/>
+		<comp:attribute name="oncompleteSave" default=""/>
+		<comp:attribute name="processSave"/>
+		<comp:attribute name="updateSave"/>
+		<comp:attribute name="oncompleteCancel" default=""/>
+		<comp:attribute name="updateCancel"/>
+	</comp:interface>
+	<comp:implementation>
+		<div id="#{cc.clientId}">
+			<h:panelGroup layout="block" id="pnlProveedor">
+				<p:fieldset legend="#{msg['lbl_caracteristicas_prov']}">
+					<h:panelGrid columns="6">
+						<p:outputLabel value="#{msg['lbl_codigo']}:" for="txtCodigo" style="display: block; width:150px;"/>
+						<p:inputText id="txtCodigo" style="display: block; width:190px;" value="#{cc.attrs.controller.proveedor.pk.codigoproveedor}" required="true"  disabled="#{cc.attrs.controller.edition}"/>
+						<p:message for="txtCodigo"/>
+					</h:panelGrid>
+					<h:panelGrid columns="3">
+						<p:outputLabel value="#{msg['lbl_nombre']}:" for="txtNombres" style="display: block; width:150px;"/>
+						<p:inputTextarea id="txtNombres" value="#{cc.attrs.controller.proveedor.tsyspersona.nombres}" style="display: block; width:545px; height:40px;"  counter="displayNombres" maxlength="180" counterTemplate="{0} caracteres restantes." onkeyup="bunsys.toUppercase(event, this)"/>
+						<p:message for="txtNombres"/>
+						<h:outputText id="spaceNombres" />
+						<h:outputText id="displayNombres" />
+					</h:panelGrid>
+					<h:panelGrid columns="3">	
+						<p:outputLabel value="#{msg['lbl_apellidos']}:" for="txtApellidos" style="display: block; width:150px;"/>
+						<p:inputTextarea id="txtApellidos" value="#{cc.attrs.controller.proveedor.tsyspersona.apellidos}" style="display: block; width:545px; height:40px;" counter="displayApellido" maxlength="180" counterTemplate="{0} caracteres restantes." onkeyup="bunsys.toUppercase(event, this)"/>
+						<p:message for="txtApellidos"/>
+						<h:outputText id="spaceApellidos" />
+						<h:outputText id="displayApellido" />
+					</h:panelGrid>
+					<h:panelGrid columns="6">
+						<p:outputLabel value="#{msg['lbl_tipo_id']}:" for="selTipoId" style="display: block; width:150px;"/>
+						<p:selectOneMenu id="selTipoId" style="display: block; width:190px;" value="#{cc.attrs.controller.proveedor.tsyspersona.tipoid}">
+							<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+							<f:selectItems value="#{cc.attrs.controller.tipoIdColl}" var="tipoId" itemLabel="#{tipoId.descripcion}" itemValue="#{tipoId.pk.codigocatalogo}" />
+						</p:selectOneMenu>
+						<p:message for="selTipoId"/>
+						
+						<p:outputLabel value="#{msg['lbl_identificacion']}:" for="txtId" style="display: block; width:150px;"/>
+						<p:inputText id="txtId" style="display: block; width:190px;" value="#{cc.attrs.controller.proveedor.tsyspersona.identificacion}"/>
+						<p:message for="txtId"/>
+						
+						<p:outputLabel value="#{msg['lbl_grupo_prov']}:" for="selGrupoProv" style="display: block; width:150px;"/>
+						<p:selectOneMenu id="selGrupoProv" style="display: block; width:190px;" value="#{cc.attrs.controller.proveedor.grupoproveedor}">
+								<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+								<f:selectItems value="#{cc.attrs.controller.grupoProvColl}" var="grupoProv" itemLabel="#{grupoProv.descripcion}" itemValue="#{grupoProv.pk.codigocatalogo}" />
+						</p:selectOneMenu>
+						<p:message for="selGrupoProv"/>
+					</h:panelGrid>
+					</p:fieldset>
+					<p:fieldset legend="#{msg['lbl_localizacion']}">
+					<h:panelGrid columns="3">
+						<p:outputLabel value="#{msg['lbl_direccion']}:" for="txtDireccion" style="display: block; width:150px;"/>
+						<p:inputTextarea id="txtDireccion" value="#{cc.attrs.controller.proveedor.tsyspersona.direccion}" style="display: block; width:545px; height:40px;" counter="displayDireccion" maxlength="230" counterTemplate="{0} caracteres restantes." onkeyup="bunsys.toUppercase(event, this)"/>
+						<p:message for="txtDireccion"/>
+						<h:outputText id="spaceDireccion" />
+						<h:outputText id="displayDireccion" />
+					</h:panelGrid>
+					<h:panelGrid columns="6">
+						<p:outputLabel value="#{msg['lbl_telefono_trab']}:" for="txtTelefono" style="display: block; width:150px;"/>
+						<p:inputMask id="txtTelefono" style="display: block; width:190px;" value="#{cc.attrs.controller.proveedor.tsyspersona.telefonotrabajo}" mask="#{msg['pattern_telf']}"/>
+						<p:message for="txtTelefono"/>
+						
+						<p:outputLabel value="#{msg['lbl_extension']}:" for="txtExtension" style="display: block; width:150px;"/>
+						<p:inputText id="txtExtension" style="display: block; width:190px;" value="#{cc.attrs.controller.proveedor.tsyspersona.extension}">
+							<pe:keyFilter for="txtExtension" mask="pint"/>
+						</p:inputText>
+						<p:message for="txtExtension"/>
+						
+						<p:outputLabel value="#{msg['lbl_telefono_cel']}:" for="txtCelular" style="display: block; width:150px;"/>
+						<p:inputMask id="txtCelular" style="display: block; width:190px;" value="#{cc.attrs.controller.proveedor.tsyspersona.telefonocelular}" mask="#{msg['pattern_telf_cel']}"/>
+						<p:message for="txtCelular"/>
+						
+						<p:outputLabel value="#{msg['lbl_correo']}:" for="txtCorreo" style="display: block; width:150px;"/>
+						<p:inputText id="txtCorreo" style="display: block; width:190px;" value="#{cc.attrs.controller.proveedor.tsyspersona.correo}"/>
+						<p:message for="txtCorreo"/>
+					</h:panelGrid>
+					<h:panelGrid columns="3">
+						<p:outputLabel value="#{msg['lbl_contacto']}:" for="txtContacto" style="display: block; width:150px;"/>
+						<p:inputText id="txtContacto" style="display: block; width:190px; height:40px;" value="#{cc.attrs.controller.proveedor.tsyspersona.contacto}"/>
+						<p:message for="txtContacto"/>
+					</h:panelGrid>
+				</p:fieldset>
+				<p:fieldset legend="#{msg['lbl_tipo_contribuyente']}">
+					<h:panelGrid columns="3">
+						<p:outputLabel value="#{msg['lbl_obs']}:" for="txtObs" style="display: block; width:150px;"/>
+						<p:inputTextarea id="txtObs" value="#{cc.attrs.controller.proveedor.tsyspersona.observacion}" style="display: block; width:542px; height:75px;" rows="10" counter="displayObs" maxlength="180" counterTemplate="{0} caracteres restantes." onkeyup="bunsys.toUppercase(event, this)"/>
+						<p:message for="txtObs"/>
+						<h:outputText id="spaceObs" />
+						<h:outputText id="displayObs" />
+					</h:panelGrid>
+					<h:panelGrid columns="3">
+						<p:outputLabel value="#{msg['lbl_direccion_est']}:" for="txtDirEst" style="display: block; width:150px;"/>
+						<p:inputTextarea id="txtDirEst" value="#{cc.attrs.controller.proveedor.direccionestablecimiento}" style="display: block; width:542px; height:75px;" rows="10" counter="displayDirEst" maxlength="180" counterTemplate="{0} caracteres restantes." onkeyup="bunsys.toUppercase(event, this)"/>
+						<p:message for="txtDirEst"/>
+						<h:outputText id="spaceDirEst" />
+						<h:outputText id="displayDirEst" />
+					</h:panelGrid>
+					<h:panelGrid columns="6">
+						<p:outputLabel value="#{msg['lbl_contribuyente_sri']}:" for="rbtnConrSri" style="display: block; width:150px;"/>
+						<p:selectOneRadio id="rbtnConrSri" value="#{cc.attrs.controller.proveedor.contribuyentesri}">
+							<f:selectItems value="#{cc.attrs.controller.contribuyenteColl}" var="contribuyenteSri" itemLabel="#{contribuyenteSri.descripcion}" itemValue="#{contribuyenteSri.pk.codigocatalogo}" />
+						</p:selectOneRadio>
+						<p:message for="rbtnConrSri"/>
+
+						<p:outputLabel value="#{msg['lbl_tipo_doc']}:" for="selTipoDoc" style="display: block; width:150px;"/>
+						<p:selectOneMenu id="selTipoDoc" style="display: block; width:190px;" value="#{cc.attrs.controller.proveedor.tipodocumento}">
+							<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+							<f:selectItems value="#{cc.attrs.controller.tipoDocColl}" var="tipoDoc" itemLabel="#{tipoDoc.descripcion}" itemValue="#{tipoDoc.pk.codigoparamsri}" />
+						</p:selectOneMenu>
+						<p:message for="selTipoDoc"/>
+					
+						<p:outputLabel value="#{msg['lbl_estado']}:" for="selEstadoProv" style="display: block; width:150px;"/>
+						<p:selectOneMenu id="selEstadoProv" style="display: block; width:190px;" value="#{cc.attrs.controller.proveedor.tsyspersona.estado}">
+							<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+							<f:selectItems value="#{cc.attrs.controller.estadoColl}" var="estado" itemLabel="#{estado.descripcion}" itemValue="#{estado.pk.codigocatalogo}" />
+						</p:selectOneMenu>
+						<p:message for="selEstadoProv"/>
+					</h:panelGrid>
+					
+				</p:fieldset>
+				<h:panelGroup layout="block">
+					<p:commandButton value="#{msg['btn_guardar']}" 
+						action="#{cc.attrs.controller.guardarCambios}"
+						oncomplete="#{cc.attrs.oncompleteSave}" 
+						update="@this pnlProveedor #{cc.attrs.updateSave}" 
+						process="@this pnlProveedor #{cc.attrs.processSave}"/>
+					<p:commandButton value="#{msg['btn_cancelar']}" 
+						action="#{cc.attrs.controller.cancelar}" 
+						oncomplete="#{cc.attrs.oncompleteCancel}"
+						update="@this #{cc.attrs.updateCancel}" 
+						immediate="true"/>
+				</h:panelGroup>
+			</h:panelGroup>
+		</div>
+	</comp:implementation>
+</ui:composition>

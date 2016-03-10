@@ -1,0 +1,30 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      template="/WEB-INF/templates/template.xhtml">
+      <ui:param name="idForm" value="frmSecuencias" />
+      <ui:param name="controller" value="#{secuenciaController}" />
+      <ui:define name="contentBody">
+			<p:panel id="pnlDirectorio" header="#{msg.lbl_secuencias_comp}">
+				<p:fieldset legend="#{msg.lbl_secuencia}">
+					<h:panelGroup id="pnlDataSecuencias" layout="block">
+						<ui:repeat var="secuencia" varStatus="status" value="#{secuenciaDatamanager.secuenciasColl}" >
+							<h:panelGrid columns="3" cellspacing="0">
+								<p:outputLabel for="txtSecuencia" value="#{secuencia.descripcion}:" style="display: block; width: 150px;"/>
+								<p:inputText id="txtSecuencia" value="#{secuencia.valor}" required="true" style="width: 50px;text-align: right;" maxlength="10">
+									<pe:keyFilter mask="pint"/>
+								</p:inputText>
+								<p:message for="txtSecuencia"/>
+							</h:panelGrid>
+						</ui:repeat>
+						<h:panelGroup layout="block">
+							<p:commandButton icon="ui-icon-disk" process="pnlDataSecuencias" action="#{secuenciaController.guardar}" update="pnlDataSecuencias" value="#{msg.btn_guardar}"/>
+						</h:panelGroup>
+					</h:panelGroup>
+				</p:fieldset>
+			</p:panel>      
+      </ui:define>
+</ui:composition>

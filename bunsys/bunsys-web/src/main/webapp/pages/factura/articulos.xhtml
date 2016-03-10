@@ -1,0 +1,106 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions" 
+      xmlns:b="http://xmlns.jcp.org/jsf/composite/bunsysComponents"
+      template="/WEB-INF/templates/template.xhtml">
+      <ui:param name="idForm" value="frmArticulos" />
+      <ui:param name="controller" value="#{articuloController}" />
+      <ui:define name="contentBody">
+		  <p:panel header="#{msg['lbl_articulos']}">
+		  	<p:fieldset legend="#{msg['lbl_busqueda']}">
+		  		<h:panelGroup layout="block">
+		  			<h:panelGrid columns="3">
+		  				<p:outputLabel value="#{msg['lbl_codigo_principal']}:" for="txtCodigoPrincipal" style="display: block; width:150px;"/>
+		  				<p:inputText id="txtCodigoPrincipal" style="display: block; width:190px;" value="#{articuloDatamanager.articuloSearch.pk.codigoproductos}" onkeyup="bunsys.toUppercase(event, this)"/>
+		  				<p:message for="txtCodigoPrincipal"/>
+		  				
+		  				<p:outputLabel value="#{msg['lbl_codigo_auxiliar']}:" for="txtCodigoAuxiliar" style="display: block; width:150px;"/>
+		  				<p:inputText id="txtCodigoAuxiliar" style="display: block; width:190px;" value="#{articuloDatamanager.articuloSearch.codigoauxiliar}"/>
+		  				<p:message for="txtCodigoAuxiliar"/>
+		  				
+		  				<p:outputLabel value="#{msg['lbl_nombre_producto']}:" for="txtNombreProducto" style="display: block; width:150px;"/>
+		  				<p:inputText id="txtNombreProducto" style="display: block; width:190px;" value="#{articuloDatamanager.articuloSearch.nombre}" onkeyup="bunsys.toUppercase(event, this)"/>
+		  				<p:message for="txtNombreProducto"/>
+		  				
+		  				<p:outputLabel value="#{msg['lbl_color']}:" for="selColor" style="display: block; width:150px;"/>
+		  				<p:selectOneMenu id="selColor" value="#{articuloDatamanager.articuloSearch.color}" style="display: block; width:179px;">
+		  					<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+		  					<f:selectItems value="#{articuloDatamanager.colorCatalogoColl}" var="color" itemLabel="#{color.descripcion}" itemValue="#{color.pk.codigocatalogo}"/>
+		  				</p:selectOneMenu>
+		  				<p:message for="selColor"/>
+		  				
+		  				<p:outputLabel value="#{msg['lbl_estado']}:" for="selEstado" style="display: block; width:150px;"/>
+		  				<p:selectOneMenu id="selEstado" value="#{articuloDatamanager.articuloSearch.estado}" style="display: block; width:179px;">
+		  					<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+		  					<f:selectItems value="#{articuloDatamanager.estadoCatalogoColl}" var="estado" itemLabel="#{estado.descripcion}" itemValue="#{estado.pk.codigocatalogo}" />
+		  				</p:selectOneMenu>
+		  				<p:message for="selEstado"/>
+		  			</h:panelGrid>
+		  		</h:panelGroup>
+		  		<h:panelGroup layout="block" style="float:left">
+		  			<p:commandButton icon="ui-icon-search" value="#{msg['btn_buscar']}" action="#{articuloController.buscar()}" update="pnlDataArticulos"/>
+		  			<p:commandButton icon="ui-icon-plusthick" 
+		  				value="#{msg['btn_crear']}"
+		  				oncomplete="PF('dlgArticulo').show()" 
+		  				action="#{articuloController.crearArticulo()}" 
+		  				update=":frmCreacionArticulos:pnlArticulo">
+		  				
+		  				<f:setPropertyActionListener target="#{articuloDatamanager.articuloComponente.edition}" value="false"/>
+		  			</p:commandButton>
+		  		</h:panelGroup>
+		  	</p:fieldset>
+		  	<p:fieldset legend="#{msg['lbl_listado_articulos']}">
+		  		<h:panelGroup layout="block" id="pnlDataArticulos">
+		  			<p:dataTable value="#{articuloDatamanager.productoColl}" var="articulo">
+		  				<p:column headerText="#{msg['lbl_codigo_principal']}">
+		  					<h:outputText value="#{articulo.pk.codigoproductos}" />
+		  				</p:column>
+		  				<p:column headerText="#{msg['lbl_codigo_auxiliar']}">
+		  					<h:outputText value="#{articulo.codigoauxiliar}" />
+		  				</p:column>
+		  				<p:column headerText="#{msg['lbl_nombre_producto']}">
+		  					<h:outputText value="#{articulo.nombre}" />
+		  				</p:column>
+		  				<p:column headerText="#{msg['lbl_tipo_producto']}">
+		  					<h:outputText value="#{articulo.tadmtipoproducto.descripcion}" />
+		  				</p:column>
+		  				<p:column headerText="#{msg['lbl_precio']}">
+		  					<h:outputText value="#{articulo.preciounitario}" />
+		  				</p:column>
+		  				<p:column headerText="#{msg['lbl_estado']}">
+		  					<h:outputText value="#{articulo.tadmestado.descripcion}" />
+		  				</p:column>
+		  				<p:column styleClass="bun-action">
+		  					<p:commandButton icon="ui-icon-pencil" title="#{msg['btn_actualizar']}" oncomplete="PF('dlgArticulo').show();" update=":frmCreacionArticulos:pnlArticulo">
+		  						<f:setPropertyActionListener target="#{articuloDatamanager.articuloComponente.articulo}" value="#{articulo}"/>
+		  						<f:setPropertyActionListener target="#{articuloDatamanager.articuloComponente.edition}" value="true"/>
+		  					</p:commandButton>
+		  				</p:column>
+		  				<p:column styleClass="bun-action">
+		  					<p:commandButton icon="ui-icon-trash" title="#{msg['btn_eliminar']}" action="#{articuloController.eliminar(articulo.pk.codigoproductos)}" update=":frmArticulos:pnlDataArticulos"/>
+		  				</p:column>
+		  			</p:dataTable>
+		  		</h:panelGroup>
+		  	</p:fieldset>
+		  </p:panel>
+	  </ui:define>
+	  <ui:define name="dialogArea">
+	  	<p:dialog widgetVar="dlgArticulo" appendTo="@(body)" modal="true" resizable="false" closeOnEscape="true">
+	  		<f:facet name="header">
+	  			<h:outputText value="#{msg['lbl_articulos']}" />
+	  		</f:facet>
+			<h:form id="frmCreacionArticulos">
+				<b:articuloComponent id="pnlArticulo" 
+					controller="#{articuloDatamanager.articuloComponente}" 
+					processSave="@this" 
+					updateSave=":frmArticulos:pnlDataArticulos" 
+					oncompleteSave="buscar();PF('dlgArticulo').hide();"
+					oncompleteCancel="PF('dlgArticulo').hide();"/>
+				<p:remoteCommand name="buscar" update=":frmArticulos:pnlDataArticulos" action="#{articuloController.buscar}"/>
+			</h:form>	  		
+	  	</p:dialog>
+	  </ui:define>
+</ui:composition>

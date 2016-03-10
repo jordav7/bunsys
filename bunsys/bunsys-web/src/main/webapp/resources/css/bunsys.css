@@ -1,0 +1,24 @@
+@CHARSET "ISO-8859-1";
+
+#layoutPrincipal {
+	background-color: #FFFFFF;
+	height: 100%;
+	margin: 0 auto;
+	width: 100%;
+	max-width: 1000px;
+	min-width: 900px;
+}
+
+.bun-action{
+	width: 60px;
+}
+
+.bun-data-grid{
+	width: 100%;
+	padding: 0px;
+	margin: 0px;
+}
+
+.bun-uppercase{
+	text-transform: uppercase;
+}

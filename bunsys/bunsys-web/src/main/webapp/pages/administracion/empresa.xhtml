@@ -1,0 +1,127 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions" 
+      template="/WEB-INF/templates/template.xhtml">
+      <ui:param name="idForm" value="frmEmpresa" />
+	  <ui:param name="controller" value="#{companiaController}" />
+      <ui:define name="contentBody">
+		<p:panel header="Empresa">
+			<p:fieldset legend="#{msg['lbl_caracteristicas_comp']}">
+				<h:panelGroup layout="block">
+					<h:panelGrid columns="6">
+						<p:outputLabel value="#{msg['lbl_codigo_comp']}:" for="txtCod" style="display: block; width:150px;"/>
+						<p:inputText id="txtCod" value="#{companiaDatamanager.compania.pk.codigocompania}"/>
+						<p:message for="txtCod"/>
+					
+						<p:outputLabel value="#{msg['lbl_ruc_comp']}:" for="txtRuc" style="display: block; width:150px;"/>
+						<p:inputText id="txtRuc" value="#{companiaDatamanager.compania.ruc}" required="true" disabled="#{companiaDatamanager.compania.pk.codigocompania!=null}"/>
+						<p:message for="txtRuc"/>
+					</h:panelGrid>
+					<h:panelGrid columns="3">
+						<p:outputLabel value="#{msg['lbl_razon_comp']}:" for="txtRazon" style="display: block; width:150px;"/>
+						<p:inputTextarea id="txtRazon" value="#{companiaDatamanager.compania.razonsocial}" style="display: block; width:542px; height:50px;" disabled="#{companiaDatamanager.compania.pk.codigocompania!=null}"
+						  rows="10" counter="displayRazon" maxlength="250" counterTemplate="{0} caracteres restantes." onkeyup="bunsys.toUppercase(event, this)" required="true"/>
+						<p:message for="txtRazon"/>
+						<h:outputText id="space1" />
+						<h:outputText id="displayRazon" />
+					</h:panelGrid>
+					<h:panelGrid columns="3">
+						<p:outputLabel value="#{msg['lbl_nom_com_comp']}:" for="txtNombre" style="display: block; width:150px;"/>
+						<p:inputTextarea id="txtNombre" value="#{companiaDatamanager.compania.nombrecomercial}" style="display: block; width:542px; height:50px;" rows="10" counter="displayNombre" maxlength="250" counterTemplate="{0} caracteres restantes." onkeyup="bunsys.toUppercase(event, this)"/>
+						<p:message for="txtNombre"/>
+						<h:outputText id="space2" />
+						<h:outputText id="displayNombre" />
+					</h:panelGrid>
+					<h:panelGrid columns="3">	
+						<p:outputLabel value="#{msg['lbl_dir_comp']}:" for="txtDireccion" style="display: block; width:150px;"/>
+						<p:inputTextarea id="txtDireccion" value="#{companiaDatamanager.compania.direccionmatriz}" style="display: block; width:542px; height:50px;" rows="10" counter="displayDir" maxlength="250" counterTemplate="{0} caracteres restantes." onkeyup="bunsys.toUppercase(event, this)" required="true"/>
+						<p:message for="txtDireccion"/>
+						<h:outputText id="space3" />
+						<h:outputText id="displayDir" />
+					</h:panelGrid>
+					<h:panelGrid columns="3">	
+						<p:outputLabel value="#{msg['lbl_dir_est_comp']}:" for="txtDireccionEst" style="display: block; width:150px;"/>
+						<p:inputTextarea id="txtDireccionEst" value="#{companiaDatamanager.compania.direccionestablecimiento}" style="display: block; width:542px; height:50px;" rows="10" counter="displayEst" maxlength="250" counterTemplate="{0} caracteres restantes." onkeyup="bunsys.toUppercase(event, this)"/>
+						<p:message for="txtDireccionEst"/>
+						<h:outputText id="space4" />
+						<h:outputText id="displayEst" />
+					</h:panelGrid>
+					<h:panelGrid columns="6">
+						<p:outputLabel value="#{msg['lbl_telefono_comp']}:" for="txtTelf" style="display: block; width:150px;"/>
+						<p:inputMask id="txtTelf" value="#{companiaDatamanager.compania.telefono}" mask="#{msg['pattern_telf']}"/>
+						<p:message for="txtTelf"/>
+						
+						<p:outputLabel value="#{msg['lbl_correo']}:" for="txtCorreo" style="display: block; width:150px;"/>
+						<p:inputText id="txtCorreo" value="#{companiaDatamanager.compania.correo}"/>
+						<p:message for="txtCorreo"/>
+					</h:panelGrid>
+					
+					<h:panelGrid columns="3">
+						<p:outputLabel value="#{msg['lbl_logo_comp']}:" for="file" style="display: block; width:150px;"/>
+					    	<p:panelGrid columns="2">
+  					    	    <h:panelGroup layout="block" id="pnlLogo">
+							    	<p:graphicImage cache="false" value="#{companiaDatamanager.strContent}" height="150" width="125" title="logo"  />
+							    </h:panelGroup>
+							    <p:fileUpload id="file" 
+							    	sizeLimit="1048576" 
+							    	mode="advanced" 
+							    	uploadLabel="Subir"
+							    	cancelLabel="Cancelar"
+							    	allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+							    	fileUploadListener="#{companiaController.uploadLogo}" update="pnlLogo"
+							    	style="display: block; width:375px;"
+							    	auto="true"/>
+							</p:panelGrid>
+					</h:panelGrid>
+					
+					<h:panelGrid columns="6">	
+						<p:outputLabel value="#{msg['lbl_cod_est_comp']}:" for="txtCodEst" style="display: block; width:150px;"/>
+						<p:inputText id="txtCodEst" value="#{companiaDatamanager.compania.codigoestablecimiento}" maxlength="3" required="true">
+							<pe:keyFilter for="txtCodEst" mask="pint"/>
+						</p:inputText>
+						<p:message for="txtCodEst"/>
+						
+						<p:outputLabel value="#{msg['lbl_pto_emi_comp']}:" for="txtCodPtoEmi" style="display: block; width:150px;"/>
+						<p:inputText id="txtCodPtoEmi" value="#{companiaDatamanager.compania.codigopuntoemision}" maxlength="3" required="true">
+							<pe:keyFilter for="txtCodPtoEmi" mask="pint"/>
+						</p:inputText>
+						<p:message for="txtCodPtoEmi"/>
+						
+						<p:outputLabel value="#{msg['lbl_num_res_comp']}:" for="txtResolucion" style="display: block; width:150px;"/>
+						<p:inputText id="txtResolucion" value="#{companiaDatamanager.compania.numeroresolucion}" maxlength="5">
+							<pe:keyFilter for="txtResolucion" mask="pint"/>
+						</p:inputText>
+						<p:message for="txtResolucion"/>
+						
+						<p:outputLabel value="#{msg['lbl_obl_cont_comp']}:" for="rbtnContabilidad" style="display: block; width:150px;"/>
+						<p:selectOneRadio id="rbtnContabilidad" value="#{companiaDatamanager.compania.obligacioncontabilidad}" >
+							<f:selectItem itemLabel="SI" itemValue="S"/>
+							<f:selectItem itemLabel="NO" itemValue="N"/>
+						</p:selectOneRadio>
+						<p:message for="rbtnContabilidad"/>
+						
+						<p:outputLabel value="Exportadora" for="txtTipoCompania" style="display: block; width:150px;"/>
+						<p:selectBooleanCheckbox id="txtTipoCompania" value="#{companiaDatamanager.exportadora}"/>
+						<p:message for="txtTipoCompania"/>
+						
+						<p:outputLabel value="Tipo Ambiente" for="selTipoAdm" style="display: block; width:150px;"/>
+						<p:selectOneMenu id="selTipoAdm" value="#{companiaDatamanager.compania.tipoambiente}" style="display: block; width:179px;">
+							<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+		  					<f:selectItems value="#{companiaDatamanager.tipoAmbienteColl}" var="tipoAdm" itemLabel="#{tipoAdm.descripcion}" itemValue="#{tipoAdm.pk.codigoparamsri}" />
+						</p:selectOneMenu>
+						
+					</h:panelGrid>
+				</h:panelGroup>
+				<h:panelGroup layout="block" style="float:left">
+		  			<p:commandButton icon="ui-icon-plusthick" 
+		  				value="#{msg['btn_actualizar']}"
+		  				action="#{companiaController.actualizarCompania()}" >
+		  			</p:commandButton>
+		  		</h:panelGroup>
+			</p:fieldset>
+		</p:panel>
+	  </ui:define>
+</ui:composition>
