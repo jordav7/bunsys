@@ -13,6 +13,10 @@ import javax.ejb.TransactionAttribute;
 import ec.com.dlc.bunsys.common.util.ResponseServiceDto;
 import ec.com.dlc.bunsys.entity.administracion.Tadmcatalogo;
 import ec.com.dlc.bunsys.entity.administracion.Tadmcompania;
+<<<<<<< HEAD
+=======
+import ec.com.dlc.bunsys.entity.administracion.Tadmconversionunidad;
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 import ec.com.dlc.bunsys.entity.administracion.Tadmparamsri;
 import ec.com.dlc.bunsys.entity.administracion.Tadmtipocatalogo;
 import ec.com.dlc.bunsys.entity.administracion.Tadmusuario;
@@ -193,11 +197,19 @@ public class BunsysServiceBean implements BunsysService {
 		parametrizacionService.eliminarCliente(personaPk,  estadoCodigo);
 	}
 
+<<<<<<< HEAD
 //	@Override
 //	public Tadmconversionunidad conversionArticulo(Integer unidadVentaCodigo,
 //			String unidadVenta) {
 //		return facturacionService.conversionArticulo(unidadVentaCodigo, unidadVenta);
 //	}
+=======
+	@Override
+	public Tadmconversionunidad conversionArticulo(Integer unidadVentaCodigo,
+			String unidadVenta) {
+		return facturacionService.conversionArticulo(unidadVentaCodigo, unidadVenta);
+	}
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 	
 	@Override
 	public void guardarProforma(Tfaccabproforma tfaccabproform,String accion,Collection<Tfacdetproforma>listaEliminar)

@@ -37,8 +37,70 @@
 											</p:inputText>
 											<p:message for="numeroproforma" display="icon"/>
 										</h:panelGrid>
+<<<<<<< HEAD
 										
 										
+=======
+										<h:panelGrid columns="6" style="border: collapse;">
+											
+											<p:outputLabel value="#{msg.lbl_distrito_vuelo}:" for="distritovuelo" style="display:block;width:140px;"/>
+											<p:selectOneMenu id="distritovuelo" value="#{facturaDataManager.tfaccabfactura.distritovuelo}" disabled="#{facturaDataManager.editable}"
+												  var="p" style="width:180px" panelStyle="width:180px" required="true">						
+												<f:selectItem itemLabel="Seleccione" itemValue="" />
+												<f:selectItems value="#{facturaDataManager.catalogodistritovuelo}" var="item" itemValue="#{item.pk.codigocatalogo}" itemLabel="#{item.descripcion}" />
+												<p:ajax update="codaerolinea" event="change" listener="#{facturaController.seleccionarAerolinea()}"
+		                    					process="@this"/>
+											</p:selectOneMenu>
+											<p:message for="distritovuelo" display="icon"/>
+											
+											<p:outputLabel value="#{msg.lbl_dae}:" for="referendum" style="display:block;width:130px;"/>
+											<h:panelGrid columns="2">
+												<p:inputText id="codaerolinea" value="#{facturaDataManager.tfaccabfactura.aditionalProperties['codaerolinea']}" style="width: 50px;" disabled="true"/>
+												<p:inputMask id="referendum" value="#{facturaDataManager.tfaccabfactura.referendo}" disabled="#{facturaDataManager.editable}"
+												 style="display:block;width:180px;" required="true" mask="9999-99-99999999" />
+											</h:panelGrid>
+											<p:message for="referendum" display="icon"/>
+											
+										</h:panelGrid>
+										
+										<h:panelGrid columns="6" >
+											<p:outputLabel value="#{msg.lbl_farm_code}:" for="farmcode" style="display:block;width:140px;"/>
+											<p:inputText id="farmcode" value="#{facturaDataManager.tfaccabfactura.farmcode}" style="display:block;width:180px;" disabled="#{facturaDataManager.editable}" 
+												required="true" onkeyup="bunsys.toUppercase(event, this)" />
+											<p:message for="farmcode" display="icon"/>
+											
+											<p:outputLabel value="#{msg.lbl_master_awb}:" for="masterawb" style="display:block;width:140px;"/>
+											<p:inputMask id="masterawb" value="#{facturaDataManager.tfaccabfactura.masterawb}" disabled="#{facturaDataManager.editable}"
+											 style="display:block;width:180px;" required="true" mask="999-9999-9999" />											
+											<p:message for="masterawb" display="icon"/>
+										</h:panelGrid>
+										
+										<h:panelGrid columns="6" >
+											<p:outputLabel value="#{msg.lbl_house_awb}:" for="houseawb" style="display:block;width:140px;"/>
+											<p:inputText id="houseawb" value="#{facturaDataManager.tfaccabfactura.houseawb}" disabled="#{facturaDataManager.editable}" 
+												style="display:block;width:180px;" required="true" onkeyup="bunsys.toUppercase(event, this)" />
+											<p:message for="houseawb" display="icon"/>
+										</h:panelGrid>
+										
+										<h:panelGrid columns="6" >
+											<p:outputLabel value="#{msg.lbl_carguera}:" for="carguera" style="display:block;width:140px;"/>
+											<p:selectOneMenu id="carguera" value="#{facturaDataManager.tfaccabfactura.carguera}" disabled="#{facturaDataManager.editable}"
+												  var="p" style="width:180px" panelStyle="width:180px" >						
+												<f:selectItem itemLabel="Seleccione" itemValue="" />
+												<f:selectItems value="#{facturaDataManager.catalogocarguera}" var="item" itemValue="#{item.pk.codigocatalogo}" itemLabel="#{item.descripcion}" />
+											</p:selectOneMenu>
+											<p:message for="carguera" display="icon"/>
+											
+											<p:outputLabel value="#{msg.lbl_aerolinea}:" for="txtaerolinea" style="display:block;width:140px;"/>
+											<p:selectOneMenu id="txtaerolinea" value="#{facturaDataManager.tfaccabfactura.airline}" disabled="#{facturaDataManager.editable}"
+												  var="p" style="width:180px" panelStyle="width:180px" required="true" >						
+												<f:selectItem itemLabel="Seleccione" itemValue="" />
+												<f:selectItems value="#{facturaDataManager.aerolineasCatalogo}" var="item" itemValue="#{item.pk.codigocatalogo}" itemLabel="#{item.descripcion}" />
+											</p:selectOneMenu>	
+											<p:message for="txtaerolinea" display="icon"/>
+											
+										</h:panelGrid>
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 										
 										<h:panelGrid columns="6" >
 											<p:outputLabel value="#{msg.lbl_fob}:" for="fob" style="display:block;width:140px;"/>
@@ -48,14 +110,43 @@
 												<f:selectItems value="#{facturaDataManager.catalogofob}" var="item" itemValue="#{item.pk.codigocatalogo}" itemLabel="#{item.descripcion}" />
 											</p:selectOneMenu>
 											<p:message for="fob" display="icon"/>
+<<<<<<< HEAD
 										</h:panelGrid>
 										
+=======
+											
+											<p:outputLabel value="#{msg.lbl_aeropuerto}:" for="dae" style="display:block;width:140px;" />
+											<p:inputText id="dae" value="#{facturaDataManager.tfaccabfactura.dae}" style="display:block;width:180px;" disabled="#{facturaDataManager.editable}"
+												 required="true" onkeyup="bunsys.toUppercase(event, this)" />
+											<p:message for="dae" display="icon"/>
+											
+										</h:panelGrid>
+										<h:panelGrid columns="6" >
+											<p:outputLabel value="#{msg.lbl_consignee}:" for="consigne" style="display:block;width:140px;"/>
+											<p:inputText id="consigne" value="#{facturaDataManager.tfaccabfactura.consignee}" disabled="#{facturaDataManager.editable}" 
+												style="display:block;width:180px;" required="false" onkeyup="bunsys.toUppercase(event, this)" />
+											<p:message for="consigne" display="icon"/>
+											
+											<p:outputLabel value="#{msg.lbl_fixed_price}:" for="fixedprice" style="display:block;width:142px;"/>
+											<p:inputText id="fixedprice" value="#{facturaDataManager.tfaccabfactura.fixedprice}" disabled="#{facturaDataManager.editable}"
+												 style="display:block;width:180px;" required="false" onkeyup="bunsys.toUppercase(event, this)" />
+											<p:message for="fixedprice" display="icon"/>	
+										</h:panelGrid>
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 										
 										<h:panelGrid columns="6">
 											<p:outputLabel for="fecha" value="#{msg.lbl_fecha_despacho}:" style="display:block;width:140px;"/>
 										    <p:calendar id="fecha" value="#{facturaDataManager.tfaccabfactura.fechafactura}" disabled="#{facturaDataManager.editable}"
 										    	  style="display:block;width:180px;" required="true" pattern="#{msg['pattern_date']}" mask="true"/>
 										    <p:message for="fecha" display="icon"/>
+<<<<<<< HEAD
+=======
+										    
+										    <p:outputLabel for="fechaVuelo" value="#{msg.lbl_fecha_vuelo}:" style="display:block;width:140px;"/>
+										    <p:calendar id="fechaVuelo" value="#{facturaDataManager.tfaccabfactura.fechaembarque}" disabled="#{facturaDataManager.editable}"
+										    	  style="display:block;width:180px;" required="true" pattern="#{msg['pattern_date']}" mask="true"/>
+										    <p:message for="fechaVuelo" display="icon"/>
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 										</h:panelGrid>
 										
 										<h:panelGrid columns="15" >
@@ -107,11 +198,33 @@
 					</h:panelGroup>	
 					<p:dataTable id="detalleFactura" value="#{facturaDataManager.tfaccabfactura.tfacdetfacturas}" var="item" scrollable="true"
 							 		style="width:auto;font: bold 100% monospace; " scrollWidth="900" scrollRows="5" >
+<<<<<<< HEAD
+=======
+								<p:column headerText="#{msg.lbl_pices_type}" style="width:100px" >
+									<p:selectOneMenu id="catpicestype" value="#{item.unidadventa}"  var="p" style="width:100px" panelStyle="width:100px" disabled="#{facturaDataManager.editable}">						
+										<p:ajax event="change"  listener="#{facturaController.cambioPicesType(item)}" 
+											process="@this catpicestype" update="picestype eqfullboxes stemsbunch totalbunch totalstems priceunit totalprice :frm:total :frm:sinimpuestos :frm:subtotal12  :frm:noiva :frm:exiva :frm:descuento :frm:iva12 :frm:pnlformapago"/>
+										<f:selectItems value="#{facturaDataManager.catalogoPicesType}" 
+											var="itemcat" itemValue="#{itemcat.pk.codigocatalogo}" itemLabel="#{itemcat.descripcion}"/>
+									</p:selectOneMenu>	
+								</p:column>
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 								<p:column headerText="#{msg.lbl_total_pice}" style="width:100px">
 									<pe:inputNumber id="picestype" value="#{item.cantidad}"  decimalPlaces="2" decimalSeparator="." thousandSeparator="" 
 										styleClass="b-input50" style="text-align:right" disabled="#{facturaDataManager.editable}">
 										<p:ajax event="change"  listener="#{facturaController.cambioCantidad(item)}" 
+<<<<<<< HEAD
 											process="@this picestype" update=" priceunit totalprice :frm:total :frm:sinimpuestos :frm:subtotal12  :frm:noiva :frm:exiva :frm:descuento :frm:iva12 :frm:pnlformapago"/>
+=======
+											process="@this picestype" update="picestype eqfullboxes stemsbunch totalbunch totalstems priceunit totalprice :frm:total :frm:sinimpuestos :frm:subtotal12  :frm:noiva :frm:exiva :frm:descuento :frm:iva12 :frm:pnlformapago"/>
+									</pe:inputNumber>
+								</p:column>
+								<p:column headerText="#{msg.lbl_eq_full_boxes}" style="width:100px">
+									<pe:inputNumber  id="eqfullboxes" value="#{item.eqfullboxes}" decimalPlaces="2" decimalSeparator="." thousandSeparator="" 
+										styleClass="b-input50" style="text-align:right" disabled="true">
+										<p:ajax event="change"  listener="#{facturaController.cambioeqfullboxes(item)}" 
+											process="@this eqfullboxes" update="picestype eqfullboxes stemsbunch totalbunch totalstems priceunit totalprice :frm:total :frm:sinimpuestos :frm:subtotal12  :frm:noiva :frm:exiva :frm:descuento :frm:iva12 :frm:pnlformapago"/>
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 									</pe:inputNumber>
 								</p:column>
 								<p:column headerText="#{msg.lbl_product_description}" style="width:100px">
@@ -120,18 +233,58 @@
 								<p:column headerText="#{msg.lbl_atpa}" style="width:100px">
 									<p:outputLabel value="#{item.atpa}"/>
 								</p:column>
+<<<<<<< HEAD
+=======
+								<p:column headerText="#{msg.lbl_andina}" style="width:100px">
+									<p:outputLabel value="#{item.nandina}"/>
+								</p:column>
+								<p:column headerText="#{msg.lbl_stems_bunch}" style="width:100px">
+									<pe:inputNumber  id="stemsbunch" value="#{item.stemsbunch}" decimalPlaces="2" decimalSeparator="." thousandSeparator="" disabled="#{facturaDataManager.editable}"
+										 styleClass="b-input50" style="text-align:right">
+										<p:ajax event="change"  listener="#{facturaController.cambioStemsBunch(item)}" 
+											process="@this stemsbunch" update="picestype eqfullboxes stemsbunch totalbunch totalstems priceunit totalprice :frm:total :frm:sinimpuestos :frm:subtotal12  :frm:noiva :frm:exiva :frm:descuento :frm:iva12 :frm:pnlformapago"/>
+									</pe:inputNumber>
+								</p:column>
+								<p:column headerText="#{msg.lbl_boxs}" style="width:100px">
+									<pe:inputNumber  id="cajas" value="#{item.cajas}"  decimalPlaces="2" decimalSeparator="." thousandSeparator=""  maxValue="9999"
+										styleClass="b-input50" style="text-align:right" disabled="#{facturaDataManager.editable}">
+										<p:ajax event="change"  listener="#{facturaController.cambiototalBunch(item)}" 
+											process="@this" update="picestype eqfullboxes stemsbunch totalbunch totalstems priceunit totalprice :frm:total :frm:sinimpuestos :frm:subtotal12  :frm:noiva :frm:exiva :frm:descuento :frm:iva12 :frm:pnlformapago"/>
+									</pe:inputNumber>
+								</p:column>
+								<p:column headerText="#{msg.lbl_total_bunch}" style="width:100px">
+									<pe:inputNumber  id="totalbunch" value="#{item.totalbunch}"  decimalPlaces="2" decimalSeparator="." thousandSeparator="" 
+										styleClass="b-input100" style="text-align:right" disabled="true">
+									</pe:inputNumber>
+								</p:column>
+								<p:column headerText="#{msg.lbl_total_stems}" style="width:100px">
+									<pe:inputNumber   id="totalstems" value="#{item.totalstems}"   decimalPlaces="2" decimalSeparator="." thousandSeparator="" 
+										styleClass="b-input100" style="text-align:right" disabled="true">
+										<p:ajax event="change"  listener="#{facturaController.cambiototalSteams(item)}" 
+											process="@this totalstems" update="picestype eqfullboxes stemsbunch totalbunch totalstems priceunit totalprice :frm:total :frm:sinimpuestos :frm:subtotal12  :frm:noiva :frm:exiva :frm:descuento :frm:iva12 :frm:pnlformapago"/>
+									</pe:inputNumber>
+								</p:column>
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 								<p:column headerText="#{msg.lbl_unit_price}" style="width:100px">
 									<pe:inputNumber  id="priceunit" value="#{item.preciounitario}"   decimalPlaces="2" decimalSeparator="." thousandSeparator="" 
 										styleClass="b-input50" style="text-align:right" disabled="#{facturaDataManager.editable}">
 										<p:ajax event="change"  listener="#{facturaController.cambiounitprice(item)}" 
+<<<<<<< HEAD
 											process="@this priceunit" update=" priceunit totalprice :frm:total :frm:sinimpuestos :frm:subtotal12  :frm:noiva :frm:exiva :frm:descuento :frm:iva12 :frm:pnlformapago"/>
+=======
+											process="@this priceunit" update="picestype eqfullboxes stemsbunch totalbunch totalstems priceunit totalprice :frm:total :frm:sinimpuestos :frm:subtotal12  :frm:noiva :frm:exiva :frm:descuento :frm:iva12 :frm:pnlformapago"/>
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 									</pe:inputNumber>
 								</p:column>
 								<p:column headerText="#{msg.lbl_total_price}" style="width:100px">
 									<pe:inputNumber   id="totalprice" value="#{item.total}"   decimalPlaces="2" decimalSeparator="." thousandSeparator="" disabled="true" 
 										styleClass="b-input100" style="text-align:right" >
 										<p:ajax event="change"  listener="#{facturaController.cambiototal(item)}" 
+<<<<<<< HEAD
 											process="@this totalprice" update=" priceunit totalprice :frm:total :frm:sinimpuestos :frm:subtotal12  :frm:noiva :frm:exiva :frm:descuento :frm:iva12 :frm:pnlformapago"/>
+=======
+											process="@this totalprice" update="picestype eqfullboxes stemsbunch totalbunch totalstems priceunit totalprice :frm:total :frm:sinimpuestos :frm:subtotal12  :frm:noiva :frm:exiva :frm:descuento :frm:iva12 :frm:pnlformapago"/>
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 									</pe:inputNumber>
 								</p:column>
 								<p:column style="width:30px">

@@ -31,7 +31,18 @@ public class Tfaccabfactura extends BaseEntity<TfaccabfacturaPK> {
 	private static final long serialVersionUID = 1L;
 
 	@Column
+<<<<<<< HEAD
 	private String codigocliente;
+=======
+	private String airline;
+
+	@Column
+	private Integer airlinecodigo;
+	
+	@Column
+	private String codigocliente;
+
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 	
 	@Column
 	private String estado;
@@ -42,6 +53,7 @@ public class Tfaccabfactura extends BaseEntity<TfaccabfacturaPK> {
 	@Column
 	@Temporal(TemporalType.DATE)
 	private Date fechafactura;
+<<<<<<< HEAD
 
 	@Column
 	private BigDecimal total;
@@ -91,6 +103,67 @@ public class Tfaccabfactura extends BaseEntity<TfaccabfacturaPK> {
 	@Column
 	private BigDecimal valorirbpnr;
 	
+=======
+	@Column
+	private String referendo;
+	@Column
+	private String farmcode;
+	@Column
+	@Temporal(TemporalType.DATE)
+	private Date fechaembarque;
+	@Column
+	private String masterawb;
+	@Column
+	private String houseawb;
+	@Column
+	private String dae;
+	@Column
+	private String consignee;
+	@Column
+	private String fixedprice;
+	@Column
+	private String freightforwarder;
+	@Column
+	private BigDecimal totalpices;
+	@Column
+	private BigDecimal totaleqfullboxes;
+	@Column
+	private BigDecimal totalbunch;
+	@Column
+	private BigDecimal totalstems;
+	@Column
+	private BigDecimal total;
+	@Column
+	private BigDecimal subtotalneto;
+	@Column
+	private BigDecimal subtotaliva;
+	@Column
+	private BigDecimal subtotalbase;
+	@Column
+	private BigDecimal subtotalnoiva;
+	@Column
+	private BigDecimal subtotalexcentoiva;
+	@Column
+	private BigDecimal porcentajedesc;
+	@Column
+	private BigDecimal totaldescuento;
+	@Column
+	private BigDecimal porcentajeice;
+	@Column
+	private BigDecimal valorice;
+	@Column
+	private BigDecimal porcentajeirbpnr;
+	@Column
+	private BigDecimal porcentajeiva;
+	@Column
+	private BigDecimal iva;
+	@Column
+	private String countrycode;
+	@Column
+	private String area;
+	@Column
+	private BigDecimal valorirbpnr;
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 	@Column
 	private String estadosri;
 
@@ -105,10 +178,23 @@ public class Tfaccabfactura extends BaseEntity<TfaccabfacturaPK> {
 	
 	@Column
 	private String fob ;
+<<<<<<< HEAD
 	
 	@Column
 	private Integer  fobcodigo ;
 	
+=======
+	@Column
+	private Integer  fobcodigo ;
+	@Column
+	private String  carguera;
+	@Column
+	private Integer  cargueracodigo;
+    @Column
+	private String distritovuelo ;
+    @Column
+	private Integer  distritovuelocodigo;
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
     
 	public Tfaccabfactura() {
 		this.pk = new TfaccabfacturaPK();
@@ -127,6 +213,17 @@ public class Tfaccabfactura extends BaseEntity<TfaccabfacturaPK> {
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumns({
+<<<<<<< HEAD
+=======
+		@JoinColumn(name="airline", referencedColumnName="codigocatalogo", insertable=false, updatable=false),
+		@JoinColumn(name="airlinecodigo", referencedColumnName="codigotipocatalogo", insertable=false, updatable=false),
+		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania", insertable=false, updatable=false)
+	})
+	private Tadmcatalogo tadmairline;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumns({
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 		@JoinColumn(name="codigocliente", referencedColumnName="codigocliente", insertable=false, updatable=false),
 		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania", insertable=false, updatable=false)
 	})
@@ -158,7 +255,42 @@ public class Tfaccabfactura extends BaseEntity<TfaccabfacturaPK> {
 		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania", insertable=false, updatable=false)
 	})
 	private Tadmcatalogo tadmfob;
+<<<<<<< HEAD
 
+=======
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumns({
+		@JoinColumn(name="carguera", referencedColumnName="codigocatalogo", insertable=false, updatable=false),
+		@JoinColumn(name="cargueracodigo", referencedColumnName="codigotipocatalogo", insertable=false, updatable=false),
+		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania", insertable=false, updatable=false)
+	})
+	private Tadmcatalogo tadmcarguera;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumns({
+		@JoinColumn(name="distritovuelo", referencedColumnName="codigocatalogo", insertable=false, updatable=false),
+		@JoinColumn(name="distritovuelocodigo", referencedColumnName="codigotipocatalogo", insertable=false, updatable=false),
+		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania", insertable=false, updatable=false)
+	})
+	private Tadmcatalogo tadmdistritovuelo;
+	
+	public String getAirline() {
+		return airline;
+	}
+
+	public void setAirline(String airline) {
+		this.airline = airline;
+	}
+
+	public Integer getAirlinecodigo() {
+		return airlinecodigo;
+	}
+
+	public void setAirlinecodigo(Integer airlinecodigo) {
+		this.airlinecodigo = airlinecodigo;
+	}
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 
 	public String getCodigocliente() {
 		return codigocliente;
@@ -192,6 +324,115 @@ public class Tfaccabfactura extends BaseEntity<TfaccabfacturaPK> {
 		this.fechafactura = fechafactura;
 	}
 
+<<<<<<< HEAD
+=======
+
+	public String getReferendo() {
+		return referendo;
+	}
+
+	public void setReferendo(String referendo) {
+		this.referendo = referendo;
+	}
+
+	public String getFarmcode() {
+		return farmcode;
+	}
+
+	public void setFarmcode(String farmcode) {
+		this.farmcode = farmcode;
+	}
+
+	public Date getFechaembarque() {
+		return fechaembarque;
+	}
+
+	public void setFechaembarque(Date fechaembarque) {
+		this.fechaembarque = fechaembarque;
+	}
+
+
+	public String getMasterawb() {
+		return masterawb;
+	}
+
+	public void setMasterawb(String masterawb) {
+		this.masterawb = masterawb;
+	}
+
+	public String getHouseawb() {
+		return houseawb;
+	}
+
+	public void setHouseawb(String houseawb) {
+		this.houseawb = houseawb;
+	}
+
+	public String getDae() {
+		return dae;
+	}
+
+	public void setDae(String dae) {
+		this.dae = dae;
+	}
+
+	public String getConsignee() {
+		return consignee;
+	}
+
+	public void setConsignee(String consignee) {
+		this.consignee = consignee;
+	}
+
+	public String getFixedprice() {
+		return fixedprice;
+	}
+
+	public void setFixedprice(String fixedprice) {
+		this.fixedprice = fixedprice;
+	}
+
+	public String getFreightforwarder() {
+		return freightforwarder;
+	}
+
+	public void setFreightforwarder(String freightforwarder) {
+		this.freightforwarder = freightforwarder;
+	}
+
+	public BigDecimal getTotalpices() {
+		return totalpices;
+	}
+
+	public void setTotalpices(BigDecimal totalpices) {
+		this.totalpices = totalpices;
+	}
+
+	public BigDecimal getTotaleqfullboxes() {
+		return totaleqfullboxes;
+	}
+
+	public void setTotaleqfullboxes(BigDecimal totaleqfullboxes) {
+		this.totaleqfullboxes = totaleqfullboxes;
+	}
+
+	public BigDecimal getTotalbunch() {
+		return totalbunch;
+	}
+
+	public void setTotalbunch(BigDecimal totalbunch) {
+		this.totalbunch = totalbunch;
+	}
+
+	public BigDecimal getTotalstems() {
+		return totalstems;
+	}
+
+	public void setTotalstems(BigDecimal totalstems) {
+		this.totalstems = totalstems;
+	}
+
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 	public BigDecimal getTotal() {
 		return total;
 	}
@@ -272,6 +513,10 @@ public class Tfaccabfactura extends BaseEntity<TfaccabfacturaPK> {
 		this.valorice = valorice;
 	}
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 	public BigDecimal getPorcentajeirbpnr() {
 		return porcentajeirbpnr;
 	}
@@ -320,6 +565,58 @@ public class Tfaccabfactura extends BaseEntity<TfaccabfacturaPK> {
 		this.valorirbpnr = valorirbpnr;
 	}
 
+<<<<<<< HEAD
+=======
+	public Tadmcatalogo getTadmestado() {
+		return tadmestado;
+	}
+
+	public void setTadmestado(Tadmcatalogo tadmestado) {
+		this.tadmestado = tadmestado;
+	}
+
+	public Tadmcatalogo getTadmairline() {
+		return tadmairline;
+	}
+
+	public void setTadmairline(Tadmcatalogo tadmairline) {
+		this.tadmairline = tadmairline;
+	}
+
+	public Collection<Tfacdetfactura> getTfacdetfacturas() {
+		return tfacdetfacturas;
+	}
+
+	public void setTfacdetfacturas(Collection<Tfacdetfactura> tfacdetfacturas) {
+		this.tfacdetfacturas = tfacdetfacturas;
+	}
+
+	public Tfaccliente getTfaccliente() {
+		return tfaccliente;
+	}
+
+	public void setTfaccliente(Tfaccliente tfaccliente) {
+		this.tfaccliente = tfaccliente;
+	}
+
+	public Collection<Tfacformapago> getTfacformapagos() {
+		return tfacformapagos;
+	}
+
+	public void setTfacformapagos(Collection<Tfacformapago> tfacformapagos) {
+		this.tfacformapagos = tfacformapagos;
+	}
+
+	public Collection<Tfaccuentasxcobrar> getTfaccuentasxcobrars() {
+		return tfaccuentasxcobrars;
+	}
+
+	public void setTfaccuentasxcobrars(
+			Collection<Tfaccuentasxcobrar> tfaccuentasxcobrars) {
+		this.tfaccuentasxcobrars = tfaccuentasxcobrars;
+	}
+
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 	public String getEstadosri() {
 		return estadosri;
 	}
@@ -336,6 +633,17 @@ public class Tfaccabfactura extends BaseEntity<TfaccabfacturaPK> {
 		this.estadosricodigo = estadosricodigo;
 	}
 
+<<<<<<< HEAD
+=======
+	public Tadmparamsri getTadmestadosri() {
+		return tadmestadosri;
+	}
+
+	public void setTadmestadosri(Tadmparamsri tadmestadosri) {
+		this.tadmestadosri = tadmestadosri;
+	}
+
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 	public String getNumeroproforma() {
 		return numeroproforma;
 	}
@@ -368,6 +676,7 @@ public class Tfaccabfactura extends BaseEntity<TfaccabfacturaPK> {
 		this.fobcodigo = fobcodigo;
 	}
 
+<<<<<<< HEAD
 	public Tadmcatalogo getTadmestado() {
 		return tadmestado;
 	}
@@ -423,6 +732,62 @@ public class Tfaccabfactura extends BaseEntity<TfaccabfacturaPK> {
 
 	public void setTadmfob(Tadmcatalogo tadmfob) {
 		this.tadmfob = tadmfob;
+=======
+	public String getCarguera() {
+		return carguera;
+	}
+
+	public void setCarguera(String carguera) {
+		this.carguera = carguera;
+	}
+
+	public Integer getCargueracodigo() {
+		return cargueracodigo;
+	}
+
+	public void setCargueracodigo(Integer cargueracodigo) {
+		this.cargueracodigo = cargueracodigo;
+	}
+
+	public String getDistritovuelo() {
+		return distritovuelo;
+	}
+
+	public void setDistritovuelo(String distritovuelo) {
+		this.distritovuelo = distritovuelo;
+	}
+
+	public Integer getDistritovuelocodigo() {
+		return distritovuelocodigo;
+	}
+
+	public void setDistritovuelocodigo(Integer distritovuelocodigo) {
+		this.distritovuelocodigo = distritovuelocodigo;
+	}
+
+	public Tadmcatalogo getTadmfob() {
+		return tadmfob;
+	}
+
+	public void setTadmfob(Tadmcatalogo tadmfob) {
+		this.tadmfob = tadmfob;
+	}
+
+	public Tadmcatalogo getTadmcarguera() {
+		return tadmcarguera;
+	}
+
+	public void setTadmcarguera(Tadmcatalogo tadmcarguera) {
+		this.tadmcarguera = tadmcarguera;
+	}
+
+	public Tadmcatalogo getTadmdistritovuelo() {
+		return tadmdistritovuelo;
+	}
+
+	public void setTadmdistritovuelo(Tadmcatalogo tadmdistritovuelo) {
+		this.tadmdistritovuelo = tadmdistritovuelo;
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 	}
 	
 }

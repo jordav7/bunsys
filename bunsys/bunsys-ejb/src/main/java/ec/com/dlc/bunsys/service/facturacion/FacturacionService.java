@@ -38,6 +38,10 @@ import ec.com.dlc.bunsys.common.util.ResponseServiceDto;
 import ec.com.dlc.bunsys.dao.facturacion.FacturaDao;
 import ec.com.dlc.bunsys.entity.administracion.Tadmcatalogo;
 import ec.com.dlc.bunsys.entity.administracion.Tadmcompania;
+<<<<<<< HEAD
+=======
+import ec.com.dlc.bunsys.entity.administracion.Tadmconversionunidad;
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 import ec.com.dlc.bunsys.entity.administracion.pk.TadmcatalogoPK;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccabdevolucione;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccabfactura;
@@ -53,6 +57,10 @@ import ec.com.dlc.bunsys.entity.seguridad.Tsyspersona;
 import ec.com.dlc.bunsys.schema.v110.factura.Factura;
 import ec.com.dlc.bunsys.schema.v110.factura.Factura.Detalles.Detalle.DetallesAdicionales;
 import ec.com.dlc.bunsys.schema.v110.factura.Factura.Detalles.Detalle.DetallesAdicionales.DetAdicional;
+<<<<<<< HEAD
+=======
+import ec.com.dlc.bunsys.schema.v110.notacredito.Impuesto;
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 import ec.com.dlc.bunsys.schema.v110.notacredito.InfoTributaria;
 import ec.com.dlc.bunsys.schema.v110.notacredito.NotaCredito;
 import ec.com.dlc.bunsys.schema.v110.notacredito.NotaCredito.Detalles;
@@ -113,6 +121,7 @@ public class FacturacionService {
 				tfaccabdevolucione, tsyspersona);
 	}
 
+<<<<<<< HEAD
 //	/**
 //	 * Busaca el tipo de conversion del producto selecionado
 //	 * 
@@ -124,6 +133,21 @@ public class FacturacionService {
 //			String unidadVenta) {
 //		return facturaDao.conversionArticulo(unidadVentaCodigo, unidadVenta);
 //	}
+=======
+	// -----------------------------------
+
+	/**
+	 * Busaca el tipo de conversion del producto selecionado
+	 * 
+	 * @param unidadVentaCodigo
+	 * @param unidadVenta
+	 * @return
+	 */
+	public Tadmconversionunidad conversionArticulo(Integer unidadVentaCodigo,
+			String unidadVenta) {
+		return facturaDao.conversionArticulo(unidadVentaCodigo, unidadVenta);
+	}
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 
 	/**
 	 * Actualiza o graba una proforma
@@ -190,11 +214,16 @@ public class FacturacionService {
 			// firma password y certificado
 			String rutafirma = ComprobantesUtil.getInstancia().obtenerRutaCertificado(tfaccabfactura.getPk().getCodigocompania());
 			xml = XmlSignFactory.getXmlDataSign().signXML(xml,new File(rutafirma),tfaccabfactura.getAditionalProperty("passwordToken").toString());
+<<<<<<< HEAD
 			if(xml==null){
 				throw new FacturacionException("PASSWORD INCORRECTO O LA RUTA DE LA FIRMA ES INCORRECTA");
 			}
 			// guarda en estado de contingencia, genera el archivo y lo firma
 			if (tfaccabfactura.getEstadosri().equals("CO")) {System.out.println(xml);
+=======
+			// guarda en estado de contingencia, genera el archivo y lo firma
+			if (tfaccabfactura.getEstadosri().equals("CO")) {
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 				responseService.setEstado(tfaccabfactura.getEstadosri());
 				responseService.setComprobante(xml);
 				generaComprobantesPDF(responseService, factura, tfaccabfactura,	cliente, tadmcompania);
@@ -208,7 +237,11 @@ public class FacturacionService {
 				System.out.println(respuestaSolicitud.getEstado());
 				responseService.setComprobante(xml);
 				if (respuestaSolicitud.getEstado().equals("RECIBIDA")) {// Constants.STATE_RECEIVED
+<<<<<<< HEAD
 					Thread.sleep(4000);
+=======
+					Thread.sleep(3000);
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 					AutorizacionComprobantesService autorizacionService = new AutorizacionComprobantesService(ComprobantesUtil.getInstancia().obtenerURLWSAutorizacion(tadmcompania.getTipoambiente(), tadmcompania.getPk().getCodigocompania()));
 					//respuesta de autorizacion
 					RespuestaComprobante respuestaComprobante = autorizacionService.getAutorizacionComprobantesPort().autorizacionComprobante(factura.getInfoTributaria().getClaveAcceso());
@@ -239,10 +272,17 @@ public class FacturacionService {
 								responseService.getMensajes().add(men.getMensaje());
 							}
 						}
+<<<<<<< HEAD
 						//responseService.setEstado("AUTORIZADO");
 						//responseService.setComprobante(xml);
 						//generaComprobantesPDF(responseService, factura,	tfaccabfactura, cliente, tadmcompania);
 						throw new FacturacionException("ERROR al consultar al servicio de autorizacion : "+mensajeerror);
+=======
+						responseService.setEstado("AUTORIZADO");
+						responseService.setComprobante(xml);
+						generaComprobantesPDF(responseService, factura,	tfaccabfactura, cliente, tadmcompania);
+						//throw new FacturacionException("ERROR al consultar al servicio de autorizacion : "+mensajeerror);
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 					}
 				} else {
 					responseService = new ResponseServiceDto();
@@ -251,9 +291,15 @@ public class FacturacionService {
 					String mensajeerror="";
 					for (Comprobante mensaje : respuestaSolicitud.getComprobantes().getComprobante()) {
 						for (ec.com.dlc.bunsys.webservices.sri.recepcion.Mensaje men : mensaje.getMensajes().getMensaje()) {
+<<<<<<< HEAD
 							System.out.println(men.getMensaje()+" "+men.getInformacionAdicional());
 							responseService.getMensajes().add(men.getMensaje()+" "+men.getInformacionAdicional());
 							mensajeerror=men.getMensaje()+" "+men.getInformacionAdicional();
+=======
+							System.out.println(men.getMensaje());
+							responseService.getMensajes().add(men.getMensaje());
+							mensajeerror=men.getMensaje();
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 						}
 					}
 					throw new FacturacionException("El comprobante ha sido devuelto : "+mensajeerror);
@@ -280,9 +326,12 @@ public class FacturacionService {
 			tfacformapagos = tfacformapagos(tfaccabfactura.getPk().getCodigocompania(), tfaccabfactura.getPk().getNumerofactura());
 			cuentasxcobrar = cuentasxcobrarxcompxnumfac(tfaccabfactura.getPk().getCodigocompania(), tfaccabfactura.getPk().getNumerofactura());
 		}
+<<<<<<< HEAD
 		if(tfaccabfactura.getTfacdetfacturas()==null || tfaccabfactura.getTfacdetfacturas().size()==0){
 			throw new FacturacionException("NO TIENE DETALLE LA FACTURA");
 		}
+=======
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 		for (Tfacdetfactura tfacdetfactura : tfaccabfactura.getTfacdetfacturas()) {
 			if (tfacdetfactura.getPk().getCodigodetfactura() != null) {
 				// tfacdetfactura.setTinvproducto(null);
@@ -354,7 +403,12 @@ public class FacturacionService {
 		factura.getInfoFactura().setGastosAduaneros(BigDecimal.ZERO);
 		factura.getInfoFactura().setGastosTransporteOtros(BigDecimal.ZERO);
 		// factura.getInfoFactura().setGuiaRemision("00000001");
+<<<<<<< HEAD
 		factura.getInfoFactura().setIdentificacionComprador(cliente.getTsyspersona().getIdentificacion());// "12554"
+=======
+		factura.getInfoFactura().setIdentificacionComprador(
+				cliente.getTsyspersona().getIdentificacion());// "12554"
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 		factura.getInfoFactura().setImporteTotal(tfaccabfactura.getTotal());// (new BigDecimal(1200.0)
 		factura.getInfoFactura().setIncoTermFactura(tfaccabfactura.getFob());// **"FOB"
 		factura.getInfoFactura().setIncoTermTotalSinImpuestos(tfaccabfactura.getFob());// "FOB"
@@ -386,13 +440,20 @@ public class FacturacionService {
 		factura.getInfoFactura().setTotalComprobantesReembolso(BigDecimal.ZERO);
 		factura.getInfoFactura().setTotalConImpuestos(new Factura.InfoFactura.TotalConImpuestos());
 		factura.getInfoFactura().getTotalConImpuestos().getTotalImpuesto().add(new Factura.InfoFactura.TotalConImpuestos.TotalImpuesto());
+<<<<<<< HEAD
 		factura.getInfoFactura().getTotalConImpuestos().getTotalImpuesto().get(0).setBaseImponible(BigDecimal.ZERO);// BigDecimal.ZERO// le cabie round(tfaccabfactura.getSubtotalneto())
 		factura.getInfoFactura().getTotalConImpuestos().getTotalImpuesto().get(0).setCodigo("2");
 		factura.getInfoFactura().getTotalConImpuestos().getTotalImpuesto().get(0).setCodigoPorcentaje("2");// Depende de la Tabla 18 o 19 (12 Denominación del comprobante de venta Numérico 2 Opcional)
+=======
+		factura.getInfoFactura().getTotalConImpuestos().getTotalImpuesto().get(0).setBaseImponible(round(tfaccabfactura.getSubtotalneto()));// BigDecimal.ZERO
+		factura.getInfoFactura().getTotalConImpuestos().getTotalImpuesto().get(0).setCodigo("1");
+		factura.getInfoFactura().getTotalConImpuestos().getTotalImpuesto().get(0).setCodigoPorcentaje("12");// (12 Denominación del comprobante de venta Numérico 2 Opcional)
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 		factura.getInfoFactura().getTotalConImpuestos().getTotalImpuesto().get(0).setDescuentoAdicional(BigDecimal.ZERO);
 		factura.getInfoFactura().getTotalConImpuestos().getTotalImpuesto().get(0).setTarifa(BigDecimal.ZERO);
 		factura.getInfoFactura().getTotalConImpuestos().getTotalImpuesto().get(0).setValor(BigDecimal.ZERO);
 		factura.getInfoFactura().getTotalConImpuestos().getTotalImpuesto().get(0).setValorDevolucionIva(BigDecimal.ZERO);
+<<<<<<< HEAD
 		factura.setInfoAdicional(new ec.com.dlc.bunsys.schema.v110.factura.Factura.InfoAdicional());
 		
 //		factura.getInfoAdicional().getCampoAdicional().add(new ec.com.dlc.bunsys.schema.v110.factura.Factura.InfoAdicional.CampoAdicional());
@@ -426,6 +487,8 @@ public class FacturacionService {
 //		factura.getInfoAdicional().getCampoAdicional().get(5).setValue(tfaccabfactura.getFixedprice());
 		
 		
+=======
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 		if (tfaccabfactura.getTotaldescuento() != null	&& tfaccabfactura.getTotaldescuento().compareTo(new BigDecimal(0)) > 0) {
 			factura.getInfoFactura().setTotalDescuento(round(tfaccabfactura.getTotaldescuento()));// BigDecimal.ZERO
 		} else {
@@ -448,7 +511,11 @@ public class FacturacionService {
 			Factura.Detalles.Detalle detalle = new Factura.Detalles.Detalle();
 			// factura.getDetalles().getDetalle().add(new
 			// Factura.Detalles.Detalle());
+<<<<<<< HEAD
 			detalle.setCantidad(round(detallefactura.getCantidad()));//setCantidad(round(detallefactura.getTotalstems()));//detallefactura.getCantidad()
+=======
+			detalle.setCantidad(round(detallefactura.getCantidad()));
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 			detalle.setCodigoAuxiliar(detallefactura.getTinvproducto().getCodigoauxiliar());// "ART1"
 			detalle.setCodigoPrincipal("PRINC1");// //detallefactura.getTinvproducto().getPk().toString()
 			detalle.setDescripcion(StringEscapeUtils.escapeJava(detallefactura.getTinvproducto().getNombre()));// "DESC"
@@ -464,12 +531,17 @@ public class FacturacionService {
 			if(cliente!=null && cliente.getTsyspersona()!=null && cliente.getTsyspersona().getCorreo()!=null && cliente.getTsyspersona().getCorreo().trim().length()>2){
 				detalle.getDetallesAdicionales().getDetAdicional().get(0).setValor(StringEscapeUtils.escapeJava(cliente.getTsyspersona().getCorreo()));// "dcruz@bupartech.com"
 			}else{
+<<<<<<< HEAD
 				detalle.getDetallesAdicionales().getDetAdicional().get(0).setValor("S/N");
+=======
+				detalle.getDetallesAdicionales().getDetAdicional().get(0).setValor("dcruz@bupartech.com");// "dcruz@bupartech.com"
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 			}
 			
 			detalle.setImpuestos(new Factura.Detalles.Detalle.Impuestos());
 			detalle.setPrecioTotalSinImpuesto(round(detallefactura.getTotal()));
 			detalle.setPrecioUnitario(round(detallefactura.getPreciounitario()));
+<<<<<<< HEAD
 			
 //			TadmcatalogoPK pk = new TadmcatalogoPK();
 //			pk.setCodigocatalogo(detallefactura.getUnidadventa());
@@ -478,6 +550,14 @@ public class FacturacionService {
 //			Tadmcatalogo unidad = facturaDao.findById(Tadmcatalogo.class, pk);
 //			detalle.setUnidadMedida(StringEscapeUtils.escapeJava(unidad	.getDescripcion()));// "UND"
 			
+=======
+			TadmcatalogoPK pk = new TadmcatalogoPK();
+			pk.setCodigocatalogo(detallefactura.getUnidadventa());
+			pk.setCodigocompania(detallefactura.getPk().getCodigocompania());
+			pk.setCodigotipocatalogo(detallefactura.getUnidadventacodigo());
+			Tadmcatalogo unidad = facturaDao.findById(Tadmcatalogo.class, pk);
+			detalle.setUnidadMedida(StringEscapeUtils.escapeJava(unidad	.getDescripcion()));// "UND"
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 			detalle.setImpuestos(new Factura.Detalles.Detalle.Impuestos());
 			detalle.getImpuestos().getImpuesto().add(new ec.com.dlc.bunsys.schema.v110.factura.Impuesto());
 
@@ -572,6 +652,7 @@ public class FacturacionService {
 			notaCredito.getPk().setCodigocompania(empresa.getPk().getCodigocompania());
 			Integer sec = secuenciaService.obtenerSecuenciaComp(notaCredito.getPk().getCodigocompania(), ConstantesSRI.COD_NOTA_CREDITO);
 			notaCredito.getPk().setNumerodevoluciones(ComprobantesUtil.getInstancia().getsecuencia(sec.toString(), 9));
+<<<<<<< HEAD
 			notaCredito.setClaveacceso(secuenciaService.generaClaveAcceso(notaCredito.getFechadevolucion(), empresa.getPk()
 					.getCodigocompania(), ConstantesSRI.COD_NOTA_CREDITO,notaCredito.getPk().getNumerodevoluciones()));
 			
@@ -579,6 +660,9 @@ public class FacturacionService {
 			if(detallesNotaCreditoColl==null || detallesNotaCreditoColl.size()==0){
 				throw new FacturacionException("NO TIENE DETALLE LA FACTURA");
 			}
+=======
+			facturaDao.saveOrUpdate(notaCredito);
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 			for (Tfacdetdevolucione tfacdetdevolucione : detallesNotaCreditoColl) {
 				tfacdetdevolucione.getPk().setCodigocompania(empresa.getPk().getCodigocompania());
 				tfacdetdevolucione.getPk().setNumerodevoluciones(notaCredito.getPk().getNumerodevoluciones());
@@ -597,6 +681,7 @@ public class FacturacionService {
 					numeroComprobante, sriNotaCredito);
 
 			String xmlNC = MarshallerFactory.getInstancia().marshal(sriNotaCredito);
+<<<<<<< HEAD
 			System.out.println("Passs.........."+notaCredito.getAditionalProperty("passwordToken"));
 			xmlNC = XmlSignFactory.getXmlDataSign().signXML(xmlNC,new File(ComprobantesUtil.getInstancia().obtenerRutaCertificado(empresa.getPk().getCodigocompania())),notaCredito.getAditionalProperty("passwordToken").toString());
 			System.out.println("xml....."+xmlNC);
@@ -608,6 +693,13 @@ public class FacturacionService {
 			RespuestaSolicitud respuestaSolicitud = recepcionComprobantesService.getRecepcionComprobantesPort().validarComprobante(xmlNC.getBytes());
 			System.out.println("clave de acceso... "+notaCredito.getClaveacceso());
 			System.out.println("respuesta.. "+respuestaSolicitud.getEstado());
+=======
+			xmlNC = XmlSignFactory.getXmlDataSign().signXML(
+					xmlNC,new File(ComprobantesUtil.getInstancia().obtenerRutaCertificado(empresa.getPk().getCodigocompania())),
+					notaCredito.getAditionalProperty("passwordToken").toString());
+			RecepcionComprobantesService recepcionComprobantesService = new RecepcionComprobantesService(ComprobantesUtil.getInstancia().obtenerURLWSRecep(empresa.getTipoambiente(), empresa.getPk().getCodigocompania()));
+			RespuestaSolicitud respuestaSolicitud = recepcionComprobantesService.getRecepcionComprobantesPort().validarComprobante(xmlNC.getBytes());
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 			if (respuestaSolicitud.getEstado().equals("RECIBIDA")) {//Constants.STATE_RECEIVED
 				Thread.sleep(3000);
 				AutorizacionComprobantesService autorizacionService = new AutorizacionComprobantesService(ComprobantesUtil.getInstancia().obtenerURLWSAutorizacion(empresa.getTipoambiente(), empresa.getPk().getCodigocompania()));
@@ -619,7 +711,11 @@ public class FacturacionService {
 						autorizacion.setComprobante(new StringBuilder("<![CDATA[").append(xmlNC).append("]]>").toString());
 						String finalXml =TransformXML.autorizacionToXML(autorizacion);// MarshallerFactory.getInstancia().marshal(autorizacion);
 						responseService = new ResponseServiceDto();
+<<<<<<< HEAD
 						responseService.setEstado(autorizacion.getEstado());System.out.println("Estado Autorizacion NC.."+autorizacion.getEstado());
+=======
+						responseService.setEstado(autorizacion.getEstado());
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 						responseService.setComprobante(finalXml);
 						completaDatosRetorno(responseService, autorizacion);
 						generaComprobantes(responseService, sriNotaCredito,	notaCredito, detallesNotaCreditoColl, empresa);
@@ -628,6 +724,7 @@ public class FacturacionService {
 				} else if (respuestaComprobante == null
 						|| respuestaComprobante.getAutorizaciones().getAutorizacion().isEmpty()) {
 					responseService = new ResponseServiceDto();
+<<<<<<< HEAD
 					//responseService.setEstado("NO ENVIADA");//Constants.STATE_NO_SUBMIT
 					//throw new FacturacionException("ERROR al consultar al servicio de autorizacion");
 				}
@@ -647,6 +744,15 @@ public class FacturacionService {
 					}
 				}
 				throw new FacturacionException("El comprobante ha sido devuelto : "+mensajeerror);
+=======
+					responseService.setEstado("NO ENVIADA");//Constants.STATE_NO_SUBMIT
+					throw new FacturacionException("ERROR al consultar al servicio de autorizacion");
+				}
+			} else {
+				responseService = new ResponseServiceDto();
+				responseService.setEstado(respuestaSolicitud.getEstado());
+				throw new FacturacionException("El comprobante ha sido devuelto");
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 			}
 			return responseService;
 		} catch (Throwable e) {
@@ -698,11 +804,16 @@ public class FacturacionService {
 		sriNotaCredito.getInfoNotaCredito().setTipoIdentificacionComprador(tipoIndentificacion.getValor());//notaCredito.getTfaccliente().getTsyspersona().getTipoid()
 		
 		sriNotaCredito.getInfoNotaCredito().setTotalSinImpuestos(round(notaCredito.getSubtotalneto()));
+<<<<<<< HEAD
 		sriNotaCredito.getInfoNotaCredito().setValorModificacion(notaCredito.getTotal());//BigDecimal.ZERO se cambio
+=======
+		sriNotaCredito.getInfoNotaCredito().setValorModificacion(BigDecimal.ZERO);
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 		sriNotaCredito.getInfoNotaCredito().setTotalConImpuestos(new TotalConImpuestos());
 		TotalImpuesto totalImpuestoIVA = new TotalImpuesto();
 		totalImpuestoIVA.setCodigo("2");
 		totalImpuestoIVA.setCodigoPorcentaje("7");
+<<<<<<< HEAD
 //		if(sriNotaCredito.getInfoNotaCredito()!=null && sriNotaCredito.getInfoNotaCredito().getTotalSinImpuestos()!=null){
 //			totalImpuestoIVA.setBaseImponible(round(sriNotaCredito.getInfoNotaCredito().getTotalSinImpuestos()));
 //		}else{
@@ -711,11 +822,26 @@ public class FacturacionService {
 		
 		totalImpuestoIVA.setValor(BigDecimal.ZERO);
 		sriNotaCredito.getInfoNotaCredito().getTotalConImpuestos().getTotalImpuesto().add(totalImpuestoIVA);
+=======
+		if(sriNotaCredito.getInfoNotaCredito()!=null && sriNotaCredito.getInfoNotaCredito().getTotalSinImpuestos()!=null){
+			totalImpuestoIVA.setBaseImponible(round(sriNotaCredito.getInfoNotaCredito().getTotalSinImpuestos()));
+		}else{
+			totalImpuestoIVA.setBaseImponible(BigDecimal.ZERO);
+		}
+		
+		totalImpuestoIVA.setValor(BigDecimal.ZERO);
+		sriNotaCredito.getInfoNotaCredito().getTotalConImpuestos()
+				.getTotalImpuesto().add(totalImpuestoIVA);
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 
 		sriNotaCredito.setDetalles(new Detalles());
 		for (Tfacdetdevolucione detdevolucione : detallesNotaCreditoColl) {
 			Detalle detalle = new Detalle();
+<<<<<<< HEAD
 			detalle.setCantidad(detdevolucione.getTotal());//detdevolucione.getCantidad()
+=======
+			detalle.setCantidad(detdevolucione.getCantidad());
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 			detalle.setCodigoAdicional(detdevolucione.getTinvproducto().getCodigoauxiliar());
 			detalle.setCodigoInterno(detdevolucione.getTinvproducto().getPk().getCodigoproductos());
 			detalle.setDescripcion(detdevolucione.getTinvproducto().getNombre());
@@ -728,12 +854,21 @@ public class FacturacionService {
 			//total del articulo - descuento     el total se obtiene diferente a detalle.getPrecioUnitario().multiply(detalle.getCantidad
 			detalle.setPrecioTotalSinImpuesto(round(detdevolucione.getTotal().subtract(detalle.getDescuento())));//detalle.getPrecioUnitario().multiply(detalle.getCantidad()).subtract(detalle.getDescuento())));
 			detalle.setImpuestos(new Impuestos());
+<<<<<<< HEAD
 //			Impuesto impuestoIVA = new Impuesto();
 //			impuestoIVA.setBaseImponible(round(detdevolucione.getTotal()));
 //			impuestoIVA.setValor(BigDecimal.ZERO);
 //			// impuestoIVA.setTarifa(new BigDecimal(12));
 //			impuestoIVA.setCodigo("2");
 //			impuestoIVA.setCodigoPorcentaje("7");
+=======
+			Impuesto impuestoIVA = new Impuesto();
+			impuestoIVA.setBaseImponible(round(detalle.getPrecioTotalSinImpuesto()));
+			impuestoIVA.setValor(BigDecimal.ZERO);
+			// impuestoIVA.setTarifa(new BigDecimal(12));
+			impuestoIVA.setCodigo("2");
+			impuestoIVA.setCodigoPorcentaje("7");
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 			sriNotaCredito.getDetalles().getDetalle().add(detalle);
 		}
 	}
@@ -819,12 +954,21 @@ public class FacturacionService {
 			param.put("total", notaCredito.getInfoNotaCredito()
 					.getTotalSinImpuestos());
 			param.put("numContribuyente", "");
+<<<<<<< HEAD
 //			param.put("master", devolucion.getMasterawb());
 //			param.put("house", devolucion.getHouseawb());
 //			param.put("airline", devolucion.getAirline());
 //			param.put("dae", devolucion.getReferendo());
 //			param.put("marcacion", devolucion.getConsignee());
 //			param.put("consignatario", devolucion.getFixedprice());
+=======
+			param.put("master", devolucion.getMasterawb());
+			param.put("house", devolucion.getHouseawb());
+			param.put("airline", devolucion.getAirline());
+			param.put("dae", devolucion.getReferendo());
+			param.put("marcacion", devolucion.getConsignee());
+			param.put("consignatario", devolucion.getFixedprice());
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 
 			// se procesa el archivo jasper
 			jasperPrint = JasperFillManager.fillReport(jasperReport, param,
@@ -844,7 +988,11 @@ public class FacturacionService {
 		Collection<Object[]> c = new ArrayList<Object[]>();
 		for (Tfacdetdevolucione detalleDevolucion : detalleDevolucionesColl) {
 			c.add(new Object[] { 
+<<<<<<< HEAD
 					detalleDevolucion.getTotal().toString(),//0
+=======
+					Integer.parseInt(detalleDevolucion.getCantidad().toString()),//0
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 					detalleDevolucion.getTinvproducto().getNombre(),//1
 					round(new BigDecimal(detalleDevolucion.getTinvproducto().getPreciounitario())),//2
 					round(detalleDevolucion.getTotal()),//3
@@ -884,7 +1032,11 @@ public class FacturacionService {
 		try {
 			// Genero xml y pdf
 			String rutaComprobante = new StringBuilder(File.separator).append(responseService.getEstado()).toString();
+<<<<<<< HEAD
 			//System.out.println("ESTADO..."+responseService.getEstado());
+=======
+			System.out.println("ESTADO..."+responseService.getEstado());
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 			Path dirComprobante = Paths.get(ComprobantesUtil.getInstancia()
 					.obtenerDirectorioFacturas(	tfaccabfactura.getPk().getCodigocompania())	+ rutaComprobante);
 			System.out.println(dirComprobante);
@@ -954,6 +1106,7 @@ public class FacturacionService {
           param.put("total", round(tfaccabfactura.getTotal()));
           //param.put("totalGravCero", new BigDecimal(0));
           param.put("numContribuyente", compania.getNombrecomercial());
+<<<<<<< HEAD
           
 //          param.put("master", tfaccabfactura.getMasterawb());
 //          param.put("house", tfaccabfactura.getHouseawb());
@@ -967,6 +1120,20 @@ public class FacturacionService {
 //          param.put("marcacion", tfaccabfactura.getConsignee());//marcacion
 //          param.put("consignatario", tfaccabfactura.getFixedprice());//consignatario
             //se procesa el archivo jasper
+=======
+          param.put("master", tfaccabfactura.getMasterawb());
+          param.put("house", tfaccabfactura.getHouseawb());
+          TadmcatalogoPK pk = new TadmcatalogoPK();
+		  pk.setCodigocatalogo(tfaccabfactura.getAirline());
+		  pk.setCodigocompania(tfaccabfactura.getPk().getCodigocompania());
+		  pk.setCodigotipocatalogo(tfaccabfactura.getAirlinecodigo());
+		  Tadmcatalogo aerolinea =facturaDao.findById(Tadmcatalogo.class,pk);
+          param.put("airline", aerolinea.getDescripcion());
+          param.put("dae", tfaccabfactura.getReferendo());
+          param.put("marcacion", tfaccabfactura.getConsignee());//marcacion
+          param.put("consignatario", tfaccabfactura.getFixedprice());//consignatario
+          //se procesa el archivo jasper
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
           jasperPrint = JasperFillManager.fillReport(jasperReport, param, this.createDatasourceDet(tfaccabfactura.getTfacdetfacturas()) );
           //se crea el archivo PDF
           JasperExportManager.exportReportToPdfFile(jasperPrint, dirComprobante.toAbsolutePath() + File.separator + factura.getInfoTributaria().getClaveAcceso() +".pdf");
@@ -982,13 +1149,22 @@ public class FacturacionService {
 		Collection<Object[]> c = new ArrayList<Object[]>();
 		for (Tfacdetfactura item : detalleList) {
 			c.add(new Object[] {
+<<<<<<< HEAD
 			item.getTotal().toString(),//0  detallefactura.getCantidad()
+=======
+			Integer.parseInt(item.getCantidad().toString()),//0
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 			item.getTinvproducto().getNombre(),//1
 			round(new BigDecimal(item.getTinvproducto().getPreciounitario())),//2
 			round(item.getTotal()),//3
 			item.getTinvproducto().getPk().getCodigoproductos(),//4
+<<<<<<< HEAD
 			item.getTinvproducto().getUnidadventa(),//5 unidad
 			round(item.getTotal())+""//6 cant
+=======
+			item.getUnidadventa(),//5 unidad
+			round(item.getTotalstems())+""//6 cant tallos
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 			});
 		}
 		JRDataSource dt = new JRArrayDataSource(c);
@@ -1023,10 +1199,13 @@ public class FacturacionService {
 				System.out.println("ARCHIVO NO EXISTE");
 			}
 			
+<<<<<<< HEAD
 //			AutorizacionComprobantesService autorizacionService = new AutorizacionComprobantesService(ComprobantesUtil.getInstancia().obtenerURLWSAutorizacion(tadmcompania.getTipoambiente(), tadmcompania.getPk().getCodigocompania()));
 //			//respuesta de autorizacion
 //			RespuestaComprobante respuestaComprobante = autorizacionService.getAutorizacionComprobantesPort().autorizacionComprobanteLote(codigoacceso);
 			
+=======
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 			devolucion.setEstadosri("FE");
 			facturaDao.update(devolucion);
 		}

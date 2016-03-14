@@ -70,7 +70,11 @@ public class TestPdf {
           //se procesa el archivo jasper
           jasperPrint = JasperFillManager.fillReport(jasperReport, param, this.createDatasourceDet() );
           //se crea el archivo PDF
+<<<<<<< HEAD
           JasperExportManager.exportReportToPdfFile( jasperPrint, "C:/Users/LuisH/Desktop/RESPALDO FACTURAEL/firmas/reporte.pdf");
+=======
+          JasperExportManager.exportReportToPdfFile( jasperPrint, "C:/Users/DAVID/Desktop/fe/reportes/reporte.pdf");
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
         }
         catch (JRException ex)
         {

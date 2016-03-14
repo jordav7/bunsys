@@ -11,6 +11,10 @@ import org.apache.commons.lang.StringUtils;
 
 import ec.com.dlc.bunsys.dao.general.GeneralDao;
 import ec.com.dlc.bunsys.entity.administracion.Tadmcatalogo;
+<<<<<<< HEAD
+=======
+import ec.com.dlc.bunsys.entity.administracion.Tadmconversionunidad;
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 import ec.com.dlc.bunsys.entity.administracion.Tadmparamsri;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccabdevolucione;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccabfactura;
@@ -348,6 +352,7 @@ public class FacturaDao extends GeneralDao {
 	}
 	
 	
+<<<<<<< HEAD
 //	public Tadmconversionunidad conversionArticulo(Integer unidadVentaCodigo, String unidadVenta)throws FacturacionException{
 //		try{
 //			System.out.println(unidadVentaCodigo+" ----- "+unidadVenta);
@@ -360,6 +365,20 @@ public class FacturaDao extends GeneralDao {
 //			throw new FacturacionException(e);
 //		}
 //	}
+=======
+	public Tadmconversionunidad conversionArticulo(Integer unidadVentaCodigo, String unidadVenta)throws FacturacionException{
+		try{
+			System.out.println(unidadVentaCodigo+" ----- "+unidadVenta);
+			Query query = entityManager.createQuery("SELECT o FROM Tadmconversionunidad o "+
+					" where o.unidadventa=:unidadventa and o.unidadventacodigo=:unidadventacodigo");
+			query.setParameter("unidadventacodigo", unidadVentaCodigo);
+			query.setParameter("unidadventa", unidadVenta);
+			return (Tadmconversionunidad)query.getResultList().get(0);
+		} catch (Exception e){
+			throw new FacturacionException(e);
+		}
+	}
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 	
 	@SuppressWarnings("unchecked")
 	public List<Tfaccabproforma> cabeceraProformas(String numeroproforma)throws FacturacionException{
@@ -367,6 +386,10 @@ public class FacturaDao extends GeneralDao {
 			StringBuilder sql = new StringBuilder("SELECT o FROM Tfaccabproforma o "
 												 + " LEFT JOIN FETCH o.tfaccliente cli"
 								                 + " LEFT JOIN FETCH cli.tsyspersona  "
+<<<<<<< HEAD
+=======
+								                 + " LEFT JOIN FETCH o.tadmairline"
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 								                 + " where o.pk.numeroproforma not in (SELECT f.numeroproforma From Tfaccabfactura f where f.numeroproforma=o.pk.numeroproforma) ");
 			
 			if(StringUtils.isNotBlank(numeroproforma)){
@@ -387,6 +410,10 @@ public class FacturaDao extends GeneralDao {
 		try{
 			StringBuilder sql = new StringBuilder("SELECT o FROM Tfacdetproforma o "
 												 + " LEFT JOIN FETCH o.tadmatpa"
+<<<<<<< HEAD
+=======
+								                 + " LEFT JOIN FETCH o.tadmunidadventa  "
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 								                 + " LEFT JOIN FETCH o.tadmiva"
 								                 + " LEFT JOIN FETCH o.tadmice"
 								                 + " LEFT JOIN FETCH o.tinvproducto"
@@ -424,6 +451,10 @@ public class FacturaDao extends GeneralDao {
 			StringBuilder sql = new StringBuilder("SELECT o FROM Tfaccabfactura o "
 												 + " LEFT JOIN FETCH o.tfaccliente cli"
 								                 + " LEFT JOIN FETCH cli.tsyspersona  "
+<<<<<<< HEAD
+=======
+								                 + " LEFT JOIN FETCH o.tadmairline"
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 								                 + " LEFT JOIN FETCH o.tadmestadosri"
 								                 + " where 1=1 ");
 			
@@ -463,6 +494,10 @@ public class FacturaDao extends GeneralDao {
 		try{
 			StringBuilder sql = new StringBuilder("SELECT o FROM Tfacdetfactura o "
 												 + " LEFT JOIN FETCH o.tadmatpa"
+<<<<<<< HEAD
+=======
+								                 + " LEFT JOIN FETCH o.tadmunidadventa  "
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 								                 + " LEFT JOIN FETCH o.tadmiva"
 								                 + " LEFT JOIN FETCH o.tadmice"
 								                 + " LEFT JOIN FETCH o.tinvproducto"
@@ -496,6 +531,7 @@ public class FacturaDao extends GeneralDao {
 	
 	public Tfaccabfactura obtenerFacturaDetalles(Integer codigoCompania, String numeroFactura) throws FacturacionException{
 		try {
+<<<<<<< HEAD
 			final StringBuilder sql = new StringBuilder("SELECT o FROM Tfaccabfactura "
 															 + "o LEFT JOIN FETCH o.tfacdetfacturas d "
 															 + "LEFT JOIN FETCH d.tinvproducto p "
@@ -504,6 +540,9 @@ public class FacturaDao extends GeneralDao {
 															 + "LEFT JOIN FETCH d.tadmirbpnr "
 															 + "LEFT JOIN FETCH o.tadmdistritovuelo "
 													   + "WHERE o.pk.codigocompania=:codigocompania AND o.pk.numerofactura=:numerofactura");
+=======
+			final StringBuilder sql = new StringBuilder("SELECT o FROM Tfaccabfactura o LEFT JOIN FETCH o.tfacdetfacturas d LEFT JOIN FETCH d.tinvproducto p LEFT JOIN FETCH p.tadmunidadventa LEFT JOIN FETCH d.tadmiva LEFT JOIN FETCH d.tadmice LEFT JOIN FETCH d.tadmirbpnr LEFT JOIN FETCH o.tadmdistritovuelo WHERE o.pk.codigocompania=:codigocompania AND o.pk.numerofactura=:numerofactura");
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 			Query query = entityManager.createQuery(sql.toString());
 			query.setParameter("codigocompania", codigoCompania);
 			query.setParameter("numerofactura", numeroFactura);

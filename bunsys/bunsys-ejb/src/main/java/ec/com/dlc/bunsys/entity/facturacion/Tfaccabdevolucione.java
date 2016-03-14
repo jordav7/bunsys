@@ -29,13 +29,60 @@ import ec.com.dlc.bunsys.entity.facturacion.pk.TfaccabdevolucionePK;
 public class Tfaccabdevolucione extends BaseEntity<TfaccabdevolucionePK>  {
 	private static final long serialVersionUID = 1L;
 
+<<<<<<< HEAD
 	
+=======
+	@Column
+	private String airline;
+	
+	@Column
+	private Integer airlinecodigo;
+	
+	@Column
+	private String referendo;
+	
+	@Column
+	private String farmcode;
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 	
 	@Column
 	@Temporal(TemporalType.DATE)
 	private Date fechaembarque;
 	
 	@Column
+<<<<<<< HEAD
+=======
+	private String masterawb;
+	
+	@Column
+	private String houseawb;
+	
+	@Column
+	private String dae;
+	
+	@Column
+	private String consignee;
+	
+	@Column
+	private String fixedprice;
+	
+	@Column
+	private String freightforwarder;
+	
+	@Column
+	private BigDecimal totalpices;
+	
+	@Column
+	private BigDecimal totaleqfullboxes;
+	
+	@Column
+	private BigDecimal totalbunch;
+	
+	@Column
+	private BigDecimal totalstems;
+	
+	@Column
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 	private String countrycode;
 	
 	@Column
@@ -116,10 +163,34 @@ public class Tfaccabdevolucione extends BaseEntity<TfaccabdevolucionePK>  {
 
 	@Column
 	private BigDecimal valorirbpnr;
+<<<<<<< HEAD
 
     @Column
 	private String  claveacceso;
     
+=======
+	
+	@Column
+	private String fob ;
+	@Column
+	private Integer  fobcodigo ;
+	@Column
+	private String  carguera;
+	@Column
+	private Integer  cargueracodigo;
+    @Column
+	private String distritovuelo ;
+    @Column
+	private Integer  distritovuelocodigo;
+
+    @ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumns({
+		@JoinColumn(name="airline", referencedColumnName="codigocatalogo", insertable=false, updatable=false),
+		@JoinColumn(name="airlinecodigo", referencedColumnName="codigotipocatalogo", insertable=false, updatable=false),
+		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania", insertable=false, updatable=false)
+	})
+    private Tadmcatalogo tadmairline;
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
     
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumns({
@@ -169,6 +240,33 @@ public class Tfaccabdevolucione extends BaseEntity<TfaccabdevolucionePK>  {
 	private Collection<Tfacformapagodev> tfacformapagodevs;
 
 	
+<<<<<<< HEAD
+=======
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumns({
+		@JoinColumn(name="fob", referencedColumnName="codigocatalogo", insertable=false, updatable=false),
+		@JoinColumn(name="fobcodigo", referencedColumnName="codigotipocatalogo", insertable=false, updatable=false),
+		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania", insertable=false, updatable=false)
+	})
+	private Tadmcatalogo tadmfob;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumns({
+		@JoinColumn(name="carguera", referencedColumnName="codigocatalogo", insertable=false, updatable=false),
+		@JoinColumn(name="cargueracodigo", referencedColumnName="codigotipocatalogo", insertable=false, updatable=false),
+		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania", insertable=false, updatable=false)
+	})
+	private Tadmcatalogo tadmcarguera;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumns({
+		@JoinColumn(name="distritovuelo", referencedColumnName="codigocatalogo", insertable=false, updatable=false),
+		@JoinColumn(name="distritovuelocodigo", referencedColumnName="codigotipocatalogo", insertable=false, updatable=false),
+		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania", insertable=false, updatable=false)
+	})
+	private Tadmcatalogo tadmdistritovuelo;
+	
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 	public Tfaccabdevolucione() {
 		this.pk = new TfaccabdevolucionePK();
 	}
@@ -460,6 +558,140 @@ public class Tfaccabdevolucione extends BaseEntity<TfaccabdevolucionePK>  {
 		this.tfaccliente = tfaccliente;
 	}
 
+<<<<<<< HEAD
+=======
+
+	public String getFob() {
+		return fob;
+	}
+
+
+	public void setFob(String fob) {
+		this.fob = fob;
+	}
+
+
+	public Integer getFobcodigo() {
+		return fobcodigo;
+	}
+
+
+	public void setFobcodigo(Integer fobcodigo) {
+		this.fobcodigo = fobcodigo;
+	}
+
+
+	public String getCarguera() {
+		return carguera;
+	}
+
+
+	public void setCarguera(String carguera) {
+		this.carguera = carguera;
+	}
+
+
+	public Integer getCargueracodigo() {
+		return cargueracodigo;
+	}
+
+
+	public void setCargueracodigo(Integer cargueracodigo) {
+		this.cargueracodigo = cargueracodigo;
+	}
+
+
+	public String getDistritovuelo() {
+		return distritovuelo;
+	}
+
+
+	public void setDistritovuelo(String distritovuelo) {
+		this.distritovuelo = distritovuelo;
+	}
+
+
+	public Integer getDistritovuelocodigo() {
+		return distritovuelocodigo;
+	}
+
+
+	public void setDistritovuelocodigo(Integer distritovuelocodigo) {
+		this.distritovuelocodigo = distritovuelocodigo;
+	}
+
+
+	public Tadmcatalogo getTadmfob() {
+		return tadmfob;
+	}
+
+
+	public void setTadmfob(Tadmcatalogo tadmfob) {
+		this.tadmfob = tadmfob;
+	}
+
+
+	public Tadmcatalogo getTadmcarguera() {
+		return tadmcarguera;
+	}
+
+
+	public void setTadmcarguera(Tadmcatalogo tadmcarguera) {
+		this.tadmcarguera = tadmcarguera;
+	}
+
+
+	public Tadmcatalogo getTadmdistritovuelo() {
+		return tadmdistritovuelo;
+	}
+
+
+	public void setTadmdistritovuelo(Tadmcatalogo tadmdistritovuelo) {
+		this.tadmdistritovuelo = tadmdistritovuelo;
+	}
+
+
+	public String getAirline() {
+		return airline;
+	}
+
+
+	public void setAirline(String airline) {
+		this.airline = airline;
+	}
+
+
+	public Integer getAirlinecodigo() {
+		return airlinecodigo;
+	}
+
+
+	public void setAirlinecodigo(Integer airlinecodigo) {
+		this.airlinecodigo = airlinecodigo;
+	}
+
+
+	public String getReferendo() {
+		return referendo;
+	}
+
+
+	public void setReferendo(String referendo) {
+		this.referendo = referendo;
+	}
+
+
+	public String getFarmcode() {
+		return farmcode;
+	}
+
+
+	public void setFarmcode(String farmcode) {
+		this.farmcode = farmcode;
+	}
+
+
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 	public Date getFechaembarque() {
 		return fechaembarque;
 	}
@@ -470,6 +702,109 @@ public class Tfaccabdevolucione extends BaseEntity<TfaccabdevolucionePK>  {
 	}
 
 
+<<<<<<< HEAD
+=======
+	public String getMasterawb() {
+		return masterawb;
+	}
+
+
+	public void setMasterawb(String masterawb) {
+		this.masterawb = masterawb;
+	}
+
+
+	public String getHouseawb() {
+		return houseawb;
+	}
+
+
+	public void setHouseawb(String houseawb) {
+		this.houseawb = houseawb;
+	}
+
+
+	public String getDae() {
+		return dae;
+	}
+
+
+	public void setDae(String dae) {
+		this.dae = dae;
+	}
+
+
+	public String getConsignee() {
+		return consignee;
+	}
+
+
+	public void setConsignee(String consignee) {
+		this.consignee = consignee;
+	}
+
+
+	public String getFixedprice() {
+		return fixedprice;
+	}
+
+
+	public void setFixedprice(String fixedprice) {
+		this.fixedprice = fixedprice;
+	}
+
+
+	public String getFreightforwarder() {
+		return freightforwarder;
+	}
+
+
+	public void setFreightforwarder(String freightforwarder) {
+		this.freightforwarder = freightforwarder;
+	}
+
+
+	public BigDecimal getTotalpices() {
+		return totalpices;
+	}
+
+
+	public void setTotalpices(BigDecimal totalpices) {
+		this.totalpices = totalpices;
+	}
+
+
+	public BigDecimal getTotaleqfullboxes() {
+		return totaleqfullboxes;
+	}
+
+
+	public void setTotaleqfullboxes(BigDecimal totaleqfullboxes) {
+		this.totaleqfullboxes = totaleqfullboxes;
+	}
+
+
+	public BigDecimal getTotalbunch() {
+		return totalbunch;
+	}
+
+
+	public void setTotalbunch(BigDecimal totalbunch) {
+		this.totalbunch = totalbunch;
+	}
+
+
+	public BigDecimal getTotalstems() {
+		return totalstems;
+	}
+
+
+	public void setTotalstems(BigDecimal totalstems) {
+		this.totalstems = totalstems;
+	}
+
+
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 	public String getCountrycode() {
 		return countrycode;
 	}
@@ -490,6 +825,7 @@ public class Tfaccabdevolucione extends BaseEntity<TfaccabdevolucionePK>  {
 	}
 
 
+<<<<<<< HEAD
 	public String getClaveacceso() {
 		return claveacceso;
 	}
@@ -497,6 +833,15 @@ public class Tfaccabdevolucione extends BaseEntity<TfaccabdevolucionePK>  {
 
 	public void setClaveacceso(String claveacceso) {
 		this.claveacceso = claveacceso;
+=======
+	public Tadmcatalogo getTadmairline() {
+		return tadmairline;
+	}
+
+
+	public void setTadmairline(Tadmcatalogo tadmairline) {
+		this.tadmairline = tadmairline;
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 	}
 
 }

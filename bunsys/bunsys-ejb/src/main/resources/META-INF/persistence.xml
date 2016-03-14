@@ -28,7 +28,11 @@
       <properties>
          <!-- Properties for Hibernate -->
          <!-- <property name="hibernate.hbm2ddl.auto" value="create" /> -->
+<<<<<<< HEAD
          <property name="hibernate.show_sql" value="false" />
+=======
+         <property name="hibernate.show_sql" value="true" />
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
       </properties>
    </persistence-unit>
 </persistence>

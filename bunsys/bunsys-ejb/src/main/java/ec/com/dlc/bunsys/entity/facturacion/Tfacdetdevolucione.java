@@ -64,6 +64,12 @@ public class Tfacdetdevolucione extends BaseEntity<TfacdetdevolucionePK>  {
 	private Integer ivacodigo;
 
 	@Column
+<<<<<<< HEAD
+=======
+	private String nandina;
+
+	@Column
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 	private BigDecimal preciounitario;
 
 	@Column
@@ -71,9 +77,30 @@ public class Tfacdetdevolucione extends BaseEntity<TfacdetdevolucionePK>  {
 
 	@Column
 	private Integer unidadventacodigo;
+<<<<<<< HEAD
 
 	@Column
 	private BigDecimal total;
+=======
+	
+	@Column
+	private BigDecimal eqfullboxes;
+	
+	@Column
+	private BigDecimal stemsbunch;
+	
+	@Column
+	private BigDecimal totalbunch;
+	
+	@Column
+	private BigDecimal totalstems;
+	
+	@Column
+	private BigDecimal total;
+	
+	@Column
+	private BigDecimal cajas;
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 
 	//bi-directional many-to-one association to Tfaccabdevolucione
 	@ManyToOne(fetch=FetchType.LAZY)
@@ -222,6 +249,17 @@ public class Tfacdetdevolucione extends BaseEntity<TfacdetdevolucionePK>  {
 		this.ivacodigo = ivacodigo;
 	}
 
+<<<<<<< HEAD
+=======
+	public String getNandina() {
+		return this.nandina;
+	}
+
+	public void setNandina(String nandina) {
+		this.nandina = nandina;
+	}
+
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 	public BigDecimal getPreciounitario() {
 		return this.preciounitario;
 	}
@@ -302,6 +340,33 @@ public class Tfacdetdevolucione extends BaseEntity<TfacdetdevolucionePK>  {
 		this.tinvproducto = tinvproducto;
 	}
 
+<<<<<<< HEAD
+=======
+	public BigDecimal getEqfullboxes() {
+		return eqfullboxes;
+	}
+
+	public void setEqfullboxes(BigDecimal eqfullboxes) {
+		this.eqfullboxes = eqfullboxes;
+	}
+
+	public BigDecimal getStemsbunch() {
+		return stemsbunch;
+	}
+
+	public void setStemsbunch(BigDecimal stemsbunch) {
+		this.stemsbunch = stemsbunch;
+	}
+
+	public BigDecimal getTotalbunch() {
+		return totalbunch;
+	}
+
+	public void setTotalbunch(BigDecimal totalbunch) {
+		this.totalbunch = totalbunch;
+	}
+
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 	public BigDecimal getTotal() {
 		return total;
 	}
@@ -310,4 +375,23 @@ public class Tfacdetdevolucione extends BaseEntity<TfacdetdevolucionePK>  {
 		this.total = total;
 	}
 
+<<<<<<< HEAD
+=======
+	public BigDecimal getTotalstems() {
+		return totalstems;
+	}
+
+	public void setTotalstems(BigDecimal totalstems) {
+		this.totalstems = totalstems;
+	}
+
+	public BigDecimal getCajas() {
+		return cajas;
+	}
+
+	public void setCajas(BigDecimal cajas) {
+		this.cajas = cajas;
+	}
+
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 }

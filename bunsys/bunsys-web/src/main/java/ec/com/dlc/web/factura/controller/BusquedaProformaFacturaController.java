@@ -97,6 +97,10 @@ public class BusquedaProformaFacturaController extends BaseController {
 		facturaDataManager.setInstitucionTransferencia(null);
 		facturaDataManager.setInstitucionTarjetaCredito(null);
 		facturaDataManager.setNumeroproforma(null);
+<<<<<<< HEAD
+=======
+		facturaDataManager.getTfaccabfactura().setFarmcode("CFE");
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 		facturaDataManager.getTfaccabfactura().setCountrycode("ECU");
 		facturaDataManager.getTfaccabfactura().setArea("593");
 		facturaDataManager.setAccionAux("G");
@@ -114,15 +118,28 @@ public class BusquedaProformaFacturaController extends BaseController {
 			//factura cabecera
 			facturaDataManager.setTfaccabfactura(tfaccabfactura);
 			//recorte
+<<<<<<< HEAD
 //			String numero =facturaDataManager.getTfaccabfactura().getPk().getNumerofactura().replace(facturaDataManager.getTadmcompania().getCodigoestablecimiento(), "");
 //			numero=numero.replace(facturaDataManager.getTadmcompania().getCodigopuntoemision(), "");
 //			facturaDataManager.getTfaccabfactura().getPk().setNumerofactura(numero);
+=======
+			String numero =facturaDataManager.getTfaccabfactura().getPk().getNumerofactura().replace(facturaDataManager.getTadmcompania().getCodigoestablecimiento(), "");
+			numero=numero.replace(facturaDataManager.getTadmcompania().getCodigopuntoemision(), "");
+			facturaDataManager.getTfaccabfactura().getPk().setNumerofactura(numero);
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 			
 			if(facturaDataManager.getTfaccabfactura().getEstadosri().equals("SF")){
 				facturaDataManager.setEditable(Boolean.FALSE);
 			}else{
 				facturaDataManager.setEditable(Boolean.TRUE);
 			}
+<<<<<<< HEAD
+=======
+			if(facturaDataManager.getTfaccabfactura().getReferendo()!=null && facturaDataManager.getTfaccabfactura().getReferendo().length()>17){
+				facturaDataManager.getTfaccabfactura().addAditionalProperty("codaerolinea",facturaDataManager.getTfaccabfactura().getReferendo().substring(0, 3));
+			}
+			
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 			
 			facturaDataManager.setAccionAux("E");
 			//detalle factura

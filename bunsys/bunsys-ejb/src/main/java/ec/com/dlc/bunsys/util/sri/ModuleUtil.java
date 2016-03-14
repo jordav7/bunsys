@@ -47,6 +47,10 @@ public class ModuleUtil {
 	}
 	
 	public static void main(String[] args) {
+<<<<<<< HEAD
 		System.out.println(obtenerModulo11("170520150405024075700012001002000000003123456781"));
+=======
+		System.out.println(obtenerModulo11("140320150117210875240011122254000000001123456781"));
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 	}
 }

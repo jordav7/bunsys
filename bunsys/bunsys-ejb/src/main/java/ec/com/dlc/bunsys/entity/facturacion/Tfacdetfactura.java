@@ -30,6 +30,13 @@ public class Tfacdetfactura extends BaseEntity<TfacdetfacturaPK> {
 	private static final long serialVersionUID = 1L;
 	
 	@Column
+<<<<<<< HEAD
+=======
+	private String unidadventa;
+	@Column
+	private Integer unidadventacodigo;
+	@Column
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 	private String iva;
 	@Column
 	private Integer ivacodigo;
@@ -55,7 +62,20 @@ public class Tfacdetfactura extends BaseEntity<TfacdetfacturaPK> {
 	private BigDecimal preciounitario;
 	@Column
 	private BigDecimal descuento;
+<<<<<<< HEAD
 
+=======
+	@Column
+	private String nandina;
+	@Column
+	private BigDecimal eqfullboxes;
+	@Column
+	private BigDecimal stemsbunch;
+	@Column
+	private BigDecimal totalbunch;
+	@Column
+	private BigDecimal totalstems;
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 	@Column
 	private BigDecimal total;
 	@Transient
@@ -71,6 +91,17 @@ public class Tfacdetfactura extends BaseEntity<TfacdetfacturaPK> {
 
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumns({
+<<<<<<< HEAD
+=======
+		@JoinColumn(name="unidadventa", referencedColumnName="codigocatalogo",insertable=false, updatable=false),
+		@JoinColumn(name="unidadventacodigo", referencedColumnName="codigotipocatalogo",insertable=false, updatable=false),
+		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania",insertable=false, updatable=false)
+		})
+	private Tadmcatalogo tadmunidadventa;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumns({
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 		@JoinColumn(name="iva", referencedColumnName="codigocatalogo",insertable=false, updatable=false),
 		@JoinColumn(name="ivacodigo", referencedColumnName="codigotipocatalogo",insertable=false, updatable=false),
 		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania",insertable=false, updatable=false)
@@ -111,6 +142,25 @@ public class Tfacdetfactura extends BaseEntity<TfacdetfacturaPK> {
 		this.pk = new TfacdetfacturaPK();
 	}
 
+<<<<<<< HEAD
+=======
+	public String getUnidadventa() {
+		return unidadventa;
+	}
+
+	public void setUnidadventa(String unidadventa) {
+		this.unidadventa = unidadventa;
+	}
+
+	public Integer getUnidadventacodigo() {
+		return unidadventacodigo;
+	}
+
+	public void setUnidadventacodigo(Integer unidadventacodigo) {
+		this.unidadventacodigo = unidadventacodigo;
+	}
+
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 	public String getIva() {
 		return iva;
 	}
@@ -215,6 +265,49 @@ public class Tfacdetfactura extends BaseEntity<TfacdetfacturaPK> {
 		this.descuento = descuento;
 	}
 
+<<<<<<< HEAD
+=======
+	public String getNandina() {
+		return nandina;
+	}
+
+	public void setNandina(String nandina) {
+		this.nandina = nandina;
+	}
+
+	public BigDecimal getEqfullboxes() {
+		return eqfullboxes;
+	}
+
+	public void setEqfullboxes(BigDecimal eqfullboxes) {
+		this.eqfullboxes = eqfullboxes;
+	}
+
+	public BigDecimal getStemsbunch() {
+		return stemsbunch;
+	}
+
+	public void setStemsbunch(BigDecimal stemsbunch) {
+		this.stemsbunch = stemsbunch;
+	}
+
+	public BigDecimal getTotalbunch() {
+		return totalbunch;
+	}
+
+	public void setTotalbunch(BigDecimal totalbunch) {
+		this.totalbunch = totalbunch;
+	}
+
+	public BigDecimal getTotalstems() {
+		return totalstems;
+	}
+
+	public void setTotalstems(BigDecimal totalstems) {
+		this.totalstems = totalstems;
+	}
+
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 	public BigDecimal getTotal() {
 		return total;
 	}
@@ -231,6 +324,17 @@ public class Tfacdetfactura extends BaseEntity<TfacdetfacturaPK> {
 		this.tadmatpa = tadmatpa;
 	}
 
+<<<<<<< HEAD
+=======
+	public Tadmcatalogo getTadmunidadventa() {
+		return tadmunidadventa;
+	}
+
+	public void setTadmunidadventa(Tadmcatalogo tadmunidadventa) {
+		this.tadmunidadventa = tadmunidadventa;
+	}
+
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 	public Tadmcatalogo getTadmiva() {
 		return tadmiva;
 	}

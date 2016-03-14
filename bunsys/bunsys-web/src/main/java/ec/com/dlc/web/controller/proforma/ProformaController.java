@@ -12,6 +12,10 @@ import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
 
+<<<<<<< HEAD
+=======
+import ec.com.dlc.bunsys.entity.administracion.Tadmconversionunidad;
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccabproforma;
 import ec.com.dlc.bunsys.entity.facturacion.Tfaccliente;
 import ec.com.dlc.bunsys.entity.facturacion.Tfacdetproforma;
@@ -100,6 +104,7 @@ public class ProformaController extends BaseController{
 		}
 		proformaDatamanager.getTfacdetproforma().setCantidad(1d);
 		proformaDatamanager.getTfacdetproforma().getAditionalProperties().put("cantidadaux",1d);
+<<<<<<< HEAD
 		//articulo
 		proformaDatamanager.getTfacdetproforma().setTinvproducto(proformaDatamanager.getTinvproducto());
 		proformaDatamanager.getTfacdetproforma().setCodigoproductos(proformaDatamanager.getTinvproducto().getPk().getCodigoproductos());
@@ -110,6 +115,33 @@ public class ProformaController extends BaseController{
 		proformaDatamanager.getTfacdetproforma().setPreciounitario(proformaDatamanager.getTinvproducto().getPreciounitario());
 		//total price
 		proformaDatamanager.getTfacdetproforma().setTotal(proformaDatamanager.getTfacdetproforma().getTotal()*proformaDatamanager.getTfacdetproforma().getPreciounitario());
+=======
+		//Busqueda del pices type segun el tipo de unidad de venta del articulo
+		Tadmconversionunidad tadmconversionunidad=bunsysService.conversionArticulo(proformaDatamanager.getTinvproducto().getUnidadventacodigo(), proformaDatamanager.getTinvproducto().getUnidadventa());
+		//articulo
+		proformaDatamanager.getTfacdetproforma().setTinvproducto(proformaDatamanager.getTinvproducto());
+		proformaDatamanager.getTfacdetproforma().setCodigoproductos(proformaDatamanager.getTinvproducto().getPk().getCodigoproductos());
+		//pices type
+		proformaDatamanager.getTfacdetproforma().setUnidadventa(proformaDatamanager.getTinvproducto().getUnidadventa());
+		proformaDatamanager.getTfacdetproforma().setUnidadventacodigo(proformaDatamanager.getTinvproducto().getUnidadventacodigo());
+		//eq full boxes
+		proformaDatamanager.getTfacdetproforma().setEqfullboxes(tadmconversionunidad.getBoxes());
+		//apta
+		proformaDatamanager.getTfacdetproforma().setAtpa(proformaDatamanager.getTinvproducto().getAtpa());
+		proformaDatamanager.getTfacdetproforma().setAtpacodigo(proformaDatamanager.getTinvproducto().getAtpacodigo());
+		//nanduna
+		proformaDatamanager.getTfacdetproforma().setNandina(proformaDatamanager.getTinvproducto().getNandina());
+		//steamsbunch
+		proformaDatamanager.getTfacdetproforma().setStemsbunch(tadmconversionunidad.getCantidadbunch());
+		//total bunch
+		proformaDatamanager.getTfacdetproforma().setTotalbunch(tadmconversionunidad.getTotalbunch());
+		//total stems
+		proformaDatamanager.getTfacdetproforma().setTotalstems(proformaDatamanager.getTfacdetproforma().getStemsbunch()*proformaDatamanager.getTfacdetproforma().getTotalbunch());
+		//unit price
+		proformaDatamanager.getTfacdetproforma().setPreciounitario(proformaDatamanager.getTinvproducto().getPreciounitario());
+		//total price
+		proformaDatamanager.getTfacdetproforma().setTotal(proformaDatamanager.getTfacdetproforma().getTotalstems()*proformaDatamanager.getTfacdetproforma().getPreciounitario());
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 		//compania
 		proformaDatamanager.getTfacdetproforma().getPk().setCodigocompania(articuloDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania());
 		//iva
@@ -132,6 +164,13 @@ public class ProformaController extends BaseController{
 	 * calculos totales
 	 */
 	public void calculos(){
+<<<<<<< HEAD
+=======
+		proformaDatamanager.getTfaccabproforma().setTotalpices(0d);
+		proformaDatamanager.getTfaccabproforma().setTotaleqfullboxes(0d);
+		proformaDatamanager.getTfaccabproforma().setTotalbunch(0d);
+		proformaDatamanager.getTfaccabproforma().setTotalstems(0d);
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 		proformaDatamanager.getTfaccabproforma().setTotal(new BigDecimal(0));
 		//
 		proformaDatamanager.getTfaccabproforma().setSubtotalnoiva(new BigDecimal(0));
@@ -140,6 +179,15 @@ public class ProformaController extends BaseController{
 		proformaDatamanager.getTfaccabproforma().setSubtotalexcentoiva(new BigDecimal(0));
 		proformaDatamanager.getTfaccabproforma().setSubtotalneto(new BigDecimal(0));
 		for(Tfacdetproforma tfacdetproforma:proformaDatamanager.getTfaccabproforma().getTfacdetproformas()){
+<<<<<<< HEAD
+=======
+			proformaDatamanager.getTfaccabproforma().setTotalpices(tfacdetproforma.getCantidad()+proformaDatamanager.getTfaccabproforma().getTotalpices());
+			proformaDatamanager.getTfaccabproforma().setTotaleqfullboxes(tfacdetproforma.getEqfullboxes()+proformaDatamanager.getTfaccabproforma().getTotaleqfullboxes());
+			
+			proformaDatamanager.getTfaccabproforma().setTotalbunch(tfacdetproforma.getTotalbunch()+proformaDatamanager.getTfaccabproforma().getTotalbunch());
+			proformaDatamanager.getTfaccabproforma().setTotalstems(tfacdetproforma.getTotalstems()+proformaDatamanager.getTfaccabproforma().getTotalstems());
+			
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 			//calculos
 			//--subtotal 0%
 			if(tfacdetproforma.getIva().equals("0") && tfacdetproforma.getIvacodigo().equals(9)){
@@ -189,10 +237,51 @@ public class ProformaController extends BaseController{
 		proformaDatamanager.getTfaccabproforma().setTotal(total);
 	}
 	
+<<<<<<< HEAD
 	public void cambioCantidad(Tfacdetproforma detalle){
 		//calculos
 		//total price
 		detalle.setTotal(detalle.getTotal()*detalle.getPreciounitario());
+=======
+	public void cambioPicesType(Tfacdetproforma tfacdetproforma){
+		//Busqueda del pices type segun el tipo de unidad de venta del articulo
+		Tadmconversionunidad tadmconversionunidad=
+				bunsysService.conversionArticulo(tfacdetproforma.getUnidadventacodigo(), tfacdetproforma.getUnidadventa());
+		//pices type
+		//proformaDatamanager.getTfacdetproforma().setUnidadventa(proformaDatamanager.getTinvproducto().getUnidadventa());
+		//eq full boxes
+		tfacdetproforma.setEqfullboxes(tadmconversionunidad.getBoxes());
+		//steamsbunch
+		tfacdetproforma.setStemsbunch(tadmconversionunidad.getCantidadbunch());
+		//total bunch
+		tfacdetproforma.setTotalbunch(tadmconversionunidad.getTotalbunch());
+		//total stems
+		tfacdetproforma.setTotalstems(tfacdetproforma.getStemsbunch()*tfacdetproforma.getTotalbunch());
+		//unit price
+		tfacdetproforma.setPreciounitario(tfacdetproforma.getPreciounitario());
+		//total price
+		tfacdetproforma.setTotal(tfacdetproforma.getTotalstems()*tfacdetproforma.getPreciounitario());
+		calculos();
+	}
+	
+	public void cambioCantidad(Tfacdetproforma detalle){
+		//seteo
+		//eq full boxes=cantidad *eqfullboxes
+		if(detalle.getCantidad()>Double.parseDouble(detalle.getAditionalProperties().get("cantidadaux").toString())){
+			detalle.setEqfullboxes(detalle.getEqfullboxes()*detalle.getCantidad());
+			//total bunch
+			detalle.setTotalbunch(detalle.getTotalbunch()*detalle.getCantidad());
+		}else if(detalle.getCantidad()<Double.parseDouble(detalle.getAditionalProperties().get("cantidadaux").toString())){
+			detalle.setEqfullboxes(detalle.getEqfullboxes()/Double.parseDouble(detalle.getAditionalProperties().get("cantidadaux").toString()));
+			//total bunch
+			detalle.setTotalbunch(detalle.getTotalbunch()/Double.parseDouble(detalle.getAditionalProperties().get("cantidadaux").toString()));
+		}
+		//calculos
+		//total stems
+		detalle.setTotalstems(detalle.getStemsbunch()*detalle.getTotalbunch());
+		//total price
+		detalle.setTotal(detalle.getTotalstems()*detalle.getPreciounitario());
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 		calculos();
 		detalle.getAditionalProperties().put("cantidadaux",detalle.getCantidad());
 	}
@@ -200,9 +289,35 @@ public class ProformaController extends BaseController{
 	public void cambioeqfullboxes(Tfacdetproforma tfacdetproforma){
 		calculos();
 	}
+<<<<<<< HEAD
 	
 	public void cambiounitprice(Tfacdetproforma tfacdetproforma){
 		tfacdetproforma.setTotal(tfacdetproforma.getTotal()*tfacdetproforma.getPreciounitario());
+=======
+	public void cambioStemsBunch(Tfacdetproforma tfacdetproforma){
+		//total stems
+		tfacdetproforma.setTotalstems(tfacdetproforma.getStemsbunch()*tfacdetproforma.getTotalbunch());
+		//total price
+		tfacdetproforma.setTotal(tfacdetproforma.getTotalstems()*tfacdetproforma.getPreciounitario());
+		calculos();
+	}
+	
+	public void cambiototalBunch(Tfacdetproforma tfacdetproforma){
+		//total stems
+		tfacdetproforma.setTotalstems(tfacdetproforma.getStemsbunch()*tfacdetproforma.getTotalbunch());
+		//total price
+		tfacdetproforma.setTotal(tfacdetproforma.getTotalstems()*tfacdetproforma.getPreciounitario());
+		calculos();
+	}
+	
+	public void cambiototalSteams(Tfacdetproforma tfacdetproforma){
+		tfacdetproforma.setTotal(tfacdetproforma.getTotalstems()*tfacdetproforma.getPreciounitario());
+		calculos();
+	}
+	
+	public void cambiounitprice(Tfacdetproforma tfacdetproforma){
+		tfacdetproforma.setTotal(tfacdetproforma.getTotalstems()*tfacdetproforma.getPreciounitario());
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 		calculos();
 	}
 	
@@ -232,6 +347,12 @@ public class ProformaController extends BaseController{
 				MessagesUtil.showErrorMessage("No ha ingresado el detalle de la factura");
 				return;
 			}
+<<<<<<< HEAD
+=======
+			if(StringUtils.isNotBlank(proformaDatamanager.getTfaccabproforma().getAirline())){
+				proformaDatamanager.getTfaccabproforma().setAirlinecodigo(ContenidoMessages.getInteger("cod_catalogo_aerolineas"));
+			}
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 			//compania
 			proformaDatamanager.getTfaccabproforma().getPk().setCodigocompania(articuloDatamanager.getLoginDatamanager().getLogin().getPk().getCodigocompania());
 			

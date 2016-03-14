@@ -9,6 +9,10 @@ import javax.ejb.Local;
 import ec.com.dlc.bunsys.common.util.ResponseServiceDto;
 import ec.com.dlc.bunsys.entity.administracion.Tadmcatalogo;
 import ec.com.dlc.bunsys.entity.administracion.Tadmcompania;
+<<<<<<< HEAD
+=======
+import ec.com.dlc.bunsys.entity.administracion.Tadmconversionunidad;
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 import ec.com.dlc.bunsys.entity.administracion.Tadmparamsri;
 import ec.com.dlc.bunsys.entity.administracion.Tadmtipocatalogo;
 import ec.com.dlc.bunsys.entity.administracion.Tadmusuario;
@@ -193,6 +197,7 @@ public interface BunsysService {
 	 */
 	void eliminarCliente(TsyspersonaPK personaPk, Integer estadoCodigo);
 	
+<<<<<<< HEAD
 //	/**
 //	 * Tabla de conversion segun la unidad de venta del articulo
 //	 * @param unidadVentaCodigo
@@ -200,6 +205,15 @@ public interface BunsysService {
 //	 * @return
 //	 */
 //	public Tadmconversionunidad conversionArticulo(Integer unidadVentaCodigo, String unidadVenta);
+=======
+	/**
+	 * Tabla de conversion segun la unidad de venta del articulo
+	 * @param unidadVentaCodigo
+	 * @param unidadVenta
+	 * @return
+	 */
+	public Tadmconversionunidad conversionArticulo(Integer unidadVentaCodigo, String unidadVenta);
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 	
 	/**
 	 * Guarda la proforma

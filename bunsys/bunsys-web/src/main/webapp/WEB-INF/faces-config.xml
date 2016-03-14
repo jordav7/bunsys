@@ -25,16 +25,25 @@
   <action-listener>org.primefaces.application.DialogActionListener</action-listener>
   <navigation-handler>org.primefaces.application.DialogNavigationHandler</navigation-handler>
   <view-handler>org.primefaces.application.DialogViewHandler</view-handler>
+<<<<<<< HEAD
   <locale-config>  
   	<default-locale>en_US</default-locale>  
   </locale-config> 
+=======
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
   <action-listener>org.omnifaces.eventlistener.ResetInputAjaxActionListener</action-listener>
   <resource-bundle>
    <base-name>ec.com.dlc.web.commons.resource.contenido</base-name>
    <var>msg</var>
   </resource-bundle>
  </application>
+<<<<<<< HEAD
  <!-- <lifecycle>
      <phase-listener>ec.com.dlc.web.commons.listener.LifeCycleListener</phase-listener>
  </lifecycle> -->
+=======
+ <lifecycle>
+     <phase-listener>ec.com.dlc.web.commons.listener.LifeCycleListener</phase-listener>
+ </lifecycle>
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 </faces-config>

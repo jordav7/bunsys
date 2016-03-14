@@ -56,6 +56,13 @@ public class Tadmcatalogo extends BaseEntity<TadmcatalogoPK>{
 	@OneToMany(mappedBy="tadmcatalogo")
 	private Set<Tadmusuario> tadmusuarios;
 
+<<<<<<< HEAD
+=======
+	//bi-directional many-to-one association to Tfaccabfactura
+	@OneToMany(mappedBy="tadmairline")
+	private Set<Tfaccabfactura> tfaccabfacturas;
+
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 	//bi-directional many-to-one association to Tfaccliente
 	@OneToMany(mappedBy="tadmformapago")
 	private Set<Tfaccliente> tfacclienteformapago;
@@ -208,6 +215,7 @@ public class Tadmcatalogo extends BaseEntity<TadmcatalogoPK>{
 		return tadmusuario;
 	}
 
+<<<<<<< HEAD
 //	public Tfaccabfactura addTfaccabfactura(Tfaccabfactura tfaccabfactura) {
 //		getTfaccabfacturas().add(tfaccabfactura);
 //		tfaccabfactura.setTadmairline(this);
@@ -221,6 +229,29 @@ public class Tadmcatalogo extends BaseEntity<TadmcatalogoPK>{
 //
 //		return tfaccabfactura;
 //	}
+=======
+	public Set<Tfaccabfactura> getTfaccabfacturas() {
+		return this.tfaccabfacturas;
+	}
+
+	public void setTfaccabfacturas(Set<Tfaccabfactura> tfaccabfacturas) {
+		this.tfaccabfacturas = tfaccabfacturas;
+	}
+
+	public Tfaccabfactura addTfaccabfactura(Tfaccabfactura tfaccabfactura) {
+		getTfaccabfacturas().add(tfaccabfactura);
+		tfaccabfactura.setTadmairline(this);
+
+		return tfaccabfactura;
+	}
+
+	public Tfaccabfactura removeTfaccabfactura(Tfaccabfactura tfaccabfactura) {
+		getTfaccabfacturas().remove(tfaccabfactura);
+		tfaccabfactura.setTadmairline(null);
+
+		return tfaccabfactura;
+	}
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 
 	public Set<Tfaccliente> getTfacclienteformapago() {
 		return this.tfacclienteformapago;

@@ -30,6 +30,7 @@ public class Tfacdetproforma extends BaseEntity<TfacdetproformaPK>  {
 
 	@Column
 	private String numeroproforma;
+<<<<<<< HEAD
 
 	@Column
 	private String iva;
@@ -67,6 +68,46 @@ public class Tfacdetproforma extends BaseEntity<TfacdetproformaPK>  {
 	@Column
 	private BigDecimal descuento;
 
+=======
+	@Column
+	private String unidadventa;
+	@Column
+	private Integer unidadventacodigo;
+	@Column
+	private String iva;
+	@Column
+	private Integer ivacodigo;
+	@Column
+	private String ice;
+	@Column
+	private Integer icecodigo;
+	@Column
+	private String irbpnr;
+	@Column
+	private Integer irbpnrcodigo;
+	@Column
+	private String atpa;
+	@Column
+	private Integer atpacodigo;
+	@Column
+	private String codigoproductos;
+	@Column
+	private Double cantidad;
+	@Column
+	private Double preciounitario;
+	@Column
+	private BigDecimal descuento;
+	@Column
+	private String nandina;
+	@Column
+	private Double eqfullboxes;
+	@Column
+	private Double stemsbunch;
+	@Column
+	private Double totalbunch;
+	@Column
+	private Double totalstems;
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 	@Column
 	private Double total;
 	
@@ -78,6 +119,16 @@ public class Tfacdetproforma extends BaseEntity<TfacdetproformaPK>  {
 		})
 	private Tadmcatalogo tadmatpa;
 
+<<<<<<< HEAD
+=======
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumns({
+		@JoinColumn(name="unidadventa", referencedColumnName="codigocatalogo",insertable=false, updatable=false),
+		@JoinColumn(name="unidadventacodigo", referencedColumnName="codigotipocatalogo",insertable=false, updatable=false),
+		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania",insertable=false, updatable=false)
+		})
+	private Tadmcatalogo tadmunidadventa;
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumns({
@@ -210,6 +261,17 @@ public class Tfacdetproforma extends BaseEntity<TfacdetproformaPK>  {
 		this.ivacodigo = ivacodigo;
 	}
 
+<<<<<<< HEAD
+=======
+	public String getNandina() {
+		return this.nandina;
+	}
+
+	public void setNandina(String nandina) {
+		this.nandina = nandina;
+	}
+
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 	public Double getPreciounitario() {
 		return preciounitario;
 	}
@@ -218,6 +280,25 @@ public class Tfacdetproforma extends BaseEntity<TfacdetproformaPK>  {
 		this.preciounitario = preciounitario;
 	}
 
+<<<<<<< HEAD
+=======
+	public String getUnidadventa() {
+		return this.unidadventa;
+	}
+
+	public void setUnidadventa(String unidadventa) {
+		this.unidadventa = unidadventa;
+	}
+
+	public Integer getUnidadventacodigo() {
+		return this.unidadventacodigo;
+	}
+
+	public void setUnidadventacodigo(Integer unidadventacodigo) {
+		this.unidadventacodigo = unidadventacodigo;
+	}
+
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 	public Tadmcatalogo getTadmatpa() {
 		return tadmatpa;
 	}
@@ -226,6 +307,17 @@ public class Tfacdetproforma extends BaseEntity<TfacdetproformaPK>  {
 		this.tadmatpa = tadmatpa;
 	}
 
+<<<<<<< HEAD
+=======
+	public Tadmcatalogo getTadmunidadventa() {
+		return tadmunidadventa;
+	}
+
+	public void setTadmunidadventa(Tadmcatalogo tadmunidadventa) {
+		this.tadmunidadventa = tadmunidadventa;
+	}
+
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 	public Tadmcatalogo getTadmiva() {
 		return tadmiva;
 	}
@@ -277,6 +369,41 @@ public class Tfacdetproforma extends BaseEntity<TfacdetproformaPK>  {
 		this.tfaccabproforma = tfaccabproforma;
 	}
 
+<<<<<<< HEAD
+=======
+	public Double getEqfullboxes() {
+		return eqfullboxes;
+	}
+
+	public void setEqfullboxes(Double eqfullboxes) {
+		this.eqfullboxes = eqfullboxes;
+	}
+
+	public Double getStemsbunch() {
+		return stemsbunch;
+	}
+
+	public void setStemsbunch(Double stemsbunch) {
+		this.stemsbunch = stemsbunch;
+	}
+
+	public Double getTotalbunch() {
+		return totalbunch;
+	}
+
+	public void setTotalbunch(Double totalbunch) {
+		this.totalbunch = totalbunch;
+	}
+
+	public Double getTotalstems() {
+		return totalstems;
+	}
+
+	public void setTotalstems(Double totalstems) {
+		this.totalstems = totalstems;
+	}
+
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 	public Double getTotal() {
 		return total;
 	}

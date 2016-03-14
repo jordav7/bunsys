@@ -45,6 +45,15 @@ public class Tfaccabproforma extends BaseEntity<TfaccabproformaPK>  {
 	private Integer estadocodigo;
 
 	@Column
+<<<<<<< HEAD
+=======
+	private String airline;
+
+	@Column
+	private Integer airlinecodigo;
+
+	@Column
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 	private String observacion;
 	
 	@Column
@@ -81,12 +90,41 @@ public class Tfaccabproforma extends BaseEntity<TfaccabproformaPK>  {
 	private BigDecimal iva;
 	@Column
 	private BigDecimal total;
+<<<<<<< HEAD
 
+=======
+	@Column
+	private Double totalpices;
+	@Column
+	private Double totaleqfullboxes;
+	@Column
+	private Double totalbunch;
+	@Column
+	private Double totalstems;
+	@Column
+	private String farmcode;
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 	@Column
 	private String countrycode;
 	@Column
 	private String area;
+<<<<<<< HEAD
 
+=======
+	@Column
+	private String masterawm;
+	@Column
+	private String houseawb;
+	@Column
+	private String dae;
+	@Column
+	private String consignee;
+	@Column
+	private String fixedprice;
+	@Column
+	private String referendum;
+	
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 	public Tfaccabproforma() {
 		this.pk = new TfaccabproformaPK();
 	}
@@ -106,6 +144,19 @@ public class Tfaccabproforma extends BaseEntity<TfaccabproformaPK>  {
 	})
 	private Tadmcatalogo tadmestado;
 
+<<<<<<< HEAD
+=======
+
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumns({
+		@JoinColumn(name="airline", referencedColumnName="codigocatalogo", insertable=false, updatable=false),
+		@JoinColumn(name="airlinecodigo", referencedColumnName="codigotipocatalogo", insertable=false, updatable=false),
+		@JoinColumn(name="codigocompania", referencedColumnName="codigocompania", insertable=false, updatable=false)
+	})
+	private Tadmcatalogo tadmairline;
+
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 	//bi-directional many-to-one association to Tfacdetdevolucione
 	@OneToMany(mappedBy="tfaccabproforma")
 	private Collection<Tfacdetproforma> tfacdetproformas;
@@ -142,6 +193,25 @@ public class Tfaccabproforma extends BaseEntity<TfaccabproformaPK>  {
 		this.estadocodigo = estadocodigo;
 	}
 
+<<<<<<< HEAD
+=======
+	public String getAirline() {
+		return airline;
+	}
+
+	public void setAirline(String airline) {
+		this.airline = airline;
+	}
+
+	public Integer getAirlinecodigo() {
+		return airlinecodigo;
+	}
+
+	public void setAirlinecodigo(Integer airlinecodigo) {
+		this.airlinecodigo = airlinecodigo;
+	}
+
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 	public String getObservacion() {
 		return observacion;
 	}
@@ -255,6 +325,49 @@ public class Tfaccabproforma extends BaseEntity<TfaccabproformaPK>  {
 		this.total = total;
 	}
 
+<<<<<<< HEAD
+=======
+	public Double getTotalpices() {
+		return totalpices;
+	}
+
+	public void setTotalpices(Double totalpices) {
+		this.totalpices = totalpices;
+	}
+
+	public Double getTotaleqfullboxes() {
+		return totaleqfullboxes;
+	}
+
+	public void setTotaleqfullboxes(Double totaleqfullboxes) {
+		this.totaleqfullboxes = totaleqfullboxes;
+	}
+
+	public Double getTotalbunch() {
+		return totalbunch;
+	}
+
+	public void setTotalbunch(Double totalbunch) {
+		this.totalbunch = totalbunch;
+	}
+
+	public Double getTotalstems() {
+		return totalstems;
+	}
+
+	public void setTotalstems(Double totalstems) {
+		this.totalstems = totalstems;
+	}
+
+	public String getFarmcode() {
+		return farmcode;
+	}
+
+	public void setFarmcode(String farmcode) {
+		this.farmcode = farmcode;
+	}
+
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 	public String getCountrycode() {
 		return countrycode;
 	}
@@ -271,6 +384,49 @@ public class Tfaccabproforma extends BaseEntity<TfaccabproformaPK>  {
 		this.area = area;
 	}
 
+<<<<<<< HEAD
+=======
+	public String getMasterawm() {
+		return masterawm;
+	}
+
+	public void setMasterawm(String masterawm) {
+		this.masterawm = masterawm;
+	}
+
+	public String getHouseawb() {
+		return houseawb;
+	}
+
+	public void setHouseawb(String houseawb) {
+		this.houseawb = houseawb;
+	}
+
+	public String getDae() {
+		return dae;
+	}
+
+	public void setDae(String dae) {
+		this.dae = dae;
+	}
+
+	public String getConsignee() {
+		return consignee;
+	}
+
+	public void setConsignee(String consignee) {
+		this.consignee = consignee;
+	}
+
+	public String getFixedprice() {
+		return fixedprice;
+	}
+
+	public void setFixedprice(String fixedprice) {
+		this.fixedprice = fixedprice;
+	}
+
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 	public Tadmcatalogo getTadmestado() {
 		return tadmestado;
 	}
@@ -279,6 +435,17 @@ public class Tfaccabproforma extends BaseEntity<TfaccabproformaPK>  {
 		this.tadmestado = tadmestado;
 	}
 
+<<<<<<< HEAD
+=======
+	public Tadmcatalogo getTadmairline() {
+		return tadmairline;
+	}
+
+	public void setTadmairline(Tadmcatalogo tadmairline) {
+		this.tadmairline = tadmairline;
+	}
+
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 	public Collection<Tfacdetproforma> getTfacdetproformas() {
 		return tfacdetproformas;
 	}
@@ -287,6 +454,17 @@ public class Tfaccabproforma extends BaseEntity<TfaccabproformaPK>  {
 		this.tfacdetproformas = tfacdetproformas;
 	}
 
+<<<<<<< HEAD
+=======
+	public String getReferendum() {
+		return referendum;
+	}
+
+	public void setReferendum(String referendum) {
+		this.referendum = referendum;
+	}
+
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 	public Tfaccliente getTfaccliente() {
 		return tfaccliente;
 	}
@@ -303,4 +481,9 @@ public class Tfaccabproforma extends BaseEntity<TfaccabproformaPK>  {
 		this.subtotalexcentoiva = subtotalexcentoiva;
 	}
 	
+<<<<<<< HEAD
+=======
+	
+
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 }

@@ -30,8 +30,13 @@
 							<h:panelGrid columns="4">
 								<p:outputLabel for="txtNumeroFactura" value="#{msg['lbl_factura']}:" style="display:block;width: 100px; "/>
 								<p:panelGrid>
+<<<<<<< HEAD
 									
 									<p:inputText value="#{notaCreditoDatamanager.compania.codigopuntoemision}" style="width:50px;" disabled="true"/>
+=======
+									<p:inputText value="#{notaCreditoDatamanager.compania.codigoestablecimiento}" style="width: 50px;" disabled="true"/>
+									<p:inputText value="#{notaCreditoDatamanager.compania.codigopuntoemision}" style="width: 50px;" disabled="true"/>
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 									<p:inputMask id="txtNumeroFactura" value="#{notaCreditoDatamanager.cabdevoluciones.numerofactura}" mask="999999999" required="true"/>
 								</p:panelGrid>
 								<p:message for="txtNumeroFactura"/>
@@ -50,11 +55,76 @@
 							<h:outputText value="#{msg['lbl_datos_generales']}"/>
 						</f:facet>
 						<h:panelGroup layout="block">
+<<<<<<< HEAD
 							<h:panelGrid columns="6">	
+=======
+							<h:panelGrid columns="6">
+								<p:outputLabel for="selDistritoVuelo" value="#{msg.lbl_distrito_vuelo}:" style="display:block;width: 150px;"/>
+								<p:selectOneMenu id="selDistritoVuelo" value="#{notaCreditoDatamanager.cabdevoluciones.distritovuelo}" style="width: 180px;" required="true">
+									<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+									<f:selectItems value="#{notaCreditoDatamanager.distritoVueloColl}" var="distritoVuelo" itemLabel="#{distritoVuelo.descripcion}" itemValue="#{distritoVuelo.pk.codigocatalogo}"/>
+									<p:ajax event="change" listener="#{notaCreditoController.changeDistritoVuelo}" process="@this" update="txtCodAerolinea"/>
+								</p:selectOneMenu>
+								<p:message for="selDistritoVuelo"/>
+								<p:outputLabel for="txtReferendo" value="#{msg.lbl_dae}:" style="display:block; width: 150px;"/>
+								<h:panelGrid columns="2">
+									<p:inputText id="txtCodAerolinea" value="#{notaCreditoDatamanager.cabdevoluciones.aditionalProperties['codigoaerolinea']}" style="width: 50px;" disabled="true"/>
+									<p:inputMask id="txtReferendo" value="#{notaCreditoDatamanager.cabdevoluciones.referendo}" mask="#{msg['mask_referendo']}"/>
+								</h:panelGrid>
+								<p:message for="txtReferendo"/>
+								
+								<p:outputLabel for="txtFarmCode" value="#{msg.lbl_farm_code}:"/>
+								<p:inputText id="txtFarmCode" value="#{notaCreditoDatamanager.cabdevoluciones.farmcode}" style="width: 180px;" onkeyup="bunsys.toUppercase(event, this);"/>
+								<p:message for="txtFarmCode"/>
+								<p:outputLabel value="#{msg.lbl_master_awb}:" style="display:block; width: 150px;"/>
+								<p:inputMask id="txtMasterAwb" mask="#{msg.mask_master_awb}" value="#{notaCreditoDatamanager.cabdevoluciones.masterawb}" style="width: 180px;"/>
+								<p:message for="txtMasterAwb"/>
+							</h:panelGrid>
+							<h:panelGrid columns="6">	
+								<p:outputLabel for="txtHouseAwb" value="#{msg.lbl_house_awb}:" style="display:block;width: 150px;"/>
+								<p:inputText id="txtHouseAwb" value="#{notaCreditoDatamanager.cabdevoluciones.houseawb}" style="width: 180px;" onkeyup="bunsys.toUppercase(event, this);"/>
+								<p:message for="txtHouseAwb"/>
+								
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 								<p:outputLabel for="txtFechaDevolucion" value="#{msg.lbl_fecha}:" style="display:block;width: 150px;"/>
 								<p:calendar id="txtFechaDevolucion" value="#{notaCreditoDatamanager.cabdevoluciones.fechadevolucion}" style="width: 180px;" mask="true" pattern="#{msg.pattern_date}" required="true"/>
 								<p:message for="txtFechaDevolucion"/>
 							</h:panelGrid>
+<<<<<<< HEAD
+=======
+							<h:panelGrid columns="6">
+								<p:outputLabel for="selCarguera" value="#{msg.lbl_carguera}:" style="display:block;width: 150px;"/>
+								<p:selectOneMenu id="selCarguera" value="#{notaCreditoDatamanager.cabdevoluciones.carguera}" style="width: 180px;">
+									<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+									<f:selectItems value="#{notaCreditoDatamanager.cargueraColl}" var="carguera" itemLabel="#{carguera.descripcion}" itemValue="#{carguera.pk.codigocatalogo}"/>
+								</p:selectOneMenu>
+								<p:message for="selCarguera"/>
+								<p:outputLabel for="selAerolinea" value="#{msg.lbl_aerolinea}:" style="display:block;width: 150px;"/>
+								<p:selectOneMenu id="selAerolinea" value="#{notaCreditoDatamanager.cabdevoluciones.airline}" style="width: 180px;" required="true">
+									<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+									<f:selectItems value="#{notaCreditoDatamanager.aerolineaColl}" var="aerolinea" itemLabel="#{aerolinea.descripcion}" itemValue="#{aerolinea.pk.codigocatalogo}"/>
+								</p:selectOneMenu>
+								<p:message for="selAerolinea"/>
+								
+								<p:outputLabel for="selFob" value="#{msg.lbl_fob}:"/>
+								<p:selectOneMenu id="selFob" value="#{notaCreditoDatamanager.cabdevoluciones.fob}" style="width: 180px;">
+									<f:selectItem itemLabel="Seleccione" itemValue="#{null}"/>
+									<f:selectItems value="#{notaCreditoDatamanager.fobColl}" var="fob" itemLabel="#{fob.descripcion}" itemValue="#{fob.pk.codigocatalogo}"/>
+								</p:selectOneMenu>
+								<p:message for="selFob"/>
+								<p:outputLabel for="txtAeropuerto" value="#{msg.lbl_aeropuerto}:" style="display:block;width: 150px;"/>
+								<p:inputText id="txtAeropuerto" value="#{notaCreditoDatamanager.cabdevoluciones.dae}" style="width: 180px;" required="true" onkeyup="bunsys.toUppercase(event, this);"/>
+								<p:message for="txtAeropuerto"/>
+								
+								<p:outputLabel for="txtMarcacion" value="#{msg.lbl_marcacion}:"/>
+								<p:inputText id="txtMarcacion" value="#{notaCreditoDatamanager.cabdevoluciones.consignee}" style="width: 180px;" onkeyup="bunsys.toUppercase(event, this)"/>
+								<p:message for="txtMarcacion"/>
+								<p:outputLabel for="txtConsignatario" value="#{msg.lbl_fixed_price}:" style="display:block;width: 150px;"/>
+								<p:inputText id="txtConsignatario" value="#{notaCreditoDatamanager.cabdevoluciones.fixedprice}" style="width: 180px;" onkeyup="bunsys.toUppercase(event, this);"/>
+								<p:message for="txtConsignatario"/>
+								
+							</h:panelGrid>
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 							<h:panelGrid columns="3">
 								<p:outputLabel for="txtObservacion" value="#{msg['lbl_obs']}:" style="display:block;width: 150px;"/>
 								<p:inputTextarea id="txtObservacion" value="#{notaCreditoDatamanager.cabdevoluciones.observacion}" style="display:block;width: 700px;"/>
@@ -108,14 +178,27 @@
 					<p:column headerText="#{msg['lbl_pices_type']}" style="width: 100px;">
 						<p:selectOneMenu id="selPycesType" value="#{detDevolucion.unidadventa}">
 							<f:selectItems value="#{notaCreditoDatamanager.picesTypeColl}" var="picesType" itemLabel="#{picesType.descripcion}" itemValue="#{picesType.pk.codigocatalogo}" />
+<<<<<<< HEAD
 							<p:ajax event="change" listener="#{notaCreditoController.cambioPicesType(detDevolucion)}" process="@this" update="txtTotalPieces  txtPrecioUnitario txtTotal :frmNotaCredito:pnlTotales"/>
+=======
+							<p:ajax event="change" listener="#{notaCreditoController.cambioPicesType(detDevolucion)}" process="@this" update="txtTotalPieces txtEqFullBoxes txtStemsBunch txtCajas txtTotalBunch txtCantidad txtPrecioUnitario txtTotal :frmNotaCredito:pnlTotales"/>
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 						</p:selectOneMenu>
 					</p:column>
 					<p:column headerText="#{msg['lbl_total_pice']}" style="width: 100px;">
 						<pe:inputNumber id="txtTotalPieces" value="#{detDevolucion.cantidad}" styleClass="b-input100" decimalPlaces="2" decimalSeparator="." thousandSeparator="">
+<<<<<<< HEAD
 							<p:ajax event="change" listener="#{notaCreditoController.cambioCantidad(detDevolucion)}" process="@this" update="txtPrecioUnitario txtTotal :frmNotaCredito:pnlTotales"/>
 						</pe:inputNumber>
 					</p:column>
+=======
+							<p:ajax event="change" listener="#{notaCreditoController.cambioCantidad(detDevolucion)}" process="@this" update="txtEqFullBoxes txtStemsBunch txtCajas txtTotalBunch txtCantidad txtPrecioUnitario txtTotal :frmNotaCredito:pnlTotales"/>
+						</pe:inputNumber>
+					</p:column>
+					<p:column headerText="#{msg['lbl_eq_full_boxes']}" style="width: 100px;">
+						<pe:inputNumber id="txtEqFullBoxes" value="#{detDevolucion.eqfullboxes}" styleClass="b-input100" disabled="true" decimalPlaces="2" decimalSeparator="." thousandSeparator=""/>
+					</p:column>
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 					<p:column headerText="#{msg['lbl_descripcion']}" style="width: 100px;">
 						<h:outputText value="#{detDevolucion.tinvproducto.nombre}" />
 					</p:column>
@@ -125,6 +208,30 @@
 					<p:column headerText="#{msg['lbl_nandina']}" style="width: 100px;">
 						<h:outputText value="#{detDevolucion.tinvproducto.nandina}" />
 					</p:column>
+<<<<<<< HEAD
+=======
+					<p:column headerText="#{msg['lbl_stems_bunch']}" style="width: 100px;">
+						<pe:inputNumber id="txtStemsBunch" value="#{detDevolucion.stemsbunch}" styleClass="b-input100" disabled="true" decimalPlaces="2" decimalSeparator="." thousandSeparator="">
+								<p:ajax event="change"  listener="#{notaCreditoController.cambioStemsBunch(item)}" 
+											process="@this txtStemsBunch" update="txtTotalBunch txtCantidad txtPrecioUnitario txtTotal :frmNotaCredito:pnlTotales"/>
+						</pe:inputNumber>
+					</p:column>
+					<p:column headerText="#{msg['lbl_boxs']}" style="width: 100px;">
+						<pe:inputNumber id="txtCajas" value="#{detDevolucion.cajas}" styleClass="b-input100" decimalPlaces="2" decimalSeparator="." thousandSeparator="">
+							<p:ajax event="change" listener="#{notaCreditoController.cambiototalBunch(detDevolucion)}" process="@this" update="txtTotalBunch txtCantidad txtPrecioUnitario txtTotal :frmNotaCredito:pnlTotales"/>
+						</pe:inputNumber>
+					</p:column>
+					<p:column headerText="#{msg['lbl_total_bunch']}" style="width: 100px;">
+						<pe:inputNumber id="txtTotalBunch" value="#{detDevolucion.totalbunch}" styleClass="b-input100" disabled="true" decimalPlaces="2" decimalSeparator="." thousandSeparator="">
+							<p:ajax event="change" process="@this"/>
+						</pe:inputNumber>
+					</p:column>
+					<p:column headerText="#{msg['lbl_total_stems']}" style="width: 100px;">
+						<pe:inputNumber id="txtCantidad" value="#{detDevolucion.totalstems}" styleClass="b-input100" decimalPlaces="2" decimalSeparator="." thousandSeparator="" disabled="true">
+							<p:ajax event="change" listener="#{notaCreditoController.cambiototalSteams(detDevolucion)}" process="@this" update="txtPrecioUnitario txtTotal :frmNotaCredito:pnlTotales"/>
+						</pe:inputNumber>
+					</p:column>
+>>>>>>> 6aad317a82996c5469498a3307afc7abb7c3e40d
 					<p:column headerText="#{msg['lbl_unit_price']}" style="width: 100px;">
 						<pe:inputNumber id="txtPrecioUnitario" value="#{detDevolucion.preciounitario}" styleClass="b-input100" decimalPlaces="2" decimalSeparator="." thousandSeparator="">
 							<p:ajax event="change" listener="#{notaCreditoController.cambiounitprice(detDevolucion)}" process="@this" update="txtTotal :frmNotaCredito:pnlTotales"/>
